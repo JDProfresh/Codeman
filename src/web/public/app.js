@@ -9637,10 +9637,10 @@ class CodemanApp {
 
     this._cleanupPreviousSession(sessionId);
     this.activeSessionId = sessionId;
+    this._activateFileBrowserSession?.(sessionId);
     // A keyboard row hold belongs to the session it was taken for: release it here
     // if this one resizes instead (the geometry work below then fits it).
     this._reconcileKeyboardHold?.({ resize: false });
-    this._activateFileBrowserSession?.(sessionId);
     // Repaint the partial-history banner for the tab being switched TO. The
     // replay paths refresh it when their fetch lands; without this the previous
     // session's notice stays on screen until then (#258). The switch lands at
