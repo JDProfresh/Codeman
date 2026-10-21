@@ -348,7 +348,7 @@ const KeyboardHandler = {
       // (keyboardHoldsRows, keyboardClipPx in constants.js): every height
       // change makes Claude Code clear and reprint only the tail that fits.
       // Captured before anything refits, so these are the keyboard-free rows.
-      if (typeof app !== 'undefined' && app.terminal && app._keyboardHoldsRowsEnabled?.()) {
+      if (typeof app !== 'undefined' && app.terminal && app._keyboardHoldEligible?.()) {
         app._keyboardHeldRows = app.terminal.rows;
       }
       document.body.classList.add('keyboard-visible');

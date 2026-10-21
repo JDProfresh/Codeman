@@ -102,7 +102,7 @@ function loadTerminalProto() {
     context
   );
   const proto = (context as unknown as { __CodemanApp: { prototype: Proto } }).__CodemanApp.prototype;
-  return { proto, keyboard };
+  return { proto, keyboard, windowStub };
 }
 
 describe('getTerminalDimensions holds the rows while the keyboard is up', () => {
@@ -148,13 +148,82 @@ describe('getTerminalDimensions holds the rows while the keyboard is up', () => 
   });
 });
 
+describe('only inline renderers hold, and a hold is released when the session stops qualifying', () => {
+  const { proto, windowStub } = loadTerminalProto();
+  windowStub.__codemanKeyboardHoldModes = ['claude'];
+  const appWith = (session: Record<string, unknown> | null, settings: Record<string, unknown> = {}) => ({
+    activeSessionId: session ? 's1' : null,
+    sessions: new Map(session ? [['s1', session]] : []),
+    loadAppSettingsFromStorage: () => settings,
+    _keyboardHoldsRowsEnabled: proto._keyboardHoldsRowsEnabled,
+    _keyboardHoldEligible: proto._keyboardHoldEligible,
+  });
+  const eligible = (session: Record<string, unknown> | null, settings?: Record<string, unknown>) =>
+    proto._keyboardHoldEligible.call(appWith(session, settings));
+
+  it('holds for an inline renderer (the keyboardHold capability), mode defaulting to claude', () => {
+    expect(eligible({ mode: 'claude' })).toBe(true);
+    expect(eligible({})).toBe(true);
+  });
+
+  it('never holds a full-height CLI, fullscreen Claude, a remote or docker pane, or with the setting off', () => {
+    expect(eligible({ mode: 'codex' })).toBe(false);
+    expect(eligible({ mode: 'shell' })).toBe(false);
+    expect(eligible({ mode: 'claude', cliMouseTracking: true })).toBe(false);
+    expect(eligible({ mode: 'claude', remote: { hostId: 'h' } })).toBe(false);
+    expect(eligible({ mode: 'claude', docker: { caseName: 'c' } })).toBe(false);
+    expect(eligible({ mode: 'claude' }, { keyboardHoldsRows: false })).toBe(false);
+    expect(eligible(null)).toBe(false);
+  });
+
+  it('holds nothing when the server sent no list', () => {
+    const saved = windowStub.__codemanKeyboardHoldModes;
+    delete windowStub.__codemanKeyboardHoldModes;
+    try {
+      expect(eligible({ mode: 'claude' })).toBe(false);
+    } finally {
+      windowStub.__codemanKeyboardHoldModes = saved;
+    }
+  });
+
+  const reconcile = (session: Record<string, unknown>, opts?: Record<string, unknown>) => {
+    const app = {
+      ...appWith(session),
+      _keyboardHeldRows: 38,
+      _applyKeyboardClip: vi.fn(),
+      sendResize: vi.fn(() => Promise.resolve(true)),
+    };
+    proto._reconcileKeyboardHold.call(app, opts);
+    return app;
+  };
+
+  it('releases and resizes once the active session no longer qualifies', () => {
+    const app = reconcile({ mode: 'claude', cliMouseTracking: true });
+    expect(app._keyboardHeldRows).toBe(0);
+    expect(app._applyKeyboardClip).toHaveBeenCalled();
+    expect(app.sendResize).toHaveBeenCalledWith('s1');
+  });
+
+  it('leaves the resize to a caller that does its own (selectSession)', () => {
+    const app = reconcile({ mode: 'codex' }, { resize: false });
+    expect(app._keyboardHeldRows).toBe(0);
+    expect(app.sendResize).not.toHaveBeenCalled();
+  });
+
+  it('keeps a hold the session still qualifies for', () => {
+    const app = reconcile({ mode: 'claude' });
+    expect(app._keyboardHeldRows).toBe(38);
+    expect(app.sendResize).not.toHaveBeenCalled();
+  });
+});
+
 function loadKeyboardHandler(enabled: boolean) {
   const viewport = { width: 390, height: 664, offsetTop: 0, addEventListener: () => {}, removeEventListener: () => {} };
   const layout = { height: 664 };
   const app = {
     terminal: { rows: 38 },
     _keyboardHeldRows: 0,
-    _keyboardHoldsRowsEnabled: () => enabled,
+    _keyboardHoldEligible: () => enabled,
     _applyKeyboardClip: vi.fn(),
     relayoutMobileSubagentWindows: () => {},
   };
@@ -208,7 +277,7 @@ describe('KeyboardHandler captures and releases the hold', () => {
     expect(app._applyKeyboardClip).toHaveBeenCalled();
   });
 
-  it('holds nothing with the setting off', () => {
+  it('holds nothing for a session that does not qualify (setting off, a full-height CLI)', () => {
     const { app, resizeTo } = loadKeyboardHandler(false);
     resizeTo(390, 364, 664);
     expect(app._keyboardHeldRows).toBe(0);
