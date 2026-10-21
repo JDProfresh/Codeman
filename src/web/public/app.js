@@ -9801,15 +9801,12 @@ class CodemanApp {
       // a small region with empty rows below the status bar.
       // sendResize is a no-op on the server when dims haven't changed, so
       // calling it every tab switch is cheap.
-      const dimsChanged = await this.sendResize(sessionId, { forceHttp: true }).catch(() => false);
-      // The size the capture below will be taken against. The debounced resize
-      // handler can move the terminal again while the load runs, so this is a
-      // recorded value rather than a later read of `_lastResizeDims`.
-      const dimsAtCapture = this.getTerminalDimensions?.();
-      if (this._isStaleSelect(selectGen)) {
-        this._clearTerminalLoadState(sessionId, selectGen);
-        return;
-      }
+      // Started here but awaited only before the capture fetch: the local
+      // snapshot/cache paint below needs nothing from the server, so it no
+      // longer waits a round trip. The capture still follows the resize, and a
+      // width the server refuses (#464) is adopted from this response before
+      // `dimsAtCapture` is read.
+      const resizePending = this.sendResize(sessionId, { forceHttp: true }).catch(() => false);
 
       // xterm snapshot restore: if we have a serialized xterm state from a
       // previous visit to this session, restore the user's exact prior view
@@ -9894,6 +9891,16 @@ class CodemanApp {
         this._resetTerminalForReplay();
         clearedBeforeFresh = true;
         _crashDiag.log(session?.mode === 'shell' ? 'CACHE_SKIP_SHELL' : 'CACHE_SKIP_BUSY');
+      }
+
+      const dimsChanged = await resizePending;
+      // The size the capture below will be taken against. The debounced resize
+      // handler can move the terminal again while the load runs, so this is a
+      // recorded value rather than a later read of `_lastResizeDims`.
+      const dimsAtCapture = this.getTerminalDimensions?.();
+      if (this._isStaleSelect(selectGen)) {
+        this._clearTerminalLoadState(sessionId, selectGen);
+        return;
       }
 
       // Give TUI sessions a short chance to redraw after resize before the
