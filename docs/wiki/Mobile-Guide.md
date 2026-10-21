@@ -37,7 +37,8 @@ a bottom sheet rather than a dropdown. On a folding phone (iPhone Duo) dialogs s
 the hinge, and opening or closing the device is treated as the device changing shape, never
 as the keyboard appearing.
 
-**Swipe left and right** on the terminal to switch sessions.
+**Swipe left and right** on the terminal to switch sessions, in the order the tabs are shown
+(a grouped or sorted tab layout included).
 
 ## The home screen
 
