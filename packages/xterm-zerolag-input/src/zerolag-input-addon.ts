@@ -69,6 +69,9 @@ export class ZerolagInputAddon implements XtermAddon {
   private _bufferDetectDone = false;
   // IME text still being composed: drawn after the pending text, never sent.
   private _composition = '';
+  // Rows from the top of the screen that are actually visible (see setRowLimit);
+  // null means all of them.
+  private _rowLimit: number | null = null;
 
   // Render cache
   private _lastRenderKey = '';
@@ -327,6 +330,23 @@ export class ZerolagInputAddon implements XtermAddon {
       this._lastRenderKey = '';
       this._render();
     }
+  }
+
+  /**
+   * Bound the layout to the first `limit` rows of the screen, or to all of them
+   * with `null`.
+   *
+   * For a host that keeps the terminal taller than the box showing it and
+   * scrolls the screen element instead (e.g. holding the PTY's rows while an
+   * on-screen keyboard covers the bottom): the composer must grow upward from
+   * the last row the user can SEE, not from the terminal's last row, which is
+   * under the keyboard.
+   */
+  setRowLimit(limit: number | null): void {
+    const next = limit !== null && Number.isFinite(limit) && limit > 0 ? Math.trunc(limit) : null;
+    if (next === this._rowLimit) return;
+    this._rowLimit = next;
+    this.rerender();
   }
 
   /**
@@ -623,7 +643,8 @@ export class ZerolagInputAddon implements XtermAddon {
       // `rows` is part of the key: the layout is clamped to the visible rows
       // (see renderOverlay), so a keyboard opening — which changes rows without
       // changing the text — must not be skipped as a redundant render.
-      const renderKey = `${displayText}:${compositionStart}:${startCol}:${activePrompt.row}:${activePrompt.col}:${totalCols}:${this._terminal.rows}:${this._flushedOffset}`;
+      const totalRows = this._rowLimit !== null ? Math.min(this._rowLimit, this._terminal.rows) : this._terminal.rows;
+      const renderKey = `${displayText}:${compositionStart}:${startCol}:${activePrompt.row}:${activePrompt.col}:${totalCols}:${totalRows}:${this._flushedOffset}`;
       if (renderKey === this._lastRenderKey && this._overlay.style.display !== 'none') return;
       this._lastRenderKey = renderKey;
 
@@ -671,7 +692,7 @@ export class ZerolagInputAddon implements XtermAddon {
         charTop,
         charHeight,
         promptRow: activePrompt.row,
-        totalRows: this._terminal.rows,
+        totalRows,
         font: this._font,
         showCursor: this._options.showCursor,
         cursorColor,

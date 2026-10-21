@@ -967,6 +967,9 @@ Object.assign(CodemanApp.prototype, {
     if (MobileDetection.isTouchDevice()) {
       this.terminal.onCursorMove(() => this._syncMobileHelperTextareaToCursor());
       this.terminal.onRender(() => this._syncMobileHelperTextareaToCursor());
+      // Keep the live content above the keyboard while the rows are held.
+      this.terminal.onCursorMove(() => this._applyKeyboardClip());
+      this.terminal.onRender(() => this._applyKeyboardClip());
     }
 
     // Renderer liveness — see _startRenderLivenessWatchdog. Registered for every
@@ -6418,10 +6421,82 @@ Object.assign(CodemanApp.prototype, {
     // timer and the resize observer, where an exception takes the rest of the
     // callback (the padding fit, the scroll restore, the SIGWINCH) with it.
     try {
-      return window.CodemanTerminalGeometry.clampTerminalDimensions(this.fitAddon?.proposeDimensions());
+      const dims = window.CodemanTerminalGeometry.clampTerminalDimensions(this.fitAddon?.proposeDimensions());
+      // Rows held under the on-screen keyboard (see keyboardClipPx): the
+      // container shrank, the PTY must not. Columns still follow the container.
+      const held = this._keyboardHeldRowsActive?.();
+      if (dims && held) dims.rows = Math.max(dims.rows, held);
+      return dims;
     } catch {
       return null;
     }
+  },
+
+  /**
+   * Rows held while the on-screen keyboard is up, or 0. Set by KeyboardHandler
+   * on the show transition when `keyboardHoldsRows` is on (default), cleared on
+   * hide and on a shape change. Every geometry read goes through
+   * getTerminalDimensions(), so holding it there holds the fit, the PTY resize
+   * and every capture-geometry comparison alike.
+   * @returns {number}
+   */
+  _keyboardHeldRowsActive() {
+    if (!(this._keyboardHeldRows > 0)) return 0;
+    return typeof KeyboardHandler !== 'undefined' && KeyboardHandler.keyboardVisible ? this._keyboardHeldRows : 0;
+  },
+
+  /** Per-device `keyboardHoldsRows`, default ON. */
+  _keyboardHoldsRowsEnabled() {
+    return this.loadAppSettingsFromStorage?.()?.keyboardHoldsRows !== false;
+  },
+
+  /**
+   * Scroll the (held, taller than its box) terminal screen so the live content
+   * sits above the keyboard, and bound the local-echo overlay to the rows that
+   * are visible. Runs on every render and cursor move while the hold is active;
+   * resets once when it ends.
+   */
+  _applyKeyboardClip() {
+    const container = this.terminal?.element?.parentElement;
+    if (!container) return;
+    const rows = this._keyboardHeldRowsActive() ? this.terminal.rows : 0;
+    const cellHeight = rows ? this.terminal._core?._renderService?.dimensions?.css?.cell?.height : 0;
+    const viewHeight = container.clientHeight;
+    let clip = 0;
+    if (cellHeight && viewHeight) {
+      const buffer = this.terminal.buffer.active;
+      const following = buffer.viewportY >= buffer.baseY;
+      let contentBottomRow = buffer.cursorY;
+      if (following) {
+        for (let row = rows - 1; row > contentBottomRow; row--) {
+          if (buffer.getLine(buffer.baseY + row)?.translateToString(true).trim()) {
+            contentBottomRow = row;
+            break;
+          }
+        }
+      }
+      clip = window.CodemanTerminalGeometry.keyboardClipPx({
+        rows,
+        cellHeight,
+        viewHeight,
+        contentBottomRow,
+        following,
+        viewportY: buffer.viewportY,
+        baseY: buffer.baseY,
+      });
+    }
+    if (clip !== (this._keyboardClipPx || 0)) {
+      this._keyboardClipPx = clip;
+      if (clip) container.style.setProperty('--kb-clip', `${clip}px`);
+      else container.style.removeProperty('--kb-clip');
+    }
+    // Bounded whenever rows are held, even at offset 0 (a prompt near the top
+    // still has held rows below it, under the keyboard). setRowLimit dedupes.
+    this._localEchoOverlay?.setRowLimit?.(
+      cellHeight && viewHeight
+        ? window.CodemanTerminalGeometry.keyboardVisibleRowLimit(clip, viewHeight, cellHeight)
+        : null
+    );
   },
 
   /**
@@ -6451,7 +6526,10 @@ Object.assign(CodemanApp.prototype, {
   syncTerminalGeometry() {
     if (!this.fitAddon || !this.terminal) return null;
     try {
-      this.fitAddon.fit();
+      // fit() would shrink xterm to the keyboard-shortened box before the held
+      // rows put it back: skip it while they are held (_resizeTerminalTo below
+      // still applies the container's columns).
+      if (!this._keyboardHeldRowsActive?.()) this.fitAddon.fit();
     } catch {
       /* a disposed or unattached terminal cannot be fitted; fall through to the read */
     }

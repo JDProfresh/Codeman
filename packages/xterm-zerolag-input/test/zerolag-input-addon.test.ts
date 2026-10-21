@@ -756,3 +756,37 @@ describe('viewport scrolled away from the bottom', () => {
     expect(overlay.style.display).toBe('none');
   });
 });
+
+describe('setRowLimit', () => {
+  function rowLimitSetup() {
+    const lines = Array.from({ length: 24 }, (_, i) => (i === 10 ? '$ ' : ''));
+    const mock = createMockTerminal({ buffer: { lines }, cols: 20, rows: 24, cellHeight: 17 });
+    const addon = new ZerolagInputAddon({ prompt: { type: 'character', char: '$', offset: 2 } });
+    mock.terminal.loadAddon(addon);
+    cleanups.push(() => {
+      addon.dispose();
+      mock.cleanup();
+    });
+    const overlay = () => mock.terminal.element.querySelector('.xterm-screen')!.lastElementChild as HTMLDivElement;
+    return { addon, overlay };
+  }
+
+  it('grows the composer upward from the last VISIBLE row, not the terminal last row', () => {
+    const { addon, overlay } = rowLimitSetup();
+    addon.appendText('x'.repeat(50)); // 3 lines at 20 cols from the prompt on row 10
+    expect(overlay().style.top).toBe(`${10 * 17}px`);
+    addon.setRowLimit(12);
+    expect(overlay().style.top).toBe(`${9 * 17}px`);
+  });
+
+  it('null restores the full terminal height, and junk reads as null', () => {
+    const { addon, overlay } = rowLimitSetup();
+    addon.appendText('x'.repeat(50));
+    addon.setRowLimit(12);
+    addon.setRowLimit(null);
+    expect(overlay().style.top).toBe(`${10 * 17}px`);
+    addon.setRowLimit(12);
+    addon.setRowLimit(Number.NaN);
+    expect(overlay().style.top).toBe(`${10 * 17}px`);
+  });
+});
