@@ -6522,11 +6522,11 @@ Object.assign(CodemanApp.prototype, {
     if (cellHeight && viewHeight) {
       const buffer = this.terminal.buffer.active;
       const following = buffer.viewportY >= buffer.baseY;
-      let contentBottomRow = buffer.cursorY;
+      let lastContentRow = -1;
       if (following) {
-        for (let row = rows - 1; row > contentBottomRow; row--) {
+        for (let row = rows - 1; row >= 0; row--) {
           if (buffer.getLine(buffer.baseY + row)?.translateToString(true).trim()) {
-            contentBottomRow = row;
+            lastContentRow = row;
             break;
           }
         }
@@ -6535,7 +6535,8 @@ Object.assign(CodemanApp.prototype, {
         rows,
         cellHeight,
         viewHeight,
-        contentBottomRow,
+        cursorRow: buffer.cursorY,
+        lastContentRow,
         following,
         viewportY: buffer.viewportY,
         baseY: buffer.baseY,
