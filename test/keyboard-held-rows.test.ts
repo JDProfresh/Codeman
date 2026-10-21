@@ -32,28 +32,40 @@ describe('keyboardClipPx', () => {
   // 38 held rows of 17px in a 255px box (15 rows visible): 391px of overflow.
   const base = { rows: 38, cellHeight: 17, viewHeight: 255, following: true, viewportY: 100, baseY: 100 };
 
-  it('puts the bottom of the content at the bottom of the box', () => {
-    // Claude: composer and footer run to the last row.
-    expect(g.keyboardClipPx({ ...base, contentBottomRow: 37 })).toBe(38 * 17 - 255);
+  it('puts the last content row at the bottom of the box', () => {
+    // Claude: composer and footer run to the last row, cursor in the composer.
+    expect(g.keyboardClipPx({ ...base, cursorRow: 34, lastContentRow: 37 })).toBe(38 * 17 - 255);
     // Content ends at row 20: rows 6..20 are in view.
-    expect(g.keyboardClipPx({ ...base, contentBottomRow: 20 })).toBe(21 * 17 - 255);
+    expect(g.keyboardClipPx({ ...base, cursorRow: 20, lastContentRow: 20 })).toBe(21 * 17 - 255);
   });
 
-  it('shows the top for a prompt near the top (a fresh shell)', () => {
-    expect(g.keyboardClipPx({ ...base, contentBottomRow: 1, viewportY: 0, baseY: 0 })).toBe(0);
+  it('counts a cursor just below the content (an empty prompt line)', () => {
+    expect(g.keyboardClipPx({ ...base, cursorRow: 22, lastContentRow: 20 })).toBe(23 * 17 - 255);
+  });
+
+  it('ignores a cursor parked far below the content (codex dialogs)', () => {
+    // Measured on the dev tier: codex's update dialog on rows 1-8 of 42, its
+    // cursor on row 38 of an otherwise blank screen. Anchoring to the cursor
+    // scrolled the dialog out of view; the top stays in view instead.
+    expect(g.keyboardClipPx({ ...base, cursorRow: 37, lastContentRow: 8 })).toBe(0);
+  });
+
+  it('shows the top for a prompt near the top (a fresh shell), and uses the cursor on a blank screen', () => {
+    expect(g.keyboardClipPx({ ...base, cursorRow: 1, lastContentRow: 1, viewportY: 0, baseY: 0 })).toBe(0);
+    expect(g.keyboardClipPx({ ...base, cursorRow: 37, lastContentRow: -1 })).toBe(38 * 17 - 255);
   });
 
   it('follows the scroll position while reading history, top of scrollback included', () => {
     const max = 38 * 17 - 255;
-    expect(g.keyboardClipPx({ ...base, following: false, viewportY: 0, contentBottomRow: 37 })).toBe(0);
-    expect(g.keyboardClipPx({ ...base, following: false, viewportY: 50, contentBottomRow: 37 })).toBe(
+    expect(g.keyboardClipPx({ ...base, following: false, viewportY: 0, cursorRow: 37, lastContentRow: 37 })).toBe(0);
+    expect(g.keyboardClipPx({ ...base, following: false, viewportY: 50, cursorRow: 37, lastContentRow: 37 })).toBe(
       Math.round(max / 2)
     );
   });
 
   it('is 0 when nothing overflows or the terminal cannot be measured', () => {
-    expect(g.keyboardClipPx({ ...base, viewHeight: 38 * 17, contentBottomRow: 37 })).toBe(0);
-    expect(g.keyboardClipPx({ ...base, cellHeight: 0, contentBottomRow: 37 })).toBe(0);
+    expect(g.keyboardClipPx({ ...base, viewHeight: 38 * 17, cursorRow: 37, lastContentRow: 37 })).toBe(0);
+    expect(g.keyboardClipPx({ ...base, cellHeight: 0, cursorRow: 37, lastContentRow: 37 })).toBe(0);
   });
 
   it('bounds the overlay to the fully visible rows', () => {

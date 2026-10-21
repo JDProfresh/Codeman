@@ -3350,6 +3350,9 @@ function reconcilePtyGeometry(local, pty) {
   return { adopt: true, cols: pty.cols };
 }
 
+/** Rows below the last content within which the cursor still counts (keyboardClipPx). */
+const KEYBOARD_CLIP_CURSOR_REACH = 2;
+
 /**
  * How far to scroll the terminal SCREEN up while its rows are held under the
  * on-screen keyboard (setting `keyboardHoldsRows`).
@@ -3364,26 +3367,31 @@ function reconcilePtyGeometry(local, pty) {
  * hides the input line" (see reconcilePtyGeometry): the offset below is what
  * keeps the live content in view.
  *
- * - Following live output: the bottom of the content (the cursor row or the
- *   last non-empty row, whichever is lower) sits at the bottom of the box. A
- *   fresh shell prompting on row 1 shows the top; Claude's footer under its
- *   composer stays visible.
+ * - Following live output: the last row with content sits at the bottom of the
+ *   box. A fresh shell prompting on row 1 shows the top; Claude's footer under
+ *   its composer stays visible. The cursor counts only when it is right below
+ *   that content (a prompt or composer line still empty): a TUI that parks its
+ *   cursor far below what it drew (codex's dialogs, with the cursor on the last
+ *   row of an otherwise blank screen) must not scroll its content out of view.
  * - Reading history: the offset follows the scroll position, so the top of the
  *   scrollback is reachable and scrolling stays continuous.
  *
  * ponytail: recomputed on every render with no hysteresis; add some if a TUI's
  * mid-redraw frames ever make the view jitter.
  *
- * @param {{rows: number, cellHeight: number, viewHeight: number, contentBottomRow: number,
- *   following: boolean, viewportY: number, baseY: number}} input
+ * @param {{rows: number, cellHeight: number, viewHeight: number, cursorRow: number,
+ *   lastContentRow: number, following: boolean, viewportY: number, baseY: number}} input
+ *   lastContentRow: the last non-blank screen row, or -1 when the screen is blank
  * @returns {number} px, between 0 and the screen's overflow
  */
 function keyboardClipPx(input) {
-  const { rows, cellHeight, viewHeight, contentBottomRow, following, viewportY, baseY } = input;
+  const { rows, cellHeight, viewHeight, cursorRow, lastContentRow, following, viewportY, baseY } = input;
   if (!(cellHeight > 0) || !(viewHeight > 0) || !(rows > 0)) return 0;
   const max = Math.max(0, rows * cellHeight - viewHeight);
   if (max === 0) return 0;
   if (!following && baseY > 0) return Math.round(max * Math.min(1, Math.max(0, viewportY / baseY)));
+  const cursorCounts = lastContentRow < 0 || cursorRow <= lastContentRow + KEYBOARD_CLIP_CURSOR_REACH;
+  const contentBottomRow = cursorCounts ? Math.max(cursorRow, lastContentRow) : lastContentRow;
   const bottom = (Math.min(rows - 1, Math.max(0, contentBottomRow)) + 1) * cellHeight;
   return Math.round(Math.min(max, Math.max(0, bottom - viewHeight)));
 }
