@@ -6451,6 +6451,37 @@ Object.assign(CodemanApp.prototype, {
   },
 
   /**
+   * May the keyboard hold this session's rows? Only an INLINE renderer (the
+   * `keyboardHold` capability, read from `window.__codemanKeyboardHoldModes`,
+   * never an id literal here): a CLI that lays out the full height (codex) cannot
+   * show both its content and its composer above the keyboard and must be
+   * resized, as before. Never while the CLI reports mouse tracking (Claude's
+   * fullscreen mode), and never for a remote or docker session, whose pane hosts
+   * a nested client. Absent data means no hold.
+   */
+  _keyboardHoldEligible(sessionId = this.activeSessionId) {
+    if (!this._keyboardHoldsRowsEnabled()) return false;
+    const session = sessionId ? this.sessions?.get(sessionId) : null;
+    if (!session || session.remote || session.docker || session.cliMouseTracking) return false;
+    const modes = window.__codemanKeyboardHoldModes;
+    return Array.isArray(modes) && modes.includes(session.mode || 'claude');
+  },
+
+  /**
+   * Drop a hold the active session no longer qualifies for (switched to a CLI
+   * that resizes, entered fullscreen, setting turned off) and, unless the caller
+   * resizes itself (selectSession), fit and tell the PTY at once, which is the
+   * old keyboard behavior. Never re-holds: a session that becomes eligible with
+   * the keyboard already up keeps the short rows until the keyboard closes.
+   */
+  _reconcileKeyboardHold({ resize = true } = {}) {
+    if (!this._keyboardHeldRows || this._keyboardHoldEligible()) return;
+    this._keyboardHeldRows = 0;
+    this._applyKeyboardClip();
+    if (resize && this.activeSessionId) this.sendResize(this.activeSessionId)?.catch?.(() => {});
+  },
+
+  /**
    * Scroll the (held, taller than its box) terminal screen so the live content
    * sits above the keyboard, and bound the local-echo overlay to the rows that
    * are visible. Runs on every render and cursor move while the hold is active;

@@ -2868,6 +2868,8 @@ Object.assign(CodemanApp.prototype, {
     // Save to localStorage
     this.saveAppSettingsToStorage(settings);
     this._updateLocalEchoState();
+    // Turning Keep Size Under Keyboard off while it holds releases it now.
+    this._reconcileKeyboardHold?.();
     this.applyTerminalFontFamily?.(settings.terminalFontFamily);
     this.applyTerminalFontWeights?.(settings);
 
