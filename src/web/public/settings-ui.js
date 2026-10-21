@@ -613,6 +613,8 @@ Object.assign(CodemanApp.prototype, {
     document.getElementById('appSettingsTunnelEnabled').checked = settings.tunnelEnabled ?? false;
     this.loadTunnelStatus();
     document.getElementById('appSettingsLocalEcho').checked = settings.localEchoEnabled ?? MobileDetection.isTouchDevice();
+    // Default ON, so an absent key reads as enabled rather than as off.
+    document.getElementById('appSettingsKeyboardHoldsRows').checked = settings.keyboardHoldsRows !== false;
     // Auto Copy (copy-on-select): per-device, default OFF everywhere. It quietly
     // overwrites the system clipboard on a gesture the user may have meant only as
     // a way to read, so it is opt-in rather than a default anyone has to discover.
@@ -2950,6 +2952,7 @@ Object.assign(CodemanApp.prototype, {
         Math.min(24, Math.max(0.5, parseFloat(document.getElementById('appSettingsPromptCacheKeepWarmMaxHours').value) || 2)),
       tunnelEnabled: document.getElementById('appSettingsTunnelEnabled').checked,
       localEchoEnabled: document.getElementById('appSettingsLocalEcho').checked,
+      keyboardHoldsRows: document.getElementById('appSettingsKeyboardHoldsRows').checked,
       autoCopySelection: document.getElementById('appSettingsAutoCopySelection').checked,
       copyStripMargin: document.getElementById('appSettingsCopyStripMargin').checked,
       terminalFontFamily: document.getElementById('appSettingsTerminalFont').value.trim(),
@@ -3194,6 +3197,9 @@ Object.assign(CodemanApp.prototype, {
     const _chipFlip = this.planUsageCollectionFlip(_prev, settings.showPlanUsageLimits);
     const {
       localEchoEnabled: _leo,
+      // Per-device (it is about this screen's keyboard) and absent from
+      // SettingsUpdateSchema (.strict()), so sending it would 400 the whole PUT.
+      keyboardHoldsRows: _khr,
       cjkInputEnabled: _cjk,
       extendedKeyboardBar: _ekb,
       skin: _skin,
@@ -4883,7 +4889,7 @@ Object.assign(CodemanApp.prototype, {
       'showFontControls', 'showSystemStats', 'headerStatsStyle', 'showTokenCount', 'showCost',
       'showLifecycleLog', 'showResponseViewer', 'showRedrawButton',
       'showMonitor', 'showProjectInsights', 'showFileBrowser', 'showSubagents',
-      'subagentActiveTabOnly', 'tabTwoRows', 'showTabCliLogos', 'tabOrientation', 'tabRailWidth', 'tabRailDetail', 'tabRailSort', 'tabArrangement', 'tabStateOrder', 'sessionListLayout', 'sessionSidebarFontSize', 'localEchoEnabled', 'cjkInputEnabled', 'extendedKeyboardBar',
+      'subagentActiveTabOnly', 'tabTwoRows', 'showTabCliLogos', 'tabOrientation', 'tabRailWidth', 'tabRailDetail', 'tabRailSort', 'tabArrangement', 'tabStateOrder', 'sessionListLayout', 'sessionSidebarFontSize', 'localEchoEnabled', 'keyboardHoldsRows', 'cjkInputEnabled', 'extendedKeyboardBar',
       'skin', 'showPlanUsageLimits', 'showAttachmentsButton', 'showFileViewerButton', 'webglRendererEnabled',
       'terminalFontFamily', 'terminalFontWeight', 'terminalFontWeightBold',
       'language',

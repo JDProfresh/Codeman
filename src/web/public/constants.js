@@ -3351,6 +3351,54 @@ function reconcilePtyGeometry(local, pty) {
 }
 
 /**
+ * How far to scroll the terminal SCREEN up while its rows are held under the
+ * on-screen keyboard (setting `keyboardHoldsRows`).
+ *
+ * Every PTY height change makes Claude Code clear the screen and reprint only
+ * the transcript tail that fits, so rows above that tail are lost from tmux and
+ * older ones stay in history as stale copies. The keyboard opening and closing
+ * was such a change each time. Instead the rows stay as they were and
+ * `.xterm-screen` (taller than its box now) is translated up by this many px.
+ *
+ * This is the one deliberate exception to "a screen taller than its container
+ * hides the input line" (see reconcilePtyGeometry): the offset below is what
+ * keeps the live content in view.
+ *
+ * - Following live output: the bottom of the content (the cursor row or the
+ *   last non-empty row, whichever is lower) sits at the bottom of the box. A
+ *   fresh shell prompting on row 1 shows the top; Claude's footer under its
+ *   composer stays visible.
+ * - Reading history: the offset follows the scroll position, so the top of the
+ *   scrollback is reachable and scrolling stays continuous.
+ *
+ * ponytail: recomputed on every render with no hysteresis; add some if a TUI's
+ * mid-redraw frames ever make the view jitter.
+ *
+ * @param {{rows: number, cellHeight: number, viewHeight: number, contentBottomRow: number,
+ *   following: boolean, viewportY: number, baseY: number}} input
+ * @returns {number} px, between 0 and the screen's overflow
+ */
+function keyboardClipPx(input) {
+  const { rows, cellHeight, viewHeight, contentBottomRow, following, viewportY, baseY } = input;
+  if (!(cellHeight > 0) || !(viewHeight > 0) || !(rows > 0)) return 0;
+  const max = Math.max(0, rows * cellHeight - viewHeight);
+  if (max === 0) return 0;
+  if (!following && baseY > 0) return Math.round(max * Math.min(1, Math.max(0, viewportY / baseY)));
+  const bottom = (Math.min(rows - 1, Math.max(0, contentBottomRow)) + 1) * cellHeight;
+  return Math.round(Math.min(max, Math.max(0, bottom - viewHeight)));
+}
+
+/**
+ * How many screen rows, from the top, are fully visible at a given offset: the
+ * local-echo overlay grows upward from the last of them (`setRowLimit`).
+ * @returns {number}
+ */
+function keyboardVisibleRowLimit(clipPx, viewHeight, cellHeight) {
+  if (!(cellHeight > 0)) return 0;
+  return Math.max(1, Math.floor((clipPx + viewHeight) / cellHeight));
+}
+
+/**
  * Which session does a dashboard URL's fragment ask for? Another page that
  * holds the dashboard's window, such as a task board, points it at
  * `/#session=<id>`. Only the fragment changes between two such links, so the
@@ -3480,6 +3528,8 @@ if (typeof window !== 'undefined') {
   window.CodemanTerminalGeometry = {
     clampTerminalDimensions,
     reconcilePtyGeometry,
+    keyboardClipPx,
+    keyboardVisibleRowLimit,
     TERMINAL_MIN_COLS,
     TERMINAL_MIN_ROWS,
   };
