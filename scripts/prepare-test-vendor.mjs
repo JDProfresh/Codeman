@@ -251,4 +251,7 @@ for (const asset of ASSETS) {
   built += 1;
 }
 
+// Cheap and generated from a pinned package, so it is simply rewritten every run.
+execFileSync(process.execPath, [join(ROOT, 'scripts', 'prepare-open-props.mjs'), OUT], { stdio: 'inherit' });
+
 console.log(`[test-vendor] ${built} built, ${skipped} up to date -> src/web/public/vendor/`);

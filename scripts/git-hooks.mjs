@@ -45,6 +45,7 @@ export const PRE_PUSH_CHECKS = [
   ['generate:cli-catalog', '--', '--check'],
   ['check:browser-excludes'],
   ['check:frontend-syntax'],
+  ['check:css'],
   ['format:check'],
   ['lint'],
   ['typecheck'],

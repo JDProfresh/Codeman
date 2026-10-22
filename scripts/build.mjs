@@ -79,6 +79,8 @@ run('xterm-zerolag-input', 'npx esbuild packages/xterm-zerolag-input/src/zerolag
 // XLSX preview parser bundles: loaded only inside spreadsheet-preview-worker.js,
 // never by the page (see scripts/prepare-spreadsheet-assets.mjs).
 run('spreadsheet preview vendors', 'node scripts/prepare-spreadsheet-assets.mjs dist/web/public/vendor');
+// Design-system base values (Open Props props files, layer `openprops`).
+run('open-props', 'node scripts/prepare-open-props.mjs dist/web/public/vendor');
 
 // Append global aliases so app.js can use `new LocalEchoOverlay(terminal)`
 appendFileSync(
@@ -128,12 +130,15 @@ run('minify panels-ui.js', 'npx esbuild dist/web/public/panels-ui.js --minify --
 run('minify session-ui.js', 'npx esbuild dist/web/public/session-ui.js --minify --outfile=dist/web/public/session-ui.js --allow-overwrite');
 run('minify styles.css', 'npx esbuild dist/web/public/styles.css --minify --outfile=dist/web/public/styles.css --allow-overwrite');
 run('minify mobile.css', 'npx esbuild dist/web/public/mobile.css --minify --outfile=dist/web/public/mobile.css --allow-overwrite');
+run('minify tokens.css', 'npx esbuild dist/web/public/css/tokens.css --minify --outfile=dist/web/public/css/tokens.css --allow-overwrite');
 
 // 5. Content-hash cache busting
 console.log('\n[build] content-hash cache busting');
 {
   const distPublic = join(ROOT, 'dist/web/public');
   const HASHABLE = [
+    'vendor/open-props.css',
+    'css/tokens.css',
     'styles.css',
     'mobile.css',
     'constants.js',
@@ -224,7 +229,7 @@ console.log('\n[build] content-hash cache busting');
 // 6. Compress with gzip + brotli
 run(
   'compress',
-  `for f in dist/web/public/*.js dist/web/public/*.css dist/web/public/*.html dist/web/public/vendor/*.js dist/web/public/vendor/*.css; do` +
+  `for f in dist/web/public/*.js dist/web/public/*.css dist/web/public/*.html dist/web/public/vendor/*.js dist/web/public/vendor/*.css dist/web/public/css/*.css; do` +
     ` [ -f "$f" ] && gzip -9 -k -f "$f" && { brotli -9 -k -f "$f" 2>/dev/null || true; }; done`
 );
 

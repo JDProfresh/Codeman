@@ -1,0 +1,121 @@
+/**
+ * @fileoverview Design tokens: the --cm-* names every new rule reads.
+ *
+ * Design-system phase 1 (docs: the "Codeman UI Atlas" S02 Tokens board). Open
+ * Props supplies raw steps (vendor/open-props.css, layer `openprops`); this file
+ * names them for Codeman and adds the steps a dense terminal UI needs that Open
+ * Props lacks (13/14px text, 6/12px space, 6/10px radius). Colors are NOT Open
+ * Props: they point at the skin variables, so every skin keeps working.
+ *
+ * Layering: everything here sits in the `tokens` layer. styles.css and
+ * mobile.css are still unlayered, so they win any conflict and this file only
+ * ADDS names; nothing renders differently until a rule opts in to a token.
+ * Keep the layer order identical to scripts/prepare-open-props.mjs.
+ *
+ * Rules: UI font tokens never reach xterm (only syncTerminalGeometry() sizes the
+ * terminal); z-index values match the documented stack in src/web/CLAUDE.md.
+ */
+@layer openprops, tokens, skins, base, components, layout, features;
+
+@layer tokens {
+  :root {
+    /* Type: nine sizes. */
+    --cm-text-2xs: 11px;
+    --cm-text-xs: var(--font-size-0, 0.75rem);
+    --cm-text-sm: 13px;
+    --cm-text-base: 14px;
+    --cm-text-md: var(--font-size-1, 1rem);
+    --cm-text-lg: var(--font-size-3, 1.25rem);
+    --cm-text-xl: var(--font-size-5, 2rem);
+    --cm-text-2xl: var(--font-size-8, 3.5rem);
+    --cm-text-mono: 13px;
+    --cm-weight-regular: var(--font-weight-4, 400);
+    --cm-weight-medium: var(--font-weight-5, 500);
+    --cm-weight-semibold: var(--font-weight-6, 600);
+    --cm-weight-bold: var(--font-weight-7, 700);
+    --cm-weight-heavy: var(--font-weight-8, 800);
+    --cm-leading-tight: var(--font-lineheight-1, 1.25);
+    --cm-leading-snug: var(--font-lineheight-2, 1.375);
+    --cm-leading: var(--font-lineheight-3, 1.5);
+    --cm-tracking-caps: var(--font-letterspacing-3, 0.075em);
+    --cm-font-ui: var(--ui-font, 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    --cm-font-mono: var(--font-mono, ui-monospace, monospace);
+
+    /* Space: a 4px grid plus 6 and 12 for dense toolbars. */
+    --cm-space-1: var(--size-1, 0.25rem);
+    --cm-space-1h: 6px;
+    --cm-space-2: var(--size-2, 0.5rem);
+    --cm-space-3: 12px;
+    --cm-space-4: var(--size-3, 1rem);
+    --cm-space-5: var(--size-4, 1.25rem);
+    --cm-space-6: var(--size-5, 1.5rem);
+    --cm-space-8: var(--size-7, 2rem);
+    --cm-space-12: var(--size-8, 3rem);
+
+    /* Radius. */
+    --cm-radius-sm: var(--radius-2, 5px);
+    --cm-radius-md: 6px;
+    --cm-radius-lg: 10px;
+    --cm-radius-xl: var(--radius-3, 1rem);
+    --cm-radius-pill: var(--radius-round, 1e5px);
+
+    /* Control heights: 32px with a mouse, 44px under a coarse pointer. */
+    --cm-control-sm: 28px;
+    --cm-control: 32px;
+    --cm-control-lg: 40px;
+    --cm-control-touch: 44px;
+
+    /* Motion and depth. */
+    --cm-ease: var(--ease-3, cubic-bezier(0.25, 0, 0.3, 1));
+    --cm-ease-out: var(--ease-out-3, cubic-bezier(0, 0, 0.3, 1));
+    --cm-dur: 200ms;
+    --cm-dur-fast: 120ms;
+    --cm-shadow-menu: var(--shadow-3);
+    --cm-shadow-dialog: var(--shadow-5);
+
+    /* Color: semantic names over the active skin's variables. */
+    --cm-surface-0: var(--bg-dark);
+    --cm-surface-1: var(--bg-card);
+    --cm-surface-2: var(--bg-input);
+    --cm-surface-hover: var(--bg-hover);
+    --cm-border: var(--border);
+    --cm-border-strong: var(--border-light);
+    --cm-text: var(--text);
+    --cm-text-2: var(--text-dim);
+    --cm-text-3: var(--text-muted);
+    --cm-accent: var(--accent);
+    --cm-accent-hover: var(--accent-hover);
+    --cm-on-accent: var(--accent-ink, #04223a);
+    --cm-success: var(--green);
+    --cm-warning: var(--yellow);
+    --cm-danger: var(--red);
+    --cm-info: var(--session-purple, #a98fe0);
+
+    /* Layers: the documented stack, named (values unchanged). */
+    --cm-z-echo: 7;
+    --cm-z-selection-bar: 900;
+    --cm-z-float-window: 1000;
+    --cm-z-plan-agent: 1100;
+    --cm-z-fixed-header: 1200;
+    --cm-z-modal: 1300;
+    --cm-z-log-viewer: 2000;
+    --cm-z-offline: 2500;
+    --cm-z-popup: 3000;
+    --cm-z-viewer: 5000;
+    --cm-z-preview: 5100;
+    --cm-z-toast: 10000;
+  }
+
+  @media (pointer: coarse) {
+    :root {
+      --cm-control: var(--cm-control-touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --cm-dur: 0ms;
+      --cm-dur-fast: 0ms;
+    }
+  }
+}

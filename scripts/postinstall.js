@@ -358,6 +358,22 @@ if (!isGlobalInstall) {
 }
 
 // ----------------------------------------------------------------------------
+// 4b. Write vendor/open-props.css (design-system base values) for dev mode.
+//     The build does the same into dist/.
+// ----------------------------------------------------------------------------
+
+if (!isGlobalInstall) {
+    try {
+        execSync(`node "${join(import.meta.dirname, 'prepare-open-props.mjs')}"`, { stdio: 'pipe' });
+        console.log(colors.green('✓ Open Props vendor file prepared'));
+    } catch (err) {
+        hasWarnings = true;
+        console.log(colors.yellow('⚠ Failed to prepare vendor/open-props.css'));
+        console.log(colors.dim(`  ${err.message}`));
+    }
+}
+
+// ----------------------------------------------------------------------------
 // 4b. Fetch gesture-overlay runtime assets (MediaPipe wasm + model) for dev mode
 //     (src/web/public/gesture/). Opt-in feature (CODEMAN_GESTURE=1); non-fatal.
 //     Large binaries kept out of git; the build copies them into dist/.

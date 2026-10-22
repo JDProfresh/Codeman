@@ -52,7 +52,7 @@
   --border-light: #3a4350;
   --text: #f3f6fa;
   --text-dim: #98a2b1;
-  --text-muted: #717b8c;
+  --text-muted: #8b95a6;
   /* SINGLE cohesive accent — optimistic emerald → teal (replaces the old blue) */
   --accent: #38b6f0;
   --accent-hover: #3ec8ee;
@@ -141,7 +141,7 @@
 html[data-skin="daylight-blue"] {
   --bg-dark: #11151c; --bg-card: #1b222c; --bg-input: #202833; --bg-hover: #2a323d;
   --border: #2b333f; --border-light: #3a4350;
-  --text: #f3f6fa; --text-dim: #98a2b1; --text-muted: #717b8c;
+  --text: #f3f6fa; --text-dim: #98a2b1; --text-muted: #8b95a6;
   --accent: #38b6f0; --accent-hover: #3ec8ee;
   --term-bg: #161b23;
   --green: #44b993; --yellow: #f0c25a; --red: #e06363;
@@ -161,7 +161,7 @@ html[data-skin="daylight-blue"] {
 html[data-skin="daylight-green"] {
   --bg-dark: #11151c; --bg-card: #1b222c; --bg-input: #202833; --bg-hover: #2a323d;
   --border: #2b333f; --border-light: #3a4350;
-  --text: #f3f6fa; --text-dim: #98a2b1; --text-muted: #717b8c;
+  --text: #f3f6fa; --text-dim: #98a2b1; --text-muted: #8b95a6;
   --accent: #2fd3aa; --accent-hover: #34d8a0;
   --term-bg: #161b23;
   --green: #44b993; --yellow: #f0c25a; --red: #e06363;
