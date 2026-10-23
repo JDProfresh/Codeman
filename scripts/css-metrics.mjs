@@ -5,7 +5,8 @@
  * Counts how many DISTINCT values the hand-written stylesheets use for the
  * properties a design system should pin (font sizes, colors, padding, radii,
  * z-index, width breakpoints) plus how many `!important` declarations they
- * carry. The committed baseline in `config/css-metrics.json` is a ceiling:
+ * carry. A value built only from var() references (and zeros/keywords) does not
+ * count: reading a token is the system working, not a new value. The committed baseline in `config/css-metrics.json` is a ceiling:
  * `--check` fails when any count goes UP, so the refactor can only move the
  * numbers down. When a change lowers a count, `--update` rewrites the baseline
  * (and `--check` prints a reminder to do so, without failing).
@@ -65,6 +66,13 @@ function normalizeHex(hex) {
   return '#' + h;
 }
 
+/** True when the value still carries a raw number (other than 0) outside var(). */
+export function hasRawLiteral(value) {
+  let rest = value;
+  for (let i = 0; i < 5 && rest.includes('var('); i++) rest = rest.replace(/var\([^()]*(\([^()]*\)[^()]*)*\)/g, '');
+  return /(^|[^\w.-])(\d*\.?\d+)(?!\w*-)/.test(rest.replace(/(^|[^\w.])0(\.0+)?(px|rem|em|%)?(?![\d.])/g, '$1'));
+}
+
 /**
  * Computes the metric sets for a list of CSS sources.
  * Returns `{ values: { metric: string[] }, counts: { metric: number } }`.
@@ -89,7 +97,13 @@ export function computeMetrics(sources) {
   for (const raw of sources) {
     const css = stripComments(raw);
     for (const [metric, re] of props) {
-      for (const m of css.matchAll(re)) sets[metric].add(normalizeValue(m[1]));
+      for (const m of css.matchAll(re)) {
+        const value = normalizeValue(m[1]);
+        // A value made only of token references (plus zeros/keywords) is the
+        // design system working, not drift: count raw literals only.
+        if (!hasRawLiteral(value)) continue;
+        sets[metric].add(value);
+      }
     }
     for (const m of css.matchAll(/#[0-9a-fA-F]{3,8}\b/g)) {
       const len = m[0].length - 1;

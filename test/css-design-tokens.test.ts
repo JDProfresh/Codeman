@@ -19,6 +19,7 @@ import { join } from 'node:path';
 import {
   computeMetrics,
   compareWithBaseline,
+  hasRawLiteral,
   listStylesheets,
   // @ts-expect-error -- plain .mjs script without type declarations
 } from '../scripts/css-metrics.mjs';
@@ -40,6 +41,17 @@ describe('css-metrics counter', () => {
     expect(counts.radii).toBe(1);
     expect(values.widthBreakpoints).toEqual(['599px']);
     expect(counts.important).toBe(1);
+  });
+
+  it('does not count values built only from tokens', () => {
+    expect(hasRawLiteral('0 var(--cm-space-3)')).toBe(false);
+    expect(hasRawLiteral('var(--btn-radius)')).toBe(false);
+    expect(hasRawLiteral('0')).toBe(false);
+    expect(hasRawLiteral('0.4rem 0.8rem')).toBe(true);
+    expect(hasRawLiteral('calc(var(--a) - 2px)')).toBe(true);
+    const { counts } = computeMetrics(['.a{padding:0 var(--cm-space-3);font-size:var(--cm-text-sm)}.b{padding:4px}']);
+    expect(counts.paddings).toBe(1);
+    expect(counts.fontSizes).toBe(0);
   });
 
   it('fails only when a count goes up or is missing from the baseline', () => {
@@ -175,5 +187,41 @@ describe('skins (design-system phase 2)', () => {
       );
     }
     expect(selectors).toContain('.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success))');
+  });
+});
+
+describe('component kit (design-system phase 3)', () => {
+  const css = read('src/web/public/css/components.css');
+  const code = css.replace(/\/\*[\s\S]*?\*\//g, '');
+
+  it('loads after tokens.css and before styles.css, and the build ships it', () => {
+    const html = read('src/web/public/index.html');
+    const tokens = html.indexOf('href="css/tokens.css"');
+    const kit = html.indexOf('href="css/components.css"');
+    expect(kit).toBeGreaterThan(tokens);
+    expect(kit).toBeLessThan(html.indexOf('href="styles.css"'));
+    const build = read('scripts/build.mjs');
+    expect(build).toContain("'css/components.css',");
+    expect(build).toContain('dist/web/public/css/components.css --minify');
+  });
+
+  it('lives entirely in @layer components, with no !important', () => {
+    expect(code).toContain('@layer openprops, tokens, skins, base, components, layout, features;');
+    const rest = code.replace('@layer openprops, tokens, skins, base, components, layout, features;', '').trim();
+    expect(rest.startsWith('@layer components {')).toBe(true);
+    expect(rest.endsWith('}')).toBe(true);
+    expect(code).not.toMatch(/!important/);
+  });
+
+  it('styles only .cm-* parts (legacy classes join a part only when their old rules are deleted)', () => {
+    const selectors = [...code.matchAll(/([^{};]+)\{/g)].map((m) => m[1].trim()).filter((s) => s && !s.startsWith('@'));
+    const bad = selectors.filter((s) => !/\.cm-[a-z]/.test(s) && !/^(from|to|\d+%)$/.test(s));
+    expect(bad).toEqual([]);
+  });
+
+  it('reads tokens, not raw values, for type, space and radius', () => {
+    const decls = [...code.matchAll(/(font-size|padding|gap|border-radius)\s*:\s*([^;]+);/g)];
+    const raw = decls.filter(([, , v]) => hasRawLiteral(v.trim()));
+    expect(raw.map((d) => d[0])).toEqual([]);
   });
 });

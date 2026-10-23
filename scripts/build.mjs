@@ -131,6 +131,7 @@ run('minify session-ui.js', 'npx esbuild dist/web/public/session-ui.js --minify 
 run('minify styles.css', 'npx esbuild dist/web/public/styles.css --minify --outfile=dist/web/public/styles.css --allow-overwrite');
 run('minify mobile.css', 'npx esbuild dist/web/public/mobile.css --minify --outfile=dist/web/public/mobile.css --allow-overwrite');
 run('minify tokens.css', 'npx esbuild dist/web/public/css/tokens.css --minify --outfile=dist/web/public/css/tokens.css --allow-overwrite');
+run('minify components.css', 'npx esbuild dist/web/public/css/components.css --minify --outfile=dist/web/public/css/components.css --allow-overwrite');
 
 // 5. Content-hash cache busting
 console.log('\n[build] content-hash cache busting');
@@ -139,6 +140,7 @@ console.log('\n[build] content-hash cache busting');
   const HASHABLE = [
     'vendor/open-props.css',
     'css/tokens.css',
+    'css/components.css',
     'styles.css',
     'mobile.css',
     'constants.js',

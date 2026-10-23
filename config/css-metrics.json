@@ -1,9 +1,9 @@
 {
-  "fontSizes": 85,
+  "fontSizes": 83,
   "hexColors": 309,
-  "paddings": 286,
-  "radii": 42,
-  "zIndexes": 39,
+  "paddings": 285,
+  "radii": 37,
+  "zIndexes": 38,
   "widthBreakpoints": 14,
   "important": 224
 }
