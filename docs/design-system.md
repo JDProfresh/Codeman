@@ -149,7 +149,7 @@ controls stay off phones.
 | 1 | type/space/radius snapped onto tokens | done |
 | 2 | skins in `@layer skins`, semantic button colors | done |
 | 3 | the kit; Run split-button tokens; toolbar and banner families | kit done; more families can migrate |
-| 4 | header More + pins, Inbox, panel dock, split removed, phone P07, `.cm-shell` grid | done; mobile.css shrink and wiki re-shoots next |
+| 4 | header More + pins, Inbox, panel dock, split removed, phone P07, `.cm-shell` grid, wiki re-shoots | done; mobile.css shrunk by dead and redundant rules, breakpoint modifiers still to come |
 
 **Dialogs are on the kit.** Every dialog box is a `.cm-dialog` with a titled
 `__head` (`test/dialog-kit-migration.test.ts` refuses the old `.modal-content`
