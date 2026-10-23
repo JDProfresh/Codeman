@@ -43,7 +43,7 @@ describe('Session Options responsive layout in Chromium', () => {
 
   async function metrics() {
     return page.evaluate(() => {
-      const modal = document.querySelector<HTMLElement>('#sessionOptionsModal .modal-content')!;
+      const modal = document.querySelector<HTMLElement>('#sessionOptionsModal .cm-dialog')!;
       const doc = document.getElementById('sessionOptionsDoc')!;
       const panel = document.getElementById('context-tab')!;
       const header = panel.querySelector<HTMLElement>(':scope > .set-section-head')!;

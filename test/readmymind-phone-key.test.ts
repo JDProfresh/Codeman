@@ -15,7 +15,7 @@
 //     settings apply (a live toggle needs no reload);
 //  3. the header 🧠 button STAYS off phones (the key is the phone surface);
 //  4. the modal renders on phones as a small dialog, not the full-screen
-//     default that phone `.modal-content` rules would impose;
+//     default that phone `.cm-dialog` rules would impose;
 //  5. readmymind-ui.js keeps the no-innerHTML discipline (predictor output is
 //     injectable content) and renders alternates into the i18n-skipped
 //     container declared in index.html.
@@ -61,7 +61,7 @@ describe('read my mind phone key + alternates (static guards)', () => {
   });
 
   it('renders the modal as a small dialog on phones, not the full-screen default', () => {
-    expect(phoneBlock).toMatch(/\.modal-content\.readmymind-modal\s*\{[^}]*height: auto;/);
+    expect(phoneBlock).toMatch(/\.cm-dialog\.readmymind-modal\s*\{[^}]*height: auto;/);
   });
 
   it('declares the i18n-skipped alternates container and keeps the no-innerHTML discipline', () => {
@@ -98,11 +98,11 @@ describe('read my mind phone key + alternates (static guards)', () => {
     expect(modal).toMatch(/class="btn-toolbar btn-primary"[^>]*sendReadMyMind\(true\)/);
     // btn-toolbar is display:flex (block-level): without the desktop footer
     // row rule the four buttons would stack vertically.
-    expect(styles).toMatch(/\.readmymind-modal \.modal-footer \{[^}]*display: flex/);
+    expect(styles).toMatch(/\.readmymind-modal \.cm-dialog__foot \{[^}]*display: flex/);
     // The skin block's bare .btn-toolbar (0,2,1) greys out .btn-primary
     // (0,2,0), so Send's accent must be re-asserted at higher specificity.
-    expect(styles).toMatch(/\.readmymind-modal \.modal-footer \.btn-toolbar\.btn-primary \{[^}]*var\(--accent\)/);
+    expect(styles).toMatch(/\.readmymind-modal \.cm-dialog__foot \.btn-toolbar\.btn-primary \{[^}]*var\(--accent\)/);
     // The phone block sizes the same class for finger targets.
-    expect(phoneBlock).toMatch(/\.readmymind-modal \.modal-footer \.btn-toolbar/);
+    expect(phoneBlock).toMatch(/\.readmymind-modal \.cm-dialog__foot \.btn-toolbar/);
   });
 });

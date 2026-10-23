@@ -3511,11 +3511,12 @@ Object.assign(CodemanApp.prototype, {
     backdrop.addEventListener('click', () => this._closeFolderHistoryModal());
 
     const content = document.createElement('div');
-    content.className = 'modal-content modal-lg';
+    content.className = 'cm-dialog';
 
     const header = document.createElement('div');
-    header.className = 'modal-header';
+    header.className = 'cm-dialog__head';
     const title = document.createElement('h3');
+    title.className = 'cm-dialog__title';
     title.textContent = 'Folder History';
     const subtitle = document.createElement('div');
     subtitle.className = 'folder-history-subtitle';
@@ -3528,7 +3529,7 @@ Object.assign(CodemanApp.prototype, {
     header.append(title, closeBtn);
 
     const body = document.createElement('div');
-    body.className = 'modal-body';
+    body.className = 'cm-dialog__body';
     const list = document.createElement('div');
     list.className = 'folder-history-list';
     list.setAttribute('data-loading', 'true');

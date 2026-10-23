@@ -835,7 +835,7 @@ Object.assign(CodemanApp.prototype, {
    */
   _positionPlanSubagentWindow(agentType) {
     const wizardModal = document.getElementById('ralphWizardModal');
-    const wizardContent = wizardModal?.querySelector('.modal-content');
+    const wizardContent = wizardModal?.querySelector('.cm-dialog');
     const wizardRect = wizardContent?.getBoundingClientRect();
     const gap = 20;
     const windowWidth = 280;

@@ -876,12 +876,12 @@
     <!-- Help Modal -->
     <div class="modal" id="helpModal">
       <div class="modal-backdrop" onclick="app.closeHelp()"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Keyboard Shortcuts</h3>
+      <div class="cm-dialog cm-dialog--md">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Keyboard Shortcuts</h3>
           <button class="modal-close" onclick="app.closeHelp()" aria-label="Close help">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <section class="shortcut-section">
             <h4>Session</h4>
             <div class="shortcuts-grid">
@@ -947,12 +947,12 @@
     <!-- Web Tab (dashboard URL) editor -->
     <div class="modal" id="webviewModal">
       <div class="modal-backdrop" onclick="app.closeWebviewModal()"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="webviewModalTitle">Add URL</h3>
+      <div class="cm-dialog cm-dialog--md">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title" id="webviewModalTitle">Add URL</h3>
           <button class="modal-close" onclick="app.closeWebviewModal()" aria-label="Close URL editor">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <div class="form-row">
             <label for="webviewName">Name</label>
             <input type="text" id="webviewName" placeholder="Grafana" autocomplete="off" spellcheck="false">
@@ -1002,12 +1002,12 @@
          selectCustomModelEntry() in session-ui.js, which skips straight to launch otherwise. -->
     <div class="modal" id="customModelPickModal">
       <div class="modal-backdrop" onclick="app.closeCustomModelPickModal()"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3 id="customModelPickTitle">Choose a model</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title" id="customModelPickTitle">Choose a model</h3>
           <button class="modal-close" onclick="app.closeCustomModelPickModal()" aria-label="Close model picker">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="form-hint" id="customModelPickHint"></p>
           <div id="customModelPickList" class="run-mode-custom-models"></div>
         </div>
@@ -1020,15 +1020,15 @@
          session is actively using. See _confirmModelSwap() in session-ui.js. -->
     <div class="modal" id="customModelSwapConfirmModal">
       <div class="modal-backdrop" onclick="app._resolveModelSwapConfirm(false)"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Switch models?</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Switch models?</h3>
           <button class="modal-close" onclick="app._resolveModelSwapConfirm(false)" aria-label="Cancel">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="form-hint" id="customModelSwapConfirmMessage"></p>
         </div>
-        <div class="modal-footer">
+        <div class="cm-dialog__foot">
           <button class="btn-toolbar" onclick="app._resolveModelSwapConfirm(false)">Cancel</button>
           <button class="btn-toolbar btn-primary" onclick="app._resolveModelSwapConfirm(true)">Switch anyway</button>
         </div>
@@ -1043,15 +1043,15 @@
          _confirmContextWarning() in session-ui.js. -->
     <div class="modal" id="customModelContextWarningModal">
       <div class="modal-backdrop" onclick="app._resolveContextWarningConfirm(false)"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Context window too small</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Context window too small</h3>
           <button class="modal-close" onclick="app._resolveContextWarningConfirm(false)" aria-label="Cancel">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="form-hint" id="customModelContextWarningMessage" style="white-space: pre-wrap;"></p>
         </div>
-        <div class="modal-footer">
+        <div class="cm-dialog__foot">
           <button class="btn-toolbar" onclick="app._resolveContextWarningConfirm(false)">Cancel</button>
           <button class="btn-toolbar btn-primary" onclick="app._resolveContextWarningConfirm(true)">Launch anyway</button>
         </div>
@@ -1061,12 +1061,12 @@
     <!-- Cron Jobs Modal -->
     <div class="modal" id="cronModal">
       <div class="modal-backdrop" onclick="app.closeCron()"></div>
-      <div class="modal-content modal-lg">
-        <div class="modal-header">
-          <h3>Cron Jobs</h3>
+      <div class="cm-dialog">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Cron Jobs</h3>
           <button class="modal-close" onclick="app.closeCron()" aria-label="Close cron">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="form-hint cron-modal-hint">Times use the server's local timezone.</p>
           <div class="cron-toolbar">
             <button class="btn-toolbar btn-primary" onclick="app.openCronJobForm()">+ New Job</button>
@@ -1282,9 +1282,9 @@
          contents — see the settings-surface block in styles.css. -->
     <div class="modal" id="sessionOptionsModal">
       <div class="modal-backdrop" onclick="app.closeSessionOptions()"></div>
-      <div class="modal-content modal-lg set-shell">
-        <div class="modal-header set-shell-head">
-          <h3>Session Options</h3>
+      <div class="cm-dialog set-shell">
+        <div class="cm-dialog__head set-shell-head">
+          <h3 class="cm-dialog__title">Session Options</h3>
           <div class="set-head-actions">
             <button class="modal-close" onclick="app.closeSessionOptions()" aria-label="Close session options">&times;</button>
           </div>
@@ -1704,12 +1704,12 @@
     <!-- Close Session Confirmation Modal -->
     <div class="modal" id="closeConfirmModal">
       <div class="modal-backdrop" onclick="app.cancelCloseSession()"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Close Session</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Close Session</h3>
           <button class="modal-close" onclick="app.cancelCloseSession()" aria-label="Cancel close session">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="modal-session-name" id="closeConfirmSessionName"></p>
         </div>
         <div class="close-options">
@@ -1744,12 +1744,12 @@
          Opened from the case picker's "Git worktrees…" row and the phone case sheet. -->
     <div class="modal" id="worktreeModal" role="dialog" aria-modal="true" aria-labelledby="worktreeModalTitle">
       <div class="modal-backdrop" onclick="app.closeWorktreeModal()"></div>
-      <div class="modal-content worktree-modal">
-        <div class="modal-header">
-          <h3 id="worktreeModalTitle"><span>Git worktrees</span> <span class="worktree-modal-case" id="worktreeModalCase" data-i18n-skip></span></h3>
+      <div class="cm-dialog worktree-modal">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title" id="worktreeModalTitle"><span>Git worktrees</span> <span class="worktree-modal-case" id="worktreeModalCase" data-i18n-skip></span></h3>
           <button class="modal-close" onclick="app.closeWorktreeModal()" aria-label="Close git worktrees">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="form-hint worktree-intro">Each worktree is its own checkout of the case's repository, on its own branch, in .claude/worktrees/ of the case. Agents working in parallel then never share one folder.</p>
           <div class="worktree-status" id="worktreeStatus" role="status" aria-live="polite" hidden></div>
           <div class="worktree-list" id="worktreeList"></div>
@@ -1789,9 +1789,9 @@
     <!-- App Settings Modal -->
     <div class="modal" id="appSettingsModal">
       <div class="modal-backdrop" onclick="app.closeAppSettings()"></div>
-      <div class="modal-content modal-lg set-shell">
-        <div class="modal-header set-shell-head">
-          <h3>Settings</h3>
+      <div class="cm-dialog set-shell">
+        <div class="cm-dialog__head set-shell-head">
+          <h3 class="cm-dialog__title">Settings</h3>
           <!-- Close first in the DOM so the focus trap still lands on it, not on
                Save; row-reverse keeps Save to the left of it on phones. -->
           <div class="set-head-actions">
@@ -3338,12 +3338,12 @@
     <!-- Shortcut Overlay Modal -->
     <div class="modal shortcut-overlay-modal" id="shortcutOverlayModal" tabindex="-1">
       <div class="modal-backdrop" onclick="app.closeShortcutOverlay()"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="modal-title">Keyboard Shortcuts</span>
+      <div class="cm-dialog cm-dialog--md">
+        <div class="cm-dialog__head">
+          <span class="cm-dialog__title">Keyboard Shortcuts</span>
           <button class="modal-close" onclick="app.closeShortcutOverlay()" aria-label="Close">&#x2715;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <div id="shortcutOverlayList"></div>
           <div class="shortcut-overlay-footer">
             <button class="btn btn-sm" onclick="app.closeShortcutOverlay(); app.showHelp()">Full shortcut reference</button>
@@ -3357,9 +3357,9 @@
          rail switches panels (switchCaseModalTab in session-ui.js). -->
     <div class="modal" id="createCaseModal">
       <div class="modal-backdrop" onclick="app.closeCreateCaseModal()"></div>
-      <div class="modal-content modal-lg set-shell">
-        <div class="modal-header set-shell-head">
-          <h3>Add Case</h3>
+      <div class="cm-dialog set-shell">
+        <div class="cm-dialog__head set-shell-head">
+          <h3 class="cm-dialog__title">Add Case</h3>
           <!-- mobile.css hides this modal's .set-foot, so on a phone the footer's
                Create/Link button is unreachable and the modal cannot be submitted
                at all. Mirrors the Settings modal's header Save: close first in the
@@ -3792,9 +3792,9 @@
     <!-- Ralph Loop Wizard Modal -->
     <div class="modal" id="ralphWizardModal">
       <div class="modal-backdrop"></div>
-      <div class="modal-content modal-wizard">
-        <div class="modal-header">
-          <h3>Start Ralph Loop</h3>
+      <div class="cm-dialog modal-wizard">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Start Ralph Loop</h3>
           <div class="modal-header-actions">
             <button class="modal-close" onclick="app.closeRalphWizard()" aria-label="Close Ralph wizard">&times;</button>
           </div>
@@ -3816,7 +3816,7 @@
           </div>
         </div>
 
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <!-- Step 1: Task & Completion Setup -->
           <div class="wizard-page wizard-page-compact" id="ralphWizardStep1">
             <div class="wizard-step-intro">
@@ -3975,12 +3975,12 @@
     <!-- Kill All Confirmation Modal -->
     <div class="modal" id="killAllModal">
       <div class="modal-backdrop" onclick="app.closeKillAllModal()"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Kill All Sessions</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Kill All Sessions</h3>
           <button class="modal-close" onclick="app.closeKillAllModal()" aria-label="Close kill all modal">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p class="modal-warning-text">Choose how to close <span id="killAllCount">0</span> session(s):</p>
         </div>
         <div class="close-options">
@@ -4002,15 +4002,15 @@
     <!-- Away Digest Modal -->
     <div class="modal" id="awayDigestModal">
       <div class="modal-backdrop" onclick="app.closeAwayDigest()"></div>
-      <div class="modal-content away-digest-modal">
-        <div class="modal-header">
-          <h3>Away Digest</h3>
+      <div class="cm-dialog away-digest-modal">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Away Digest</h3>
           <div class="modal-header-actions">
             <button class="btn-toolbar btn-sm" onclick="app.loadAwayDigest()" title="Refresh away digest">&#x21BB; Refresh</button>
             <button class="modal-close" onclick="app.closeAwayDigest()" aria-label="Close away digest">&times;</button>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <div class="away-digest-ranges" role="group" aria-label="Away digest range">
             <button class="filter-btn active" data-away-range="since-last-visit" onclick="app.setAwayDigestRange('since-last-visit')">Since last visit</button>
             <button class="filter-btn" data-away-range="1h" onclick="app.setAwayDigestRange('1h')">Last hour</button>
@@ -4054,12 +4054,12 @@
     <!-- Session Manager Modal -->
     <div class="modal" id="sessionManagerModal">
       <div class="modal-backdrop" onclick="app.closeSessionManager()"></div>
-      <div class="modal-content session-manager-modal">
-        <div class="modal-header">
-          <h3>Sessions</h3>
+      <div class="cm-dialog session-manager-modal">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Sessions</h3>
           <button class="modal-close" onclick="app.closeSessionManager()" aria-label="Close session manager">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <input type="search" id="sessionManagerSearch" class="search-input" placeholder="Search sessions by name, prompt, or path&hellip;" autocomplete="off" maxlength="200">
           <div id="sessionManagerList" class="session-manager-list"></div>
         </div>
@@ -4070,12 +4070,12 @@
     <!-- Token Stats Modal -->
     <div class="modal" id="tokenStatsModal">
       <div class="modal-backdrop" onclick="app.closeTokenStats()"></div>
-      <div class="modal-content token-stats-modal">
-        <div class="modal-header">
-          <h3>Token Usage Statistics</h3>
+      <div class="cm-dialog token-stats-modal">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Token Usage Statistics</h3>
           <button class="modal-close" onclick="app.closeTokenStats()" aria-label="Close token statistics">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <div class="stats-summary" id="statsSummary"></div>
           <div class="stats-chart-container">
             <div class="stats-chart-label">Last 7 Days</div>
@@ -4094,12 +4094,12 @@
   <!-- Save Preset Modal -->
   <div class="modal" id="savePresetModal">
     <div class="modal-backdrop" onclick="app.closeSavePresetModal()"></div>
-    <div class="modal-content modal-sm">
-      <div class="modal-header">
-        <h3>Save Respawn Preset</h3>
+    <div class="cm-dialog cm-dialog--sm">
+      <div class="cm-dialog__head">
+        <h3 class="cm-dialog__title">Save Respawn Preset</h3>
         <button class="modal-close" onclick="app.closeSavePresetModal()" aria-label="Close">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="cm-dialog__body">
         <div class="form-row">
           <label>Preset Name</label>
           <input type="text" id="presetNameInput" placeholder="My Custom Preset" maxlength="30">
@@ -4109,7 +4109,7 @@
           <input type="text" id="presetDescriptionInput" placeholder="When to use this preset" maxlength="100">
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="cm-dialog__foot">
         <button class="btn btn-secondary" onclick="app.closeSavePresetModal()">Cancel</button>
         <button class="btn btn-primary" onclick="app.confirmSavePreset()">Save Preset</button>
       </div>
@@ -4205,12 +4205,12 @@
        be opened from the banner with one click. Persists via PUT /api/remote-hosts/:id. -->
   <div class="modal" id="wakeConfigModal">
     <div class="modal-backdrop" onclick="app.closeWakeConfigDialog()"></div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Wake-on-LAN &middot; <span id="wakeConfigHostLabel"></span></h3>
+    <div class="cm-dialog cm-dialog--md">
+      <div class="cm-dialog__head">
+        <h3 class="cm-dialog__title">Wake-on-LAN &middot; <span id="wakeConfigHostLabel"></span></h3>
         <button class="modal-close" onclick="app.closeWakeConfigDialog()" aria-label="Close">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="cm-dialog__body">
         <div class="form-row">
           <label>MAC address(es)</label>
           <input type="text" id="wakeConfigMac" placeholder="04:d9:f5:80:c6:58" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
@@ -4223,7 +4223,7 @@
         </div>
         <div class="form-hint" id="wakeConfigStatus"></div>
       </div>
-      <div class="modal-footer">
+      <div class="cm-dialog__foot">
         <button class="btn-toolbar" onclick="app.closeWakeConfigDialog()">Cancel</button>
         <button class="btn-toolbar btn-primary" id="wakeConfigSave" onclick="app.saveWakeConfig()">Save</button>
       </div>
@@ -4232,12 +4232,12 @@
 
   <div class="modal" id="readMyMindModal">
     <div class="modal-backdrop" onclick="app.closeReadMyMind()"></div>
-    <div class="modal-content readmymind-modal">
-      <div class="modal-header">
-        <h3><span aria-hidden="true">🧠</span> Read My Mind</h3>
+    <div class="cm-dialog readmymind-modal">
+      <div class="cm-dialog__head">
+        <h3 class="cm-dialog__title"><span aria-hidden="true">🧠</span> Read My Mind</h3>
         <button class="modal-close" onclick="app.closeReadMyMind()" aria-label="Close">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="cm-dialog__body">
         <div class="readmymind-loading">Reading your mind…</div>
         <div class="readmymind-result" style="display:none">
           <div class="readmymind-suggestion-row">
@@ -4259,7 +4259,7 @@
       <!-- btn-toolbar, not bare "btn btn-*": no .btn/.btn-secondary rule exists
            in this codebase, so the bare classes render as unstyled UA buttons.
            btn-toolbar is the convention every other modal footer uses. -->
-      <div class="modal-footer">
+      <div class="cm-dialog__foot">
         <button class="btn-toolbar" onclick="app.closeReadMyMind()">Dismiss</button>
         <button class="btn-toolbar" id="readMyMindRethink" onclick="app.rethinkReadMyMind()">Rethink</button>
         <button class="btn-toolbar" onclick="app.sendReadMyMind(false)" title="Put the text on the session's composer without submitting it">Insert</button>

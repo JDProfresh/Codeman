@@ -747,7 +747,7 @@ const KeyboardHandler = {
 
     // Find if we're in a modal
     const modal = input.closest('.modal.active');
-    const modalBody = modal?.querySelector('.modal-body');
+    const modalBody = modal?.querySelector('.cm-dialog__body');
 
     if (modalBody) {
       // For modals - scroll within the modal body

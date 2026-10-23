@@ -47,9 +47,9 @@
     el.id = 'changePasswordModal';
     el.style.zIndex = '3100';
     el.innerHTML = `
-      <div class="modal-content" style="max-width:420px">
-        <div class="modal-header"><h2>Change Password</h2></div>
-        <div class="modal-body">
+      <div class="cm-dialog cm-dialog--md">
+        <div class="cm-dialog__head"><h2 class="cm-dialog__title">Change Password</h2></div>
+        <div class="cm-dialog__body">
           <p id="cpMustNote" class="form-hint" style="display:none;color:var(--warning,#c80)">
             You must change your password before continuing.</p>
           <div class="form-row"><label>Current password</label>
@@ -60,7 +60,7 @@
             <input type="password" id="cpConfirm" class="form-input" autocomplete="new-password"></div>
           <p id="cpError" style="color:var(--error,#c33);min-height:1.2em"></p>
         </div>
-        <div class="modal-footer">
+        <div class="cm-dialog__foot">
           <button class="btn" id="cpCancel">Cancel</button>
           <button class="btn btn-primary" id="cpSubmit">Change password</button>
         </div>
@@ -279,16 +279,16 @@
     el.id = 'adminPanelModal';
     el.style.zIndex = '3000';
     el.innerHTML = `
-      <div class="modal-content" style="max-width:940px;width:min(96vw,940px)">
-        <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-          <h2 style="display:flex;align-items:center;gap:8px;margin:0">
+      <div class="cm-dialog" style="max-width:940px">
+        <div class="cm-dialog__head" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <h2 class="cm-dialog__title" style="display:flex;align-items:center;gap:8px;margin:0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Admin Panel</h2>
           <span id="apIdentity" style="color:var(--text-muted,#888);font-size:.85em"></span>
         </div>
-        <div class="modal-body" style="max-height:70vh;overflow-y:auto">
+        <div class="cm-dialog__body" style="max-height:70vh;overflow-y:auto">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <strong>Users</strong>
             <button class="btn btn-sm btn-primary" id="apAddToggle">+ Add user</button>
@@ -319,7 +319,7 @@
             does not sandbox users from each other. Pair with Docker cases for isolation.</p>
           <p id="apMsg" style="min-height:1.2em;color:var(--text-muted,#888)"></p>
         </div>
-        <div class="modal-footer">
+        <div class="cm-dialog__foot">
           <button class="btn" id="apClose">Close</button>
         </div>
       </div>`;

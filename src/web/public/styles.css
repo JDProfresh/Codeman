@@ -5342,7 +5342,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Folder history modal */
-.folder-history-modal .modal-body {
+.folder-history-modal .cm-dialog__body {
   padding: 0.75rem 1rem 1rem;
 }
 
@@ -7372,7 +7372,9 @@ html[data-skin="og"] .welcome-primary:hover {
   border-top: 1px solid var(--border);
 }
 
-/* Modal */
+/* Modal overlay. The dialog box inside it is the kit's .cm-dialog
+   (css/components.css, design-system phase 3); .modal, .modal-backdrop and
+   .modal-close stay here until the shell phase moves the overlay too. */
 .modal {
   display: none;
   position: fixed;
@@ -7395,40 +7397,9 @@ html[data-skin="og"] .welcome-primary:hover {
   -webkit-backdrop-filter: blur(6px);
 }
 
-.modal-content {
-  position: relative;
-  background: var(--floating-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--control-border);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: var(--elevated-shadow);
-  /* Performance: isolate modal paint operations */
-  contain: layout style paint;
-}
-
-.modal-content.modal-sm {
-  max-width: 340px;
-}
-
-.modal-content.modal-lg {
-  max-width: 540px;
-  max-height: 85vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-content.modal-lg > .modal-body {
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
-}
-
 /* Custom Model Endpoint Profiles' "which model" picker: same bounded-height +
-   scrollable-body shape as .modal-lg above, scoped by id rather than added to
-   .modal-sm itself (three other modals share that class for short, fixed
+   scrollable-body shape as the large dialogs, scoped by id rather than added to
+   .cm-dialog--sm itself (three other modals share that class for short, fixed
    content and do not need a height cap). Without this the modal had no
    max-height at all, so an endpoint with many discovered models grew the
    dialog past the viewport with nothing to scroll — "the whole page" and
@@ -7436,13 +7407,13 @@ html[data-skin="og"] .welcome-primary:hover {
    520px)` scales with the monitor (a phone gets 70% of its height, a 4K
    display never gets a needlessly tall dialog) rather than a fixed value
    that would be wrong at one end or the other. */
-#customModelPickModal .modal-content {
+#customModelPickModal .cm-dialog {
   max-height: min(70vh, 520px);
   display: flex;
   flex-direction: column;
 }
 
-#customModelPickModal .modal-body {
+#customModelPickModal .cm-dialog__body {
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -7473,14 +7444,14 @@ html[data-skin="og"] .welcome-primary:hover {
    confirm() popup (docs/custom-model-endpoints-plan.md) so it looks and feels like the
    rest of the app instead of a browser chrome dialog. Shares the context-window-too-small
    modal's fixes below since both can appear mid-launch, in the same spot, for the same
-   reason — including this rule itself: there is no bare `.modal-footer` base style
+   reason — including this rule itself: there is no bare `.cm-dialog__foot` base style
    anywhere in this file, and `.btn-toolbar` is `display: flex` (a block-level flex
    container with no explicit `inline-flex`), so with no row layout of its own each
    button took its own full-width line and the two stacked instead of sitting side by
    side. Centred rather than flex-end per feedback — a two-button Cancel/confirm footer
    reads better centred than pinned to one edge. */
-#customModelSwapConfirmModal .modal-footer,
-#customModelContextWarningModal .modal-footer {
+#customModelSwapConfirmModal .cm-dialog__foot,
+#customModelContextWarningModal .cm-dialog__foot {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
@@ -7965,7 +7936,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Legacy run summary modal footer */
-#runSummaryModal .modal-footer {
+#runSummaryModal .cm-dialog__foot {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -7973,7 +7944,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-#runSummaryModal .modal-footer .run-summary-session-info {
+#runSummaryModal .cm-dialog__foot .run-summary-session-info {
   font-size: 0.7rem;
   color: var(--text-muted);
   font-family: 'SF Mono', Monaco, monospace;
@@ -8071,13 +8042,13 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Git worktrees dialog (session-ui.js openWorktreeModal). Its own small button
    set: the skin block greys `.btn-toolbar.btn-primary` on non-OG skins, and this
    dialog needs a primary action that reads as one on every skin. */
-.modal-content.worktree-modal {
+.cm-dialog.worktree-modal {
   max-width: 640px;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
 }
-.worktree-modal > .modal-body {
+.worktree-modal > .cm-dialog__body {
   overflow-y: auto;
   min-height: 0;
 }
@@ -8609,19 +8580,6 @@ html[data-skin="og"] .welcome-primary:hover {
   border-top: 1px solid var(--border);
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.modal-header h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
 .modal-header-actions {
   display: flex;
   align-items: center;
@@ -8639,10 +8597,6 @@ html[data-skin="og"] .welcome-primary:hover {
 
 .modal-close:hover {
   color: var(--text);
-}
-
-.modal-body {
-  padding: 1rem;
 }
 
 .shortcuts-grid {
@@ -8681,7 +8635,7 @@ kbd {
   flex-direction: column;
 }
 
-.away-digest-modal .modal-body {
+.away-digest-modal .cm-dialog__body {
   overflow-y: auto;
   padding: 1rem;
 }
@@ -8846,7 +8800,7 @@ kbd {
   flex-direction: column;
 }
 
-.session-manager-modal .modal-body {
+.session-manager-modal .cm-dialog__body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -8979,7 +8933,7 @@ kbd {
 }
 
 /* Shortcut overlay modal (registry-driven; opened with Ctrl+? / Alt+?) */
-.shortcut-overlay-modal .modal-content {
+.shortcut-overlay-modal .cm-dialog {
   max-width: 560px;
 }
 
@@ -9258,7 +9212,7 @@ kbd {
   flex-direction: column;
 }
 
-.token-stats-modal .modal-body {
+.token-stats-modal .cm-dialog__body {
   overflow-y: auto;
   padding: 1rem;
 }
@@ -12688,7 +12642,7 @@ kbd {
   cursor: default;
 }
 
-.modal-wizard .modal-body {
+.modal-wizard .cm-dialog__body {
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -13461,7 +13415,7 @@ kbd {
 
 /* Read My Mind modal: top suggestion in an editable single-line field with the
    kind badge beside it and the rationale below. */
-.modal-content.readmymind-modal {
+.cm-dialog.readmymind-modal {
   max-width: 560px;
 }
 .readmymind-loading {
@@ -13583,7 +13537,7 @@ kbd {
 /* Footer row: the buttons are btn-toolbar (display: flex, block-level), so
    without this rule the four of them stack vertically. Mirrors the
    runSummaryModal footer; the phone block (under 600px) in mobile.css adds wrapping. */
-.readmymind-modal .modal-footer {
+.readmymind-modal .cm-dialog__foot {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
@@ -13594,12 +13548,12 @@ kbd {
    the skin's .btn-toolbar catch-all skip .btn-primary/.btn-danger/.btn-success
    everywhere (owner decision 2026-10-23), so the base primary rule already
    gives this accent; the modal-scoped copy stays as the pinned look here. */
-.readmymind-modal .modal-footer .btn-toolbar.btn-primary {
+.readmymind-modal .cm-dialog__foot .btn-toolbar.btn-primary {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
 }
-.readmymind-modal .modal-footer .btn-toolbar.btn-primary:hover {
+.readmymind-modal .cm-dialog__foot .btn-toolbar.btn-primary:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
   color: #fff;
@@ -17537,10 +17491,10 @@ html[data-tab-orientation='vertical'] .home-sessions {
    no modal uses them and their rules are deleted from both stylesheets.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Deliberately narrower than the other .modal-lg users: the document is a
+/* Deliberately narrower than the other large dialogs: the document is a
    single column of rows whose control sits at the far right, so extra width
    buys nothing but a gap between a row's text and its switch. */
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .modal-content.modal-lg {
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-dialog {
   max-width: min(760px, 95vw);
   width: min(760px, 95vw);
   height: min(620px, 86vh);
@@ -18846,7 +18800,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
    you can hit without aiming, bigger fields, and a shell that is only as tall
    as the panel showing, instead of a fixed box the content has to rattle in.
    ─────────────────────────────────────────────────────────────────────────── */
-#createCaseModal .modal-content.modal-lg {
+#createCaseModal .cm-dialog {
   max-width: min(900px, 96vw);
   width: min(900px, 96vw);
   height: auto;
@@ -18968,7 +18922,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
    you scan, so it takes the same size-up. Height follows the panel showing,
    which is what keeps Summary from opening as a mostly-empty box.
    ─────────────────────────────────────────────────────────────────────────── */
-#sessionOptionsModal .modal-content.modal-lg {
+#sessionOptionsModal .cm-dialog {
   max-width: min(900px, 96vw);
   width: min(900px, 96vw);
   height: auto;
@@ -19041,7 +18995,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 @media (min-width: 1200px) {
-  #sessionOptionsModal .modal-content.modal-lg {
+  #sessionOptionsModal .cm-dialog {
     width: min(1120px, 96vw);
     max-width: min(1120px, 96vw);
   }
@@ -22590,7 +22544,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   scrollbar-color: var(--border-light) var(--bg-input);
 }
 :where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
-  .modal-content,
+  .cm-dialog,
   .ralph-dropdown,
   .ralph-panel.detached,
   .mobile-case-picker-sheet,

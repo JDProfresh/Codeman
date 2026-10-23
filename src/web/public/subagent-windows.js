@@ -246,7 +246,7 @@ Object.assign(CodemanApp.prototype, {
     // Check if Ralph wizard modal is open
     const wizardModal = document.getElementById('ralphWizardModal');
     const wizardOpen = wizardModal?.classList.contains('active');
-    const wizardContent = wizardOpen ? wizardModal.querySelector('.modal-content') : null;
+    const wizardContent = wizardOpen ? wizardModal.querySelector('.cm-dialog') : null;
 
     // Collect visible regular subagent windows
     const visibleSubagentWindows = [];

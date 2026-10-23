@@ -39,13 +39,13 @@ export const SELECTORS = {
 
   // Settings
   SETTINGS_MODAL: '#appSettingsModal',
-  SETTINGS_MODAL_CONTENT: '.modal-content',
-  SETTINGS_MODAL_BODY: '.modal-body',
+  SETTINGS_MODAL_CONTENT: '.cm-dialog',
+  SETTINGS_MODAL_BODY: '.cm-dialog__body',
   SETTINGS_MODAL_TABS: '.modal-tabs',
 
   // Modals general
   MODAL: '.modal',
-  MODAL_CONTENT: '.modal-content',
+  MODAL_CONTENT: '.cm-dialog',
 } as const;
 
 // Device breakpoints (match app.js MobileDetection)

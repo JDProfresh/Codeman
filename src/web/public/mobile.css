@@ -1530,7 +1530,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Full-screen modals on phones */
-  .modal-content {
+  .cm-dialog {
     width: 100%;
     max-width: 100%;
     height: 100%;
@@ -1541,8 +1541,9 @@ html.mobile-init .file-browser-panel {
     flex-direction: column;
   }
 
-  /* Small modals (confirmations, dialogs) — auto-height, not full-screen */
-  .modal-content.modal-sm {
+  /* Small modals (confirmations, dialogs) — auto-height, not full-screen. Only
+     --sm stays a box on a phone; every other dialog size goes full-screen. */
+  .cm-dialog--sm {
     height: auto;
     max-height: 85vh;
     border-radius: 12px;
@@ -1550,11 +1551,11 @@ html.mobile-init .file-browser-panel {
     width: calc(100% - 2rem);
   }
 
-  /* Read My Mind: a small dialog (mirrors modal-sm), not a full-screen
+  /* Read My Mind: a small dialog (mirrors cm-dialog--sm), not a full-screen
      takeover — it opens over the keyboard from the accessory 🧠 key and
-     should read as a quick suggestion sheet. Not modal-sm itself because
-     that caps desktop width at 340px; this modal wants 560px there. */
-  .modal-content.readmymind-modal {
+     should read as a quick suggestion sheet. Not cm-dialog--sm itself because
+     that caps desktop width at 420px; this modal wants 560px there. */
+  .cm-dialog.readmymind-modal {
     height: auto;
     max-height: 85vh;
     border-radius: 12px;
@@ -1564,10 +1565,10 @@ html.mobile-init .file-browser-panel {
   /* Four footer buttons on a narrow phone: let them wrap instead of clipping,
      and give buttons + alternate rows finger-sized targets. The flex row
      itself comes from the base rule in styles.css. */
-  .readmymind-modal .modal-footer {
+  .readmymind-modal .cm-dialog__foot {
     flex-wrap: wrap;
   }
-  .readmymind-modal .modal-footer .btn-toolbar {
+  .readmymind-modal .cm-dialog__foot .btn-toolbar {
     flex: 1 1 auto;
     justify-content: center;
     min-height: 38px;
@@ -1580,22 +1581,22 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Modal safe area padding - all sides for full-screen modals */
-  .ios-device .modal-content {
+  .ios-device .cm-dialog {
     padding-top: var(--safe-area-top);
     padding-bottom: var(--safe-area-bottom);
     padding-left: var(--safe-area-left);
     padding-right: var(--safe-area-right);
   }
 
-  .modal-header {
+  .cm-dialog__head {
     padding: 0.75rem 1rem;
   }
 
-  .modal-header h3 {
+  .cm-dialog__head h3 {
     font-size: 1rem;
   }
 
-  .modal-body {
+  .cm-dialog__body {
     padding: 0.75rem 1rem;
     flex: 1;
     min-height: 0;
@@ -1641,7 +1642,7 @@ html.mobile-init .file-browser-panel {
     min-height: 38px;
   }
 
-  .modal-footer,
+  .cm-dialog__foot,
   .form-actions {
     padding: 0.75rem 1rem;
     padding-bottom: calc(0.75rem + var(--safe-area-bottom));
@@ -2270,13 +2271,13 @@ html.mobile-init .file-browser-panel {
      double-counting and creating dead space between terminal and the bars. */
 
   /* Ensure modals scroll properly when keyboard is visible */
-  .keyboard-visible .modal-body {
+  .keyboard-visible .cm-dialog__body {
     max-height: 40vh;
     overflow-y: auto;
   }
 
   /* When keyboard opens in case modal, let body grow taller */
-  .keyboard-visible #createCaseModal .modal-body {
+  .keyboard-visible #createCaseModal .cm-dialog__body {
     max-height: 60vh;
   }
 
@@ -2377,7 +2378,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Smooth open animation for case modal from mobile picker */
-  #createCaseModal.from-mobile .modal-content {
+  #createCaseModal.from-mobile .cm-dialog {
     animation: caseModalSlideUp 0.25s ease-out;
   }
 
@@ -3562,7 +3563,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
    stack of separate cards: at 390px the per-card borders were most of the pixels.
    ============================================================================ */
 @media (max-width: 860px) {
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .modal-content.modal-lg {
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-dialog {
     width: 100%;
     max-width: 100%;
     height: 100%;

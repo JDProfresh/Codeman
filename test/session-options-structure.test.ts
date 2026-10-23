@@ -85,7 +85,7 @@ describe('Session Options modal structure', () => {
 
   it('uses the shared settings surface rather than the modal-tab chrome', () => {
     const modal = optionsModal();
-    expect(modal).toContain('class="modal-content modal-lg set-shell"');
+    expect(modal).toContain('class="cm-dialog set-shell"');
     expect(modal).toContain('class="set-body"');
     expect(modal).not.toContain('class="modal-tabs"');
     expect(modal).not.toContain('modal-tab-btn');

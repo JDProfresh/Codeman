@@ -58,7 +58,7 @@ introduces a hue.
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
 | Menu     | `.cm-menu` (`--popover`), `__item`, `__row`, `__pin`, `__kbd`, `__sep`, `__heading` |
 | Tabs     | `.cm-tabs`, `.cm-tabs__tab` (`aria-selected` drives the state; `[hidden]` hides) |
-| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__actions`), `.cm-empty`, `.cm-panel`, `.cm-dialog` (`--sm|lg`, `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
+| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__actions`), `.cm-empty`, `.cm-panel`, `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
 
 Rules for kit code: `.cm-*` selectors only, in `@layer components`, no
 `!important`, no raw type/space/radius values (`test/css-design-tokens.test.ts`
@@ -130,6 +130,12 @@ controls stay off phones.
 | 3 | the kit; Run split-button tokens; toolbar and banner families | kit done; more families can migrate |
 | 4 | header More + pins, Inbox, panel dock, split removed, phone P07 | done |
 
-Next migrations, in the order they pay off: dialogs (`.modal` → `.cm-dialog`),
-settings rows (`.set-*` → `.cm-row`), the remaining toolbar and panel headers.
+**Dialogs are on the kit.** Every dialog box is a `.cm-dialog` with a titled
+`__head` (`test/dialog-kit-migration.test.ts` refuses the old `.modal-content`
+family). On phones only `--sm` stays a box; every other size goes full-screen. The
+overlay around it (`.modal`, `.modal-backdrop`, `.modal-close`) stays legacy until
+the shell phase.
+
+Next migrations: settings rows (`.set-*` → `.cm-row`), then the remaining toolbar
+and panel headers.
 Each one ships with a `css:diff` run showing only the intended changes.

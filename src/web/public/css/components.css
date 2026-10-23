@@ -565,23 +565,34 @@
   }
 
   /* ---------- Dialog shell ---------- */
+  /* The size is a max-width over a full-width box, so a dialog that needs its
+     own width sets max-width alone (an id- or feature-scoped rule) and keeps
+     the viewport gutter. The translucent --floating-bg needs the blur behind it. */
   .cm-dialog {
+    position: relative;
     display: flex;
     flex-direction: column;
-    width: min(720px, calc(100vw - 2 * var(--cm-space-4)));
+    width: calc(100vw - 2 * var(--cm-space-4));
+    max-width: 720px;
     max-height: calc(100dvh - 2 * var(--cm-space-6));
     border: 1px solid var(--cm-border-strong);
     border-radius: var(--cm-radius-xl);
     background: var(--floating-bg, var(--cm-surface-1));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     box-shadow: var(--cm-shadow-dialog);
     color: var(--cm-text);
     overflow: hidden;
+    contain: layout style paint;
   }
   .cm-dialog--sm {
-    width: min(420px, calc(100vw - 2 * var(--cm-space-4)));
+    max-width: 420px;
+  }
+  .cm-dialog--md {
+    max-width: 480px;
   }
   .cm-dialog--lg {
-    width: min(980px, calc(100vw - 2 * var(--cm-space-4)));
+    max-width: 980px;
   }
   .cm-dialog__head {
     display: flex;

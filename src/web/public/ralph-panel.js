@@ -251,15 +251,15 @@ Object.assign(CodemanApp.prototype, {
       modal.id = 'fixPlanModal';
       modal.className = 'modal';
       modal.innerHTML = `
-        <div class="modal-content fix-plan-modal">
-          <div class="modal-header">
-            <h3>@fix_plan.md</h3>
+        <div class="cm-dialog fix-plan-modal">
+          <div class="cm-dialog__head">
+            <h3 class="cm-dialog__title">@fix_plan.md</h3>
             <button class="btn-close" onclick="app.closeFixPlanModal()">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="cm-dialog__body">
             <textarea id="fixPlanContent" class="fix-plan-textarea" readonly></textarea>
           </div>
-          <div class="modal-footer">
+          <div class="cm-dialog__foot">
             <span class="fix-plan-stats" id="fixPlanStats"></span>
             <button class="btn btn-secondary" onclick="app.copyFixPlan()">Copy</button>
             <button class="btn btn-primary" onclick="app.writeFixPlanToFile()">Write to File</button>
@@ -1019,12 +1019,12 @@ Object.assign(CodemanApp.prototype, {
     modal.className = 'modal active';
     modal.innerHTML = `
       <div class="modal-backdrop" onclick="app.closePlanHistoryModal()"></div>
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Plan Version History</h3>
+      <div class="cm-dialog cm-dialog--sm">
+        <div class="cm-dialog__head">
+          <h3 class="cm-dialog__title">Plan Version History</h3>
           <button class="modal-close" onclick="app.closePlanHistoryModal()">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="cm-dialog__body">
           <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
             Current version: <strong>v${currentVersion}</strong>
           </p>
@@ -1041,7 +1041,7 @@ Object.assign(CodemanApp.prototype, {
             `).join('')}
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="cm-dialog__foot">
           <button class="btn-toolbar" onclick="app.closePlanHistoryModal()">Close</button>
         </div>
       </div>
