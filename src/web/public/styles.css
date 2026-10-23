@@ -316,7 +316,12 @@ html[data-skin="rose-pine-dawn"] {
 } /* @layer skins */
 
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* The reset sits in the LOWEST authored layer (design-system phase 3): unlayered
+   rules beat every layer, so here it still yields to all of styles.css exactly as
+   before, while the kit (@layer components) is no longer zeroed by it. */
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+}
 
 /* ========== Accessibility: Focus Styles ========== */
 
