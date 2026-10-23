@@ -629,6 +629,9 @@
     box-shadow: var(--cm-shadow-dialog);
     color: var(--cm-text);
   }
+  .cm-sheet[hidden] {
+    display: none;
+  }
   .cm-sheet::before {
     content: '';
     flex: none;

@@ -1278,6 +1278,9 @@ class CodemanApp {
       };
       addKeyboardTapFix(document.querySelector('.toolbar'));
       addKeyboardTapFix(document.querySelector('.welcome-overlay'));
+      // The phone More sheet holds what left the toolbar (index.html); the Attach
+      // row's file input is not a button, so its native tap still opens the picker.
+      addKeyboardTapFix(document.getElementById('mobileMoreSheet'));
     }
     // System stats polling deferred until sessions exist (started in handleInit/session:created)
     // Setup online/offline detection

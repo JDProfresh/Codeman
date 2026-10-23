@@ -14,7 +14,8 @@
  *
  * Only per-device keys (`_displaySettingKeySet()`) are pinnable: a synced key
  * would need a server write, and the menu stays a local, per-device control.
- * Desktop only; mobile.css hides the button on phones.
+ * Desktop only; mobile.css hides the button on phones, whose own ⋯ button
+ * (toolbar) opens the More sheet defined at the end of this file.
  *
  * @mixin Extends CodemanApp.prototype via Object.assign
  * @dependency settings-ui.js (loadAppSettingsFromStorage, saveAppSettingsToStorage,
@@ -255,5 +256,45 @@ Object.assign(CodemanApp.prototype, {
     this.saveAppSettingsToStorage(settings);
     this.applyHeaderVisibilitySettings();
     if (pin) this._syncHeaderMorePin(pin, item, pinned);
+  },
+});
+
+Object.assign(CodemanApp.prototype, {
+  /**
+   * The phone More sheet (design-system P07): the case picker, Attach and App
+   * Settings, behind the ⋯ button that took the settings gear's toolbar slot.
+   */
+  toggleMobileMoreSheet() {
+    if (document.getElementById('mobileMoreSheet')?.hidden === false) this.closeMobileMoreSheet();
+    else this.openMobileMoreSheet();
+  },
+
+  openMobileMoreSheet() {
+    const sheet = document.getElementById('mobileMoreSheet');
+    if (!sheet) return;
+    sheet.hidden = false;
+    document.getElementById('mobileMoreBackdrop')?.removeAttribute('hidden');
+    document.getElementById('mobileMoreBtn')?.setAttribute('aria-expanded', 'true');
+    if (!this._mobileMoreWired) {
+      this._mobileMoreWired = true;
+      // A finished pick closes the sheet; a cancelled picker leaves it for the backdrop.
+      document.getElementById('attachFileInput')?.addEventListener('change', () => this.closeMobileMoreSheet());
+      sheet.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          this.closeMobileMoreSheet({ refocus: true });
+        }
+      });
+    }
+  },
+
+  closeMobileMoreSheet({ refocus = false } = {}) {
+    const sheet = document.getElementById('mobileMoreSheet');
+    if (!sheet || sheet.hidden) return;
+    sheet.hidden = true;
+    document.getElementById('mobileMoreBackdrop')?.setAttribute('hidden', '');
+    const btn = document.getElementById('mobileMoreBtn');
+    btn?.setAttribute('aria-expanded', 'false');
+    if (refocus) btn?.focus();
   },
 });

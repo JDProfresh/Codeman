@@ -777,21 +777,6 @@
             </div>
           </div>
           <!-- Mobile-only case button + gear -->
-          <!-- Phone-only Attach (wired in image-input.js): the button opens its own file input,
-               which sits invisibly over the button so iOS anchors the picker popover to it. The
-               Compose dialog is deliberately not involved: it focuses its textarea, which raises
-               the keyboard under the picker sheet. Sits BEFORE the mic so the two share order: 5
-               and source order keeps Attach on the left. -->
-          <span class="btn-attach-mobile-wrap">
-            <button type="button" class="btn-attach-mobile" id="attachBtnMobile" title="Attach" aria-label="Attach">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <path d="m21 15-5-5L5 21"/>
-              </svg>
-            </button>
-            <input type="file" class="btn-attach-mobile-input" id="attachFileInput" accept="image/*,video/*,.pdf,.docx,.pptx,.xlsx,.zip,.txt,.md,.csv,.tsv,.json,.log,.yaml,.yml,.xml" multiple tabindex="-1" aria-hidden="true">
-          </span>
           <button class="btn-voice-mobile" id="voiceInputBtnMobile" onclick="VoiceInput.toggle()"
                   title="Voice input" aria-label="Start voice input" aria-pressed="false">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -801,11 +786,11 @@
               <line x1="8" y1="23" x2="16" y2="23"/>
             </svg>
           </button>
-          <button class="btn-settings-mobile" onclick="app.openAppSettings()" title="App Settings">&#x2699;</button>
-          <button class="btn-toolbar btn-case-mobile" onclick="app.showMobileCasePicker()" title="Select case">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            <span id="mobileCaseName">Case</span>
-          </button>
+          <!-- Phone More (⋯), design-system P07: opens the More sheet (Case, Attach, App
+               Settings; header-more.js). It keeps the btn-settings-mobile class on purpose: that
+               styling, and the voice dictation's green Send transform (voice-input.js), carry over
+               to the button that now sits in the gear's slot. -->
+          <button class="btn-settings-mobile btn-more-mobile" id="mobileMoreBtn" onclick="app.toggleMobileMoreSheet()" title="More" aria-label="More" aria-haspopup="dialog" aria-expanded="false" aria-controls="mobileMoreSheet"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
           <button class="btn-case-settings-mobile" id="btnCaseSettingsMobile" onclick="app.toggleCaseSettingsMobile()" title="Case settings"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
           <div class="case-settings-popover-mobile hidden" id="caseSettingsPopoverMobile">
             <label class="checkbox-inline">
@@ -856,6 +841,38 @@
         <span class="version-display" id="versionDisplay" title="Codeman version">v0.0.0</span>
       </div>
     </footer>
+
+    <!-- The phone More sheet (design-system P07, header-more.js): what left the phone
+         toolbar for the ⋯ button. Rows keep their own ids (#mobileCaseName, #attachBtnMobile,
+         #attachFileInput), so session-ui.js and image-input.js find them unchanged. -->
+    <div class="mobile-more-backdrop" id="mobileMoreBackdrop" hidden onclick="app.closeMobileMoreSheet()"></div>
+    <div class="cm-sheet mobile-more-sheet" id="mobileMoreSheet" role="dialog" aria-modal="true" aria-label="More" hidden>
+      <button type="button" class="cm-menu__item btn-case-mobile" onclick="app.closeMobileMoreSheet(); app.showMobileCasePicker()" title="Select case">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>Case</span>
+        <span class="cm-menu__kbd mobile-more-value" id="mobileCaseName">Case</span>
+      </button>
+      <!-- Phone Attach (wired in image-input.js): the button opens its own file input,
+           which sits invisibly over the row so a tap lands on the input itself (the only
+           thing that opens the picker while the keyboard is up) and iOS anchors the picker
+           popover to it. The Compose dialog is deliberately not involved: it focuses its
+           textarea, which raises the keyboard under the picker sheet. -->
+      <span class="btn-attach-mobile-wrap mobile-more-attach">
+        <button type="button" class="cm-menu__item" id="attachBtnMobile" title="Attach a file" aria-label="Attach a file">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="m21 15-5-5L5 21"/>
+          </svg>
+          <span>Attach file</span>
+        </button>
+        <input type="file" class="btn-attach-mobile-input" id="attachFileInput" accept="image/*,video/*,.pdf,.docx,.pptx,.xlsx,.zip,.txt,.md,.csv,.tsv,.json,.log,.yaml,.yml,.xml" multiple tabindex="-1" aria-hidden="true">
+      </span>
+      <button type="button" class="cm-menu__item" onclick="app.closeMobileMoreSheet(); app.openAppSettings()" title="App Settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <span>Settings</span>
+      </button>
+    </div>
 
     <!-- Help Modal -->
     <div class="modal" id="helpModal">

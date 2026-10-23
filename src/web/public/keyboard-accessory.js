@@ -740,8 +740,22 @@ const KeyboardAccessoryBar = {
         </svg>
       </button>`,
 
-  /** HTML for extended mode: all keys including arrows, Tab, Esc, etc. */
+  /**
+   * HTML for extended mode: all keys including arrows, Tab, Esc, etc. Order follows the
+   * design-system phone board (P07): Compose first (accent), then Esc, Tab, ⇧Tab, the
+   * arrows, Path and the clears; the rarer keys sit past the first screen.
+   */
   _extendedButtons: `
+      <button class="accessory-btn accessory-btn-compose" data-action="compose" title="Compose prompt" aria-label="Compose prompt">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+        </svg>
+        <span>Compose</span>
+      </button>
+      <button class="accessory-btn" data-action="esc" title="Escape">Esc</button>
+      <button class="accessory-btn" data-action="tab" title="Tab">Tab</button>
+      <button class="accessory-btn" data-action="shift-tab" title="Shift+Tab">⇧Tab</button>
       <button class="accessory-btn accessory-btn-arrow" data-action="scroll-up" title="Arrow up">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M5 15l7-7 7 7"/>
@@ -762,25 +776,16 @@ const KeyboardAccessoryBar = {
           <path d="M9 5l7 7-7 7"/>
         </svg>
       </button>
-      <button class="accessory-btn accessory-btn-compose" data-action="compose" title="Compose prompt" aria-label="Compose prompt">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M12 20h9"/>
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-        </svg>
-      </button>
       <button class="accessory-btn" data-action="pick-path" title="Insert a file or folder path">&#x1F4C1; Path</button>
       <button class="accessory-btn" data-action="clear-input" title="Clear the current unsent input">&#x232B; All</button>
+      <button class="accessory-btn" data-action="clear" title="/clear">/clear</button>
       <button class="accessory-btn accessory-btn-rmm" data-action="readmymind" title="Read My Mind: predict your next prompt">🧠</button>
-      <button class="accessory-btn" data-action="tab" title="Tab">Tab</button>
       <button class="accessory-btn accessory-btn-codex" data-action="shift-left" title="Shift+Left (Codex: edit queued message)" aria-label="Shift+Left (Codex: edit queued message)">⇧←</button>
       <button class="accessory-btn accessory-btn-codex" data-action="shift-right" title="Shift+Right (Codex: prompt stack back)" aria-label="Shift+Right (Codex: prompt stack back)">⇧→</button>
-      <button class="accessory-btn" data-action="shift-tab" title="Shift+Tab">⇧Tab</button>
       <button class="accessory-btn" data-action="effort-max" title="/effort max">Max</button>
       <button class="accessory-btn" data-action="ctrl-o" title="Ctrl+O">⌃O</button>
       <button class="accessory-btn" data-action="opt-enter" title="Option+Enter (newline)">⌥Enter</button>
-      <button class="accessory-btn" data-action="esc" title="Escape">Esc</button>
       <button class="accessory-btn" data-action="init" title="/init">/init</button>
-      <button class="accessory-btn" data-action="clear" title="/clear">/clear</button>
       <button class="accessory-btn" data-action="compact" title="/compact">/compact</button>
       <button class="accessory-btn accessory-btn-dismiss" data-action="dismiss" title="Dismiss keyboard">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">

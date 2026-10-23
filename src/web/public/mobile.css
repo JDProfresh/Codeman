@@ -616,9 +616,7 @@ html.mobile-init .file-browser-panel {
 
   /* Mobile voice input button in toolbar — initially hidden via inline style,
      shown by VoiceInput._showButtons() clearing the inline display */
-  /* The Attach button shares the mic's box; its toolbar slot is on its wrapper below. */
-  .btn-voice-mobile,
-  .btn-attach-mobile {
+  .btn-voice-mobile {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -632,11 +630,8 @@ html.mobile-init .file-browser-panel {
     flex-shrink: 0;
   }
 
-  /* Toolbar slot for both, between Run Shell and the settings gear. Attach's
-     WRAPPER takes it (the button inside is not a toolbar flex item), and at an
-     equal order source order keeps Attach on the left of the mic. */
-  .btn-voice-mobile,
-  .btn-attach-mobile-wrap {
+  /* Toolbar slot for the mic, between Enter and the More button. */
+  .btn-voice-mobile {
     order: 5;
   }
 
@@ -661,17 +656,12 @@ html.mobile-init .file-browser-panel {
     opacity: 0;
   }
 
-  .btn-voice-mobile svg,
-  .btn-attach-mobile svg {
+  .btn-voice-mobile svg {
     width: 13px;
     height: 13px;
   }
 
-  .btn-voice-mobile:active,
-  .btn-attach-mobile:active,
-  /* The input above the button swallows the press, so the wrapper is what goes
-     :active. Without this the only phone button with no press feedback is Attach. */
-  .btn-attach-mobile-wrap:active .btn-attach-mobile {
+  .btn-voice-mobile:active {
     background: #2a3a5f;
   }
 
@@ -1279,15 +1269,15 @@ html.mobile-init .file-browser-panel {
     display: none !important;
   }
 
-  /* Secondary action - Enter - right side. Takes the slot (and the order) the
-     Shell button used to hold, so the toolbar rhythm is unchanged. */
+  /* Secondary action - Enter - right side, in the slot the Shell button used to
+     hold. Since P07 moved the case picker into the More sheet, Enter takes the
+     toolbar's free width (a wider target for the key pressed most). */
   .btn-toolbar.btn-enter {
     display: flex !important;
-    flex: 0 0 auto;
+    flex: 1 1 0;
     align-items: center;
     justify-content: center;
     min-width: 54px;
-    width: 54px;
     white-space: nowrap;
     padding: 0 8px !important;
     overflow: hidden;
@@ -1316,30 +1306,13 @@ html.mobile-init .file-browser-panel {
     display: none !important;
   }
 
-  /* Simplified toolbar layout — Run, Enter, and Case */
+  /* Phone toolbar (design-system P07): Run, Stop, Enter, mic and More (⋯); the
+     case picker, Attach and App Settings live in the More sheet. */
   .toolbar-left .toolbar-group:first-child {
     width: 100%;
     gap: 8px;
   }
 
-  /* Mobile case button - visible on mobile */
-  .btn-toolbar.btn-case-mobile {
-    display: flex !important;
-    flex: 1 1 0 !important;
-    min-width: 0;
-    padding: 0 8px !important;
-    order: 2; /* Between Run and Run Shell */
-    overflow: hidden;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .btn-toolbar.btn-case-mobile #mobileCaseName {
-    max-width: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 
   /* Mobile case settings gear button - next to Run */
   .btn-case-settings-mobile {
@@ -3258,28 +3231,20 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   color: var(--text);
 }
 
-/* `.accessory-btn:not(.armed)` on purpose: this selector is (0,3,1) — `:is()`
+/* `.accessory-btn:not(.armed, .accessory-btn-compose)` on purpose (Compose keeps its
+   accent tint the same way): this selector is (0,3,1) — `:is()`
    takes the specificity of its most specific argument, and `.btn-toolbar
    .btn-shell` is two classes — so it OUTRANKS the (0,3,0) armed-Ctrl rules in
    both stylesheets and repainted the armed modifier back to a resting button on
    all four light skins. Excluding the state here fixes phone and tablet at once;
    adding a class to the armed rules would only have moved the tie. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-attach-mobile, .btn-settings-mobile, .btn-toolbar.btn-shell, .accessory-btn:not(.armed)) {
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-settings-mobile, .btn-toolbar.btn-shell, .accessory-btn:not(.armed, .accessory-btn-compose)) {
   background: var(--control-bg);
   border-color: var(--control-border);
   color: var(--text-dim);
 }
 
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-attach-mobile:active, .btn-settings-mobile:active, .btn-toolbar.btn-shell:hover, .btn-toolbar.btn-shell:active, .accessory-btn:active) {
-  background: var(--control-bg-hover);
-  border-color: var(--control-border-hover);
-  color: var(--text);
-}
-
-/* Attach's press feedback comes from its wrapper (the file input over the button
-   takes the press). Kept out of the :is() list above on purpose: a descendant
-   selector there would raise that list's specificity for every button in it. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .btn-attach-mobile-wrap:active .btn-attach-mobile {
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-settings-mobile:active, .btn-toolbar.btn-shell:hover, .btn-toolbar.btn-shell:active, .accessory-btn:active) {
   background: var(--control-bg-hover);
   border-color: var(--control-border-hover);
   color: var(--text);
@@ -3432,7 +3397,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
      reads the same on all of them. 80ms so a quick tap shows the press at all. */
   .toolbar .btn-toolbar,
   .btn-voice-mobile,
-  .btn-attach-mobile,
   .btn-settings-mobile,
   .btn-case-settings-mobile,
   .accessory-btn {
@@ -3442,7 +3406,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
   .toolbar .btn-toolbar:active,
   .btn-voice-mobile:active,
-  .btn-attach-mobile-wrap:active .btn-attach-mobile,
   .btn-settings-mobile:active,
   .btn-case-settings-mobile:active,
   .accessory-btn:active {
@@ -3453,7 +3416,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
 /* Light skins darken on press instead of brightening (white on white reads as nothing). */
 @media (hover: none) and (pointer: coarse) {
-  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .btn-toolbar:active, .btn-voice-mobile:active, .btn-attach-mobile-wrap:active .btn-attach-mobile, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
+  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .btn-toolbar:active, .btn-voice-mobile:active, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
     filter: brightness(0.9);
   }
 }
@@ -3461,7 +3424,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
   .toolbar .btn-toolbar:active,
   .btn-voice-mobile:active,
-  .btn-attach-mobile-wrap:active .btn-attach-mobile,
   .btn-settings-mobile:active,
   .btn-case-settings-mobile:active,
   .accessory-btn:active {

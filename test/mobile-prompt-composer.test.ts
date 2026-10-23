@@ -133,7 +133,7 @@ describe('mobile prompt composer', () => {
     expect(template('_shellButtons')).not.toContain('data-action="compose"');
   });
 
-  it('uses a compact accessible icon for Compose in both agent layouts', () => {
+  it('gives Compose an accessible icon in both agent layouts, labelled where it leads the bar', () => {
     const { bar, document } = loadComposer();
 
     for (const markup of [bar._simpleButtons, bar._extendedButtons]) {
@@ -144,7 +144,9 @@ describe('mobile prompt composer', () => {
       expect(button.getAttribute('aria-label')).toBe('Compose prompt');
       expect(button.getAttribute('title')).toBe('Compose prompt');
       expect(button.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
-      expect(button.textContent?.trim()).toBe('');
+      // The simple bar keeps the compact icon; the extended bar opens with Compose
+      // and names it (design-system board P07).
+      expect(button.textContent?.trim()).toBe(markup === bar._extendedButtons ? 'Compose' : '');
     }
   });
 

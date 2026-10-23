@@ -6053,26 +6053,33 @@ html[data-skin="og"] .welcome-primary:hover {
   display: none;
 }
 
-/* Mobile case button - hidden on desktop, shown on mobile */
-.btn-toolbar.btn-case-mobile {
-  display: none;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #9ca3af;
-  gap: 4px;
+/* The phone More sheet (design-system P07, header-more.js): a kit .cm-sheet of
+   menu rows over a dimmed backdrop. Only the phone toolbar's ⋯ button opens it. */
+.mobile-more-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--cm-z-modal);
+  background: rgba(0, 0, 0, 0.45);
 }
-
-.btn-toolbar.btn-case-mobile:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+.mobile-more-sheet {
+  gap: 2px;
+  padding: 0 var(--cm-space-2) calc(var(--cm-space-2) + env(safe-area-inset-bottom, 0px));
 }
-
-.btn-toolbar.btn-case-mobile svg {
-  flex-shrink: 0;
+.mobile-more-sheet .cm-menu__item {
+  min-height: var(--cm-control-touch);
+  font-size: var(--cm-text-base);
 }
-
-.btn-toolbar.btn-case-mobile #mobileCaseName {
-  max-width: 60px;
+/* Attach's file input lies over the whole row (see index.html), so the wrapper is the row. */
+.mobile-more-sheet .mobile-more-attach {
+  display: flex;
+  width: 100%;
+  border-radius: var(--cm-radius-md);
+}
+.mobile-more-attach:active .cm-menu__item {
+  background: color-mix(in srgb, var(--cm-accent) 16%, transparent);
+}
+.mobile-more-value {
+  max-width: 55%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -15196,6 +15203,18 @@ body.touch-device.cjk-input-visible .main {
   background: var(--control-bg-hover);
 }
 
+/* Compose leads the agent bar (design-system P07) in the accent tint. The light-skin
+   repaint in mobile.css excludes it by hand, like .armed above. */
+.accessory-btn.accessory-btn-compose {
+  background: color-mix(in srgb, var(--accent) 18%, var(--control-bg));
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--text);
+  font-weight: 600;
+}
+.accessory-btn.accessory-btn-compose:active {
+  background: color-mix(in srgb, var(--accent) 30%, var(--control-bg));
+}
+
 .accessory-btn-compose.has-draft::after {
   width: 6px;
   height: 6px;
@@ -22809,8 +22828,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   .respawn-state,
   .history-detail-path,
   .mobile-case-item,
-  .mobile-case-picker-header h3,
-  .btn-toolbar.btn-case-mobile:hover
+  .mobile-case-picker-header h3
 ) {
   color: var(--text);
 }

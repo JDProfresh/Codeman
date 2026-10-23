@@ -561,7 +561,7 @@ describe('armed styling survives the light-skin overrides', () => {
       .find((line) => line.includes('[data-skin="paper-gray"]') && line.includes('.btn-voice-mobile,'));
 
     expect(lightSkinRule).toBeDefined();
-    expect(lightSkinRule).toContain('.accessory-btn:not(.armed)');
+    expect(lightSkinRule).toContain('.accessory-btn:not(.armed, .accessory-btn-compose)');
   });
 
   it('keeps an armed rule in both stylesheets', () => {
