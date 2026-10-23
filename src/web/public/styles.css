@@ -5538,13 +5538,13 @@ html[data-skin="og"] .welcome-primary:hover {
 .btn-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.8rem;
+  gap: var(--cm-space-1h);
+  padding: var(--cm-space-1h) var(--cm-space-3);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--btn-radius);
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: var(--cm-text-xs);
   cursor: pointer;
   transition: all var(--transition-smooth);
   white-space: nowrap;
@@ -5563,8 +5563,8 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 .btn-toolbar.btn-sm {
-  padding: 0.3rem 0.55rem;
-  font-size: 0.7rem;
+  padding: var(--cm-space-1) var(--cm-space-2);
+  font-size: var(--cm-text-2xs);
 }
 
 .btn-toolbar.btn-primary {
