@@ -236,20 +236,6 @@ describe('in the app', () => {
     expect(app._tileGrid.focusedId).toBe('s-5');
   });
 
-  it('an open split comes first (case b), the rest from the ranking', () => {
-    const app = rankedApp();
-    app.activeSessionId = 's-1';
-    app._splitPane = {};
-    app._splitSessionId = 's-5';
-    app.closeSplitPane = vi.fn(() => {
-      app._splitPane = null;
-    });
-    app._rememberTileGridCount(4);
-    app.toggleTileGrid();
-    expect(app._tileGrid.ids).toEqual(['s-1', 's-5', 's-6', 's-2']);
-    expect(app._tileGrid.focusedId).toBe('s-1');
-  });
-
   it('a page without the classifier (a stale cached mobile-overview.js) falls back to tab order', () => {
     const app = rankedApp();
     app._mobileOverviewState = undefined;

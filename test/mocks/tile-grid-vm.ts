@@ -1,6 +1,6 @@
 /**
  * @fileoverview A `vm` harness for the tile grid (tile-grid.js) with the real
- * app around it: constants.js + app.js + terminal-ui.js + terminal-split.js +
+ * app around it: constants.js + app.js + terminal-ui.js +
  * tile-grid.js + mobile-overview.js (the session state classifier the grid's
  * ranking reuses) in one context, a small fake DOM (just what the grid touches) and a fake
  * TerminalTile that records what the grid asks of it.
@@ -208,7 +208,7 @@ main.appendChild(section);
 /** The grid's element for one tiled session (its `.tile`), found by its data-session-id. */
 export const tileEl = (id: string) => section.children.find((el) => el.dataset.sessionId === id) as FakeEl;
 
-/** Extra elements `document.querySelector` finds, by exact selector (e.g. '.btn-split'). */
+/** Extra elements `document.querySelector` finds, by exact selector (e.g. '.btn-tile-grid'). */
 export const bySelector = new Map<string, FakeEl>();
 export const body = new FakeEl();
 /** The context's `fetch`; a test sets what it answers. */
@@ -298,7 +298,7 @@ const context = vm.createContext({
   MobileDetection: { isTouchDevice: () => false, isHandheldDevice: () => false, getDeviceType: () => 'desktop' },
 });
 vm.runInContext(
-  `${read('constants.js')}\n${read('app.js')}\n${read('terminal-ui.js')}\n${read('terminal-split.js')}\n` +
+  `${read('constants.js')}\n${read('app.js')}\n${read('terminal-ui.js')}\n` +
     `${read('tile-grid.js')}\n${read('mobile-overview.js')}\n${read('image-input.js')}\n` +
     'globalThis.__CodemanApp = CodemanApp;',
   context

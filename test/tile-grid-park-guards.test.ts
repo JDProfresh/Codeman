@@ -25,7 +25,7 @@
  * tile destroyed, `_lastResizeDims` reset, the main terminal's cached content
  * for EVERY tiled id invalidated, and the focused session replayed fresh.
  *
- * Real code: constants.js + app.js + terminal-ui.js + terminal-split.js +
+ * Real code: constants.js + app.js + terminal-ui.js +
  * tile-grid.js in one `vm` context, with the shared fake DOM and fake
  * TerminalTile (test/mocks/tile-grid-vm.ts). Port: N/A.
  */
@@ -396,24 +396,24 @@ describe('panes and fonts while the grid is open', () => {
     // (tile-grid.js _scheduleTileGridRefit) and the main terminal's trailing
     // timer used to refit them again, twelve fit() calls for six tiles and
     // nothing more sent (measured). The timer lives inside initTerminal(), so
-    // this reads its source; the split's Pane B is still refitted there.
+    // this reads its source.
     const src = readFileSync(resolve(import.meta.dirname, '../src/web/public/terminal-ui.js'), 'utf8');
     const start = src.indexOf('const throttledResize = () => {');
     const end = src.indexOf("window.addEventListener('resize', throttledResize)", start);
     expect(start).toBeGreaterThan(-1);
     expect(end).toBeGreaterThan(start);
-    const calls = src.slice(start, end).match(/this\._forEachTile\?\.\([^;]*;/g) ?? [];
-    expect(calls).toHaveLength(1);
-    expect(calls[0]).toContain('{ grid: false }');
+    const calls = src.slice(start, end).match(/this\._forEachTile\?\.\(/g) ?? [];
+    expect(calls).toHaveLength(0);
   });
 
-  it('_forEachTile reaches every grid tile; { grid: false } skips them', () => {
+  it('_forEachTile reaches every grid tile, and none while the grid is closed', () => {
     const app = appWithGrid(true);
     const seen: string[] = [];
     app._forEachTile((t: FakeTile) => seen.push(t.sessionId));
     expect(seen).toEqual(IDS);
+    const closed = appWithGrid(false);
     const none: string[] = [];
-    app._forEachTile((t: FakeTile) => none.push(t.sessionId), { grid: false });
+    closed._forEachTile((t: FakeTile) => none.push(t.sessionId));
     expect(none).toEqual([]);
   });
 

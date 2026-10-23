@@ -74,7 +74,7 @@ precedence there.
 One tab per session, in your order, and that order syncs across your devices.
 
 An agent tab shows its CLI's logo before the name, and a shell tab an `SH` badge. **CLI Logos
-on Tabs** (App Settings → Appearance → Tabs) hides the logos on that device; the tile and split
+on Tabs** (App Settings → Appearance → Tabs) hides the logos on that device; the tile
 headers and the Run menus keep theirs.
 
 **Status is carried by the dot and the tab's own styling:**
@@ -160,7 +160,6 @@ The right side of the header. Almost all of these are off until you enable them 
 | Lifecycle Log          | Off                | Session start, exit, and kill audit trail.                                       |
 | Cron ⏰                | Off                | Scheduled jobs.                                                                   |
 | Multi-monitor          | Off, macOS         | Opens a window spanning every display.                                            |
-| Split                  | Off, desktop only  | View a second session beside the active one, with a draggable divider.           |
 | Tiles                  | On, desktop only   | Up to six live sessions side by side. See [Tile Grid](Tile-Grid).                |
 | Tunnel indicator       | When a tunnel runs | Cloudflare tunnel status.                                                        |
 | Admin panel            | Multi-user only    | User administration.                                                              |
@@ -241,8 +240,8 @@ Worth knowing:
   and leave the terminal no history of its own (an older Codex that draws inline keeps
   its history in the terminal and scrolls locally). The first small movement of a
   gesture pages at once, then one page per half screen of travel; one finger on the
-  screen is one gesture however slowly it moves. In a grid tile or the split view's
-  second pane the wheel pages too. Other CLIs scroll locally.
+  screen is one gesture however slowly it moves. In a grid tile the wheel pages
+  too. Other CLIs scroll locally.
 - **Selection copy.** `Ctrl+C` copies when text is selected and interrupts when it is not.
   `Ctrl+Shift+C` always copies.
 - **Selecting where the CLI owns the mouse.** `Shift+drag` starts a selection even in a pane

@@ -35,7 +35,6 @@ export const BROWSER_TEST_GLOBS = [
   'test/capture-load-window.browser.test.ts',
   'test/capture-geometry-retry.browser.test.ts',
   'test/codex-predictive-echo.test.ts', // also needs a real codex binary
-  'test/split-pane-terminal.browser.test.ts',
   'test/terminal-tile-scroll.browser.test.ts',
   'test/terminal-touch-paging.browser.test.ts',
   'test/shift-enter-keypress.browser.test.ts',
@@ -44,8 +43,6 @@ export const BROWSER_TEST_GLOBS = [
   'test/case-custom-path.browser.test.ts',
   'test/doctor-settings.browser.test.ts',
   'test/git-status.browser.test.ts',
-  'test/split-pane-orchestration.browser.test.ts',
-  'test/split-pane-auto-collapse.browser.test.ts',
   'test/spreadsheet-preview.browser.test.ts',
   'test/mobile-ime-preview.browser.test.ts',
   'test/run-mode-menu-scroll.browser.test.ts',

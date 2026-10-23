@@ -1,10 +1,11 @@
 /**
  * @fileoverview App-level terminal shortcuts act on the pane the keyboard is in.
  *
- * With the split pane open, the global shortcut handler (app.js, capture phase)
- * used to resolve every terminal action against the PRIMARY pane: Ctrl+L typed
- * into Pane B cleared Pane A's display while xterm sent the ^L into Pane B's
- * PTY, and Ctrl+Shift+R restored Pane A's size. `_focusedPane()` (terminal-ui.js)
+ * With a second pane open (the since-removed split pane, now a grid tile), the
+ * global shortcut handler (app.js, capture phase) used to resolve every
+ * terminal action against the PRIMARY pane: Ctrl+L typed into the second pane
+ * cleared the primary's display while xterm sent the ^L into the second pane's
+ * PTY, and Ctrl+Shift+R restored the primary's size. `_focusedPane()` (terminal-ui.js)
  * now answers with the pane whose terminal was focused last, and the actions
  * that are about a TERMINAL (clear, restore size) go through it.
  *

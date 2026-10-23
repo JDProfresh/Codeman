@@ -436,7 +436,7 @@ const DEFAULT_SHORTCUTS = [
     // ⚠️ No default key. This used to be Ctrl+W, which is "delete the previous
     // word" in every shell, readline prompt and agent CLI, so muscle memory
     // killed the session (tmux and the CLI, with no confirm) mid-sentence, and
-    // with the split open it was not even the pane being typed in. Ctrl+W now
+    // with tiles open it was not even the pane being typed in. Ctrl+W now
     // reaches the terminal like any other key. Closing stays on the tab's close
     // control and menu (with their confirm), and anyone who wants a key binds
     // one in App Settings → Shortcuts.
@@ -1017,8 +1017,8 @@ class CodemanApp {
     this._lastIndicatorLanguage = null; // the UI language it was rendered in
     this._postDraining = new Set(); // sessionIds with an in-flight POST drainer
     // Terminal sockets OTHER than the primary one (`this._ws`), keyed by the
-    // session they are bound to: the split pane's second terminal registers its
-    // socket here so its input rides the same exactly-once queue. Values are
+    // session they are bound to: a grid tile's terminal registers its socket
+    // here so its input rides the same exactly-once queue. Values are
     // `{ ws, lastRecvAt }` handles owned by that terminal (see _inputSocketFor).
     this._extraInputSockets = new Map();
     this._persistReliableTimer = null;
@@ -4006,7 +4006,7 @@ class CodemanApp {
 
   /**
    * The OPEN terminal socket bound to `sessionId`, or null: the primary socket
-   * first, then one registered by a second terminal (the split pane). The
+   * first, then one registered by a second terminal (a grid tile). The
    * delivery layer below asks this instead of reading `this._ws` directly, so a
    * second terminal's input gets the same exactly-once queue, ACKs and
    * half-open detection as the primary's.
@@ -5117,10 +5117,6 @@ class CodemanApp {
         // The fresh session record may no longer qualify for a keyboard row hold.
         this._reconcileKeyboardHold?.();
         void this._onSessionNeedsRefresh({ id: restoreId });
-        // The split pane's second terminal reconnects on its own backoff (up to
-        // 10 s between tries); the server is back now, so skip the wait. A no-op
-        // while its socket is open, stopped for good, or destroyed.
-        this._splitPane?.reconnectNow?.();
       } else {
         this.activeSessionId = null;
         // A tile grid stored open on this device (tile-grid.js) comes back IN
@@ -7081,7 +7077,7 @@ class CodemanApp {
 
       // Which harness runs here. A shell keeps its SH pill (it is not an agent);
       // every agent CLI, claude included, shows its logo through PR #532's
-      // `run-mode-dot <id>` slot, the id as DATA, so the tab, the tile and split
+      // `run-mode-dot <id>` slot, the id as DATA, so the tab, the tile
       // headers and the Run menus draw the same mark. An id with no logo rule (a
       // CLI added through ~/.codeman/clis.json) gets that slot's plain dot. The
       // span is always emitted: CLI Logos on Tabs (`showTabCliLogos`) hides it
@@ -10506,7 +10502,7 @@ class CodemanApp {
     this._closingSessions.add(sessionId);
     let res = null;
     try {
-      // The same teardown the SSE event runs (split pane, tile, detached window,
+      // The same teardown the SSE event runs (tile, detached window,
       // WebSocket, per-session state), only now instead of when the server is
       // done. It is idempotent, so the real event finds nothing left to do.
       this._onSessionDeleted({ id: sessionId });

@@ -1022,8 +1022,7 @@ const VoiceInput = {
       setTimeout(() => {
         if (!isActive) return;
         // With the grid open the keyboard belongs to the focused tile; the
-        // parked main terminal cannot take focus. Split view keeps the main
-        // terminal, even if Pane B took focus meanwhile (it is not the target).
+        // parked main terminal cannot take focus.
         if (app._tilesOwnTerminal?.()) {
           const pane = app._focusedPane?.();
           if (pane?.sessionId === target) pane.terminal?.focus();

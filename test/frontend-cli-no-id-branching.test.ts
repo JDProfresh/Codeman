@@ -1,7 +1,7 @@
 /**
  * @fileoverview Static guard: no NEW CLI-id branch in the two files PR B2 touched
  * (`session-ui.js`, `mobile-overview.js`), plus the files that draw a session
- * header's harness logo and model (`constants.js`, `terminal-split.js`,
+ * header's harness logo and model (`constants.js`,
  * `tile-grid.js`: the logo's `run-mode-dot <cliId>` class is the id as DATA),
  * and `terminal-tile.js`, whose wheel paging and click reports reach the
  * primary pane's CLI rules through terminal-ui.js and must not grow a copy of
@@ -26,14 +26,7 @@ import { fileURLToPath } from 'node:url';
 import { STOCK_CLIS } from '../src/config/cli-registry/stock.js';
 
 const PUBLIC = fileURLToPath(new URL('../src/web/public/', import.meta.url));
-const SCANNED_FILES = [
-  'session-ui.js',
-  'mobile-overview.js',
-  'constants.js',
-  'terminal-split.js',
-  'tile-grid.js',
-  'terminal-tile.js',
-];
+const SCANNED_FILES = ['session-ui.js', 'mobile-overview.js', 'constants.js', 'tile-grid.js', 'terminal-tile.js'];
 
 /**
  * Every currently-surviving branch, each with the COUNT of physical call

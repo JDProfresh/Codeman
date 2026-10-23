@@ -2,8 +2,8 @@
  * @fileoverview zh-CN coverage for the Redraw toasts (Ctrl+Shift+R and the
  * header Redraw button, `restoreTerminalSize()` in terminal-ui.js).
  *
- * Every literal toast that method shows, on the main pane, a tile or the
- * split's Pane B, is read from the source, so a reworded toast without an
+ * Every literal toast that method shows, on the main pane or a tile, is read
+ * from the source, so a reworded toast without an
  * entry fails here. The size report is a template literal and goes through
  * the pattern rule, which must keep the numbers.
  *

@@ -192,7 +192,7 @@ Object.assign(CodemanApp.prototype, {
   // Creates a hidden paste trap, lets the browser paste into it, then inspects
   // the result for images. Works on plain HTTP (no Clipboard API needed).
   // `target` names the terminal the Ctrl+V came from and its session; both
-  // default to the primary pane. A second terminal (the split pane) passes its
+  // default to the primary pane. A second terminal (a grid tile) passes its
   // own, so text pastes into THAT xterm and images upload to THAT session.
   _handleImagePaste(target = {}) {
     const self = this;

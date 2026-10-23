@@ -225,7 +225,7 @@ describe('mobile filesystem picker actions', () => {
     expect(terminalHarness.cjkClear).toHaveBeenCalled();
   });
 
-  it('sends a picked path to the tile or Pane B that holds the keyboard, never the parked main overlay', () => {
+  it('sends a picked path to the tile that holds the keyboard, never the parked main overlay', () => {
     const appendText = vi.fn();
     const sendInput = vi.fn();
     const _sendInputAsync = vi.fn();
@@ -250,7 +250,7 @@ describe('mobile filesystem picker actions', () => {
     expect(mainFocus).not.toHaveBeenCalled();
   });
 
-  it('clears the prompt of the tile or Pane B that holds the keyboard with Ctrl+U, leaving the main overlay alone', () => {
+  it('clears the prompt of the tile that holds the keyboard with Ctrl+U, leaving the main overlay alone', () => {
     const clear = vi.fn();
     const sendInput = vi.fn(() => Promise.resolve());
     const _sendInputAsync = vi.fn();

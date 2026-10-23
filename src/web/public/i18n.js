@@ -114,16 +114,11 @@
     'File Viewer': '文件查看器',
     'Open file viewer': '打开文件查看器',
     'Open Codeman across all displays': '在所有显示器上打开 {name}',
-    'Split: open a second session beside this one': '分屏：在旁边打开第二个会话',
-    'Split: close the second session': '分屏：关闭第二个会话',
-    'Close split': '关闭分屏',
-    'No other sessions to split with': '没有其他可用于分屏的会话',
     // Tile grid (tile-grid.js, docs/tile-grid-plan.md). 平铺 is the feature (the
     // button, the setting, the grid), 窗格 one tile in it. Key names stay as
     // they are; Click / Right-click are mouse actions, Arrows the arrow keys.
     // Counts, exit codes and durations are patterns in translateDynamic.
     Tiles: '平铺',
-    Split: '分屏',
     'Tiled sessions': '平铺的会话',
     'Tiles: show several sessions side by side (right-click for how many)':
       '平铺：并排显示多个会话（右键单击可选择窗格数量）',
@@ -134,7 +129,6 @@
     'Click: close the grid': '单击：关闭平铺网格',
     'Right-click: choose 2, 4 or 6 tiles': '右键单击：选择 2、4 或 6 个窗格',
     'Shift+F10: the same menu from the keyboard': 'Shift+F10：用键盘打开同一菜单',
-    'Split: unavailable while tiles are open': '分屏：平铺打开时不可用',
     'Toggle Tile Grid': '切换平铺网格',
     'Focus Tile Left': '聚焦左侧窗格',
     'Focus Tile Right': '聚焦右侧窗格',
@@ -171,7 +165,7 @@
     // A file of an unsupported type dropped on a tile (tile-grid.js) or the single
     // view (image-input.js).
     'Unsupported file type': '不支持的文件类型',
-    // Redraw (Ctrl+Shift+R, terminal-ui.js restoreTerminalSize) on the main pane, a tile or Pane B.
+    // Redraw (Ctrl+Shift+R, terminal-ui.js restoreTerminalSize) on the main pane or a tile.
     'No active session': '没有活动会话',
     'This session is sized by its own window': '此会话的尺寸由它自己的窗口决定',
     'Terminal not connected: its size is sent when it reconnects': '终端未连接：重新连接后会发送其尺寸',
@@ -469,8 +463,8 @@
     'Tall Tabs (Name + Folder)': '双行标签（名称 + 文件夹）',
     'Pop-out Button on Tabs': '标签页弹出窗口按钮',
     'CLI Logos on Tabs': '标签页上的 CLI 图标',
-    "Show each agent's CLI logo before the session name on tabs and the home screen's tab list. Off leaves the status dot and the shell's SH badge. Tiles, split headers and the Run menus keep their logos.":
-      '在标签页和主界面的标签列表中，于会话名称前显示每个智能体的 CLI 图标。关闭后仍保留状态圆点和 Shell 的 SH 标记。平铺、分屏标题栏和运行菜单中的图标不受影响。',
+    "Show each agent's CLI logo before the session name on tabs and the home screen's tab list. Off leaves the status dot and the shell's SH badge. Tile headers and the Run menus keep their logos.":
+      '在标签页和主界面的标签列表中，于会话名称前显示每个智能体的 CLI 图标。关闭后仍保留状态圆点和 Shell 的 SH 标记。平铺窗格标题栏和运行菜单中的图标不受影响。',
     'Detach Tiles': '分离窗格',
     "Drag a tile's header out of the browser to open it in its own window, or onto another Codeman window's tiles to move it there. A popped-out window's title drags back onto tiles.":
       '将窗格的标题栏拖出浏览器，即可在独立窗口中打开它；拖到另一个 {name} 窗口的窗格上，即可将它移到那里。弹出窗口的标题也可以拖回窗格中。',
@@ -1380,7 +1374,7 @@
       // notification drawer shows it. The CLI's label passes through.
       [/^(.+) is waiting for your answer in the terminal$/, (_m, cli) => `${cli} 正在终端中等待你的回答`],
       [/^The agent exited \(signal (\d+)\)$/, (_m, signal) => `智能体已退出（信号 ${signal}）`],
-      // A session header's harness logo (tile grid, split pane): "<harness> · <model>",
+      // A tile header's harness logo (tile grid): "<harness> · <model>",
       // and where the model came from when the CLI did not report it. The harness
       // and model names pass through untranslated.
       [/^(.+) \(set at launch\)$/, (_m, names) => `${names}（启动时设定）`],
@@ -1591,8 +1585,8 @@
         // node it adds or edits sits under the same skip ancestor, so both
         // translators would return on their own closest() check anyway. One
         // check per record instead of one per text node and attribute matters
-        // for xterm's DOM renderer, which replaces rows every frame (the split
-        // pane, every tile of the grid).
+        // for xterm's DOM renderer, which replaces rows every frame (every tile
+        // of the grid).
         if (isSkippedRow(mutation.target) || shouldSkip(mutation.target)) continue;
         if (mutation.type === 'characterData') translateNode(mutation.target);
         if (mutation.type === 'attributes') translateAttributes(mutation.target);

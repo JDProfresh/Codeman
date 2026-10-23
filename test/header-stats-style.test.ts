@@ -325,7 +325,7 @@ describe('header stats wiring (static)', () => {
     });
     const missing: string[] = [];
     for (const style of ['tiles', 'compact']) {
-      for (const open of ['btn-tile-grid.tiles-open', 'btn-split.split-open']) {
+      for (const open of ['btn-tile-grid.tiles-open']) {
         for (const hover of ['', ':hover']) {
           // Starting from the box rule's own selector keeps it the more specific one.
           const sel = `html[data-header-stats='${style}'] .header-right > .btn-icon-header.${open}${hover}`;

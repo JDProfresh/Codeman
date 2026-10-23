@@ -439,7 +439,7 @@ Object.assign(CodemanApp.prototype, {
     // ⚠️ Bail out when it was not open. The global Escape handler calls this on
     // EVERY Escape (app.js), in the CAPTURE phase, so an unconditional restore
     // runs before the focused element's own Escape handler and steals focus into
-    // the terminal: keys typed after Escape in split Pane B land in Pane A, keys
+    // the terminal: keys typed after Escape in a grid tile land in another pane, keys
     // typed in any text field land in the terminal, and the inline tab rename's
     // Escape fires the input's blur (which commits) before its own handler
     // (which cancels), turning a cancel into a rename.

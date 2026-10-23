@@ -1,9 +1,7 @@
 // test/terminal-tile-unit.test.ts
-// Port: N/A (no server/browser; TerminalTile is loaded via `vm`, like
-// split-pane-auto-collapse-unit.test.ts loads the CodemanApp patches).
+// Port: N/A (no server/browser; TerminalTile is loaded via `vm`).
 //
-// Unit coverage for the two TerminalTile (terminal-tile.js, the split pane's
-// Pane B until it moved out of terminal-split.js) fixes from
+// Unit coverage for the two TerminalTile (terminal-tile.js) fixes from
 // the final review of #453 that need no browser: destroy() nulling EVERY socket
 // handler (onclose used to survive it and fire its "disconnected" write into a
 // pane already torn down), and the `{t:'r'}` server-refresh path being
@@ -15,7 +13,7 @@
 //
 // The last block covers the scroll-to-top history pull: a burst of output leaves
 // a shell pane's xterm with about one screen of scrollback while tmux holds every
-// line, and Pane B (a separate xterm from the primary pane) never went back to
+// line, and a tile (a separate xterm from the primary pane) never went back to
 // ask. See _maybeLoadMoreHistory / _pullHistory in terminal-tile.js.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -525,7 +523,7 @@ describe('TerminalTile refresh order: fetch, then the in-stream reset, then the 
 
   it('a bounded window gives the body read the short budget; an unbounded capture keeps the long one', async () => {
     const bounded = makePane('shell'); // a shell loads the `tail=` window
-    const unbounded = makePane(); // the split's Pane B: a TUI's whole history
+    const unbounded = makePane(); // no boundedLoad: a TUI's whole history
     const a = headersOnly();
     const b = headersOnly();
     fetchMock.mockResolvedValueOnce(a.response).mockResolvedValueOnce(b.response);
@@ -610,7 +608,7 @@ describe('TerminalTile scroll-to-top history pull', () => {
 
   it('stands aside for a detached session, mirroring _sendResize()', async () => {
     // A detached session's own window already owns its PTY size and
-    // scrollback (buildSplitPickerSessions() already refuses to open one).
+    // scrollback.
     const pane = makePane('shell', {}, { detachedSessions: new Set(['s1']) });
 
     pane._maybeLoadMoreHistory();

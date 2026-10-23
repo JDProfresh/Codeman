@@ -174,7 +174,7 @@ describe('the App Settings row', () => {
   it('says what it shows, what stays, and what it does not touch', () => {
     expect(row.querySelector('.set-row-label')!.textContent).toBe('CLI Logos on Tabs');
     const desc = row.querySelector('.set-row-desc')!.textContent!;
-    for (const part of ['logo', 'status dot', 'SH badge', 'Tiles', 'split headers', 'Run menus']) {
+    for (const part of ['logo', 'status dot', 'SH badge', 'Tile headers', 'Run menus']) {
       expect(desc, part).toContain(part);
     }
   });
@@ -393,11 +393,11 @@ describe('the CSS', () => {
     expect(rules[0].parent?.type).toBe('root');
   });
 
-  it('leaves the tile and split headers, the Run menus and the welcome launchers their logos', () => {
+  it('leaves the tile headers, the Run menus and the welcome launchers their logos', () => {
     const selectors = rulesNaming(STYLES, /data-tab-logos/)
       .flatMap(selectorsOf)
       .join(' ');
-    for (const other of ['tile-harness', 'split-harness', 'run-mode-option', 'welcome', 'mobile-overview']) {
+    for (const other of ['tile-harness', 'run-mode-option', 'welcome', 'mobile-overview']) {
       expect(selectors, other).not.toContain(other);
     }
     // Not the shared slot either: the Run menus draw the same `.run-mode-dot`.

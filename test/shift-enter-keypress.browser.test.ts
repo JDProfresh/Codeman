@@ -8,7 +8,7 @@
  * worked all along because Chromium fires no keypress for it.
  *
  * The page is the real app served by a real WebServer, so the handlers under test are the ones
- * terminal-ui.js (the main pane, `app.terminal`) and terminal-tile.js (Pane B, a real
+ * terminal-ui.js (the main pane, `app.terminal`) and terminal-tile.js (a grid tile, a real
  * `TerminalTile`) attach. Nothing restates their predicate. What stands in for the server is
  * only the edge: a fetch wrapper records the send-key POSTs instead of letting them reach tmux, and
  * no session exists behind the ids, so nothing is ever typed into a real pane.
@@ -69,14 +69,14 @@ describe('Shift/Ctrl+Enter through the shipped key handlers (keypress must be sw
           return realFetch(input, init);
         };
 
-        // Pane B, built by the real class. connect() installs the key handler synchronously,
+        // A tile, built by the real class. connect() installs the key handler synchronously,
         // before its first await; the buffer fetch and WebSocket for the missing session just fail.
         const mount = document.createElement('div');
         mount.style.cssText = 'position:fixed;left:0;top:0;width:400px;height:300px;';
         document.body.appendChild(mount);
         const pane = new w.TerminalTile(paneBId, mount, { mode: 'claude' });
         void pane.connect().catch(() => {});
-        // What xterm emits here is exactly what Pane B's own onData forwards to its WebSocket.
+        // What xterm emits here is exactly what the tile's own onData forwards to its WebSocket.
         w.__paneBData = [] as string[];
         pane.terminal.onData((d: string) => w.__paneBData.push(d));
         w.__paneB = pane;
@@ -200,7 +200,7 @@ describe('Shift/Ctrl+Enter through the shipped key handlers (keypress must be sw
     expect(shift.sendKeys).toEqual([]);
   });
 
-  it("Pane B (terminal-tile.js): Shift+Enter and Ctrl+Enter write nothing and POST send-key once for Pane B's own session", async () => {
+  it("a tile (terminal-tile.js): Shift+Enter and Ctrl+Enter write nothing and POST send-key once for the tile's own session", async () => {
     const shift = await pressIn('paneB', 'Shift+Enter');
     expect(shift.focused).toBe(true);
     expect(shift.data).toEqual([]);

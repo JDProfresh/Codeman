@@ -228,12 +228,11 @@ describe('exactly one function may change the terminal size', () => {
   // A sweep of every module that touches the main terminal rather than a spot
   // check, so a NEW call site there trips it rather than quietly reopening
   // #464. A module outside the list below is not covered. Scoped to the MAIN
-  // terminal: the split
-  // pane, the teammate windows and the log viewer are separate xterm instances
+  // terminal: grid tiles, the teammate windows and the log viewer are separate xterm instances
   // with their own PTYs (or none), and each owns its own sizing.
   it('no other call site fits the main terminal behind its back', () => {
     // `fit(` optionally called through `?.`, so `fitAddon?.fit?.()` counts too.
-    const MAIN_TERMINAL_FIT = /^(?!.*(?:_splitPane|entry\.fitAddon)).*fitAddon[?.]*\.fit(?:\?\.)?\(\)/;
+    const MAIN_TERMINAL_FIT = /^(?!.*(?:entry\.fitAddon)).*fitAddon[?.]*\.fit(?:\?\.)?\(\)/;
     const offenders: string[] = [];
     for (const rel of [
       'src/web/public/terminal-ui.js',

@@ -18,7 +18,7 @@
  *   Ctrl+Tab / Alt+[ ]. `tileCellInDirection`: the adjacent cell a Move Tile
  *   chord moves into or swaps with.
  *
- * Loaded via `vm` like split-pane-helpers.test.ts. Port: N/A.
+ * Loaded via `vm`. Port: N/A.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';

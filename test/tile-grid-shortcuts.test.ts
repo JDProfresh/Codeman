@@ -365,7 +365,7 @@ describe('xterm key handlers swallow a chord that applies', () => {
     });
     vm.runInContext(
       `${read('constants.js')}\n${read('app.js')}\n${read('terminal-ui.js')}\n${read('terminal-tile.js')}\n` +
-        `${read('terminal-split.js')}\n${read('tile-grid.js')}\nglobalThis.__CodemanApp = CodemanApp;`,
+        `${read('tile-grid.js')}\nglobalThis.__CodemanApp = CodemanApp;`,
       context
     );
     const App = (context as unknown as { __CodemanApp: { prototype: object } }).__CodemanApp;

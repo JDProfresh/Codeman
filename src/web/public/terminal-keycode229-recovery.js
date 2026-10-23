@@ -43,7 +43,7 @@
  * call below.
  *
  * @dependency none (standalone IIFE; consumed by terminal-ui.js for the primary pane and by
- *   terminal-tile.js for every grid tile and the split's Pane B, one controller per xterm)
+ *   terminal-tile.js for every grid tile, one controller per xterm)
  * @loadorder 5.55 (before app.js/terminal-ui.js/terminal-tile.js, which create controllers)
  */
 (function (global) {

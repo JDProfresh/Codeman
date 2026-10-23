@@ -581,7 +581,7 @@ describe('overlay focus restoration (Escape must not strand the keyboard)', () =
   it('leaves focus alone when neither overlay was open — the path every Escape takes', () => {
     // app.js's global Escape handler calls both close methods on EVERY Escape,
     // in the capture phase. Nothing was saved, so an unguarded restore would fall
-    // through to the terminal and steal focus from split Pane B, from any text
+    // through to the terminal and steal focus from a grid tile, from any text
     // field, and turn the inline rename's Escape into a commit.
     const { app, elements, terminalTextarea, priorElement, makeClassList } = focusHarness();
     elements.sessionManagerModal = { classList: makeClassList(), addEventListener: vi.fn() };

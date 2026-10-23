@@ -1,19 +1,14 @@
-// test/split-pane-hidden-button-css.test.ts
+// test/header-hidden-marker-css.test.ts
 // Port: none (pure static analysis — runs in CI, no browser/server).
 //
-// Regression guard for the split-pane whole-branch review finding C1: the
-// header ships `.btn-split.btn-split--hidden` in index.html (an opt-in
-// header button, gated behind `showSplitButton`), but no CSS anywhere gave
-// `--hidden` markers meaning for that class, so the Split button rendered
-// VISIBLE to every user on every viewport regardless of the setting.
-//
-// Every OTHER opt-in header button follows a marker-class pattern: the base
-// rule is `display:inline-flex !important` and a more-specific
+// Every opt-in header button follows a marker-class pattern: the base rule is
+// `display:inline-flex !important` and a more-specific
 // `.btn-x.btn-x--hidden { display: none !important; }` rule hides it
-// (`.btn-multimonitor--hidden` etc. in styles.css). C1 fixed the missing rule
-// for `.btn-split--hidden`; this test is the guard so the NEXT such class
-// fails loudly here instead of shipping invisible-until-noticed, the same
-// static-parse shape as test/mobile-header-buttons-policy.test.ts (read
+// (`.btn-multimonitor--hidden` etc. in styles.css). This guard was born as the
+// regression test for the (since removed) Split button, which shipped its
+// `--hidden` marker with no CSS rule and so rendered VISIBLE to every user
+// regardless of its setting; it fails loudly for the NEXT such class instead.
+// Same static-parse shape as test/mobile-header-buttons-policy.test.ts (read
 // first for the parsing conventions this file reuses).
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -77,10 +72,5 @@ describe('Every "*--hidden" marker class has a matching CSS hide rule (static gu
           `.btn-multimonitor--hidden / .btn-redraw-terminal--hidden rules in styles.css for the pattern).`
       ).toBe(true);
     }
-  });
-
-  it('locks the split-pane Split button specifically (C1 regression)', () => {
-    expect(markerClasses.has('btn-split--hidden')).toBe(true);
-    expect(cssHidden.has('btn-split--hidden')).toBe(true);
   });
 });

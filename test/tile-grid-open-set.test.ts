@@ -2,8 +2,8 @@
  * @fileoverview The Tiles button opens the grid at once (owner decision 8).
  *
  * - `tileGridOpenSet` (constants.js, pure): what opens, in order: (a) the grid
- *   this tab last had, if any of its sessions survive; (b) else an open
- *   split's two sessions; (c) else the open sessions in ranked order (tab
+ *   this tab last had, if any of its sessions survive; (b) else the open
+ *   sessions in ranked order (tab
  *   order when no ranking is given, as here; the ranking itself is pinned in
  *   test/tile-grid-ranking.test.ts) up to the limit (never past the cap of
  *   6), the active one always among them and focused. Detached sessions and
@@ -42,7 +42,7 @@ const base = { sessions, sessionOrder: order, limit: 6 };
 describe('tileGridOpenSet (what the Tiles button opens)', () => {
   it('a: the grid this tab last had, its focus (or its zoom) included', () => {
     const stored = { ids: ['t4', 't2'], focused: 't2', zoomed: null };
-    expect(T.tileGridOpenSet({ ...base, stored, split: ['t1', 't9'], activeId: 't1' })).toEqual({
+    expect(T.tileGridOpenSet({ ...base, stored, activeId: 't1' })).toEqual({
       source: 'stored',
       ids: ['t4', 't2'],
       cells: ['t4', 't2'],
@@ -53,15 +53,15 @@ describe('tileGridOpenSet (what the Tiles button opens)', () => {
     );
   });
 
-  it('b: else an open split, Pane A focused', () => {
-    expect(T.tileGridOpenSet({ ...base, stored: { ids: [] }, split: ['t5', 't7'], activeId: 't5' })).toEqual({
-      source: 'split',
-      ids: ['t5', 't7'],
+  it('b: a stored grid with none of its sessions left falls through to the open sessions', () => {
+    expect(T.tileGridOpenSet({ ...base, stored: { ids: [] }, activeId: 't5' })).toEqual({
+      source: 'ranked',
+      ids: order.slice(0, 6),
       focusedId: 't5',
     });
   });
 
-  it('c: else the open sessions (no ranking given: tab order) up to the limit, the active one focused', () => {
+  it('b: else the open sessions (no ranking given: tab order) up to the limit, the active one focused', () => {
     expect(T.tileGridOpenSet({ ...base, activeId: 't3' })).toEqual({
       source: 'ranked',
       ids: order.slice(0, 6),
@@ -69,7 +69,7 @@ describe('tileGridOpenSet (what the Tiles button opens)', () => {
     });
   });
 
-  it('c: an active session past the limit still comes, with the first ones before it', () => {
+  it('b: an active session past the limit still comes, with the first ones before it', () => {
     expect(T.tileGridOpenSet({ ...base, activeId: 't9' })).toEqual({
       source: 'ranked',
       ids: ['t1', 't2', 't3', 't4', 't5', 't9'],
@@ -77,7 +77,7 @@ describe('tileGridOpenSet (what the Tiles button opens)', () => {
     });
   });
 
-  it('c: a window that takes fewer gets fewer; nothing ever passes the cap', () => {
+  it('b: a window that takes fewer gets fewer; nothing ever passes the cap', () => {
     expect(T.tileGridOpenSet({ ...base, limit: 4, activeId: 't1' })?.ids).toEqual(['t1', 't2', 't3', 't4']);
     expect(T.tileGridOpenSet({ ...base, limit: 99, activeId: 't1' })?.ids).toHaveLength(T.TILE_GRID_MAX);
   });
@@ -86,8 +86,6 @@ describe('tileGridOpenSet (what the Tiles button opens)', () => {
     const detachedIds = new Set(['t2']);
     const out = T.tileGridOpenSet({ ...base, sessionOrder: ['gone', ...order], detachedIds, activeId: 't1' });
     expect(out?.ids).toEqual(['t1', 't3', 't4', 't5', 't6', 't7']);
-    // A split whose Pane B was popped out: Pane A alone.
-    expect(T.tileGridOpenSet({ ...base, split: ['t1', 't2'], detachedIds, activeId: 't1' })?.ids).toEqual(['t1']);
   });
 
   it('is null when there is nothing to open', () => {

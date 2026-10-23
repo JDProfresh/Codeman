@@ -1037,9 +1037,9 @@ describe('terminal link tap', () => {
     }
   });
 
-  it("routes a path clicked in a tile or split pane the same way, against that pane's session", () => {
+  it("routes a path clicked in a tile the same way, against that pane's session", () => {
     // TerminalTile registers the SAME provider with its own terminal and session
-    // (terminal-tile.js), so a grid tile and the split's Pane B route like the main pane.
+    // (terminal-tile.js), so a grid tile routes like the main pane.
     const { app } = linkHarness(['', '', '❯ ']);
     const tileTerminal = createTerminalGrid(['see /home/u/ws/notes.md and /home/u/ws/run.log', '', '❯ '], 2);
     let provider: any;

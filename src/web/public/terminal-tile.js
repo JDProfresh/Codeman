@@ -3,8 +3,7 @@
 /**
  * @fileoverview TerminalTile: one independent live terminal pane bound to one
  * session, with its own xterm instance and its own
- * `/ws/sessions/:id/terminal` WebSocket. The split pane (terminal-split.js)
- * uses one as its second pane ("Pane B"); the tile grid (tile-grid.js,
+ * `/ws/sessions/:id/terminal` WebSocket. The tile grid (tile-grid.js,
  * docs/tile-grid-plan.md) uses one per tile, and feeds every capture they
  * fetch through ONE TileLoadQueue (below), because each capture is a
  * synchronous tmux call that blocks the server's event loop.
@@ -12,8 +11,7 @@
  * Deliberately plainer than the primary pane (this.terminal/this._ws in
  * terminal-ui.js): no local-echo overlay, no CJK IME textarea, no touch/mobile
  * handlers (a swipe on a touch screen pages nothing), and no keyboard
- * accessory bar. Built for wide screens; see docs/split-pane-sessions-plan.md
- * and docs/tile-grid-plan.md.
+ * accessory bar. Built for wide screens; see docs/tile-grid-plan.md.
  *
  * What it does carry over from the primary pane, through the primary pane's
  * own code aimed at THIS pane (its terminal, its session, never the active
@@ -45,15 +43,15 @@
  *    keydown ahead of that key (#441: the last character an Android keyboard
  *    commits in the same task as Enter), and replaces xterm's append-only
  *    keyCode-229 diff with an edit-based one (#541: autocorrect on space
- *    duplicated the line). Not a desktop-only concern: the grid and the split
- *    are gated on width alone (SPLIT_PANE_MIN_WIDTH, 1180 CSS px), which a wide
+ *    duplicated the line). Not a desktop-only concern: the grid is gated on
+ *    width alone (TILE_GRID_MIN_WIDTH, 1180 CSS px), which a wide
  *    Android tablet, or a large foldable unfolded in landscape, reaches.
  *
  * @dependency vendor/xterm.js, vendor/xterm-addon-fit.js
  * @dependency constants.js (window.CodemanTerminalFont, window.CodemanFetchDeadline, DEFAULT_SCROLLBACK, TERMINAL_TAIL_SIZE, SHELL_LOAD_BASE_QUERY, SHELL_LOAD_QUERY, TERMINAL_CHUNK_SIZE)
  * @dependency terminal-ui.js (codemanCurrentXtermTheme, codemanCurrentSkinIsLight, CodemanTerminalInput.shouldSuppressTerminalQueryResponse/isTerminalFocusOrMouseReport/wheelDeltaLines/wheelDeltaWholeLines/sgrWheelReports/pageKeysForGesture, app._shouldForwardWheelToApp/_localScrollbackIsHollow/_terminalViewportAtBottom/_clientPointToCell/_handleDesktopTerminalClick, app.tabAlerts)
  * @dependency terminal-keycode229-recovery.js (window.CodemanKeyCode229Recovery, optional: absent, xterm's own textarea handling stands)
- * @loadorder 7.4 of 16, loaded after terminal-ui.js and before terminal-split.js
+ * @loadorder 7.4 of 16, loaded after terminal-ui.js and before tile-grid.js
  */
 
 (function (global) {
@@ -125,7 +123,7 @@
       // Live reference (not a snapshot) to the app's detachedSessions Set:
       // detaching this session AFTER the pane opened must still be seen by
       // _sendResize() below, or this pane and the session's own window fight
-      // over the PTY's size (which the split picker refuses at pick time).
+      // over the PTY's size.
       this.detachedSessions = opts.detachedSessions;
       // Lines of scrollback this pane's xterm keeps (the grid passes its smaller
       // TILE_SCROLLBACK) and its font size (the grid's own tile font); absent,
@@ -800,7 +798,7 @@
               // capture cannot hold, so they wait for the replay. From now on
               // live output IS held, so a bounded window's body (at most
               // TERMINAL_TAIL_SIZE) gets the pull's short budget; an unbounded
-              // capture (the split's Pane B, up to 32 MB) keeps the request's.
+              // capture (a pane without boundedLoad, up to 32 MB) keeps the request's.
               capturedAt = performance.now();
               this._openLiveQueue();
               if (shell || this.boundedLoad) armDeadline(HISTORY_PULL_TIMEOUT_MS);
@@ -1416,8 +1414,8 @@
     // A bounded load's `lines=` (grid tiles): tmux history beyond what this
     // xterm keeps (its scrollback plus the screen) would only be captured to be
     // thrown away, and a full capture is synchronous work on the server, about
-    // 0.7 s for a 30k-line history. Unbounded panes (the split's Pane B) ask
-    // for everything, as before.
+    // 0.7 s for a 30k-line history. An unbounded pane (no boundedLoad) asks
+    // for everything.
     _historyLinesQuery() {
       if (!this.boundedLoad || !Number.isFinite(this.scrollback)) return '';
       return `&lines=${this.scrollback + (this.terminal?.rows || 0)}`;
@@ -1474,8 +1472,8 @@
       if (!dims || !Number.isFinite(dims.cols) || !Number.isFinite(dims.rows)) return false;
       // Report what the xterm actually holds, so the PTY gets exactly the size
       // the pane renders at. Unclamped, unlike the primary pane's 40x10 floor:
-      // a floor would misreport the split's Pane B at its divider's reachable
-      // 20% position (about 28 columns) and wrap output wrongly, and a floored
+      // a floor would misreport a narrow tile (a 6-tile grid on a small window,
+      // a divider dragged far) and wrap output wrongly, and a floored
       // xterm would be wider than its container. The server enforces
       // its own valid range ([1,500]/[1,200] in ws-routes.ts).
       const cols = this.terminal.cols;

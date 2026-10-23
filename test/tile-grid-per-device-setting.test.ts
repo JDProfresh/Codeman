@@ -3,14 +3,13 @@
 //
 // `showTileGridButton` (the header Tiles button, and the Ctrl+Shift+G chord) is
 // a PER-DEVICE setting (default ON on desktop, OFF on handhelds and touch-primary
-// tablets) with the same three-way rule as
-// showSplitButton (test/split-pane-per-device-setting.test.ts, read it for the
-// history): in settings-ui.js's displayKeys merge policy, stripped out of the
+// tablets) with a three-way rule: in settings-ui.js's displayKeys merge policy,
+// stripped out of the
 // object saveAppSettings() PUTs (SettingsUpdateSchema is .strict(), so sending
 // it would 400 the whole save), and never declared in the schema. Plus the
 // parts that make the setting reachable: the App Settings chip, its load and
 // save lines, the mobile default, and the `--hidden` marker's display:none
-// rule (also covered generically by split-pane-hidden-button-css.test.ts).
+// rule.
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -45,7 +44,7 @@ describe('showTileGridButton stays per-device: display key, stripped from the PU
     // Owner's pick on the 1.36.0 beta: the Tiles button ships visible on desktop.
     // Handhelds keep it OFF in their defaults object, and the button never shows
     // below 1180px wide anyway.
-    expect(settingsUi).toMatch(/showSplitButton: false,\s*showTileGridButton: false,/);
+    expect(settingsUi).toMatch(/showMultiMonitorButton: false,\s*showTileGridButton: false,/);
     expect(settingsUi).toContain(
       "document.getElementById('appSettingsShowTileGridButton').checked = settings.showTileGridButton ?? defaults.showTileGridButton ?? true;"
     );
@@ -66,7 +65,7 @@ describe('showTileGridButton stays per-device: display key, stripped from the PU
 // touch-primary tablet (iPad, an Android tablet: primary pointer coarse) is
 // not a handheld, so it used to take the desktop defaults and get the Tiles
 // button ON, although a tile has none of the main terminal's touch, IME and
-// soft-keyboard handling. It defaults OFF there (opt-in, like Split); a
+// soft-keyboard handling. It defaults OFF there (opt-in); a
 // touchscreen laptop (primary pointer fine) keeps the desktop default.
 describe('the device default: ON on desktop, OFF on handhelds and touch-primary tablets', () => {
   const SOURCE = readFileSync(join(PUBLIC, 'settings-ui.js'), 'utf8');
@@ -206,7 +205,7 @@ describe('the device default: ON on desktop, OFF on handhelds and touch-primary 
   });
 });
 
-describe('App Settings search finds Split and Tiles', () => {
+describe('App Settings search finds Tiles', () => {
   // The real filter (settings-ui.js) over the real markup: it matches each chip
   // by its own data-search and its text, so the chips carry their own keywords.
   const html = read('index.html');
@@ -221,19 +220,18 @@ describe('App Settings search finds Split and Tiles', () => {
   const shown = (id: string) => !doc.getElementById(id)!.closest('.set-chip')!.classList.contains('set-hit-hidden');
 
   it.each([
-    ['tiles', true, false],
-    ['tile grid', true, false],
-    ['side by side', true, true],
-    ['split', false, true],
-    ['split pane', false, true],
-  ])('"%s": Tiles shown %s, Split shown %s', (query, tiles, split) => {
+    ['tiles', true],
+    ['tile grid', true],
+    ['side by side', true],
+    ['split', false],
+  ])('"%s": Tiles shown %s', (query, tiles) => {
     filter._filterSettings(query);
     expect(shown('appSettingsShowTileGridButton')).toBe(tiles);
-    expect(shown('appSettingsShowSplitButton')).toBe(split);
   });
 
-  it('the Header buttons group names both in its keywords', () => {
-    expect(html).toMatch(/data-search="header buttons [^"]*\bsplit tiles\b[^"]*"/);
+  it('the Header buttons group names it in its keywords', () => {
+    expect(html).toMatch(/data-search="header buttons [^"]*\btiles\b[^"]*"/);
+    expect(html).not.toMatch(/data-search="header buttons [^"]*\bsplit\b[^"]*"/);
   });
 });
 
@@ -241,7 +239,7 @@ describe('markup and styles', () => {
   const html = read('index.html');
   const css = read('styles.css');
 
-  it('has a header chip in App Settings, beside Split', () => {
+  it('has a header chip in App Settings', () => {
     expect(html).toMatch(
       /data-preview-order="11\.6"><input type="checkbox" id="appSettingsShowTileGridButton">[\s\S]*?<span>Tiles<\/span>/
     );

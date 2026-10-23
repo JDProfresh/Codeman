@@ -12,7 +12,7 @@ never offered in a popped-out session window.
 **App Settings → Header & Panels → Tiles.** This is a per-device setting, on by default
 on desktops and laptops and off on phones and tablets, and the button only appears in a
 window at least 1180px wide.
-It shows a **Tiles** button in the header, beside Split, and enables `Ctrl+Shift+G`.
+It shows a **Tiles** button in the header and enables `Ctrl+Shift+G`.
 
 ## Opening a grid
 
@@ -23,7 +23,7 @@ It shows a **Tiles** button in the header, beside Split, and enables `Ctrl+Shift
   closed since frees its place, which is filled the way a new grid is filled (below).
   Otherwise, or when none of those sessions is left, you get as many tiles as you last
   chose (six until you choose; fewer if the window is too small or you have fewer sessions
-  open): an open split's two first; otherwise the sessions that are working (the most
+  open): the sessions that are working (the most
   recently started first), then the ones waiting on you (red and yellow tabs), then the
   rest, the most recently used first, so the oldest are the ones left out. The session you
   are on always comes along and is focused. With the grid open, the same button closes it.
@@ -145,10 +145,8 @@ which sessions are working and which you used last. If the window has become too
 all the tiles, the tile you were in fills the grid until the window is wide enough again,
 and the rest of the layout is kept.
 
-Split shows the same logo, name and model above both of its panes.
-
-The grid and Split are never open together: opening the grid turns an open split into two
-tiles, and Split is unavailable while the grid is open.
+The grid replaced the older **Split** button (a second session beside the active one),
+which has been removed: a two-tile grid does the same job.
 
 ## Read next
 

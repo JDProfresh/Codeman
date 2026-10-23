@@ -61,7 +61,7 @@ supervised by systemd or launchd; npm installs report as non-updatable. See
 Chips for every optional header control, with a live preview of the resulting header:
 
 Run, Font Size, System Stats, Redraw Terminal, Response Viewer, Away Digest, Session
-Manager, Attachments, File Viewer, Multi-monitor, Split, Tiles, Plan Usage, Lifecycle Log, Monitor,
+Manager, Attachments, File Viewer, Multi-monitor, Tiles, Plan Usage, Lifecycle Log, Monitor,
 Project Insights, File Browser, Subagents, Approvals Inbox, Read My Mind, Ultracode Agents,
 Ultracode Windows, Cron.
 
@@ -80,10 +80,9 @@ repositories on a slow network share.
 Most default to off. The stock desktop header is system stats, File Viewer, Tiles, and the gear.
 **Header Stats Style** picks how the system stats and plan usage are drawn: *Compact*
 (default; two pills with a ring beside every value), *Tiles* (label over value with a bar underneath) or *As before* (the bars and the `5H · 7D` chip). Desktop only, per device.
-New header controls never appear on phones. Split is desktop-only regardless of this
-setting — the button and the feature both stay off below a ~1180px viewport, where two
-resizable panes plus their divider have nowhere to go. **Tiles** is desktop-only the same
-way; it also enables the `Ctrl+Shift+G` grid toggle on this device. See
+New header controls never appear on phones. **Tiles** is desktop-only regardless of this
+setting: the button and the grid both stay off below a ~1180px viewport, where side-by-side
+sessions have nowhere to go. It also enables the `Ctrl+Shift+G` grid toggle on this device. See
 [Tile Grid](Tile-Grid).
 
 This section also holds background-agent tracking, including whether to track agents for
@@ -102,7 +101,7 @@ every session or only the active tab.
 | State Order            | For *By state*: needs you on top (default) or at the bottom, right above the terminal. |
 | Vertical Rail Order    | *By activity* (default) sorts the rail the way the home screens are sorted; *Manual* keeps your tab order and drag-reordering. With *By state* or *By case* it orders the rows inside each section. |
 | Tall Tabs              | Taller tab strip.                                                                          |
-| CLI Logos on Tabs      | Each agent tab, and its row on the desktop home rail, shows the CLI's logo before the name. Off hides those logos on this device; the status dot and the shell's SH badge stay, and tiles, split headers and the Run menus keep their logos. On by default. |
+| CLI Logos on Tabs      | Each agent tab, and its row on the desktop home rail, shows the CLI's logo before the name. Off hides those logos on this device; the status dot and the shell's SH badge stay, and tile headers and the Run menus keep their logos. On by default. |
 | Pop-out Button on Tabs | Adds the detach control to tabs, with a per-tab override.                                  |
 | Spawn Lineage Lines    | Lines from each tab to the sessions it spawned; the selected tab's family is drawn thicker. Desktop only, on by default. |
 | Auto-name Sessions     | Titles a new tab after its first prompt, keeping the case prefix (`w3-myapp: fix the login redirect`). Synced, off by default. See [The Dashboard](The-Dashboard#automatic-session-names). |

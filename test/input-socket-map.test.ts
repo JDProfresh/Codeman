@@ -5,7 +5,7 @@
  * The exactly-once queue (`_sendInputAsync` → `_reliableSend` → `_drainSession`,
  * ACKed by `{t:'ia'}`, swept by `_redeliverSweep`) used to read the single
  * primary socket (`this._ws` / `this._wsSessionId`) directly. A second terminal
- * bound to another session (the split pane's Pane B, later a grid tile) had no
+ * bound to another session (a grid tile) had no
  * way in, so its keystrokes went out as seq-less frames with no ACK, no retry
  * and no idle-alert acknowledgement. These tests pin the seam: a registered
  * socket gets seq frames, its ACK lands on ITS session's queue, a stale

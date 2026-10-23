@@ -1523,7 +1523,8 @@ Object.assign(CodemanApp.prototype, {
         // in its own window. Dragging the dashboard's border must not reshape it.
         const detachedElsewhere = !this.isSoloWindow && this.detachedSessions?.has(this.activeSessionId);
         // The tile grid parks the main terminal: its session is sized by its
-        // tile, which this same timer refits below (_forEachTile).
+        // tile, which the grid's own observer refits (tile-grid.js
+        // _scheduleTileGridRefit).
         const tilesOwnTerminal = this._tilesOwnTerminal?.();
         // ⚠️ Whether to fit is the SAME question as whether to send (issue #464).
         // This block used to fit unconditionally and skip only the SIGWINCH,
@@ -1613,15 +1614,10 @@ Object.assign(CodemanApp.prototype, {
         // composition-only overlay would stay on the old prompt row. rerender()
         // is a no-op when the overlay has nothing to draw.
         this._localEchoOverlay?.rerender();
-        // Pane B (split view) has its own container and its own fit()/resize
-        // frame — this observer only ever measured Pane A's container, so
-        // without this call Pane B never learned about a window resize, an
-        // Alt+B sidebar toggle, or a tab-rail drag, and its PTY silently
-        // stayed at whatever size it was last dragged to. Grid tiles are left
-        // out: the grid's own observer (tile-grid.js _scheduleTileGridRefit)
-        // refits every one of them on the same resize, and a second fit here
-        // only re-measured six panes to send nothing.
-        this._forEachTile?.((tile) => tile.fit(), { grid: false });
+        // Grid tiles are left out on purpose: the grid's own observer
+        // (tile-grid.js _scheduleTileGridRefit) refits every one of them on
+        // the same resize, and a second fit here only re-measured six panes to
+        // send nothing.
       }, 300); // Trailing-edge: only fire after 300ms of no resize events
     };
 
@@ -1996,7 +1992,7 @@ Object.assign(CodemanApp.prototype, {
     // see the measured table in terminal-keycode229-recovery.js.
     // Twin: TerminalTile (terminal-tile.js _createKeyCode229Recovery and its
     // connect() key handler and onData) wires its own controller the same way
-    // for every grid tile and the split's Pane B; keep the two in step.
+    // for every grid tile; keep the two in step.
     try {
       this._keyCode229Recovery = window.CodemanKeyCode229Recovery?.create?.({
         textarea: this.terminal.textarea,
@@ -2049,7 +2045,7 @@ Object.assign(CodemanApp.prototype, {
    * When clicked, opens a floating log viewer window with live streaming.
    *
    * `target` defaults to the primary terminal and the active session. A second
-   * terminal (the split pane) passes its own `{ terminal, getSessionId,
+   * terminal (a grid tile) passes its own `{ terminal, getSessionId,
    * setHovered }`, so a path printed there opens against THAT pane's session and
    * hovering it never flips the primary pane's `_linkHovered`. Only the primary
    * registration is kept on `_terminalLinkProvider`, which the touch path reads.
@@ -4777,7 +4773,7 @@ Object.assign(CodemanApp.prototype, {
    * primary pane. It answers with the pane whose terminal was focused LAST, not
    * with `document.activeElement`: clicking the mic or a header button moves
    * DOM focus to that button, and the dictation it starts still belongs to the
-   * pane the user was typing in. A second pane (the split pane's Pane B) claims
+   * pane the user was typing in. A second pane (a grid tile) claims
    * it from its own terminal's focus; the primary terminal's focus gives it back.
    */
   _focusedPane() {
@@ -4799,16 +4795,14 @@ Object.assign(CodemanApp.prototype, {
   },
 
   /**
-   * Run `fn(tile)` for every secondary terminal pane on screen: the split
-   * pane's second terminal and every tile of the tile grid (never both: the two
-   * modes are not open together). Font, weight, family and skin changes go
-   * through here so they reach every pane without a special case per pane kind.
-   * `{ grid: false }` skips grid tiles (they keep their own font size).
-   * Agent Teams terminals size themselves and are not tiles.
+   * Run `fn(tile)` for every secondary terminal pane on screen: every tile of
+   * the tile grid, while it is open. Weight, family and skin changes go through
+   * here so they reach every pane without a special case per pane kind (font
+   * SIZE does not: tiles keep their own, setTileFontSize). Agent Teams
+   * terminals size themselves and are not tiles.
    */
-  _forEachTile(fn, { grid = true } = {}) {
-    if (this._splitPane?.terminal) fn(this._splitPane);
-    if (!grid || !this._tileGrid?.open) return;
+  _forEachTile(fn) {
+    if (!this._tileGrid?.open) return;
     for (const { tile } of this._tileGrid.tiles.values()) {
       if (tile.terminal) fn(tile);
     }
@@ -4824,7 +4818,7 @@ Object.assign(CodemanApp.prototype, {
   /** Insert editable text at the active prompt without pressing Enter. */
   insertTerminalText(text) {
     if (!this.activeSessionId || !text) return;
-    // A tile or the split's Pane B holds the keyboard: the text belongs to that
+    // A tile holds the keyboard: the text belongs to that
     // pane's session. Those panes have no local-echo overlay, and the main
     // overlay is parked behind the grid, so send it straight to the pane.
     const pane = this._focusedPane?.();
@@ -4856,7 +4850,7 @@ Object.assign(CodemanApp.prototype, {
     if (!this.activeSessionId) return;
 
     if (typeof CjkInput !== 'undefined') CjkInput.clear();
-    // A tile or Pane B holds the keyboard: its TUI owns the editable buffer
+    // A tile holds the keyboard: its TUI owns the editable buffer
     // (no local-echo overlay there), so kill the line in that pane's session,
     // never in the parked main pane's.
     const pane = this._focusedPane?.();
@@ -5020,7 +5014,7 @@ Object.assign(CodemanApp.prototype, {
    * a future xterm renames it. SelectionMode.COLUMN is 3.
    */
   cleanedTerminalSelection(text, target = {}) {
-    // `target` names a second terminal (the split pane) and its session; both
+    // `target` names a second terminal (a grid tile) and its session; both
     // default to the primary pane, whose `this.terminal` this file otherwise reads.
     const terminal = target.terminal || this.terminal;
     const raw = text ?? (terminal?.hasSelection?.() ? terminal.getSelection() : '');
@@ -5049,7 +5043,7 @@ Object.assign(CodemanApp.prototype, {
    * no margin at all for every upward drag in a deep buffer.
    *
    * `terminal` names which xterm to read, defaulting to the primary pane's.
-   * Pane B of a split owns a second terminal and passes it, because this file's
+   * A grid tile owns a second terminal and passes it, because this file's
    * `this` is always the primary pane.
    */
   _normalisedSelectionRange(terminal) {
@@ -5063,8 +5057,8 @@ Object.assign(CodemanApp.prototype, {
   /**
    * How many columns to take off a copy from one session's pane: the transcript
    * gutter its CLI declares, or 0 when it declares none. `sessionId` defaults to
-   * the active session, and Pane B of a split passes its own, so both panes of a
-   * split strip the width their own CLI declares rather than Pane A's.
+   * the active session, and a grid tile passes its own, so every pane strips
+   * the width its own CLI declares rather than the active session's.
    *
    * ⚠️ Read from `window.__codemanTranscriptGutter`, the map the server derives
    * from the `transcriptGutter` CAPABILITY at render time — never an id literal
@@ -5147,7 +5141,7 @@ Object.assign(CodemanApp.prototype, {
   // option serves plain HTTP, where navigator.clipboard is undefined.
   async copyTerminalSelection(text, target = {}) {
     // Every terminal touched below is the TARGET one: clearing or refocusing the
-    // primary after copying from the split pane would hit the wrong pane.
+    // primary after copying from a tile would hit the wrong pane.
     const terminal = target.terminal || this.terminal;
     const selection = this.cleanedTerminalSelection(text, target);
     // trim(), not emptiness: a multi-row drag across padding cleans to newlines
@@ -5766,7 +5760,7 @@ Object.assign(CodemanApp.prototype, {
   // pane; either of the first two left out means the primary pane's.
   // `ephemeral: true` sends it through _sendInputEphemeral instead of the
   // persisted exactly-once queue: a TerminalTile's mouse reports never enter
-  // that queue (src/web/CLAUDE.md, Split-pane sessions), or a reload would replay one
+  // that queue (src/web/CLAUDE.md, Tile grid), or a reload would replay one
   // onto a later screen. Left out, the report stays on _sendInputAsync, as the
   // primary pane always sent it.
   _sendSyntheticSgrTap(clientX, clientY, target = {}) {
@@ -6245,13 +6239,6 @@ Object.assign(CodemanApp.prototype, {
     // Update overlay font cache and re-render at new cell dimensions
     this._localEchoOverlay?.refreshFont();
     this._predictiveEcho?.refreshFont();
-    this._forEachTile?.(
-      (tile) => {
-        tile.terminal.options.fontSize = size;
-        tile.fit(); // a font change is a size change: tell its PTY too (#464)
-      },
-      { grid: false }
-    );
   },
 
   /**

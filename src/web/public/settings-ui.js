@@ -562,7 +562,6 @@ Object.assign(CodemanApp.prototype, {
     document.getElementById('appSettingsUltracodeFloatingWindows').checked =
       settings.ultracodeFloatingWindows ?? defaults.ultracodeFloatingWindows ?? false;
     document.getElementById('appSettingsShowMultiMonitorButton').checked = settings.showMultiMonitorButton ?? defaults.showMultiMonitorButton ?? false;
-    document.getElementById('appSettingsShowSplitButton').checked = settings.showSplitButton ?? defaults.showSplitButton ?? false;
     document.getElementById('appSettingsShowTileGridButton').checked = settings.showTileGridButton ?? defaults.showTileGridButton ?? true;
     document.getElementById('appSettingsShowPlanUsageLimits').checked = this.planUsageChipEnabled(settings);
     document.getElementById('appSettingsShowRedrawButton').checked = settings.showRedrawButton ?? defaults.showRedrawButton ?? false;
@@ -2749,7 +2748,6 @@ Object.assign(CodemanApp.prototype, {
       readMyMindEnabled: document.getElementById('appSettingsReadMyMind').checked,
       ultracodeFloatingWindows: document.getElementById('appSettingsUltracodeFloatingWindows').checked,
       showMultiMonitorButton: document.getElementById('appSettingsShowMultiMonitorButton').checked,
-      showSplitButton: document.getElementById('appSettingsShowSplitButton').checked,
       showTileGridButton: document.getElementById('appSettingsShowTileGridButton').checked,
       showPlanUsageLimits: document.getElementById('appSettingsShowPlanUsageLimits').checked,
       showRedrawButton: document.getElementById('appSettingsShowRedrawButton').checked,
@@ -3032,12 +3030,11 @@ Object.assign(CodemanApp.prototype, {
       showPlanUsageLimits: _pul,
       showAttachmentsButton: _ahb,
       showFileViewerButton: _fvb,
-      // Desktop-only header button, per-device, and absent from
-      // SettingsUpdateSchema (.strict()) — sending it 400s the whole PUT
-      // (moving it into displayKeys alone is not the strip; this is).
+      // Retired per-device key (the removed Split button) a stored blob may still carry; sending it would 400 the .strict() PUT.
       showSplitButton: _ssp,
-      // Same as Split: a per-device header button (and the Tiles chord), absent
-      // from SettingsUpdateSchema (.strict()), so sending it 400s the whole PUT.
+      // A per-device header button (and the Tiles chord), absent from
+      // SettingsUpdateSchema (.strict()), so sending it 400s the whole PUT
+      // (moving it into displayKeys alone is not the strip; this is).
       showTileGridButton: _stg,
       webglRendererEnabled: _wgl,
       terminalWheelLocalScrollback: _twls,
@@ -3954,7 +3951,6 @@ Object.assign(CodemanApp.prototype, {
         showUltracodeAgents: false,
         ultracodeFloatingWindows: false,
         showMultiMonitorButton: false,
-        showSplitButton: false,
         showTileGridButton: false,
         // Desktop defaults this ON (see planUsageChipEnabled); handhelds keep it
         // OFF so the phone header stays minimal and the mobile-header-buttons
@@ -3999,7 +3995,7 @@ Object.assign(CodemanApp.prototype, {
     // Desktop defaults - rely on ?? operators in apply functions
     // This allows desktop to have different defaults without duplication
     // A touch-primary tablet (iPad, an Android tablet: not a handheld, so it
-    // lands here) keeps the Tiles button opt-in, as Split is: a tile has none of
+    // lands here) keeps the Tiles button opt-in: a tile has none of
     // the main terminal's touch, IME and soft-keyboard handling. The PRIMARY
     // pointer decides, never MobileDetection.isTouchDevice(), which is true on a
     // touchscreen laptop too (fine primary pointer: the desktop default stays).
@@ -4278,14 +4274,10 @@ Object.assign(CodemanApp.prototype, {
       multiMonitorBtn.classList.toggle('btn-multimonitor--hidden', !showMultiMonitorButton);
     }
 
-    // Split button — hidden by default, and hard-gated to desktop widths
-    // regardless of the setting (window.CodemanSplitPane.SPLIT_PANE_MIN_WIDTH,
-    // matching HOME_SESSIONS_MIN_WIDTH's JS-check + media-query-backstop
-    // pattern — the CSS in styles.css is the backstop, this is the check).
-    const showSplitButton = settings.showSplitButton ?? defaults.showSplitButton ?? false;
-    this._applySplitButtonVisibility?.(showSplitButton);
-
-    // Tiles button: same gate and backstop as Split (tile-grid.js).
+    // Tiles button: hard-gated to desktop widths regardless of the setting
+    // (window.CodemanTileGrid.TILE_GRID_MIN_WIDTH, matching
+    // HOME_SESSIONS_MIN_WIDTH's JS-check + media-query-backstop pattern: the
+    // CSS in styles.css is the backstop, tile-grid.js the check).
     const showTileGridButton = settings.showTileGridButton ?? defaults.showTileGridButton ?? true;
     this._applyTileGridButtonVisibility?.(showTileGridButton);
     // Detach Tiles changes what a tile's header does (and says): repaint the handles.
@@ -4718,6 +4710,7 @@ Object.assign(CodemanApp.prototype, {
       'showTabDetachButton',
       'mobileOverviewEnabled',
       'sessionLineageLines',
+      // Retired per-device key (the removed Split button) a stored blob may still carry; sending it would 400 the .strict() PUT.
       'showSplitButton',
       'showTileGridButton',
       'tileDetachEnabled',

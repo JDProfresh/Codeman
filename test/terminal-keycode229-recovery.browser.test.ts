@@ -13,7 +13,7 @@
  *  - a character committed in the SAME page task as Enter reaches the send
  *    path ahead of the `\r`, which is the ordering the zero-delay timer
  *    alone cannot produce;
- *  - a TerminalTile (grid tile, split Pane B) wires its own controller, so
+ *  - a TerminalTile (a grid tile) wires its own controller, so
  *    the same shapes come out right there too, addressed to the tile's session.
  *
  * Browser-driven, so it is excluded from `npm run test:ci` like the other
@@ -397,13 +397,12 @@ describe('orphaned terminal input recovery wiring', () => {
   });
 
   /**
-   * The same keyboard shapes through a TerminalTile, the pane a grid tile and the split view's
-   * Pane B are made of. It wires its OWN controller (terminal-tile.js _createKeyCode229Recovery):
+   * The same keyboard shapes through a TerminalTile, the pane a grid tile is made of. It wires its OWN controller (terminal-tile.js _createKeyCode229Recovery):
    * its own xterm, helper textarea and composition helper, sending to its own session through
    * `app._sendInputAsync(tileSessionId, …)`, never the active one. Declared after the primary
    * pane's control above, which only switched the PRIMARY controller off.
    */
-  describe("in a TerminalTile (a grid tile, the split view's Pane B)", () => {
+  describe('in a TerminalTile (a grid tile)', () => {
     const TILE_ID = 'cod541-tile-browser';
 
     beforeAll(async () => {

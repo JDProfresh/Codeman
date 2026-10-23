@@ -964,12 +964,6 @@ body.tab-rail-resizing * {
   user-select: none !important;
 }
 
-body.split-pane-resizing,
-body.split-pane-resizing * {
-  cursor: col-resize !important;
-  user-select: none !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .tab-rail,
   .tab-rail-resize-handle {
@@ -2696,16 +2690,9 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   display: none !important;
 }
 
-/* Split-pane header button: hidden by default (opt-in via App Settings →
-   Header & Panels → Header buttons → Split, `showSplitButton`). Pure
-   client-side toggle applied by applyHeaderVisibilitySettings(). */
-.btn-split--hidden {
-  display: none !important;
-}
-
 /* Tile grid header button: shown unless `showTileGridButton` resolves off
    (default ON on desktop, OFF on phones and on coarse-pointer tablets), and
-   hard-gated to desktop widths like Split (the backstop below). */
+   hard-gated to desktop widths (the backstop below). */
 .btn-tile-grid--hidden {
   display: none !important;
 }
@@ -2717,34 +2704,12 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   color: var(--accent-ink);
 }
 
-/* The tile grid is open (tile-grid.js): the split cannot open beside it. */
-.btn-split.btn-split--blocked {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* While a split is open, the button's own click closes it instead of opening
-   the picker — the accent fill is what tells the user which of its two
-   behaviours the next click will get (aria-pressed carries the same state
-   for assistive tech). */
-.btn-icon-header.btn-split.split-open {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-
-.btn-icon-header.btn-split.split-open:hover {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-
-/* Split-pane hard desktop gate, independent of the showSplitButton setting:
-   two 240px min-width panes plus the divider need ~486px, the divider has no
-   touch handlers, and mobile.css only loads up to 1023px so it cannot cover
-   the 1024-1179px tablet range on its own. Same threshold and reasoning as
-   HOME_SESSIONS_MIN_WIDTH (home-sessions.js) / SPLIT_PANE_MIN_WIDTH
-   (constants.js) — keep the three in sync. */
+/* Tile grid hard desktop gate, independent of the showTileGridButton setting:
+   tiles need the room, their dividers have no touch handlers, and mobile.css
+   only loads up to 1023px so it cannot cover the 1024-1179px tablet range on
+   its own. Same threshold as HOME_SESSIONS_MIN_WIDTH (home-sessions.js) /
+   TILE_GRID_MIN_WIDTH (constants.js): keep the three in sync. */
 @media (max-width: 1179px) {
-  .btn-icon-header.btn-split,
   .btn-icon-header.btn-tile-grid {
     display: none !important;
   }
@@ -3064,7 +3029,6 @@ body.solo-mode .header-system-stats,
 body.solo-mode .header-tokens,
 body.solo-mode .btn-notifications,
 body.solo-mode .btn-multimonitor,
-body.solo-mode .btn-split,
 body.solo-mode .btn-tile-grid,
 body.solo-mode .header-plan-usage,
 /* A solo window shows ONE session and has no tab strip to put restored ones in,
@@ -3137,7 +3101,7 @@ body.solo-mode .btn-lifecycle-log {
    sidebar, grouped rail, phone chips) and the desktop home rail; the status
    dot and the shell's SH pill stay. Every row it sits in spaces its children
    with flex `gap`, which skips a display:none item, so no empty slot is left.
-   Tile and split headers (.tile-harness, .split-harness) and the Run menus
+   Tile headers (.tile-harness) and the Run menus
    keep their logos: only these two classes are named here. */
 html[data-tab-logos='off'] .session-tab .tab-harness,
 html[data-tab-logos='off'] .home-sessions-harness {
@@ -16672,13 +16636,6 @@ body.touch-device.cjk-input-visible .main {
 }
 .main.webview-active .webview-layer { display: flex; }
 .main.webview-active .terminal-wrap { display: none; }
-/* A split (Pane A + divider + Pane B) hides as one unit when a web tab is
-   active, mirroring the .terminal-wrap rule above — .terminal-wrap is
-   reparented INSIDE .terminal-split-container while a split is open, so
-   hiding only .terminal-wrap would leave Pane B and the divider stranded on
-   screen over the dashboard iframe. No state is destroyed, so returning to
-   the session tab shows the split intact. */
-.main.webview-active .terminal-split-container { display: none; }
 
 .webview-frame {
   display: none;
@@ -20099,83 +20056,6 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   }
 }
 
-/* Split-Pane Sessions: container inserted only while a split is active.
-   .terminal-wrap (Pane A) is reparented into this as the first child; it
-   keeps every existing rule unchanged since nothing here restyles it. */
-.terminal-split-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-}
-
-.terminal-split-container > .terminal-wrap {
-  /* flex-shrink 1 (not 0): the divider's own 6px is fixed-width, and Pane A
-     +Pane B's inline flex-basis (openSplitPane/onMove) always sums to 100%,
-     so with flex-shrink 0 on both panes the row is 100% + 6px wide and
-     .main's overflow clips Pane B's right edge by exactly the divider's
-     width. Shrinking lets the two panes give up that 6px between them. */
-  flex: 0 1 auto;
-  min-width: 240px;
-  overflow: hidden;
-}
-
-.split-divider {
-  flex: 0 0 6px;
-  cursor: col-resize;
-  background: var(--border-color, #333);
-  position: relative;
-}
-
-.split-divider:hover,
-.split-divider.dragging {
-  background: var(--accent-color, #4a9eff);
-}
-
-.terminal-pane-b {
-  /* flex-shrink 1, matching .terminal-wrap above — see its comment. */
-  flex: 0 1 auto;
-  min-width: 240px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* A split pane's header strip, Pane B's always and Pane A's while the split is
-   open: harness logo, name, model, and Pane B's close (a tile button, see
-   .tile-btn). The tile header's size and layout, FIXED height like it (#464):
-   the terminal below is fitted to what is left. */
-.terminal-pane-b-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 28px;
-  height: 28px;
-  box-sizing: border-box;
-  padding: 0 2px 0 8px;
-  overflow: hidden;
-  font-size: 12px;
-  background: var(--bg-secondary, #1a1a1a);
-  border-bottom: 1px solid var(--border-color, #333);
-  user-select: none;
-}
-
-/* The partial-history banner overlays the top of .terminal-wrap; while Pane A
-   has its header there, it starts below it. */
-.terminal-pane-a-header ~ .history-trunc-bar {
-  top: 28px;
-}
-
-.split-harness.run-mode-dot {
-  font-size: 13px;
-}
-
-.terminal-pane-b-container {
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
 /* ── Tile grid (tile-grid.js, docs/tile-grid-plan.md) ──────────────────────
    1 to TILE_GRID_MAX (6) sessions side by side, each a TerminalTile. The
    section is a SIBLING of .terminal-wrap; .main.tiles-active swaps one for the
@@ -20275,8 +20155,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
    the logo and the buttons keep their size. The name does not shrink at all (a
    shrink factor, however small, also takes a subpixel from a name that fits and
    ellipsizes it) and is capped at this box's width instead. */
-.tile-title,
-.split-title {
+.tile-title {
   display: flex;
   align-items: baseline;
   gap: 6px;
@@ -20286,8 +20165,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   white-space: nowrap;
 }
 
-.tile-name,
-.split-title > .session-name {
+.tile-name {
   flex: 0 0 auto;
   max-width: 100%;
   min-width: 0;
@@ -20296,8 +20174,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   text-overflow: ellipsis;
 }
 
-.tile-model,
-.split-model {
+.tile-model {
   flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
@@ -20307,8 +20184,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   font-size: 11px;
 }
 
-.tile-model::before,
-.split-model::before {
+.tile-model::before {
   content: '\00B7';
   margin-right: 6px;
 }
@@ -20406,8 +20282,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   background: var(--accent, #4a9eff);
 }
 
-/* While a divider drags: the resize cursor everywhere and no text selection
-   (mirrors body.split-pane-resizing). */
+/* While a divider drags: the resize cursor everywhere and no text selection. */
 body.tile-grid-resizing,
 body.tile-grid-resizing * {
   user-select: none !important;
@@ -20590,7 +20465,8 @@ body.tile-grid-resizing--row * {
 
 /* The Tiles button's right-click menu (tile-grid.js openTileCountMenu): how
    many tiles, 2, 4 or 6, each with its shape; positioned `fixed` under the
-   button, on the split picker's layer and in its floating style. */
+   button, above the header (100) on the .run-mode-menu dropdown's layer, in
+   the floating-menu style. */
 .tile-count-menu {
   position: fixed;
   z-index: 1000;
@@ -21404,56 +21280,6 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
   .tile-body .xterm {
     transition: none;
   }
-}
-
-/* Split-picker menu: a small popover listing sessions to split with, appended
-   to document.body and positioned `fixed` by openSplitPicker() (JS sets
-   top/right against the Split header button's own rect). z-index above the
-   header (100) with headroom to spare, matching the sibling .run-mode-menu
-   dropdown's 1000. Dismissed by openSplitPane()'s own inline onclick, or by
-   the click-outside/Escape listeners installed alongside it. */
-.split-picker-menu {
-  position: fixed;
-  z-index: 1000;
-  min-width: 200px;
-  max-width: 320px;
-  padding: 4px;
-  background: var(--floating-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--control-border);
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.split-picker-item {
-  /* A native <button> now backs each row (keyboard-reachable picker), so
-     reset its default chrome back to the plain list-row look this always
-     drew — full-width, left-aligned, no border/background of its own. */
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: none;
-  font: inherit;
-  color: inherit;
-  padding: 8px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.split-picker-item:hover {
-  background: var(--control-bg-hover, rgba(255, 255, 255, 0.08));
-}
-
-.split-picker-empty {
-  padding: 8px 10px;
-  font-size: 13px;
-  color: var(--text-muted);
 }
 
 /* XLSX preview in the file-preview overlay (spreadsheet-preview.js). Read-only; cells are
@@ -22713,17 +22539,13 @@ html[data-header-stats='compact'] .header-right > .btn-icon-header:hover {
   transform: none;
 }
 
-/* An open grid or split keeps its pressed look in the box: the rules above
-   outrank the buttons' own accent (.tiles-open, .split-open), and that accent
-   is the only thing saying the next click closes the grid or the split. */
+/* An open grid keeps its pressed look in the box: the rules above outrank the
+   button's own accent (.tiles-open), and that accent is the only thing saying
+   the next click closes the grid. */
 html[data-header-stats='tiles'] .header-right > .btn-icon-header.btn-tile-grid.tiles-open,
 html[data-header-stats='tiles'] .header-right > .btn-icon-header.btn-tile-grid.tiles-open:hover,
-html[data-header-stats='tiles'] .header-right > .btn-icon-header.btn-split.split-open,
-html[data-header-stats='tiles'] .header-right > .btn-icon-header.btn-split.split-open:hover,
 html[data-header-stats='compact'] .header-right > .btn-icon-header.btn-tile-grid.tiles-open,
-html[data-header-stats='compact'] .header-right > .btn-icon-header.btn-tile-grid.tiles-open:hover,
-html[data-header-stats='compact'] .header-right > .btn-icon-header.btn-split.split-open,
-html[data-header-stats='compact'] .header-right > .btn-icon-header.btn-split.split-open:hover {
+html[data-header-stats='compact'] .header-right > .btn-icon-header.btn-tile-grid.tiles-open:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);

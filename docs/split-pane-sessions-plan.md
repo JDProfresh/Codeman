@@ -1,6 +1,6 @@
 # Split-Pane Sessions — Design Spec
 
-**Status**: Implemented (v1)
+**Status**: Removed (design-system phase 4d). The tile grid (`docs/tile-grid-plan.md`) supersedes the split pane; this spec is kept as history only.
 **Author**: Claude (session with Tim), 2026-09-15
 **Scope**: v1 only. v2 items are named and explicitly deferred, not designed.
 

@@ -8,7 +8,7 @@
  *   writes text: the count menu (cap and window wording), the Attach
  *   overlay (not attached, attaching, exited, ended), zoom, the header
  *   tooltip, the dividers, the empty slot, every toast, the crash-restart
- *   confirm, the Tiles and Split button titles, the loading label (a body
+ *   confirm, the Tiles button titles, the loading label (a body
  *   attribute, shown as CSS generated content) and the rename field's name.
  *   Each must translate to text with no Latin word left beyond key names and
  *   durations, and read unchanged in English.
@@ -118,7 +118,6 @@ function harvestAll(app: GridApp, where: string) {
   harvest(section, where);
   harvest(body, where);
   harvest(bySelector.get('.btn-tile-grid'), where);
-  harvest(bySelector.get('.btn-split'), where);
   for (const [msg] of (app.showToast as ReturnType<typeof vi.fn>).mock.calls) {
     if (typeof msg === 'string' && !seen.has(msg)) seen.set(msg, `${where} (toast)`);
   }
@@ -131,11 +130,9 @@ function setUp() {
   const wrap = new FakeEl();
   wrap.getBoundingClientRect = () => ({ ...wrapRect, top: 0, left: 0, right: wrapRect.width, bottom: wrapRect.height });
   bySelector.set('.terminal-wrap', wrap);
-  for (const cls of ['btn-tile-grid', 'btn-split']) {
-    const btn = new FakeEl();
-    btn.className = `btn-icon-header ${cls}`;
-    bySelector.set(`.${cls}`, btn);
-  }
+  const btn = new FakeEl();
+  btn.className = 'btn-icon-header btn-tile-grid';
+  bySelector.set('.btn-tile-grid', btn);
 }
 
 const EIGHT = Array.from({ length: 8 }, (_, i) => `s-${i + 1}`);
@@ -358,7 +355,6 @@ describe('every tile grid string the code puts on screen translates to zh-CN', (
       'No sessions to show as tiles',
       'Unsupported file type',
       '1 file skipped: unsupported type',
-      'Split: unavailable while tiles are open',
       'Tiles: show several sessions side by side (right-click for how many)',
       'Tiles: back to a single session (right-click for how many tiles)',
       '6 tiles was stopped after crashing repeatedly. Restart it?',
@@ -490,10 +486,9 @@ describe('the static markup through the real translator (JSDOM, zh-CN)', () => {
     expect(btn.getAttribute('aria-describedby')).toBe('tileGridHint');
   });
 
-  it('the App Settings chips (Tiles, and Split beside it) and the grid region', () => {
+  it('the App Settings Tiles chip and the grid region', () => {
     const chip = (id: string) => doc.getElementById(id)!.closest('label')!.textContent!.trim();
     expect(chip('appSettingsShowTileGridButton')).toBe('平铺');
-    expect(chip('appSettingsShowSplitButton')).toBe('分屏');
     expect(doc.getElementById('tileGrid')!.getAttribute('aria-label')).toBe('平铺的会话');
   });
 

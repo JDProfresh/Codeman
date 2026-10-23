@@ -17,8 +17,8 @@
  * because each is a synchronous tmux call on the server.
  *
  * @dependency terminal-tile.js (window.TerminalTile, window.TileLoadQueue)
- * @dependency constants.js (window.CodemanTileGrid, SPLIT_PANE_MIN_WIDTH)
- * @loadorder 7.6 of 16, loaded after terminal-split.js and before respawn-ui.js
+ * @dependency constants.js (window.CodemanTileGrid, TILE_GRID_MIN_WIDTH)
+ * @loadorder 7.6 of 16, loaded after terminal-tile.js and before respawn-ui.js
  */
 
 // Per-device tile font size (a tile is a fraction of the screen).
@@ -222,9 +222,9 @@ Object.assign(CodemanApp.prototype, {
     return this._tileGrid?.open ? (this._tileGrid.tiles.get(sessionId)?.tile ?? null) : null;
   },
 
-  /** Desktop only, never in a solo (popped-out) window; same gate as the split. */
+  /** Desktop only (TILE_GRID_MIN_WIDTH), never in a solo (popped-out) window. */
   canOpenTileGrid() {
-    return !this.isSoloWindow && window.innerWidth >= SPLIT_PANE_MIN_WIDTH;
+    return !this.isSoloWindow && window.innerWidth >= TILE_GRID_MIN_WIDTH;
   },
 
   _tileGridFontSize() {
@@ -356,30 +356,18 @@ Object.assign(CodemanApp.prototype, {
    * Opens the grid on `ids` (unknown, detached and duplicate ids are skipped;
    * at most TILE_GRID_MAX), focusing `focusedId` or the first. Already open, it
    * adds what is missing and moves focus. `auto: false` makes the focus a human
-   * selection (it acknowledges that session's idle alert). An open split
-   * closes (the two are never open together); `mergeSplit` (default) makes its
-   * two sessions the first tiles, false opens exactly `ids` (a stored grid, a
-   * group, a Ctrl/Cmd+click: callers that size their own set).
+   * selection (it acknowledges that session's idle alert).
    *
    * Parks the main terminal first: `_cleanupPreviousSession()` runs ONCE, while
    * its snapshot of the session it shows is still right, and closes its socket.
    *
    * @returns {boolean} whether the grid is open afterwards
    */
-  openTileGrid(ids, { focusedId = null, auto = true, mergeSplit = true } = {}) {
+  openTileGrid(ids, { focusedId = null, auto = true } = {}) {
     if (!this.canOpenTileGrid()) return false;
     const grid = (this._tileGrid ||= new TileGridModel());
     const max = window.CodemanTileGrid.TILE_GRID_MAX;
-    // The grid and the split are never open together. An open split becomes the
-    // grid's first two tiles (Pane A focused, Pane B beside it), so "split, then
-    // want more" is one step.
-    let requested = ids || [];
-    const splitOpen = !!this._splitPane;
-    if (splitOpen && mergeSplit) {
-      const seed = [this.activeSessionId, this._splitSessionId].filter(Boolean);
-      requested = [...seed, ...requested];
-      if (!requested.includes(focusedId)) focusedId = seed[0] ?? null;
-    }
+    const requested = ids || [];
     const wanted = [];
     for (const id of requested) {
       if (typeof id !== 'string' || wanted.includes(id)) continue;
@@ -387,12 +375,6 @@ Object.assign(CodemanApp.prototype, {
       wanted.push(id);
       if (wanted.length === max) break;
     }
-    // No closing resize for Pane A only when it becomes a tile (its tile sizes
-    // the PTY). A Pane A left out of the set (a group, a stored grid: mergeSplit
-    // false) gets its full width back now, while the main terminal still shows
-    // it, or its PTY stays at the split's half width for as long as the grid
-    // is open.
-    if (splitOpen) this.closeSplitPane({ skipPrimaryResize: wanted.includes(this.activeSessionId) });
     if (wanted.length === 0) return grid.open;
     const focus = wanted.includes(focusedId) ? focusedId : wanted[0];
 
@@ -441,7 +423,6 @@ Object.assign(CodemanApp.prototype, {
     this._installTileGridWidthGate();
     this._selectTiledSession(focus, { auto });
     this._updateConnectionIndicator?.();
-    this._updateSplitButtonForTiles();
     this._updateTileGridButtonState();
     return true;
   },
@@ -523,7 +504,6 @@ Object.assign(CodemanApp.prototype, {
       this.terminalBufferCache?.delete(id);
     }
     this._updateConnectionIndicator?.();
-    this._updateSplitButtonForTiles();
     this._updateTileGridButtonState();
     // The tabs drop their .in-tiles marker.
     this.renderSessionTabs?.();
@@ -632,19 +612,19 @@ Object.assign(CodemanApp.prototype, {
 
   /**
    * The header Tiles button: shown when its per-device setting is on AND the
-   * window is desktop-wide (a JS check plus a live media listener, the same
-   * pair as the Split button; the CSS `@media (max-width: 1179px)` rule is the
-   * backstop that hides it even if this never runs).
+   * window is desktop-wide (a JS check plus a live media listener; the CSS
+   * `@media (max-width: 1179px)` rule is the backstop that hides it even if
+   * this never runs).
    */
   _applyTileGridButtonVisibility(enabled) {
     this._installTileGridHint();
     this._tileGridButtonSettingEnabled = !!enabled;
     const btn = document.querySelector('.btn-tile-grid');
-    const wide = window.innerWidth >= SPLIT_PANE_MIN_WIDTH;
+    const wide = window.innerWidth >= TILE_GRID_MIN_WIDTH;
     btn?.classList.toggle('btn-tile-grid--hidden', !enabled || !wide || !!this.isSoloWindow);
     if (!this._tileGridButtonWidthListener && window.matchMedia) {
       this._tileGridButtonWidthListener = true;
-      const mq = window.matchMedia(`(min-width: ${SPLIT_PANE_MIN_WIDTH}px)`);
+      const mq = window.matchMedia(`(min-width: ${TILE_GRID_MIN_WIDTH}px)`);
       mq.addEventListener('change', () => this._applyTileGridButtonVisibility(this._tileGridButtonSettingEnabled));
     }
   },
@@ -1124,23 +1104,6 @@ Object.assign(CodemanApp.prototype, {
     return this.addTile(sessionId);
   },
 
-  // The Split button cannot act while the grid is open (openSplitPicker and
-  // openSplitPane refuse), so it says so: aria-disabled plus a title, the same
-  // refusal the split already gives for web tabs and the welcome screen.
-  _updateSplitButtonForTiles() {
-    const btn = document.querySelector('.btn-split');
-    if (!btn) return;
-    const blocked = this._tilesOwnTerminal();
-    btn.classList.toggle('btn-split--blocked', blocked);
-    btn.setAttribute('aria-disabled', blocked ? 'true' : 'false');
-    if (blocked) {
-      btn.title = 'Split: unavailable while tiles are open';
-      btn.setAttribute('aria-label', btn.title);
-    } else {
-      this._updateSplitButtonState?.(!!this._splitPane);
-    }
-  },
-
   /**
    * The tile chord `e` asks for, if it applies right now, else null. The
    * toggle applies while the grid is open, or where one could open AND the
@@ -1196,9 +1159,8 @@ Object.assign(CodemanApp.prototype, {
    * its tiles in their cells, holes included, its count, divider sizes, focus
    * and zoom; a cell whose session no longer exists is filled from the
    * ranking (_openStoredTileGrid). With none of its sessions left (or nothing
-   * stored), `tileGridOpenSet` (constants.js) takes an open split's two
-   * sessions, else the open sessions as the ranking orders them
-   * (_tileGridRanking: working, then needing input, then the most recent),
+   * stored), `tileGridOpenSet` (constants.js) takes the open sessions as
+   * the ranking orders them (_tileGridRanking: working, then needing input, then the most recent),
    * the active one always among them and focused, filled to the remembered
    * count (the right-click menu's last pick, default 6, at most what the
    * window fits; owner decision 10).
@@ -1244,7 +1206,6 @@ Object.assign(CodemanApp.prototype, {
     const ranked = this._tileGridRanking();
     const set = T.tileGridOpenSet({
       stored,
-      split: this._splitPane ? [this.activeSessionId, this._splitSessionId] : null,
       ranked,
       sessions: this.sessions,
       sessionOrder: this.sessionOrder,
@@ -1804,9 +1765,7 @@ Object.assign(CodemanApp.prototype, {
     }
     const base = plan?.ids || [];
     const ids = [...base.filter((id) => id !== sessionId).slice(0, n - 1), sessionId];
-    // Exactly these: an open split is already in `base` (tileGridOpenSet seeds
-    // it), and merging it again went past the count (N+1) and the window.
-    this.openTileGrid(ids, { focusedId: sessionId, auto: false, mergeSplit: false });
+    this.openTileGrid(ids, { focusedId: sessionId, auto: false });
     return true;
   },
 
@@ -1849,9 +1808,7 @@ Object.assign(CodemanApp.prototype, {
       this.closeTileGrid({ keepStored: true, reselect: false });
       this.activeSessionId = null;
     }
-    // Exactly the group: an open split closes without joining it (merged, its
-    // two pushed group members out and the grid past the window's capacity).
-    return this.openTileGrid(ids, { focusedId: focus, mergeSplit: false });
+    return this.openTileGrid(ids, { focusedId: focus });
   },
 
   /** A grid tile's TerminalTile: the grid's one load queue, the tile scrollback, font and bounded load. */
@@ -2222,6 +2179,39 @@ Object.assign(CodemanApp.prototype, {
     this._renderTileOverlay(sessionId);
   },
 
+  /**
+   * Paints a tile header's harness logo and model. The logo is PR #532's
+   * `run-mode-dot <cliId>` slot (the id is data, never a branch), the model is
+   * text (describeSessionHarness, constants.js). Diffs against the values it
+   * last wrote, kept on `parts`, never against the DOM, which the translator
+   * may have rewritten: an unchanged session writes nothing, and this runs on
+   * every tab render.
+   *
+   * @param {{harness: HTMLElement, model: HTMLElement, modelName: HTMLElement}} parts - the
+   *   header's nodes (the model's box and the name inside it); the memo lives here too
+   * @param {object} session - the session the header shows
+   * @param {string} logoClass - the header's own class for its logo
+   */
+  _paintSessionHarness(parts, session, logoClass) {
+    const harness = window.CodemanSessionHarness.describeSessionHarness(session, window.__codemanCliCatalog);
+    const cls = `${logoClass} run-mode-dot${harness.id ? ` ${harness.id}` : ''}`;
+    if (parts.harnessClass !== cls) {
+      parts.harnessClass = cls;
+      parts.harness.className = cls;
+    }
+    if (parts.harnessTitle !== harness.title) {
+      parts.harnessTitle = harness.title;
+      parts.harness.title = harness.title;
+      parts.harness.setAttribute('aria-label', harness.title);
+      parts.model.title = harness.title;
+    }
+    if (parts.modelValue !== harness.model) {
+      parts.modelValue = harness.model;
+      parts.modelName.textContent = harness.model;
+      parts.model.hidden = !harness.model;
+    }
+  },
+
   /** Every tile's header (after a tab render, i.e. any session change). */
   _renderTileChrome() {
     const grid = this._tileGrid;
@@ -2304,7 +2294,7 @@ Object.assign(CodemanApp.prototype, {
     if (!entry || entry.connected) return;
     entry.connected = true;
     entry.tile.connect().catch(() => {
-      /* Best-effort, as the split's Pane B: live output arrives once the socket opens. */
+      /* Best-effort: live output arrives once the socket opens. */
     });
     if (grid.focusOnConnect === sessionId) {
       grid.focusOnConnect = null;
@@ -2621,7 +2611,7 @@ Object.assign(CodemanApp.prototype, {
   _installTileGridWidthGate() {
     if (this._tileGridWidthGateInstalled || !window.matchMedia) return;
     this._tileGridWidthGateInstalled = true;
-    const mq = window.matchMedia(`(min-width: ${SPLIT_PANE_MIN_WIDTH}px)`);
+    const mq = window.matchMedia(`(min-width: ${TILE_GRID_MIN_WIDTH}px)`);
     mq.addEventListener('change', (e) => {
       if (!e.matches && this._tileGrid?.open) this.closeTileGrid({ keepStored: true, reselect: true });
     });
@@ -2797,11 +2787,10 @@ Object.assign(CodemanApp.prototype, {
     if (!set?.ids?.length) return false;
     const T = window.CodemanTileGrid;
     const focus = focusedId || set.focusedId;
-    // An open split closes without joining it (decision 8, case a).
     this._tilePersistHold = true;
     let opened = false;
     try {
-      opened = this.openTileGrid(set.ids, { focusedId: focus, auto, mergeSplit: false });
+      opened = this.openTileGrid(set.ids, { focusedId: focus, auto });
     } finally {
       this._tilePersistHold = false;
     }

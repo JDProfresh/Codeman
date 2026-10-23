@@ -2508,52 +2508,21 @@ function terminalPathLine(buffer, row, cols, maxRows) {
   return { startRow: parts[0].startRow, endRow: parts[parts.length - 1].endRow, text, offsetToCell, cellToOffset };
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Split-Pane Sessions — pure helpers (divider math, picker list)
-// ═══════════════════════════════════════════════════════════════
-
-// Desktop-only, same reasoning and same threshold as HOME_SESSIONS_MIN_WIDTH
-// (home-sessions.js): two 240px min-width panes plus the divider need ~486px,
-// which a phone or narrow tablet cannot give them, and the divider has no
-// touch handlers. A dedicated constant rather than reusing
-// HOME_SESSIONS_MIN_WIDTH directly — that name lives in home-sessions.js,
-// which loads AFTER this file (load order 12.56 vs 7.5), so referencing it
-// from module-evaluation-time code here would be a ReferenceError.
-const SPLIT_PANE_MIN_WIDTH = 1180;
-
-function clampDividerPercent(rawPercent, min = 20, max = 80) {
-  if (rawPercent < min) return min;
-  if (rawPercent > max) return max;
-  return rawPercent;
-}
-
-function buildSplitPickerSessions(sessions, sessionOrder, excludeId, detachedIds) {
-  const result = [];
-  for (const id of sessionOrder) {
-    if (id === excludeId) continue;
-    // A detached (popped-out) session's own window owns its PTY size (see
-    // sendResize's detachedElsewhere guard in terminal-ui.js;
-    // TerminalTile._sendResize() stands aside the same way), so Pane B could
-    // only show it at a size it cannot set.
-    if (detachedIds?.has?.(id)) continue;
-    const session = sessions.get(id);
-    if (!session) continue;
-    // A session with no PTY attached (exited CLI, a crash-looped session
-    // whose breaker tripped, a restore that failed to re-attach) has nothing
-    // reading its tmux pane, and the split never does selectSession()'s
-    // re-attach POST: Pane B would open a healthy-looking socket onto a pane
-    // that nothing feeds and nothing reads.
-    if (session.pid === null) continue;
-    result.push({ id, label: session.name || 'Session' });
-  }
-  return result;
-}
-
 // ── Tile grid (tile-grid.js) ───────────────────────────────────────────────
 //
 // Pure layout and state helpers for the tile grid (docs/tile-grid-plan.md):
 // 1 to TILE_GRID_MAX live sessions side by side, each in its own TerminalTile.
-// Desktop only, behind the same 1180px gate as the split pane.
+// Desktop only, behind the TILE_GRID_MIN_WIDTH gate below.
+
+// The narrowest window the tile grid opens in (and its header button shows
+// in), the same threshold as HOME_SESSIONS_MIN_WIDTH (home-sessions.js):
+// width alone, so a wide Android tablet clears it. Tiles need the room (about
+// 60 columns each) and their dividers have no touch handlers. A constant of
+// its own rather than HOME_SESSIONS_MIN_WIDTH: that name lives in
+// home-sessions.js, which loads AFTER this file, so referencing it from
+// module-evaluation-time code here would be a ReferenceError. styles.css
+// mirrors it as a `max-width: 1179px` backstop.
+const TILE_GRID_MIN_WIDTH = 1180;
 
 /**
  * Hard cap on tiles in one grid: the ONE place it is set (owner decision 7 in
@@ -2779,7 +2748,7 @@ function dragTrackFractions(fr, index, deltaPx, totalPx, minPx) {
 }
 
 /**
- * The sessions the Tiles button can open (case c of tileGridOpenSet, and the
+ * The sessions the Tiles button can open (case b of tileGridOpenSet, and the
  * ones a count fills a grid with), in the order given (tab order, or the
  * ranking): live ones only, never a session popped out to
  * its own window (that window owns its PTY size). A session with no PTY
@@ -2870,8 +2839,7 @@ function rankTileSessions(rows) {
  *      detached, at most the cap), if any of its sessions survive, exactly
  *      as it was (restoreTileGridCells: its cells and holes, a cell its
  *      session freed filled from the ranking);
- *   b. else an open split's two sessions, Pane A focused;
- *   c. else the open sessions in `ranked` order (rankTileSessions: working,
+ *   b. else the open sessions in `ranked` order (rankTileSessions: working,
  *      then needing input, then the most recent; tab order when no ranking is
  *      given), detached ones never, up to `limit`, the active session always
  *      among them and focused (when it ranks past the limit, the first
@@ -2880,14 +2848,13 @@ function rankTileSessions(rows) {
  *
  * @param {{stored?: {ids: string[], cells?: (string|null)[], freed?: number[], count?: number,
  *   focused: string|null, zoomed: string|null}|null,
- *   split?: string[]|null, ranked?: string[]|null, sessions: Map<string, object>, sessionOrder: string[],
+ *   ranked?: string[]|null, sessions: Map<string, object>, sessionOrder: string[],
  *   detachedIds?: {has(id: string): boolean}, activeId?: string|null, limit: number}} p
- * @returns {{source: 'stored'|'split'|'ranked', ids: string[], cells?: (string|null)[],
+ * @returns {{source: 'stored'|'ranked', ids: string[], cells?: (string|null)[],
  *   focusedId: string|null}|null}
  */
 function tileGridOpenSet({
   stored = null,
-  split = null,
   ranked = null,
   sessions,
   sessionOrder,
@@ -2900,9 +2867,6 @@ function tileGridOpenSet({
   );
   const restored = stored ? restoreTileGridCells(stored, all) : null;
   if (restored) return { source: 'stored', ...restored };
-  const usable = (id) => typeof id === 'string' && sessions.has(id) && !detachedIds?.has?.(id);
-  const pair = (split || []).filter(usable);
-  if (split && pair.length) return { source: 'split', ids: [...new Set(pair)], focusedId: pair[0] };
   const max = Math.max(1, Math.min(Math.floor(Number(limit) || 0), TILE_GRID_MAX));
   if (all.length === 0) return null;
   let ids = all.slice(0, max);
@@ -2929,7 +2893,7 @@ function sanitizeTileCount(raw) {
  * `base` (what the grid would open, or what an open grid shows, in its order)
  * trimmed or filled to `n` tiles: trimmed from the end, the session to focus
  * (`keepId`) always kept (it takes the last place when it sat past `n`, as in
- * tileGridOpenSet's case c); filled from `all` (the open sessions, best first:
+ * tileGridOpenSet's case b); filled from `all` (the open sessions, best first:
  * the app passes the ranking, rankTileSessions) with the ones not in it yet.
  * Fewer sessions than `n` give fewer tiles.
  *
@@ -3487,11 +3451,6 @@ if (typeof window !== 'undefined') {
   };
   window.CodemanTerminalLines = { terminalLogicalLine, terminalPathLine };
   window.CodemanUrlSession = { sessionIdFromFragment };
-  window.CodemanSplitPane = {
-    clampDividerPercent,
-    buildSplitPickerSessions,
-    SPLIT_PANE_MIN_WIDTH,
-  };
   window.CodemanTileGrid = {
     computeTileLayout,
     tileGridCapacity,
@@ -3513,6 +3472,7 @@ if (typeof window !== 'undefined') {
     TILE_GRID_COUNTS,
     TILE_GRID_COUNT_DEFAULT,
     TILE_GRID_MAX,
+    TILE_GRID_MIN_WIDTH,
     TILE_LAYOUT_MAX,
     TILE_MIN_W,
     TILE_MIN_H,

@@ -1,6 +1,6 @@
 # Tile Grid: Design Spec
 
-**Status**: Merged for the 1.40.0 release as #560 (the TerminalTile foundation) and #561 (the grid). Where the "As built" section below differs from this spec, As built is authoritative. Builds on `docs/split-pane-sessions-plan.md`; the split pane stays.
+**Status**: Merged for the 1.40.0 release as #560 (the TerminalTile foundation) and #561 (the grid). Where the "As built" section below differs from this spec, As built is authoritative. Builds on `docs/split-pane-sessions-plan.md`. **The split pane has since been removed** (design-system phase 4d): the grid supersedes it, so every mention of the split, Pane A/Pane B, `terminal-split.js` or `showSplitButton` below is history from when the two coexisted, not current behaviour.
 **Author**: Claude (planning session with the maintainer), 2026-10-06
 **Branches**: developed as PR 1 `feat/terminal-tile` and PR 2 `feat/tile-grid` stacked on it, both merged
 **Scope**: v1 is fully designed here; follow-ups are named at the end and explicitly deferred.
@@ -52,8 +52,8 @@ or settled a question the spec left open. The invariants as built are in
   filled to the remembered count and never trimmed to the window (a window too small
   for it shows the focused tile alone until it fits, the arrangement kept). A session
   that no longer exists frees its cell, which the ranking fills. Only with nothing
-  stored, or none of its sessions left, does `tileGridOpenSet` (constants.js) take an
-  open split's two sessions, else the open sessions as `rankTileSessions` orders them
+  stored, or none of its sessions left, does `tileGridOpenSet` (constants.js) take the
+  open sessions as `rankTileSessions` orders them
   (owner request: "prefer to load in tiles that are working and then the most recent,
   so the oldest don't get opened"): WORKING first (the most recently started turn
   first, keyed off `lastSubmitAt` only), then the ones NEEDING INPUT (the red and yellow
@@ -61,8 +61,7 @@ or settled a question the spec left open. The invariants as built are in
   active one always included and focused, and `tileGridSetForCount` trims it (from the
   end, the session to focus kept) or fills it (from the ranking) to the remembered count
   (default 6, at most what the window fits). The states and stamps are the home
-  screens' own (`_mobileOverviewState`, `sessionActivityAnchor`). A remembered grid still
-  wins over an open split: the split closes and its sessions are not seeded first. A
+  screens' own (`_mobileOverviewState`, `sessionActivityAnchor`). A
   page-load restore brings back the same grid as the toggle. Ctrl/Cmd+click on a tab
   with the grid closed opens what the toggle would with that session among the tiles and
   focused, never past the count (owner answer: N, not N+1): it joins the first empty cell
@@ -141,9 +140,7 @@ or settled a question the spec left open. The invariants as built are in
   CLI itself reports: claude's statusline, a footer read with `capabilities.modelDetect`
   for dsh and codex; else what the CLI's config pins, dsh-TUI's route (owner feedback 1:
   a dsh session with its status bar's model field off shows `qwen3.8-27b (from config)`);
-  else the launch model; else nothing, the logo alone). Both split
-  panes carry the same strip: Pane B's header, and Pane A's while the split is open. Pane
-  B's close is a tile button (26px).
+  else the launch model; else nothing, the logo alone).
 - **No + in the tile header** (owner decision 9): the header is `● name ……… ⋯ ⤢ ×`. The
   + menu and its "New session in this case" are gone; tiles are added from the Tiles
   button (and its right-click count menu), Ctrl/Cmd+click on a tab, a dragged tab, "Open
@@ -310,7 +307,7 @@ work also fixes gaps the split pane has today.
 
 ### Entry points
 
-- **Header Tiles button** (its own button, beside Split). As built (decision 8)
+- **Header Tiles button** (its own button). As built (decision 8)
   a click opens the grid at once, the same as the toggle shortcut; right-click
   is the 2 / 4 / 6 count menu (decision 10; the session picker it replaced is
   gone). When the grid is open, a click closes it.

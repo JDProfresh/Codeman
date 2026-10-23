@@ -229,21 +229,6 @@ describe('dictation target', () => {
     ).not.toHaveBeenCalled();
   });
 
-  it('split view is unchanged: a Pane A dictation keeps the overlay and refocuses the main terminal', () => {
-    const paneB = { focus: vi.fn() };
-    const { voice, app, appendText, sendInput } = load({ localEcho: true, focused: 'session-a' });
-    voice.start();
-    // The user clicked into Pane B while speaking.
-    app._focusedPane = () => ({ sessionId: 'session-b', isPrimary: false, terminal: paneB });
-
-    voice._insertText('for pane a');
-
-    expect(appendText).toHaveBeenCalledWith('for pane a');
-    expect(sendInput).not.toHaveBeenCalled();
-    expect((app.terminal as { focus: ReturnType<typeof vi.fn> }).focus).toHaveBeenCalled();
-    expect(paneB.focus).not.toHaveBeenCalled();
-  });
-
   it('refuses to start with no session at all', () => {
     const { voice, app, showToast } = load();
     app.activeSessionId = null;

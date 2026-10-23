@@ -67,7 +67,7 @@ function makeApp(
   opts: {
     teammates?: number;
     terminal?: ReturnType<typeof fakeTerminal> | null;
-    splitPane?: { terminal: ReturnType<typeof fakeTerminal>; fit: () => void } | null;
+    tile?: { terminal: ReturnType<typeof fakeTerminal>; fit: () => void } | null;
   } = {}
 ) {
   const fit = vi.fn();
@@ -80,10 +80,10 @@ function makeApp(
   }
   const app = {
     applyTerminalFontWeights: mixin.applyTerminalFontWeights,
-    // Secondary panes (the split pane's second terminal) are reached through
-    // this helper, so it is wired for real like the geometry chain below.
+    // Secondary panes (the tiles of an open grid) are reached through this
+    // helper, so it is wired for real like the geometry chain below.
     _forEachTile: mixin._forEachTile,
-    _splitPane: opts.splitPane ?? null,
+    _tileGrid: opts.tile ? { open: true, tiles: new Map([['s-tile', { tile: opts.tile }]]) } : null,
     // The REAL geometry chain, not stubs. A font change moves the cell size, so
     // it moves cols/rows, and `applyTerminalFontWeights` now routes its refit
     // through the one function that floors the result and reports it (#464).
@@ -108,20 +108,20 @@ function makeApp(
 }
 
 describe('applyTerminalFontWeights', () => {
-  it('reaches an open split pane: same weights, refit AND reported to its PTY', () => {
-    const splitTerminal = fakeTerminal();
+  it('reaches an open grid tile: same weights, refit AND reported to its PTY', () => {
+    const tileTerminal = fakeTerminal();
     // fit(), not localFit(): a weight change can move the cell size, and the
-    // split pane's PTY must hear about the new geometry like the primary's does.
+    // tile's PTY must hear about the new geometry like the primary's does.
     const fit = vi.fn();
-    const { app } = makeApp({ splitPane: { terminal: splitTerminal, fit } });
+    const { app } = makeApp({ tile: { terminal: tileTerminal, fit } });
 
     (app as unknown as { applyTerminalFontWeights: (s: unknown) => void }).applyTerminalFontWeights({
       terminalFontWeight: '300',
       terminalFontWeightBold: '700',
     });
 
-    expect(splitTerminal.options.fontWeight).toBe(300);
-    expect(splitTerminal.options.fontWeightBold).toBe(700);
+    expect(tileTerminal.options.fontWeight).toBe(300);
+    expect(tileTerminal.options.fontWeightBold).toBe(700);
     expect(fit).toHaveBeenCalledTimes(1);
   });
 
