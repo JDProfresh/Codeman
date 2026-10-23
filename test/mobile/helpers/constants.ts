@@ -9,12 +9,16 @@ export const SELECTORS = {
   // Toolbar
   TOOLBAR: '.toolbar',
   TOOLBAR_RIGHT: '.toolbar-right',
+  // The phone toolbar's More (⋯) button (board P07). It keeps the old gear's
+  // class, which is its styling and the voice dictation Send slot.
   SETTINGS_MOBILE: '.btn-settings-mobile',
+  MORE_MOBILE: '#mobileMoreBtn',
+  // The More sheet holds Case, Attach and App Settings. Rows inside a closed
+  // sheet have their own display set, so check them by rendered size, never
+  // with assertVisible/assertHidden (which read only the element's own style).
+  MORE_SHEET: '#mobileMoreSheet',
   CASE_MOBILE: '.btn-case-mobile',
-  ATTACH_MOBILE: '.btn-attach-mobile',
-  // The desktop rule hides the WRAPPER, and assertHidden reads an element's own
-  // computed style (an ancestor's display:none is invisible to it).
-  ATTACH_MOBILE_WRAP: '.btn-attach-mobile-wrap',
+  ATTACH_MOBILE: '#attachBtnMobile',
 
   // Tabs
   TABS_CONTAINER: '.session-tabs',

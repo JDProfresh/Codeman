@@ -30,8 +30,8 @@ const PHONE_HIDDEN_SELECTORS = [
   SELECTORS.TAB_COUNT_GROUP,
 ];
 
-// Visible only on phones
-const PHONE_ONLY_SELECTORS = [SELECTORS.SETTINGS_MOBILE, SELECTORS.CASE_MOBILE];
+// Visible only on phones (Case moved into the More sheet behind this button, board P07)
+const PHONE_ONLY_SELECTORS = [SELECTORS.MORE_MOBILE];
 
 describe('Device Matrix', () => {
   beforeAll(async () => {

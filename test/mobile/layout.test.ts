@@ -132,10 +132,17 @@ describe('Mobile Layout', () => {
       }
     });
 
-    it('.btn-case-mobile visible on phones', async () => {
+    it('the More sheet opens on phones with the case picker row', async () => {
       const { context, page } = await createDevicePage(iPhone14Pro, baseUrl);
       try {
-        await assertVisible(page, SELECTORS.CASE_MOBILE);
+        await assertVisible(page, SELECTORS.MORE_MOBILE);
+        await page.click(SELECTORS.MORE_MOBILE);
+        const caseRow = await page.evaluate((sel) => {
+          const r = document.querySelector(sel)?.getBoundingClientRect();
+          return r ? { w: r.width, h: r.height } : null;
+        }, SELECTORS.CASE_MOBILE);
+        expect(caseRow?.w ?? 0).toBeGreaterThan(200);
+        expect(caseRow?.h ?? 0).toBeGreaterThanOrEqual(44);
       } finally {
         await context.close();
       }
@@ -176,12 +183,12 @@ describe('Mobile Layout', () => {
             });
           return {
             overflow: buttons.filter(({ left, right }) => left < 0 || right > window.innerWidth),
-            caseWidth: document.querySelector('.btn-case-mobile')?.getBoundingClientRect().width ?? 0,
+            moreWidth: document.querySelector('#mobileMoreBtn')?.getBoundingClientRect().width ?? 0,
           };
         });
 
         expect(layout.overflow).toEqual([]);
-        expect(layout.caseWidth).toBeGreaterThanOrEqual(36);
+        expect(layout.moreWidth).toBeGreaterThanOrEqual(24);
       } finally {
         await context.close();
       }
@@ -205,7 +212,8 @@ describe('Mobile Layout', () => {
         await page.setViewportSize({ width: 1280, height: 800 });
         await page.waitForTimeout(WAIT.PAGE_SETTLE);
         await assertVisible(page, '#voiceInputBtn');
-        await assertHidden(page, SELECTORS.ATTACH_MOBILE_WRAP);
+        // Phone Attach lives in the More sheet, whose button desktop never shows.
+        await assertHidden(page, SELECTORS.MORE_MOBILE);
       } finally {
         await context.close();
       }
@@ -216,7 +224,7 @@ describe('Mobile Layout', () => {
       const { context, page } = await createDevicePage(device, baseUrl, 'chromium');
       try {
         await page.waitForTimeout(WAIT.PAGE_SETTLE);
-        await assertVisible(page, SELECTORS.ATTACH_MOBILE);
+        await assertVisible(page, SELECTORS.MORE_MOBILE);
         await assertVisible(page, '#voiceInputBtnMobile');
 
         const violations = await page.evaluate(() => {
@@ -250,6 +258,16 @@ describe('Mobile Layout', () => {
         });
 
         expect(violations).toEqual([]);
+
+        // Attach is a full-width row of the More sheet, its file input over the row.
+        await page.click(SELECTORS.MORE_MOBILE);
+        const attach = await page.evaluate((sel) => {
+          const r = document.querySelector(sel)?.getBoundingClientRect();
+          const i = document.getElementById('attachFileInput')?.getBoundingClientRect();
+          return { w: r?.width ?? 0, inputW: i?.width ?? 0 };
+        }, SELECTORS.ATTACH_MOBILE);
+        expect(attach.w).toBeGreaterThan(200);
+        expect(attach.inputW).toBeGreaterThanOrEqual(attach.w);
       } finally {
         await context.close();
       }
