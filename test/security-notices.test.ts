@@ -956,7 +956,10 @@ describe('zh-CN', () => {
 
 describe('the card styles', () => {
   const css = read('styles.css');
-  const block = css.slice(css.indexOf('.security-notice {'), css.indexOf('/* Notification Bell Button */'));
+  const block = css.slice(
+    css.indexOf('.security-notice {'),
+    css.indexOf("/* Notification list (the Inbox drawer's Notifications tab, approvals-ui.js) */")
+  );
 
   it('lives beside the toast rules and uses theme tokens, not fixed colours, for its ink', () => {
     expect(css.indexOf('.toast-info {')).toBeLessThan(css.indexOf('.security-notice {'));
