@@ -177,32 +177,25 @@ describe('Codeman light skins', () => {
     expect(mobileStylesSource).toContain(':is(.case-settings-popover-mobile, .mobile-case-picker-sheet)');
   });
 
-  it('re-declares every run-mode colour inside the non-og skin block', () => {
-    // The skin block nests under `html:not([data-skin="og"])`, so its generic
-    // `.btn-toolbar.btn-run` outranks a base-sheet `.mode-<id>` pair. A mode with no
-    // resting rule of its own in there (a `:hover` alone does not count) renders as generic claude blue on the DEFAULT skin
-    // (gemini, antigravity and omp all shipped that way). Ids come from the sheet.
+  it('gives every run mode a non-og colour (generic accent or its own token rule)', () => {
+    // Run colours are --run-* tokens (design-system phase 3). On the non-og skins a
+    // generic rule gives every mode the skin accent EXCEPT the identity modes in its
+    // :not() list, and each of those must carry its own token rule, or it would fall
+    // back to the og gradients on the DEFAULT skin (gemini, antigravity and omp all
+    // shipped as generic claude blue once for the same reason). Ids come from the sheet.
     const css = stylesSource.replace(/\/\*[\s\S]*?\*\//g, '');
-    const opener = 'html:not([data-skin="og"]) {';
-    const start = css.indexOf(opener);
-    expect(start).toBeGreaterThan(-1);
-    let depth = 0;
-    let end = -1;
-    for (let i = start + opener.length - 1; i < css.length; i++) {
-      if (css[i] === '{') depth++;
-      else if (css[i] === '}' && --depth === 0) {
-        end = i;
-        break;
-      }
-    }
-    expect(end).toBeGreaterThan(start);
-    const nested = css.slice(start, end);
-    const base = css.slice(0, start) + css.slice(end);
-    const ids = (text: string) =>
-      new Set([...text.matchAll(/\.btn-toolbar\.btn-run\.mode-([\w-]+)(?![\w-]|:)/g)].map((m) => m[1]));
-    const baseIds = [...ids(base)];
+    const baseIds = [...css.matchAll(/^\.btn-toolbar:is\(\.btn-run, \.btn-run-gear\)\.mode-([\w-]+) \{/gm)].map(
+      (m) => m[1]
+    );
     expect(baseIds.length).toBeGreaterThanOrEqual(5);
-    const nestedIds = ids(nested);
-    expect(baseIds.filter((id) => !nestedIds.has(id))).toEqual([]);
+    const generic = css.match(
+      /:where\(html:not\(\[data-skin="og"\]\)\) \.btn-toolbar:is\(\.btn-run, \.btn-run-gear\):not\(([^)]*)\) \{/
+    );
+    expect(generic).not.toBeNull();
+    const identity = generic![1].split(',').map((m) => m.trim().replace(/^\.mode-/, ''));
+    const ownRule = (id: string) =>
+      css.includes(`:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-${id} {`);
+    expect(identity.filter((id) => !ownRule(id))).toEqual([]);
+    expect(identity.filter((id) => !baseIds.includes(id))).toEqual([]);
   });
 });

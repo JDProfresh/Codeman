@@ -183,10 +183,12 @@ describe('skins (design-system phase 2)', () => {
     const selectors = [...body.slice(body.indexOf('{') + 1).matchAll(/([^{};]+)\{/g)].flatMap((m) => splitTop(m[1]));
     for (const sel of selectors) {
       expect(sel, sel).toMatch(
-        /^(\.btn-toolbar(\.btn-(run|run-gear|shell|stop)\b|:where\(:not\(\.btn-primary, \.btn-danger, \.btn-success\)\))|:focus-visible$)/
+        /^(\.btn-toolbar(\.btn-(run|run-gear|shell|stop)\b|:where\(:not\(\.btn-primary, \.btn-danger, \.btn-success, \.btn-run, \.btn-run-gear\)\))|:focus-visible$)/
       );
     }
-    expect(selectors).toContain('.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success))');
+    expect(selectors).toContain(
+      '.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear))'
+    );
   });
 });
 

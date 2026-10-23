@@ -1094,8 +1094,8 @@ html.mobile-init .file-browser-panel {
     flex: 0 0 auto;
     padding: 0 0.6rem !important;
     font-weight: 500;
-    border-radius: 4px 0 0 4px !important;
-    border-right: none !important;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
   }
 
   .btn-toolbar.btn-run svg {
@@ -1107,9 +1107,9 @@ html.mobile-init .file-browser-panel {
   .btn-toolbar.btn-run-gear {
     flex: 0 0 auto;
     padding: 0 0.35rem !important;
-    min-width: unset !important;
-    border-radius: 0 4px 4px 0 !important;
-    border-left: 1px solid rgba(255,255,255,0.15) !important;
+    min-width: unset;
+    border-radius: 0 4px 4px 0;
+    border-left: 1px solid rgba(255,255,255,0.15);
   }
 
   .btn-toolbar.btn-run-gear svg {
@@ -1117,139 +1117,109 @@ html.mobile-init .file-browser-panel {
     height: 10px;
   }
 
-  /* Claude mode colors on mobile */
-  .btn-toolbar.btn-run.mode-claude,
-  .btn-toolbar.btn-run-gear.mode-claude {
-    background: #1e3a5f;
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #93c5fd;
+  /* Keep the divider between Run and its gear: the Run tokens set the gear's
+     border-color, so the divider needs the tokens' weight ([class*="mode-"]). */
+  .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
+    border-left-color: rgba(255, 255, 255, 0.15);
   }
 
-  .btn-toolbar.btn-run.mode-claude:active,
-  .btn-toolbar.btn-run-gear.mode-claude:active {
-    background: #2563eb;
-    border-color: rgba(59, 130, 246, 0.5);
+  /* Run split button on phones: --run-* TOKENS only, so no !important (see the
+     token note at the base rules in styles.css). Each CLI gets a flat fill and a
+     brighter press. Claude and OpenCode keep the skin accent on the non-og skins
+     (their flat fill and press are og-only); the light skins re-set these tokens again at
+     the end of this file, and win there. */
+
+  html[data-skin="og"] .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+    --run-bg: #1e3a5f;
+    --run-border: rgba(59, 130, 246, 0.3);
+    --run-ink: #93c5fd;
+    --run-bg-active: #2563eb;
+    --run-border-active: rgba(59, 130, 246, 0.5);
   }
 
-  /* OpenCode mode colors on mobile */
-  .btn-toolbar.btn-run.mode-opencode,
-  .btn-toolbar.btn-run-gear.mode-opencode {
-    background: #0a2e2a;
-    border-color: rgba(16, 185, 129, 0.3);
-    color: #6ee7b7;
+  html[data-skin="og"] .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+    --run-bg: #0a2e2a;
+    --run-border: rgba(16, 185, 129, 0.3);
+    --run-ink: #6ee7b7;
+    --run-bg-active: #0d4a40;
+    --run-border-active: rgba(16, 185, 129, 0.5);
   }
 
-  .btn-toolbar.btn-run.mode-opencode:active,
-  .btn-toolbar.btn-run-gear.mode-opencode:active {
-    background: #0d4a40;
-    border-color: rgba(16, 185, 129, 0.5);
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+    --run-bg: #10243f;
+    --run-border: rgba(96, 165, 250, 0.3);
+    --run-ink: #dbeafe;
+    --run-bg-active: #174ea6;
+    --run-border-active: rgba(96, 165, 250, 0.5);
+    --run-bg-hover: #10243f;
+    --run-border-hover: rgba(96, 165, 250, 0.3);
+    --run-ink-hover: #dbeafe;
   }
 
-  /* Gemini mode colors on mobile. Same `!important` rationale as the pi block below. */
-  .btn-toolbar.btn-run.mode-gemini,
-  .btn-toolbar.btn-run-gear.mode-gemini {
-    background: #10243f !important;
-    border-color: rgba(96, 165, 250, 0.3) !important;
-    color: #dbeafe !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+    --run-bg: #0b2b33;
+    --run-border: rgba(34, 211, 238, 0.3);
+    --run-ink: #cffafe;
+    --run-bg-active: #0e7490;
+    --run-border-active: rgba(34, 211, 238, 0.5);
+    --run-bg-hover: #0b2b33;
+    --run-border-hover: rgba(34, 211, 238, 0.3);
+    --run-ink-hover: #cffafe;
   }
 
-  .btn-toolbar.btn-run.mode-gemini:active,
-  .btn-toolbar.btn-run-gear.mode-gemini:active {
-    background: #174ea6 !important;
-    border-color: rgba(96, 165, 250, 0.5) !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+    --run-bg: #33121f;
+    --run-border: rgba(244, 114, 182, 0.3);
+    --run-ink: #fce7f3;
+    --run-bg-active: #9d174d;
+    --run-border-active: rgba(244, 114, 182, 0.5);
+    --run-bg-hover: #33121f;
+    --run-border-hover: rgba(244, 114, 182, 0.3);
+    --run-ink-hover: #fce7f3;
   }
 
-  /* Antigravity mode colors on mobile. Same `!important` rationale as the pi block below. */
-  .btn-toolbar.btn-run.mode-antigravity,
-  .btn-toolbar.btn-run-gear.mode-antigravity {
-    background: #0b2b33 !important;
-    border-color: rgba(34, 211, 238, 0.3) !important;
-    color: #cffafe !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+    --run-bg: #1c1c1f;
+    --run-border: rgba(212, 212, 216, 0.3);
+    --run-ink: #f4f4f5;
+    --run-bg-active: #3f3f46;
+    --run-border-active: rgba(212, 212, 216, 0.5);
+    --run-bg-hover: #1c1c1f;
+    --run-border-hover: rgba(212, 212, 216, 0.3);
+    --run-ink-hover: #f4f4f5;
   }
 
-  .btn-toolbar.btn-run.mode-antigravity:active,
-  .btn-toolbar.btn-run-gear.mode-antigravity:active {
-    background: #0e7490 !important;
-    border-color: rgba(34, 211, 238, 0.5) !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+    --run-bg: #16225f;
+    --run-border: rgba(124, 147, 255, 0.35);
+    --run-ink: #eef2ff;
+    --run-bg-active: #3350e6;
+    --run-border-active: rgba(150, 170, 255, 0.55);
+    --run-bg-hover: #16225f;
+    --run-border-hover: rgba(124, 147, 255, 0.35);
+    --run-ink-hover: #eef2ff;
   }
 
-  /* Pi mode colors on mobile.
-     `!important` is load-bearing here, not noise: styles.css nests its skin rules
-     inside `html:not([data-skin="og"])`, so a bare `.btn-toolbar.btn-run` or
-     `.btn-toolbar.btn-run-gear` in there outranks this `.mode-pi` pair regardless
-     of load order. Without it the gear half keeps the skin accent while the body
-     takes the nested block's mode colour, so the split button renders two-tone
-     (gemini and antigravity shipped that way until they got `!important` too). */
-  .btn-toolbar.btn-run.mode-pi,
-  .btn-toolbar.btn-run-gear.mode-pi {
-    background: #33121f !important;
-    border-color: rgba(244, 114, 182, 0.3) !important;
-    color: #fce7f3 !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+    --run-bg: #312e81;
+    --run-border: rgba(129, 140, 248, 0.3);
+    --run-ink: #e0e7ff;
+    --run-bg-active: #4f46e5;
+    --run-border-active: rgba(129, 140, 248, 0.5);
+    --run-bg-hover: #312e81;
+    --run-border-hover: rgba(129, 140, 248, 0.3);
+    --run-ink-hover: #e0e7ff;
   }
 
-  .btn-toolbar.btn-run.mode-pi:active,
-  .btn-toolbar.btn-run-gear.mode-pi:active {
-    background: #9d174d !important;
-    border-color: rgba(244, 114, 182, 0.5) !important;
-  }
-
-  /* Grok mode colors on mobile. Same `!important` rationale as the pi block above. */
-  .btn-toolbar.btn-run.mode-grok,
-  .btn-toolbar.btn-run-gear.mode-grok {
-    background: #1c1c1f !important;
-    border-color: rgba(212, 212, 216, 0.3) !important;
-    color: #f4f4f5 !important;
-  }
-
-  .btn-toolbar.btn-run.mode-grok:active,
-  .btn-toolbar.btn-run-gear.mode-grok:active {
-    background: #3f3f46 !important;
-    border-color: rgba(212, 212, 216, 0.5) !important;
-  }
-
-  /* DeepSeek mode colors on mobile. Same `!important` rationale as the pi and
-     grok blocks above: styles.css nests its skin rules inside
-     `html:not([data-skin="og"])`, so a bare `.btn-toolbar` rule there outranks a
-     `.btn-toolbar.btn-x` rule here regardless of load order. */
-  .btn-toolbar.btn-run.mode-deepseek,
-  .btn-toolbar.btn-run-gear.mode-deepseek {
-    background: #16225f !important;
-    border-color: rgba(124, 147, 255, 0.35) !important;
-    color: #eef2ff !important;
-  }
-
-  .btn-toolbar.btn-run.mode-deepseek:active,
-  .btn-toolbar.btn-run-gear.mode-deepseek:active {
-    background: #3350e6 !important;
-    border-color: rgba(150, 170, 255, 0.55) !important;
-  }
-
-  /* OMP mode colors on mobile. Same `!important` rationale as the pi/grok/deepseek blocks above. */
-  .btn-toolbar.btn-run.mode-omp,
-  .btn-toolbar.btn-run-gear.mode-omp {
-    background: #312e81 !important;
-    border-color: rgba(129, 140, 248, 0.3) !important;
-    color: #e0e7ff !important;
-  }
-
-  .btn-toolbar.btn-run.mode-omp:active,
-  .btn-toolbar.btn-run-gear.mode-omp:active {
-    background: #4f46e5 !important;
-    border-color: rgba(129, 140, 248, 0.5) !important;
-  }
-
-  /* GitHub Copilot mode colors on mobile. Same `!important` rationale as the pi/grok/deepseek/omp blocks above. */
-  .btn-toolbar.btn-run.mode-copilot,
-  .btn-toolbar.btn-run-gear.mode-copilot {
-    background: #2e1065 !important;
-    border-color: rgba(163, 113, 247, 0.3) !important;
-    color: #ede9fe !important;
-  }
-
-  .btn-toolbar.btn-run.mode-copilot:active,
-  .btn-toolbar.btn-run-gear.mode-copilot:active {
-    background: #6d28d9 !important;
-    border-color: rgba(163, 113, 247, 0.5) !important;
+  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+    --run-bg: #2e1065;
+    --run-border: rgba(163, 113, 247, 0.3);
+    --run-ink: #ede9fe;
+    --run-bg-active: #6d28d9;
+    --run-border-active: rgba(163, 113, 247, 0.5);
+    --run-bg-hover: #2e1065;
+    --run-border-hover: rgba(163, 113, 247, 0.3);
+    --run-ink-hover: #ede9fe;
   }
 
   /* Run mode dropdown menu — positioned above toolbar on mobile */
@@ -3313,62 +3283,78 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   color: var(--text);
 }
 
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-claude, .btn-toolbar.btn-run-gear.mode-claude) {
-  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
+/* Run split button on the light skins (phone and tablet): --run-* tokens, placed
+   after the phone colours above so they win on a light skin. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+  --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-opencode, .btn-toolbar.btn-run-gear.mode-opencode) {
-  background: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+  --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-gemini, .btn-toolbar.btn-run-gear.mode-gemini) {
-  background: linear-gradient(135deg, #174ea6, #4f46e5);
-  border-color: #315fc3;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+  --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border: #315fc3;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border-hover: #315fc3;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-antigravity, .btn-toolbar.btn-run-gear.mode-antigravity) {
-  background: linear-gradient(135deg, #0e7490, #0891b2);
-  border-color: #155e75;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+  --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border: #155e75;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border-hover: #155e75;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-pi, .btn-toolbar.btn-run-gear.mode-pi) {
-  background: linear-gradient(135deg, #be185d, #db2777);
-  border-color: #9d174d;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+  --run-bg: linear-gradient(135deg, #be185d, #db2777);
+  --run-border: #9d174d;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #be185d, #db2777);
+  --run-border-hover: #9d174d;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-omp, .btn-toolbar.btn-run-gear.mode-omp) {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  border-color: #4338ca;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+  --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border: #4338ca;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border-hover: #4338ca;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-copilot, .btn-toolbar.btn-run-gear.mode-copilot) {
-  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
-  border-color: #5b21b6;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+  --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border: #5b21b6;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border-hover: #5b21b6;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-grok, .btn-toolbar.btn-run-gear.mode-grok) {
-  background: linear-gradient(135deg, #27272a, #52525b);
-  border-color: #18181b;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+  --run-bg: linear-gradient(135deg, #27272a, #52525b);
+  --run-border: #18181b;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #27272a, #52525b);
+  --run-border-hover: #18181b;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-toolbar.btn-run.mode-deepseek, .btn-toolbar.btn-run-gear.mode-deepseek) {
-  background: linear-gradient(135deg, #2740c4, #4d6bfe);
-  border-color: #1b2a8f;
-  color: #ffffff;
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+  --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border: #1b2a8f;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border-hover: #1b2a8f;
+  --run-ink-hover: #ffffff;
 }
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .btn-toolbar.btn-run-gear {
-  border-left-color: var(--control-border-hover) !important;
+/* The divider between Run and its gear. The [class*="mode-"] matches the token
+   rules' weight, so this needs no !important. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
+  border-left-color: var(--control-border-hover);
 }
 
 html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.case-settings-popover-mobile, .mobile-case-picker-sheet) {

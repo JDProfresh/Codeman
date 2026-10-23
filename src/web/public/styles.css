@@ -5604,173 +5604,138 @@ html[data-skin="og"] .welcome-primary:hover {
   min-width: unset;
 }
 
-/* Claude mode colors (default) */
-.btn-toolbar.btn-run.mode-claude,
-.btn-toolbar.btn-run-gear.mode-claude {
-  background: linear-gradient(135deg, #1a3358 0%, #1e4fb8 50%, #2563eb 100%);
-  border-color: rgba(59, 130, 246, 0.5);
-  color: #e0e7ff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+/* Run split button. Both halves ALWAYS share one colour set: the --run-* tokens,
+   set per CLI on .mode-<id> below (the og look) and re-set, tokens only, by the
+   non-og skin rules at the end of this file and by mobile.css (phone colours,
+   light skins). Never set background/border/colour on .btn-run or .btn-run-gear
+   directly: that is what used to split the button into two colours per CLI. */
+.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek) {
+  background: var(--run-bg);
+  border-color: var(--run-border);
+  color: var(--run-ink);
+  box-shadow: var(--run-shadow, none);
 }
-.btn-toolbar.btn-run.mode-claude:hover,
-.btn-toolbar.btn-run-gear.mode-claude:hover {
-  background: linear-gradient(135deg, #2454a8 0%, #2d6cf0 50%, #4b8af7 100%);
-  box-shadow: 0 0 16px rgba(59, 130, 246, 0.4), 0 2px 8px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border-color: rgba(96, 165, 250, 0.6);
-  color: #fff;
+.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):hover {
+  background: var(--run-bg-hover, var(--run-bg));
+  border-color: var(--run-border-hover, var(--run-border));
+  color: var(--run-ink-hover, var(--run-ink));
+  box-shadow: var(--run-shadow-hover, var(--run-shadow, none));
 }
-
-/* OpenCode mode colors */
-.btn-toolbar.btn-run.mode-opencode,
-.btn-toolbar.btn-run-gear.mode-opencode {
-  background: linear-gradient(135deg, #0a2e2a 0%, #0b3d35 50%, #0d4a40 100%);
-  border-color: rgba(16, 185, 129, 0.5);
-  color: #6ee7b7;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.btn-toolbar.btn-run.mode-opencode:hover,
-.btn-toolbar.btn-run-gear.mode-opencode:hover {
-  background: linear-gradient(135deg, #0d4a40 0%, #116a58 50%, #15856e 100%);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35), 0 2px 8px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(52, 211, 153, 0.6);
-  color: #a7f3d0;
+/* Pressed reads as hovered unless a context sets an --run-*-active colour. */
+.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):active {
+  background: var(--run-bg-active, var(--run-bg-hover, var(--run-bg)));
+  border-color: var(--run-border-active, var(--run-border-hover, var(--run-border)));
 }
 
-/* Codex mode colors */
-.btn-toolbar.btn-run.mode-codex,
-.btn-toolbar.btn-run-gear.mode-codex {
-  background: linear-gradient(135deg, #2a0a3e 0%, #350b4d 50%, #400d5e 100%);
-  border-color: rgba(168, 85, 247, 0.5);
-  color: #d8b4fe;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* Claude (default) */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+  --run-bg: linear-gradient(135deg, #1a3358 0%, #1e4fb8 50%, #2563eb 100%);
+  --run-border: rgba(59, 130, 246, 0.5);
+  --run-ink: #e0e7ff;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --run-bg-hover: linear-gradient(135deg, #2454a8 0%, #2d6cf0 50%, #4b8af7 100%);
+  --run-border-hover: rgba(96, 165, 250, 0.6);
+  --run-ink-hover: #fff;
+  --run-shadow-hover: 0 0 16px rgba(59, 130, 246, 0.4), 0 2px 8px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
-.btn-toolbar.btn-run.mode-codex:hover,
-.btn-toolbar.btn-run-gear.mode-codex:hover {
-  background: linear-gradient(135deg, #400d5e 0%, #581c87 50%, #6b21a8 100%);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.35), 0 2px 8px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(192, 132, 252, 0.6);
-  color: #e9d5ff;
+/* OpenCode */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+  --run-bg: linear-gradient(135deg, #0a2e2a 0%, #0b3d35 50%, #0d4a40 100%);
+  --run-border: rgba(16, 185, 129, 0.5);
+  --run-ink: #6ee7b7;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #0d4a40 0%, #116a58 50%, #15856e 100%);
+  --run-border-hover: rgba(52, 211, 153, 0.6);
+  --run-ink-hover: #a7f3d0;
+  --run-shadow-hover: 0 0 12px rgba(16, 185, 129, 0.35), 0 2px 8px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-
-/* Gemini mode colors */
-.btn-toolbar.btn-run.mode-gemini,
-.btn-toolbar.btn-run-gear.mode-gemini {
-  background: linear-gradient(135deg, #10243f 0%, #174ea6 55%, #4f46e5 100%);
-  border-color: rgba(96, 165, 250, 0.5);
-  color: #dbeafe;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* Codex */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-codex {
+  --run-bg: linear-gradient(135deg, #2a0a3e 0%, #350b4d 50%, #400d5e 100%);
+  --run-border: rgba(168, 85, 247, 0.5);
+  --run-ink: #d8b4fe;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #400d5e 0%, #581c87 50%, #6b21a8 100%);
+  --run-border-hover: rgba(192, 132, 252, 0.6);
+  --run-ink-hover: #e9d5ff;
+  --run-shadow-hover: 0 0 12px rgba(168, 85, 247, 0.35), 0 2px 8px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.btn-toolbar.btn-run.mode-gemini:hover,
-.btn-toolbar.btn-run-gear.mode-gemini:hover {
-  background: linear-gradient(135deg, #17345f 0%, #2563eb 55%, #6366f1 100%);
-  box-shadow: 0 0 12px rgba(96, 165, 250, 0.35), 0 2px 8px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(147, 197, 253, 0.6);
-  color: #eff6ff;
+/* Gemini */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+  --run-bg: linear-gradient(135deg, #10243f 0%, #174ea6 55%, #4f46e5 100%);
+  --run-border: rgba(96, 165, 250, 0.5);
+  --run-ink: #dbeafe;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #17345f 0%, #2563eb 55%, #6366f1 100%);
+  --run-border-hover: rgba(147, 197, 253, 0.6);
+  --run-ink-hover: #eff6ff;
+  --run-shadow-hover: 0 0 12px rgba(96, 165, 250, 0.35), 0 2px 8px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-
-/* Antigravity mode colors */
-.btn-toolbar.btn-run.mode-antigravity,
-.btn-toolbar.btn-run-gear.mode-antigravity {
-  background: linear-gradient(135deg, #0b2b33 0%, #0e7490 55%, #0891b2 100%);
-  border-color: rgba(34, 211, 238, 0.5);
-  color: #cffafe;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* Antigravity */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+  --run-bg: linear-gradient(135deg, #0b2b33 0%, #0e7490 55%, #0891b2 100%);
+  --run-border: rgba(34, 211, 238, 0.5);
+  --run-ink: #cffafe;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #124450 0%, #0891b2 55%, #06b6d4 100%);
+  --run-border-hover: rgba(103, 232, 249, 0.6);
+  --run-ink-hover: #ecfeff;
+  --run-shadow-hover: 0 0 12px rgba(34, 211, 238, 0.35), 0 2px 8px rgba(8, 145, 178, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.btn-toolbar.btn-run.mode-antigravity:hover,
-.btn-toolbar.btn-run-gear.mode-antigravity:hover {
-  background: linear-gradient(135deg, #124450 0%, #0891b2 55%, #06b6d4 100%);
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.35), 0 2px 8px rgba(8, 145, 178, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(103, 232, 249, 0.6);
-  color: #ecfeff;
+/* Pi */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+  --run-bg: linear-gradient(135deg, #33121f 0%, #9d174d 55%, #be185d 100%);
+  --run-border: rgba(244, 114, 182, 0.5);
+  --run-ink: #fce7f3;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #4a1a2c 0%, #be185d 55%, #db2777 100%);
+  --run-border-hover: rgba(249, 168, 212, 0.6);
+  --run-ink-hover: #fff1f7;
+  --run-shadow-hover: 0 0 12px rgba(244, 114, 182, 0.35), 0 2px 8px rgba(190, 24, 93, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-
-/* Pi mode colors. NOTE: this base-sheet pair only renders on the `og` skin — the
-   nested `html:not([data-skin="og"])` block further down re-declares
-   `.btn-toolbar.btn-run` at a HIGHER specificity, which is why gemini's and
-   antigravity's gradients are dead on the default skin. Pi therefore also carries
-   a rule inside that block (search `.btn-toolbar.btn-run.mode-pi`). */
-.btn-toolbar.btn-run.mode-pi,
-.btn-toolbar.btn-run-gear.mode-pi {
-  background: linear-gradient(135deg, #33121f 0%, #9d174d 55%, #be185d 100%);
-  border-color: rgba(244, 114, 182, 0.5);
-  color: #fce7f3;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* OMP */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+  --run-bg: linear-gradient(135deg, #312e81 0%, #4f46e5 55%, #6366f1 100%);
+  --run-border: rgba(129, 140, 248, 0.5);
+  --run-ink: #e0e7ff;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #3730a3 0%, #6366f1 55%, #818cf8 100%);
+  --run-border-hover: rgba(165, 180, 252, 0.6);
+  --run-ink-hover: #eef2ff;
+  --run-shadow-hover: 0 0 12px rgba(129, 140, 248, 0.35), 0 2px 8px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.btn-toolbar.btn-run.mode-pi:hover,
-.btn-toolbar.btn-run-gear.mode-pi:hover {
-  background: linear-gradient(135deg, #4a1a2c 0%, #be185d 55%, #db2777 100%);
-  box-shadow: 0 0 12px rgba(244, 114, 182, 0.35), 0 2px 8px rgba(190, 24, 93, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(249, 168, 212, 0.6);
-  color: #fff1f7;
+/* GitHub Copilot */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+  --run-bg: linear-gradient(135deg, #2e1065 0%, #6d28d9 55%, #7c3aed 100%);
+  --run-border: rgba(163, 113, 247, 0.5);
+  --run-ink: #ede9fe;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #3b0f8c 0%, #7c3aed 55%, #8b5cf6 100%);
+  --run-border-hover: rgba(196, 167, 252, 0.6);
+  --run-ink-hover: #f5f3ff;
+  --run-shadow-hover: 0 0 12px rgba(163, 113, 247, 0.35), 0 2px 8px rgba(109, 40, 217, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-/* OMP mode colors */
-.btn-toolbar.btn-run.mode-omp,
-.btn-toolbar.btn-run-gear.mode-omp {
-  background: linear-gradient(135deg, #312e81 0%, #4f46e5 55%, #6366f1 100%);
-  border-color: rgba(129, 140, 248, 0.5);
-  color: #e0e7ff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+/* Grok */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+  --run-bg: linear-gradient(135deg, #131316 0%, #27272a 55%, #3f3f46 100%);
+  --run-border: rgba(212, 212, 216, 0.5);
+  --run-ink: #f4f4f5;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #1f1f23 0%, #3f3f46 55%, #52525b 100%);
+  --run-border-hover: rgba(228, 228, 231, 0.6);
+  --run-ink-hover: #fafafa;
+  --run-shadow-hover: 0 0 12px rgba(212, 212, 216, 0.28), 0 2px 8px rgba(63, 63, 70, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.btn-toolbar.btn-run.mode-omp:hover,
-.btn-toolbar.btn-run-gear.mode-omp:hover {
-  background: linear-gradient(135deg, #3730a3 0%, #6366f1 55%, #818cf8 100%);
-  box-shadow: 0 0 12px rgba(129, 140, 248, 0.35), 0 2px 8px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(165, 180, 252, 0.6);
-  color: #eef2ff;
-}
-
-/* GitHub Copilot mode colors */
-.btn-toolbar.btn-run.mode-copilot,
-.btn-toolbar.btn-run-gear.mode-copilot {
-  background: linear-gradient(135deg, #2e1065 0%, #6d28d9 55%, #7c3aed 100%);
-  border-color: rgba(163, 113, 247, 0.5);
-  color: #ede9fe;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.btn-toolbar.btn-run.mode-copilot:hover,
-.btn-toolbar.btn-run-gear.mode-copilot:hover {
-  background: linear-gradient(135deg, #3b0f8c 0%, #7c3aed 55%, #8b5cf6 100%);
-  box-shadow: 0 0 12px rgba(163, 113, 247, 0.35), 0 2px 8px rgba(109, 40, 217, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(196, 167, 252, 0.6);
-  color: #f5f3ff;
-}
-
-/* Grok mode colors. Same cascade note as pi above: this base-sheet pair only
-   renders on the `og` skin — the nested `html:not([data-skin="og"])` block
-   re-declares `.btn-toolbar.btn-run` at a HIGHER specificity, so grok also
-   carries a rule inside that block (search `.btn-toolbar.btn-run.mode-grok`). */
-.btn-toolbar.btn-run.mode-grok,
-.btn-toolbar.btn-run-gear.mode-grok {
-  background: linear-gradient(135deg, #131316 0%, #27272a 55%, #3f3f46 100%);
-  border-color: rgba(212, 212, 216, 0.5);
-  color: #f4f4f5;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.btn-toolbar.btn-run.mode-grok:hover,
-.btn-toolbar.btn-run-gear.mode-grok:hover {
-  background: linear-gradient(135deg, #1f1f23 0%, #3f3f46 55%, #52525b 100%);
-  box-shadow: 0 0 12px rgba(212, 212, 216, 0.28), 0 2px 8px rgba(63, 63, 70, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(228, 228, 231, 0.6);
-  color: #fafafa;
-}
-
-/* DeepSeek mode colors. Same cascade note as pi/grok above: this base-sheet pair
-   only renders on the `og` skin — the nested `html:not([data-skin="og"])` block
-   re-declares `.btn-toolbar.btn-run` at a HIGHER specificity, so deepseek also
-   carries a rule inside that block (search `.btn-toolbar.btn-run.mode-deepseek`). */
-.btn-toolbar.btn-run.mode-deepseek,
-.btn-toolbar.btn-run-gear.mode-deepseek {
-  background: linear-gradient(135deg, #101a4d 0%, #2740c4 55%, #4d6bfe 100%);
-  border-color: rgba(124, 147, 255, 0.55);
-  color: #eef2ff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.btn-toolbar.btn-run.mode-deepseek:hover,
-.btn-toolbar.btn-run-gear.mode-deepseek:hover {
-  background: linear-gradient(135deg, #16225f 0%, #3350e6 55%, #6b83ff 100%);
-  box-shadow: 0 0 12px rgba(77, 107, 254, 0.35), 0 2px 8px rgba(39, 64, 196, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-color: rgba(150, 170, 255, 0.65);
-  color: #f8faff;
+/* DeepSeek */
+.btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+  --run-bg: linear-gradient(135deg, #101a4d 0%, #2740c4 55%, #4d6bfe 100%);
+  --run-border: rgba(124, 147, 255, 0.55);
+  --run-ink: #eef2ff;
+  --run-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --run-bg-hover: linear-gradient(135deg, #16225f 0%, #3350e6 55%, #6b83ff 100%);
+  --run-border-hover: rgba(150, 170, 255, 0.65);
+  --run-ink-hover: #f8faff;
+  --run-shadow-hover: 0 0 12px rgba(77, 107, 254, 0.35), 0 2px 8px rgba(39, 64, 196, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 /* Dropdown menu */
@@ -22866,6 +22831,120 @@ body.keyboard-visible .terminal-container .xterm-screen {
 
 }
 
+/* Run split button on the non-og skins: TOKENS only (see the --run-* note at the
+   base rules). Claude, Shell and any CLI without its own identity take the skin
+   accent; OpenCode and Codex take accent-derived fills; the rest keep their own
+   colours. On hover only the glow is added (Claude, Shell and the other accent CLIs also
+   swap to the accent hover fill), the same as when the skin rules held weight. */
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):not(.mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-omp, .mode-copilot, .mode-pi, .mode-grok, .mode-deepseek) {
+  --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
+  --run-border-hover: var(--accent);
+  --run-ink-hover: var(--accent-ink);
+  --run-bg-hover: linear-gradient(135deg, var(--run-hover-a), var(--run-hover-b));
+  --run-shadow-hover: 0 0 14px -2px rgba(var(--accent-rgb), 0.5);
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+  --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
+  --run-shadow-hover: 0 0 14px -2px rgba(var(--accent-rgb), 0.45);
+  --run-bg-hover: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
+  --run-border-hover: var(--accent);
+  --run-ink-hover: var(--accent-ink);
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-codex {
+  --run-bg: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
+  --run-border: var(--accent-grad-b);
+  --run-ink: #061c20;
+  --run-shadow-hover: 0 0 14px -2px rgba(43, 203, 187, 0.45);
+  --run-bg-hover: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
+  --run-border-hover: var(--accent-grad-b);
+  --run-ink-hover: #061c20;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+  --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border: #123a7a;
+  --run-ink: #dbeafe;
+  --run-shadow-hover: 0 0 14px -2px rgba(96, 165, 250, 0.45);
+  --run-bg-hover: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border-hover: #123a7a;
+  --run-ink-hover: #dbeafe;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+  --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border: #0b5566;
+  --run-ink: #cffafe;
+  --run-shadow-hover: 0 0 14px -2px rgba(34, 211, 238, 0.45);
+  --run-bg-hover: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border-hover: #0b5566;
+  --run-ink-hover: #cffafe;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+  --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border: #3730a3;
+  --run-ink: #e0e7ff;
+  --run-shadow-hover: 0 0 14px -2px rgba(129, 140, 248, 0.45);
+  --run-bg-hover: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border-hover: #3730a3;
+  --run-ink-hover: #e0e7ff;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+  --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border: #5b21b6;
+  --run-ink: #ede9fe;
+  --run-shadow-hover: 0 0 14px -2px rgba(163, 113, 247, 0.45);
+  --run-bg-hover: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border-hover: #5b21b6;
+  --run-ink-hover: #ede9fe;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+  --run-bg: linear-gradient(135deg, #be185d, #f472b6);
+  --run-border: #be185d;
+  --run-ink: #fff1f7;
+  --run-shadow-hover: 0 0 14px -2px rgba(244, 114, 182, 0.45);
+  --run-bg-hover: linear-gradient(135deg, #be185d, #f472b6);
+  --run-border-hover: #be185d;
+  --run-ink-hover: #fff1f7;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+  --run-bg: linear-gradient(135deg, #27272a, #52525b);
+  --run-border: #18181b;
+  --run-ink: #fafafa;
+  --run-shadow-hover: 0 0 14px -2px rgba(161, 161, 170, 0.5);
+  --run-bg-hover: linear-gradient(135deg, #27272a, #52525b);
+  --run-border-hover: #18181b;
+  --run-ink-hover: #fafafa;
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+  --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border: #1b2a8f;
+  --run-ink: #f8faff;
+  --run-shadow-hover: 0 0 14px -2px rgba(77, 107, 254, 0.55);
+  --run-bg-hover: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border-hover: #1b2a8f;
+  --run-ink-hover: #f8faff;
+}
+
+/* On the non-og skins every mode reads the tokens, Shell included (accent). */
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]) {
+  background: var(--run-bg);
+  border-color: var(--run-border);
+  color: var(--run-ink);
+  box-shadow: var(--run-shadow, none);
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):hover {
+  background: var(--run-bg-hover, var(--run-bg));
+  border-color: var(--run-border-hover, var(--run-border));
+  color: var(--run-ink-hover, var(--run-ink));
+  box-shadow: var(--run-shadow-hover, var(--run-shadow, none));
+}
+:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):active {
+  background: var(--run-bg-active, var(--run-bg-hover, var(--run-bg)));
+  border-color: var(--run-border-active, var(--run-border-hover, var(--run-border)));
+}
+
 /* Daylight overrides that KEEP the skin's extra weight (html:not(), 0,1,1): the
    toolbar-button catch-all, the Run split button, Shell and Stop, and the focus ring.
    Without it, base rules of higher specificity win: the Run body and its gear
@@ -22873,106 +22952,24 @@ body.keyboard-visible .terminal-container .xterm-screen {
    skips the semantic variants (:where, so it adds no specificity), which keep
    their own accent / red / green, as the proposed dialog design calls for. */
 html:not([data-skin="og"]) {
-.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success)) {
+.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)) {
   background: var(--control-bg);
   border-color: var(--control-border);
   color: var(--text-dim);
 }
-.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success)):hover {
+.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)):hover {
   background: var(--control-bg-hover);
   border-color: var(--control-border-hover);
   color: var(--text);
   box-shadow: none;
 }
 
-/* ---- RUN button: THE focal saturated accent (flat emerald->teal fill) ---- */
-.btn-toolbar.btn-run,
-.btn-toolbar.btn-run.mode-claude {
-  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
+/* ---- RUN button weight: the colours are --run-* tokens (non-og values in the
+   skin component rules above); only the label weight needs to beat mobile.css. */
+.btn-toolbar.btn-run {
   font-weight: 700;
   text-shadow: none;
 }
-.btn-toolbar.btn-run:hover,
-.btn-toolbar.btn-run.mode-claude:hover {
-  background: linear-gradient(135deg, var(--run-hover-a), var(--run-hover-b));
-  box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.5);
-}
-.btn-toolbar.btn-run.mode-opencode {
-  background: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.btn-toolbar.btn-run.mode-opencode:hover { box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.45); }
-.btn-toolbar.btn-run.mode-codex {
-  background: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
-  border-color: var(--accent-grad-b);
-  color: #061c20;
-}
-.btn-toolbar.btn-run.mode-codex:hover { box-shadow: 0 0 14px -2px rgba(43, 203, 187, 0.45); }
-/* Gemini, Antigravity, Pi, OMP, Grok and DeepSeek all keep their own identity
-   on the non-og skins. Each rule has to live INSIDE this nested block: the
-   generic `.btn-toolbar.btn-run` above resolves to (0,3,1) here and would
-   otherwise beat the base sheet's (0,3,0) `.mode-<id>` pair — which is exactly
-   what gemini/antigravity/omp did until this fix, rendering as generic claude
-   blue on `daylight-blue`, the actual DEFAULT skin for a fresh install
-   (`index.html`'s pre-paint script), not just a corner case on `og`. */
-.btn-toolbar.btn-run.mode-gemini {
-  background: linear-gradient(135deg, #174ea6, #4f46e5);
-  border-color: #123a7a;
-  color: #dbeafe;
-}
-.btn-toolbar.btn-run.mode-gemini:hover { box-shadow: 0 0 14px -2px rgba(96, 165, 250, 0.45); }
-.btn-toolbar.btn-run.mode-antigravity {
-  background: linear-gradient(135deg, #0e7490, #0891b2);
-  border-color: #0b5566;
-  color: #cffafe;
-}
-.btn-toolbar.btn-run.mode-antigravity:hover { box-shadow: 0 0 14px -2px rgba(34, 211, 238, 0.45); }
-.btn-toolbar.btn-run.mode-omp {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  border-color: #3730a3;
-  color: #e0e7ff;
-}
-.btn-toolbar.btn-run.mode-omp:hover { box-shadow: 0 0 14px -2px rgba(129, 140, 248, 0.45); }
-.btn-toolbar.btn-run.mode-copilot {
-  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
-  border-color: #5b21b6;
-  color: #ede9fe;
-}
-.btn-toolbar.btn-run.mode-copilot:hover { box-shadow: 0 0 14px -2px rgba(163, 113, 247, 0.45); }
-.btn-toolbar.btn-run.mode-pi {
-  background: linear-gradient(135deg, #be185d, #f472b6);
-  border-color: #be185d;
-  color: #fff1f7;
-}
-.btn-toolbar.btn-run.mode-pi:hover { box-shadow: 0 0 14px -2px rgba(244, 114, 182, 0.45); }
-/* Grok keeps its charcoal identity on the non-og skins. Same specificity trap
-   as pi above: without this rule the generic `.btn-toolbar.btn-run` in this
-   nested block wins and grok renders as generic claude blue. */
-.btn-toolbar.btn-run.mode-grok {
-  background: linear-gradient(135deg, #27272a, #52525b);
-  border-color: #18181b;
-  color: #fafafa;
-}
-.btn-toolbar.btn-run.mode-grok:hover { box-shadow: 0 0 14px -2px rgba(161, 161, 170, 0.5); }
-/* DeepSeek keeps its indigo on the non-og skins — same specificity trap as pi
-   and grok above: without this rule the generic `.btn-toolbar.btn-run` in this
-   nested block wins and deepseek renders as generic claude blue, which is the
-   one colour it must not be mistaken for. */
-.btn-toolbar.btn-run.mode-deepseek {
-  background: linear-gradient(135deg, #2740c4, #4d6bfe);
-  border-color: #1b2a8f;
-  color: #f8faff;
-}
-.btn-toolbar.btn-run.mode-deepseek:hover { box-shadow: 0 0 14px -2px rgba(77, 107, 254, 0.55); }
-.btn-toolbar.btn-run-gear {
-  background: var(--accent-d);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.btn-toolbar.btn-run-gear:hover { background: var(--gear-hover); box-shadow: none; }
 
 /* ---- Shell button: quiet neutral with a calm green tint ---- */
 .btn-toolbar.btn-shell {
