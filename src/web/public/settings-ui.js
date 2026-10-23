@@ -584,7 +584,7 @@ Object.assign(CodemanApp.prototype, {
     // Session Manager, Away Digest and Cron buttons all default OFF (opt-in under
     // Display → Header Displays; the Cron button also ships with btn-cron--hidden
     // in the template, so an unchecked box and a hidden button stay consistent).
-    document.getElementById('appSettingsShowSessionButton').checked = settings.showSessionButton ?? defaults.showSessionButton ?? false;
+    document.getElementById('appSettingsShowSessionButton').checked = settings.showSessionButton ?? defaults.showSessionButton ?? true;
     document.getElementById('appSettingsShowAwayDigestButton').checked = settings.showAwayDigestButton ?? defaults.showAwayDigestButton ?? false;
     document.getElementById('appSettingsShowCronButton').checked = settings.showCronButton ?? defaults.showCronButton ?? false;
     document.getElementById('appSettingsShowGitStatus').checked = settings.showGitStatus ?? defaults.showGitStatus ?? false;
@@ -4334,7 +4334,7 @@ Object.assign(CodemanApp.prototype, {
     // Session Manager button — opt-in, hidden by default (App Settings → Display).
     // Marker class (base is display:inline-flex !important); phones keep it hidden
     // via mobile.css regardless. Sessions stay reachable via the Ctrl+K palette.
-    const showSessionButton = settings.showSessionButton ?? defaults.showSessionButton ?? false;
+    const showSessionButton = settings.showSessionButton ?? defaults.showSessionButton ?? true;
     const sessionBtn = document.querySelector('.btn-session-manager');
     if (sessionBtn) {
       sessionBtn.classList.toggle('btn-session-manager--hidden', !showSessionButton);

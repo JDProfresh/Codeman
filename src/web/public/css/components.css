@@ -387,6 +387,41 @@
     flex: none;
     color: var(--cm-text-2);
   }
+  /* A menu floating over the page, placed by its opener (top/right inline). */
+  .cm-menu--popover {
+    position: fixed;
+    z-index: var(--cm-z-popup);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+  /* A row holding an item plus trailing controls (a pin, inline steps). */
+  .cm-menu__row {
+    display: flex;
+    align-items: center;
+    gap: var(--cm-space-1);
+  }
+  .cm-menu__row > .cm-menu__item {
+    flex: 1;
+    width: auto;
+  }
+  .cm-menu__item--static {
+    cursor: default;
+  }
+  .cm-menu__item--static:hover {
+    background: transparent;
+  }
+  .cm-menu__pin {
+    color: var(--cm-text-3);
+  }
+  .cm-menu__pin[aria-checked='true'] {
+    color: var(--cm-accent);
+  }
+  .cm-menu__pin[aria-checked='true'] svg {
+    fill: currentColor;
+  }
   .cm-menu__kbd {
     margin-left: auto;
     color: var(--cm-text-3);

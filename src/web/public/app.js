@@ -1443,6 +1443,11 @@ class CodemanApp {
           this.closeTileCountMenu({ refocus: true });
           return;
         }
+        // And the header's More menu (header-more.js), the same way.
+        if (this._headerMoreMenu) {
+          this.closeHeaderMoreMenu({ refocus: true });
+          return;
+        }
         // And so does the rail's search box while it holds text: that Escape
         // clears the search and nothing else. This listener runs in the capture
         // phase, before the box's own onkeydown, so the box cannot claim it there.
