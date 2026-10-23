@@ -159,7 +159,7 @@ async function boot(device: Device = 'desktop', stored?: Settings) {
 describe('the App Settings row', () => {
   const doc = new JSDOM(INDEX).window.document;
   const input = doc.getElementById('appSettingsShowTabCliLogos') as HTMLInputElement;
-  const row = input?.closest('.set-row') as HTMLElement;
+  const row = input?.closest('.cm-row') as HTMLElement;
 
   it('is a switch in Appearance → Tabs (device scope), right after Tall Tabs', () => {
     expect(input?.type).toBe('checkbox');
@@ -172,8 +172,8 @@ describe('the App Settings row', () => {
   });
 
   it('says what it shows, what stays, and what it does not touch', () => {
-    expect(row.querySelector('.set-row-label')!.textContent).toBe('CLI Logos on Tabs');
-    const desc = row.querySelector('.set-row-desc')!.textContent!;
+    expect(row.querySelector('.cm-row__label')!.textContent).toBe('CLI Logos on Tabs');
+    const desc = row.querySelector('.cm-row__hint')!.textContent!;
     for (const part of ['logo', 'status dot', 'SH badge', 'Tile headers', 'Run menus']) {
       expect(desc, part).toContain(part);
     }
@@ -420,10 +420,10 @@ describe('the CSS', () => {
 
 describe('zh-CN', () => {
   const rowText = (doc: Document) => {
-    const row = doc.getElementById('appSettingsShowTabCliLogos')!.closest('.set-row')!;
+    const row = doc.getElementById('appSettingsShowTabCliLogos')!.closest('.cm-row')!;
     return {
-      label: row.querySelector('.set-row-label')!.textContent!.trim(),
-      description: row.querySelector('.set-row-desc')!.textContent!.trim(),
+      label: row.querySelector('.cm-row__label')!.textContent!.trim(),
+      description: row.querySelector('.cm-row__hint')!.textContent!.trim(),
     };
   };
   const english = rowText(new JSDOM(INDEX).window.document);

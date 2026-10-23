@@ -92,7 +92,8 @@ describe('Session Options modal structure', () => {
     expect(modal).not.toContain('modal-tab-content');
     // The `set-*` rules are shared by both modals through one :is() scope.
     const css = readFileSync(resolve(publicDir, 'styles.css'), 'utf8');
-    expect(css).toContain(':is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row {');
+    // Rows are the kit's .cm-row; the shared surface keeps only its settings-only label rule.
+    expect(css).toContain(':is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__label {');
     expect(css).toContain(':is(#sessionOptionsModal, #createCaseModal) .set-section.hidden {');
   });
 

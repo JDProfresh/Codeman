@@ -136,6 +136,11 @@ family). On phones only `--sm` stays a box; every other size goes full-screen. T
 overlay around it (`.modal`, `.modal-backdrop`, `.modal-close`) stays legacy until
 the shell phase.
 
-Next migrations: settings rows (`.set-*` → `.cm-row`), then the remaining toolbar
-and panel headers.
+**Settings rows are on the kit.** App Settings, Session Options and Add Case draw
+each row as a `.cm-row` (`__text`, `__label`, `__hint`) inside a `.cm-group` box, as
+board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
+label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
+`set-row-actions`, `has-field`) stay on top of the kit row.
+
+Next migrations: the remaining toolbar and panel headers, then the shell phase.
 Each one ships with a `css:diff` run showing only the intended changes.

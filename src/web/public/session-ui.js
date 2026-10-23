@@ -2938,7 +2938,7 @@ Object.assign(CodemanApp.prototype, {
     const box = document.getElementById('modalKeepWarmEnabled');
     if (!box) return;
     const inert = window.CodemanPromptCache.keepWarmUnavailable(session?.statusLineExporter);
-    box.closest('.set-row')?.classList.toggle('set-row-disabled', inert);
+    box.closest('.cm-row')?.classList.toggle('set-row-disabled', inert);
     box.disabled = inert && !box.checked;
   },
 

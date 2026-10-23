@@ -298,7 +298,7 @@
   }
   .cm-row__hint {
     color: var(--cm-text-3);
-    font: var(--cm-text-xs) / var(--cm-leading) var(--cm-font-ui);
+    font: var(--cm-text-xs) / var(--cm-leading-snug) var(--cm-font-ui);
   }
 
   /* ---------- List item (Inbox, digest, session manager, cron runs) ---------- */

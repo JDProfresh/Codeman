@@ -512,8 +512,8 @@ describe('the static markup through the real translator (JSDOM, zh-CN)', () => {
 
   it('the Detach Tiles row in App Settings: its name and what it does', () => {
     const row = doc.getElementById('appSettingsTileDetachItem')!;
-    expect(row.querySelector('.set-row-label')!.textContent).toContain('分离窗格');
-    const desc = row.querySelector('.set-row-desc')!.textContent!;
+    expect(row.querySelector('.cm-row__label')!.textContent).toContain('分离窗格');
+    const desc = row.querySelector('.cm-row__hint')!.textContent!;
     expect(desc).toContain('独立窗口');
     expect(leftover(desc.replace('Codeman', ''))).toEqual([]);
   });

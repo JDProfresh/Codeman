@@ -17816,7 +17816,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   transform: rotate(180deg);
 }
 
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced:not(.open) .set-group-body,
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced:not(.open) .cm-group,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced:not(.open) .set-group-hint {
   display: none;
 }
@@ -17828,15 +17828,9 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--text-muted);
 }
 
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
 /* Custom Model Endpoint Profiles' inline add/edit form: a nested panel rather
    than a modal, so it needs its own border to read as a distinct sub-section
-   inside .set-group-body's flat row stack. `--control-bg` rather than a
+   inside .cm-group's flat row stack. `--control-bg` rather than a
    hardcoded black alpha — CLAUDE.md records that literal fill turning the
    settings live preview into a grey slab on the light skins, and this panel
    sits in the very same modal. */
@@ -17858,53 +17852,36 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 /* ── rows ─────────────────────────────────────────────────────────────── */
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 10px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.028);
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  transition: background 0.15s, border-color 0.15s;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.09);
-}
-
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-block {
   flex-direction: column;
   align-items: stretch;
   gap: 9px;
 }
 
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-  flex: 1;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-label {
+/* Rows are the kit's .cm-row inside a .cm-group box (design-system phase 3, board
+   P03). What stays here is settings-only: a label that carries inline tags and
+   scope pills, and a hint wide enough to run most of the way to its switch (the
+   complaint about this panel was the dead gap a 62ch cap left behind). Content
+   that is not a row (chips, model cards, grids, the shortcut list, inline forms)
+   gets the box's inner padding. */
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__label {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
-  font-size: 0.76rem;
-  color: var(--text);
-  letter-spacing: -0.005em;
+  gap: var(--cm-space-1h);
 }
 
-/* Wide enough that a description runs most of the way to its switch: the
-   complaint about this panel was the dead gap a 62ch cap left behind. */
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-desc {
-  font-size: 0.645rem;
-  line-height: 1.4;
-  color: var(--text-muted);
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__hint {
   max-width: 78ch;
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) {
+  padding: var(--cm-space-3);
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) + *,
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > * + :not(.cm-row) {
+  border-top: 1px solid color-mix(in srgb, var(--cm-border) 70%, transparent);
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-actions {
@@ -18582,12 +18559,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 /* The usage-limit note sits under its description rather than beside the
    switch, and only appears while a pause is armed (`.active`). */
-#sessionOptionsModal .set-row-text > .auto-resume-status {
+#sessionOptionsModal .cm-row__text > .auto-resume-status {
   margin-top: 3px;
   font-size: 0.66rem;
 }
 
-#sessionOptionsModal .set-row-text > .session-respawn-status {
+#sessionOptionsModal .cm-row__text > .session-respawn-status {
   align-self: flex-start;
   margin-top: 3px;
 }
@@ -19012,25 +18989,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 #sessionOptionsModal .set-group + .set-group {
   margin-top: 16px;
-}
-
-#sessionOptionsModal .set-group-body {
-  gap: 5px;
-}
-
-#sessionOptionsModal .set-row {
-  padding: 10px 14px;
-  border-radius: 11px;
-}
-
-#sessionOptionsModal .set-row-label {
-  font-size: 0.88rem;
-  font-weight: 540;
-}
-
-#sessionOptionsModal .set-row-desc {
-  font-size: 0.72rem;
-  line-height: 1.45;
 }
 
 #sessionOptionsModal .set-input,

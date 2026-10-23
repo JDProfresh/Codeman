@@ -23,10 +23,10 @@ type Api = { configure(o: Record<string, string>): void; start(): void };
 const leftover = (text: string) => text.replace(/\/resume|\b(CLI|Claude|Codeman)\b/g, '').match(/[A-Za-z]+/g) ?? [];
 
 function rowStrings(doc: Document): { label: string; description: string } {
-  const row = doc.getElementById('appSettingsPinCliSessionName')!.closest('.set-row')!;
+  const row = doc.getElementById('appSettingsPinCliSessionName')!.closest('.cm-row')!;
   return {
-    label: row.querySelector('.set-row-label')!.textContent!.trim(),
-    description: row.querySelector('.set-row-desc')!.textContent!.trim(),
+    label: row.querySelector('.cm-row__label')!.textContent!.trim(),
+    description: row.querySelector('.cm-row__hint')!.textContent!.trim(),
   };
 }
 

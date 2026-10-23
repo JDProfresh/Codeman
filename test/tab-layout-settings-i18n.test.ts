@@ -44,11 +44,11 @@ function rowStrings(doc: Document): Map<string, string> {
   const out = new Map<string, string>();
   for (const id of ROWS) {
     const select = doc.getElementById(id)!;
-    const row = select.closest('.set-row')!;
-    const label = row.querySelector('.set-row-label')!.cloneNode(true) as Element;
+    const row = select.closest('.cm-row')!;
+    const label = row.querySelector('.cm-row__label')!.cloneNode(true) as Element;
     label.querySelector('.set-tag')?.remove();
     out.set(`${id} label`, label.textContent!.trim());
-    out.set(`${id} description`, row.querySelector('.set-row-desc')!.textContent!.trim());
+    out.set(`${id} description`, row.querySelector('.cm-row__hint')!.textContent!.trim());
     for (const option of select.querySelectorAll('option')) {
       out.set(`${id} option ${option.getAttribute('value')}`, option.textContent!.trim());
     }
@@ -124,12 +124,12 @@ function bottomBarStrings(doc: Document): Map<string, string> {
   const out = new Map<string, string>();
   const group = doc.getElementById('appSettingsShowGitStatus')!.closest('.set-group')!;
   out.set('heading', group.querySelector('h4')!.textContent!.trim());
-  for (const row of group.querySelectorAll('.set-row')) {
+  for (const row of group.querySelectorAll('.cm-row')) {
     const id = row.querySelector('input, select')!.id;
-    const label = row.querySelector('.set-row-label')!.cloneNode(true) as Element;
+    const label = row.querySelector('.cm-row__label')!.cloneNode(true) as Element;
     label.querySelector('.set-scope')?.remove();
     out.set(`${id} label`, label.textContent!.trim());
-    out.set(`${id} description`, row.querySelector('.set-row-desc')!.textContent!.trim());
+    out.set(`${id} description`, row.querySelector('.cm-row__hint')!.textContent!.trim());
   }
   return out;
 }

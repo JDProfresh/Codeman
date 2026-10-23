@@ -3836,56 +3836,36 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
     padding: 0 3px;
   }
 
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body {
-    gap: 0;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 13px;
-    overflow: hidden;
-  }
 
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .set-row {
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    padding: 12px 13px;
-    gap: 12px;
-  }
-
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .set-row + .set-row {
-    border-top: 1px solid rgba(255, 255, 255, 0.055);
-  }
-
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .set-chips,
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .set-modelgrid,
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .set-minigrid,
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > #appSettingsShortcutsList {
-    padding: 12px;
-  }
-
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-body > .event-type-grid {
-    padding: 12px;
+  /* Non-row content in a group takes the box padding from styles.css. */
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > .event-type-grid {
     margin: 0;
   }
 
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-label {
-    font-size: 0.84rem;
+  /* Phones keep the denser list they had: a step smaller and a tighter inset, so a
+     hint wraps one line less and a row stays near its old 60px. */
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row {
+    padding: var(--cm-space-2) var(--cm-space-3);
   }
 
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-desc {
-    font-size: 0.69rem;
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__label {
+    font-size: var(--cm-text-sm);
+  }
+
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__hint {
     max-width: none;
+    font-size: var(--cm-text-2xs);
   }
 
   /* Fields go full width under their label instead of fighting for the row */
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row.has-field {
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row.has-field {
     flex-direction: column;
     align-items: stretch;
     gap: 9px;
   }
 
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row.has-field .set-select,
-  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row.has-field .set-input {
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row.has-field .set-select,
+  :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row.has-field .set-input {
     width: 100%;
     min-width: 0;
     max-width: none;

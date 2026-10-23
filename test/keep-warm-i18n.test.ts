@@ -26,10 +26,10 @@ const leftover = (text: string) =>
   text.replace(/\b(Claude Code|Claude|Codeman|Ralph)\b/g, '').match(/[A-Za-z]+/g) ?? [];
 
 function rowStrings(doc: Document, id: string): { label: string; description: string } {
-  const row = doc.getElementById(id)!.closest('.set-row')!;
+  const row = doc.getElementById(id)!.closest('.cm-row')!;
   return {
-    label: row.querySelector('.set-row-label')!.textContent!.trim(),
-    description: row.querySelector('.set-row-desc')!.textContent!.trim(),
+    label: row.querySelector('.cm-row__label')!.textContent!.trim(),
+    description: row.querySelector('.cm-row__hint')!.textContent!.trim(),
   };
 }
 

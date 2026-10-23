@@ -1230,7 +1230,7 @@ Object.assign(CodemanApp.prototype, {
     const doc = document.getElementById('appSettingsDoc');
     if (!doc) return;
     const q = (query || '').trim().toLowerCase();
-    const UNIT = '.set-row, .set-chip, .set-modelgrid, .set-minigrid, .event-type-grid, #appSettingsShortcutsList';
+    const UNIT = '.cm-row, .set-chip, .set-modelgrid, .set-minigrid, .event-type-grid, #appSettingsShortcutsList';
     const units = [...doc.querySelectorAll(UNIT)];
     let anyVisible = false;
 
@@ -3507,10 +3507,10 @@ Object.assign(CodemanApp.prototype, {
         // match everywhere it is used, including where the argument is not.
         const idArg = escapeHtml(JSON.stringify(h.id));
         return `
-          <div class="set-row" data-endpoint-id="${escapeHtml(h.id)}">
-            <div class="set-row-text">
-              <span class="set-row-label">${escapeHtml(h.label)}</span>
-              <span class="set-row-desc">${escapeHtml(h.baseUrl)} — ${modelSummary}</span>
+          <div class="cm-row" data-endpoint-id="${escapeHtml(h.id)}">
+            <div class="cm-row__text">
+              <span class="cm-row__label">${escapeHtml(h.label)}</span>
+              <span class="cm-row__hint">${escapeHtml(h.baseUrl)} — ${modelSummary}</span>
             </div>
             <div class="set-row-actions">
               <button type="button" class="btn-toolbar btn-sm" onclick="app.discoverCustomModelHostModels(${idArg})">Discover</button>
@@ -3747,16 +3747,16 @@ Object.assign(CodemanApp.prototype, {
           : `<button type="button" class="btn-toolbar btn-sm" onclick="app.openCliCustomForm(${idArg})">Edit</button>
              <button type="button" class="btn-toolbar btn-danger btn-sm" onclick="app.deleteCliCustom(${idArg})">Delete</button>`;
         const toggle = untoggleable
-          ? '<span class="set-row-desc">Always available</span>'
+          ? '<span class="cm-row__hint">Always available</span>'
           : `<label class="switch switch-sm">
               <input type="checkbox" ${c.enabled ? 'checked' : ''} onchange="app.toggleCliEnabled(${idArg}, this)">
               <span class="slider"></span>
             </label>`;
         return `
-          <div class="set-row" data-cli-id="${escapeHtml(c.id)}">
-            <div class="set-row-text">
-              <span class="set-row-label">${escapeHtml(c.label)} <span class="set-scope">${escapeHtml(c.shortBadge)}</span></span>
-              <span class="set-row-desc">${c.installed ? 'Installed' : 'Not installed'}${c.stock ? '' : ' · custom'}</span>
+          <div class="cm-row" data-cli-id="${escapeHtml(c.id)}">
+            <div class="cm-row__text">
+              <span class="cm-row__label">${escapeHtml(c.label)} <span class="set-scope">${escapeHtml(c.shortBadge)}</span></span>
+              <span class="cm-row__hint">${c.installed ? 'Installed' : 'Not installed'}${c.stock ? '' : ' · custom'}</span>
             </div>
             <div class="set-row-actions">
               ${installBtn}

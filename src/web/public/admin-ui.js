@@ -139,9 +139,9 @@
         users from each other. Pair with Docker cases for isolation.</p>
       <div class="set-group">
         <div class="set-group-head"><h4>Accounts</h4></div>
-        <div class="set-group-body">
-          <div class="set-row">
-            <div class="set-row-text"><span class="set-row-label">Manage users</span></div>
+        <div class="cm-group">
+          <div class="cm-row">
+            <div class="cm-row__text"><span class="cm-row__label">Manage users</span></div>
             <div class="set-row-actions">
               <button class="btn-toolbar btn-sm" id="adminOpenPanel">Open Admin Panel</button>
               <button class="btn-toolbar btn-sm" id="adminAddUser">+ Add user</button>

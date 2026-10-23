@@ -38,7 +38,7 @@ describe('spawnedTabsFollowParent setting', () => {
     const tabs = html.slice(html.indexOf('<h4>Tabs</h4><span class="set-scope">device</span>'));
     const group = tabs.slice(0, tabs.indexOf('</section>'));
     const row = group.match(
-      /<div class="set-row"[^>]*id="appSettingsSpawnedTabsFollowParentItem"[\s\S]*?<\/label>/
+      /<div class="cm-row"[^>]*id="appSettingsSpawnedTabsFollowParentItem"[\s\S]*?<\/label>/
     )?.[0];
     expect(row).toBeTruthy();
     expect(row).toContain(LABEL);

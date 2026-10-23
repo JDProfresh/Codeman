@@ -1345,21 +1345,21 @@
                 <div class="set-group">
                   <div class="set-group-head"><h4>Prompt cache</h4></div>
                   <p class="set-group-hint">While the cached conversation is warm, a turn re-reads it at the cheap cached rate. Once it sits idle past the cache lifetime, the next turn re-processes the whole context at the cache-write rate.</p>
-                  <div class="set-group-body">
-                    <div class="set-row">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Status</span>
-                        <span class="set-row-desc" id="promptCacheStatus" data-i18n-skip>Not reported yet.</span>
-                        <span class="set-row-desc" id="keepWarmStatus" data-i18n-skip hidden></span>
+                  <div class="cm-group">
+                    <div class="cm-row">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Status</span>
+                        <span class="cm-row__hint" id="promptCacheStatus" data-i18n-skip>Not reported yet.</span>
+                        <span class="cm-row__hint" id="keepWarmStatus" data-i18n-skip hidden></span>
                       </div>
                     </div>
                     <!-- Per-session opt-in for the keep-alive nudge (prompt-cache-keepwarm.ts);
                          the default for sessions that have not chosen lives in App Settings →
                          Automation. Its status shares the Status row above: session-ui.js updateKeepWarmStatus. -->
-                    <div class="set-row">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Keep the cache warm while idle</span>
-                        <span class="set-row-desc">Sends a one-line keep-alive just before the cache expires, so your next prompt still reads from cache. Runs only while idle, up to the limit in App Settings &rarr; System &rarr; Automation; switch on before launch to also stop Claude Code's own idle compaction.</span>
+                    <div class="cm-row">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Keep the cache warm while idle</span>
+                        <span class="cm-row__hint">Sends a one-line keep-alive just before the cache expires, so your next prompt still reads from cache. Runs only while idle, up to the limit in App Settings &rarr; System &rarr; Automation; switch on before launch to also stop Claude Code's own idle compaction.</span>
                       </div>
                       <label class="switch switch-sm"><input type="checkbox" id="modalKeepWarmEnabled" onchange="app.autoSaveKeepWarm()"><span class="slider"></span></label>
                     </div>
@@ -1368,10 +1368,10 @@
 
                 <div class="set-group">
                   <div class="set-group-head"><h4>Loop control</h4></div>
-                  <div class="set-group-body">
-                    <div class="set-row">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Status</span>
+                  <div class="cm-group">
+                    <div class="cm-row">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Status</span>
                         <div class="session-respawn-status" id="sessionRespawnStatus">
                           <span class="respawn-status-indicator"></span>
                           <span class="respawn-status-text">Not active</span>
@@ -1388,11 +1388,11 @@
                 <div class="set-group">
                   <div class="set-group-head"><h4>Respawn loop</h4></div>
                   <p class="set-group-hint">Whenever Claude goes idle, Codeman sends the update prompt, optionally runs /clear + /init, and kickstarts the next round &mdash; repeating for the chosen duration. Configure it here, then press Enable.</p>
-                  <div class="set-group-body">
-                    <div class="set-row set-row-block">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Duration</span>
-                        <span class="set-row-desc">How long the loop keeps cycling before it stops on its own.</span>
+                  <div class="cm-group">
+                    <div class="cm-row set-row-block">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Duration</span>
+                        <span class="cm-row__hint">How long the loop keeps cycling before it stops on its own.</span>
                       </div>
                       <div class="duration-presets">
                         <button type="button" class="duration-preset-btn" data-minutes="30" onclick="app.selectDurationPreset('30')">30m</button>
@@ -1411,10 +1411,10 @@
                       </div>
                     </div>
 
-                    <div class="set-row set-row-block">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Preset</span>
-                        <span class="set-row-desc">Load a saved loop configuration, or store the current one under a name.</span>
+                    <div class="cm-row set-row-block">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Preset</span>
+                        <span class="cm-row__hint">Load a saved loop configuration, or store the current one under a name.</span>
                       </div>
                       <div class="set-row-actions set-row-actions-wide">
                         <select id="respawnPresetSelect" class="set-select" onchange="app.updatePresetDescription()">
@@ -1429,34 +1429,34 @@
                       </div>
                       <!-- Filled by updatePresetDescription() and CLEARED on every
                            open, so it can never hold the row's own description. -->
-                      <span class="set-row-desc set-row-note" id="presetDescriptionHint"></span>
+                      <span class="cm-row__hint set-row-note" id="presetDescriptionHint"></span>
                     </div>
                   </div>
                 </div>
 
                 <div class="set-group">
                   <div class="set-group-head"><h4>Cycle steps</h4></div>
-                  <div class="set-group-body">
-                    <div class="set-row set-row-block">
-                      <div class="set-row-text">
-                        <span class="set-row-label">1. Update prompt</span>
-                        <span class="set-row-desc">Sent as soon as the session goes idle.</span>
+                  <div class="cm-group">
+                    <div class="cm-row set-row-block">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">1. Update prompt</span>
+                        <span class="cm-row__hint">Sent as soon as the session goes idle.</span>
                       </div>
                       <textarea id="modalRespawnPrompt" class="set-textarea" rows="1" placeholder="Prompt to send when idle" onchange="app.autoSaveRespawnConfig()">update all the docs and CLAUDE.md</textarea>
                     </div>
 
                     <!-- Real checkboxes, deliberately: these are numbered steps of
                          one cycle, not a set of independent tags. -->
-                    <div class="set-row set-checks">
+                    <div class="cm-row set-checks">
                       <label class="set-check"><input type="checkbox" id="modalRespawnSendClear" checked onchange="app.autoSaveRespawnConfig()"><span>2. Send /clear</span></label>
                       <label class="set-check"><input type="checkbox" id="modalRespawnSendInit" checked onchange="app.autoSaveRespawnConfig()"><span>3. Send /init</span></label>
                       <label class="set-check" title="Presses Enter for plan approvals and default question options"><input type="checkbox" id="modalRespawnAutoAccept" checked onchange="app.autoSaveRespawnConfig()"><span>Auto-accept prompts</span></label>
                     </div>
 
-                    <div class="set-row set-row-block">
-                      <div class="set-row-text">
-                        <span class="set-row-label">4. Kickstart prompt</span>
-                        <span class="set-row-desc">Sent only when /init finishes but Claude stays idle. Optional.</span>
+                    <div class="cm-row set-row-block">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">4. Kickstart prompt</span>
+                        <span class="cm-row__hint">Sent only when /init finishes but Claude stays idle. Optional.</span>
                       </div>
                       <textarea id="modalRespawnKickstart" class="set-textarea" rows="1" placeholder="Optional: prompt if /init doesn't trigger work" onchange="app.autoSaveRespawnConfig()"></textarea>
                     </div>
@@ -1476,31 +1476,31 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Identity</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Session name</span>
-                      <span class="set-row-desc">Shown in the tab. Right-click a tab to rename it inline.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Session name</span>
+                      <span class="cm-row__hint">Shown in the tab. Right-click a tab to rename it inline.</span>
                     </div>
                     <div class="set-row-actions">
                       <span id="modalSessionPrefix" class="set-static" style="display: none; white-space: nowrap;"></span>
                       <input type="text" id="modalSessionName" class="set-input" maxlength="128" placeholder="Auto (directory name)" onblur="app.saveSessionName()">
                     </div>
                   </div>
-                  <div class="set-row set-row-block">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Working folder</span>
-                      <span class="set-row-desc" id="modalSessionPathDesc">Where this session's CLI runs, on the machine hosting Codeman.</span>
+                  <div class="cm-row set-row-block">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Working folder</span>
+                      <span class="cm-row__hint" id="modalSessionPathDesc">Where this session's CLI runs, on the machine hosting Codeman.</span>
                     </div>
                     <div class="set-row-actions">
                       <code id="modalSessionPath" class="set-static mono" style="flex: 1; min-width: 0; word-break: break-all; user-select: all;"></code>
                       <button type="button" class="btn-toolbar btn-sm" id="modalSessionPathCopy" onclick="app.copySessionPath()">Copy</button>
                     </div>
                   </div>
-                  <div class="set-row set-row-block">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Session color</span>
-                      <span class="set-row-desc">Tints the tab so a session is findable at a glance.</span>
+                  <div class="cm-row set-row-block">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Session color</span>
+                      <span class="cm-row__hint">Tints the tab so a session is findable at a glance.</span>
                     </div>
                     <div class="color-picker" id="sessionColorPicker">
                       <button type="button" class="color-swatch" data-color="default" title="Default">
@@ -1529,10 +1529,10 @@
                       </button>
                     </div>
                   </div>
-                  <div class="set-row" data-search="pop out detach tab window this session">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Pop-out button on this tab</span>
-                      <span class="set-row-desc">Show the open-in-a-window button on this tab even while the general App Settings toggle is off.</span>
+                  <div class="cm-row" data-search="pop out detach tab window this session">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Pop-out button on this tab</span>
+                      <span class="cm-row__hint">Show the open-in-a-window button on this tab even while the general App Settings toggle is off.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="sessionOptShowTabDetach" onchange="app.onSessionTabDetachToggle(this.checked)"><span class="slider"></span></label>
                   </div>
@@ -1541,11 +1541,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Context window</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Auto-compact</span>
-                      <span class="set-row-desc">Summarizes the context at the threshold while preserving key information.</span>
+                <div class="cm-group">
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Auto-compact</span>
+                      <span class="cm-row__hint">Summarizes the context at the threshold while preserving key information.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="modalAutoCompactThreshold" class="set-num set-num-wide" value="110000" min="10000" max="500000" step="10000" onchange="app.autoSaveAutoCompact()">
@@ -1553,17 +1553,17 @@
                       <label class="switch switch-sm"><input type="checkbox" id="modalAutoCompactEnabled" onchange="app.autoSaveAutoCompact()"><span class="slider"></span></label>
                     </div>
                   </div>
-                  <div class="set-row has-field">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Compact focus prompt</span>
-                      <span class="set-row-desc">Optional: what the summary should hold on to.</span>
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Compact focus prompt</span>
+                      <span class="cm-row__hint">Optional: what the summary should hold on to.</span>
                     </div>
                     <input type="text" id="modalAutoCompactPrompt" class="set-input" value="" placeholder="Focus prompt (optional)" onchange="app.autoSaveAutoCompact()">
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Auto-clear</span>
-                      <span class="set-row-desc">Full context reset at the threshold. Keep it higher than auto-compact.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Auto-clear</span>
+                      <span class="cm-row__hint">Full context reset at the threshold. Keep it higher than auto-compact.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="modalAutoClearThreshold" class="set-num set-num-wide" value="140000" min="10000" max="500000" step="10000" onchange="app.autoSaveAutoClear()">
@@ -1576,18 +1576,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Behavior</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Image watcher</span>
-                      <span class="set-row-desc">Pops up new images (screenshots, generated files) found in this session's directory.</span>
+                <div class="cm-group">
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Image watcher</span>
+                      <span class="cm-row__hint">Pops up new images (screenshots, generated files) found in this session's directory.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="modalImageWatcherEnabled" checked onchange="app.toggleSessionImageWatcher()"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Flicker filter</span>
-                      <span class="set-row-desc">Buffers output after screen clears to reduce Ink UI flickering. Adds ~50ms latency.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Flicker filter</span>
+                      <span class="cm-row__hint">Buffers output after screen clears to reduce Ink UI flickering. Adds ~50ms latency.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="modalFlickerFilterEnabled" onchange="app.toggleFlickerFilter()"><span class="slider"></span></label>
                   </div>
@@ -1605,18 +1605,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Tracker</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Enable tracker</span>
-                      <span class="set-row-desc">Auto-detects loops and todos in Claude's output.</span>
+                <div class="cm-group">
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Enable tracker</span>
+                      <span class="cm-row__hint">Auto-detects loops and todos in Claude's output.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="modalRalphEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row has-field">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Completion phrase</span>
-                      <span class="set-row-desc">What Claude prints when the loop is done, without &lt;promise&gt; tags.</span>
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Completion phrase</span>
+                      <span class="cm-row__hint">What Claude prints when the loop is done, without &lt;promise&gt; tags.</span>
                     </div>
                     <input type="text" id="modalRalphPhrase" class="set-input" placeholder="e.g. COMPLETE, DONE, FINISHED">
                   </div>
@@ -1625,35 +1625,35 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Limits</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Max iterations</span>
-                      <span class="set-row-desc">0 = unlimited.</span>
+                <div class="cm-group">
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Max iterations</span>
+                      <span class="cm-row__hint">0 = unlimited.</span>
                     </div>
                     <input type="number" id="modalRalphMaxIterations" class="set-num" value="0" min="0" max="1000">
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Max todos</span>
-                      <span class="set-row-desc">Per session; the oldest are evicted first.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Max todos</span>
+                      <span class="cm-row__hint">Per session; the oldest are evicted first.</span>
                     </div>
                     <input type="number" id="modalRalphMaxTodos" class="set-num" value="50" min="1" max="500">
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Todo expiration</span>
-                      <span class="set-row-desc">How long an untouched todo survives.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Todo expiration</span>
+                      <span class="cm-row__hint">How long an untouched todo survives.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="modalRalphTodoExpiration" class="set-num" value="60" min="1" max="1440">
                       <span class="set-unit">min</span>
                     </div>
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Apply</span>
-                      <span class="set-row-desc">Ralph settings are the one group here that does not save on change.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Apply</span>
+                      <span class="cm-row__hint">Ralph settings are the one group here that does not save on change.</span>
                     </div>
                     <button class="btn-toolbar btn-primary btn-sm" onclick="app.saveRalphConfig()">Save Ralph config</button>
                   </div>
@@ -1671,7 +1671,7 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Timeline</h4><span class="set-scope" id="runSummarySessionInfo"></span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="run-summary-filters">
                     <button class="filter-btn active" data-filter="all" onclick="app.filterRunSummary('all')">All</button>
                     <button class="filter-btn" data-filter="errors" onclick="app.filterRunSummary('errors')">Errors</button>
@@ -1880,21 +1880,21 @@
               <p class="set-section-blurb">The version this install is running, and the one-click update.</p>
 
               <div class="set-group">
-                <div class="set-group-body">
-                  <div class="set-row" data-search="version current release">
-                    <div class="set-row-text"><span class="set-row-label">Current version</span></div>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="version current release">
+                    <div class="cm-row__text"><span class="cm-row__label">Current version</span></div>
                     <span class="set-static set-static-strong mono" id="updateCurrentVersion">&mdash;</span>
                   </div>
-                  <div class="set-row" id="updateCheckRow" data-search="check for updates github release">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Check for updates</span>
-                      <span class="set-row-desc">Looks at GitHub for a newer Codeman release.</span>
+                  <div class="cm-row" id="updateCheckRow" data-search="check for updates github release">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Check for updates</span>
+                      <span class="cm-row__hint">Looks at GitHub for a newer Codeman release.</span>
                     </div>
                     <button class="btn-toolbar btn-sm" id="updateCheckBtn" onclick="app.checkForUpdate()">Check now</button>
                   </div>
                   <div id="updateResult" class="set-note" style="display:none"></div>
-                  <div class="set-row" id="updateActionRow" style="display:none">
-                    <div class="set-row-text"><span class="set-row-label" id="updateActionLabel">Update available</span></div>
+                  <div class="cm-row" id="updateActionRow" style="display:none">
+                    <div class="cm-row__text"><span class="cm-row__label" id="updateActionLabel">Update available</span></div>
                     <button class="btn-toolbar btn-sm btn-primary" id="updateNowBtn" onclick="app.startSelfUpdate()">Update now</button>
                   </div>
                   <div id="updateNotes" class="set-notes" style="display:none"></div>
@@ -1913,32 +1913,32 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Typing</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="local echo typing latency mobile">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Local Echo</span>
-                      <span class="set-row-desc">Paint keystrokes instantly instead of waiting for the round trip. Recommended on phones and high-latency links.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="local echo typing latency mobile">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Local Echo</span>
+                      <span class="cm-row__hint">Paint keystrokes instantly instead of waiting for the round trip. Recommended on phones and high-latency links.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsLocalEcho"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="keyboard hold rows resize redraw mobile">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Keep Size Under Keyboard</span>
-                      <span class="set-row-desc">For Claude sessions, opening the on-screen keyboard keeps the session's size and scrolls the view instead, so Claude does not reprint its screen and lose transcript lines. Full-screen CLIs such as Codex are resized as before.</span>
+                  <div class="cm-row" data-search="keyboard hold rows resize redraw mobile">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Keep Size Under Keyboard</span>
+                      <span class="cm-row__hint">For Claude sessions, opening the on-screen keyboard keeps the session's size and scrolls the view instead, so Claude does not reprint its screen and lose transcript lines. Full-screen CLIs such as Codex are resized as before.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsKeyboardHoldsRows"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="cjk input ime chinese japanese korean">
-                    <div class="set-row-text">
-                      <span class="set-row-label">CJK Input</span>
-                      <span class="set-row-desc">Dedicated IME field for Chinese, Japanese and Korean composition.</span>
+                  <div class="cm-row" data-search="cjk input ime chinese japanese korean">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">CJK Input</span>
+                      <span class="cm-row__hint">Dedicated IME field for Chinese, Japanese and Korean composition.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCjkInput"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="extended keyboard bar tab esc arrows phone">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Extended Keyboard Bar <span class="set-tag">phone</span></span>
-                      <span class="set-row-desc">Extra phone keys: Tab, Shift+Tab, Esc, arrows, Ctrl+O.</span>
+                  <div class="cm-row" data-search="extended keyboard bar tab esc arrows phone">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Extended Keyboard Bar <span class="set-tag">phone</span></span>
+                      <span class="cm-row__hint">Extra phone keys: Tab, Shift+Tab, Esc, arrows, Ctrl+O.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsExtendedKeyboardBar"><span class="slider"></span></label>
                   </div>
@@ -1947,18 +1947,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Selection &amp; clipboard</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="auto copy selection clipboard highlight copy on select mouse">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Auto Copy Selection</span>
-                      <span class="set-row-desc">Put highlighted terminal text on the clipboard as soon as you finish selecting it, with mouse, double-click or long-press. Ctrl+C still copies on demand, and nothing outside the terminal is copied.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="auto copy selection clipboard highlight copy on select mouse">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Auto Copy Selection</span>
+                      <span class="cm-row__hint">Put highlighted terminal text on the clipboard as soon as you finish selecting it, with mouse, double-click or long-press. Ctrl+C still copies on demand, and nothing outside the terminal is copied.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsAutoCopySelection"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="copy indent margin gutter dedent trim leading whitespace paste">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Trim the pane margin on copy</span>
-                      <span class="set-row-desc">Drop the left margin a full-screen agent CLI paints down its own edge, so copied text pastes flush instead of indented. Each CLI declares its own width, and the strip is never wider than the indent every selected line shares, so nesting inside the selection is kept. Claude Code and Codex declare a margin today; a shell, and any CLI that declares none, is left alone.</span>
+                  <div class="cm-row" data-search="copy indent margin gutter dedent trim leading whitespace paste">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Trim the pane margin on copy</span>
+                      <span class="cm-row__hint">Drop the left margin a full-screen agent CLI paints down its own edge, so copied text pastes flush instead of indented. Each CLI declares its own width, and the strip is never wider than the indent every selected line shares, so nesting inside the selection is kept. Claude Code and Codex declare a margin today; a shell, and any CLI that declares none, is left alone.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCopyStripMargin"><span class="slider"></span></label>
                   </div>
@@ -1967,18 +1967,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Font</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="terminal font family nerd custom typeface">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Terminal font</span>
-                      <span class="set-row-desc">Prepended to the built-in stack, so fallbacks (including bundled Nerd Font symbols) keep working. Must be installed on this device. Leave empty for the default.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="terminal font family nerd custom typeface">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Terminal font</span>
+                      <span class="cm-row__hint">Prepended to the built-in stack, so fallbacks (including bundled Nerd Font symbols) keep working. Must be installed on this device. Leave empty for the default.</span>
                     </div>
                     <input type="text" id="appSettingsTerminalFont" class="set-input" placeholder='e.g. JetBrainsMono Nerd Font'>
                   </div>
-                  <div class="set-row has-field" data-search="terminal font weight normal regular light thin bold contrast">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Normal font weight</span>
-                      <span class="set-row-desc">Weight for ordinary terminal text. Lowering it widens the step up to bold, which for a family shipping only a regular and a bold face is the only cue bold text carries. Needs a family with faces at that weight; the bundled font covers 100 to 800.</span>
+                  <div class="cm-row has-field" data-search="terminal font weight normal regular light thin bold contrast">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Normal font weight</span>
+                      <span class="cm-row__hint">Weight for ordinary terminal text. Lowering it widens the step up to bold, which for a family shipping only a regular and a bold face is the only cue bold text carries. Needs a family with faces at that weight; the bundled font covers 100 to 800.</span>
                     </div>
                     <select id="appSettingsTerminalFontWeight" class="set-select">
                       <option value="">Default (normal)</option>
@@ -1993,10 +1993,10 @@
                       <option value="900">900</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="terminal bold font weight heavy black emphasis">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Bold font weight</span>
-                      <span class="set-row-desc">Weight for bold terminal text. Only useful with a family carrying something heavier than its bold face.</span>
+                  <div class="cm-row has-field" data-search="terminal bold font weight heavy black emphasis">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Bold font weight</span>
+                      <span class="cm-row__hint">Weight for bold terminal text. Only useful with a family carrying something heavier than its bold face.</span>
                     </div>
                     <select id="appSettingsTerminalFontWeightBold" class="set-select">
                       <option value="">Default (bold)</option>
@@ -2016,25 +2016,25 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Scrolling &amp; rendering</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="wheel scroll local history scrollback transcript">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Wheel Scrolls Local History <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">Plain wheel or two-finger swipe pages the terminal's own scrollback instead of the CLI transcript. Shift+wheel always reaches local scrollback.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="wheel scroll local history scrollback transcript">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Wheel Scrolls Local History <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">Plain wheel or two-finger swipe pages the terminal's own scrollback instead of the CLI transcript. Shift+wheel always reaches local scrollback.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsTerminalWheelLocal"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsWebglRendererItem" data-search="webgl renderer gpu terminal">
-                    <div class="set-row-text">
-                      <span class="set-row-label">WebGL Renderer <span class="set-tag">desktop</span> <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">GPU-accelerated terminal drawing. Codeman falls back to the DOM renderer after repeated GPU stalls.</span>
+                  <div class="cm-row" id="appSettingsWebglRendererItem" data-search="webgl renderer gpu terminal">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">WebGL Renderer <span class="set-tag">desktop</span> <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">GPU-accelerated terminal drawing. Codeman falls back to the DOM renderer after repeated GPU stalls.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsWebglRenderer"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsGestureControlItem" data-search="gesture control camera hand tracking">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Gesture Control <span class="set-tag set-tag-beta">beta</span> <span class="set-scope">synced</span></span>
-                      <span class="set-row-desc">Camera hand-tracking overlay. Applied on reload; the instance must run with CODEMAN_GESTURE=1.</span>
+                  <div class="cm-row" id="appSettingsGestureControlItem" data-search="gesture control camera hand tracking">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Gesture Control <span class="set-tag set-tag-beta">beta</span> <span class="set-scope">synced</span></span>
+                      <span class="cm-row__hint">Camera hand-tracking overlay. Applied on reload; the instance must run with CODEMAN_GESTURE=1.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsGestureControl"><span class="slider"></span></label>
                   </div>
@@ -2043,11 +2043,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Key tester</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="key tester keyboard shift enter newline diagnose keydown keypress">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Key tester</span>
-                      <span class="set-row-desc">Click the box and press keys to see what this browser reports (key, code, modifiers) for keydown, keypress and keyup. Useful when a shortcut such as Shift+Enter behaves differently on one device. Nothing is sent to a session.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="key tester keyboard shift enter newline diagnose keydown keypress">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Key tester</span>
+                      <span class="cm-row__hint">Click the box and press keys to see what this browser reports (key, code, modifiers) for keydown, keypress and keyup. Useful when a shortcut such as Shift+Enter behaves differently on one device. Nothing is sent to a session.</span>
                     </div>
                     <input type="text" id="keyTesterInput" class="set-input" data-raw-keys readonly autocomplete="off" spellcheck="false"
                       placeholder="Click here, then press keys"
@@ -2101,7 +2101,7 @@
               <div class="set-group">
                 <div class="set-group-head"><h4>Header buttons</h4><span class="set-scope">device</span></div>
                 <p class="set-group-hint">Tap to show a control in the header. Multi-monitor is the one entry here that syncs across devices.</p>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="set-chips" data-search="header buttons plan usage font stats lifecycle response file viewer attachments monitor session away cron redraw tiles">
                     <label class="set-chip" data-preview="header" data-preview-order="1" data-preview-text="A+"><input type="checkbox" id="appSettingsShowFontControls"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 10 5l6 15"/><path d="M6.5 15h7"/><path d="M18 12h4M20 10v4"/></svg><span>Font Size</span></label>
                     <label class="set-chip" data-preview="header" data-preview-order="2" data-preview-text="CPU 12%"><input type="checkbox" id="appSettingsShowSystemStats" checked><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-7 4 14L16 12h5"/></svg><span>System Stats</span></label>
@@ -2116,10 +2116,10 @@
                     <label class="set-chip" data-preview="header" data-preview-order="13" data-preview-text="42%"><input type="checkbox" id="appSettingsShowPlanUsageLimits"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4.5-5"/></svg><span>Plan Usage</span></label>
                     <label class="set-chip" data-preview="header" data-preview-order="14"><input type="checkbox" id="appSettingsShowLifecycleLog"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Lifecycle Log</span></label>
                   </div>
-                  <div class="set-row has-field" data-search="header stats style system cpu mem ws plan usage tiles compact rings">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Header Stats Style <span class="set-tag">desktop</span></span>
-                      <span class="set-row-desc">How WS, CPU, MEM and the plan-usage windows are drawn. Compact puts a ring beside each value in two pills; Tiles put each label over its value with a bar underneath.</span>
+                  <div class="cm-row has-field" data-search="header stats style system cpu mem ws plan usage tiles compact rings">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Header Stats Style <span class="set-tag">desktop</span></span>
+                      <span class="cm-row__hint">How WS, CPU, MEM and the plan-usage windows are drawn. Compact puts a ring beside each value in two pills; Tiles put each label over its value with a bar underneath.</span>
                     </div>
                     <select id="appSettingsHeaderStatsStyle" class="set-select">
                       <option value="classic">As before (bars)</option>
@@ -2132,7 +2132,7 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Panels</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="set-chips" data-search="panels monitor project insights file browser subagents">
                     <label class="set-chip" data-preview="panel" data-preview-order="1"><input type="checkbox" id="appSettingsShowMonitor" checked><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-7 4 14L16 12h5"/></svg><span>Monitor</span></label>
                     <label class="set-chip" data-preview="panel" data-preview-order="2"><input type="checkbox" id="appSettingsShowProjectInsights"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></svg><span>Project Insights</span></label>
@@ -2145,7 +2145,7 @@
               <div class="set-group">
                 <div class="set-group-head"><h4>Cross-session features</h4><span class="set-scope">synced</span></div>
                 <p class="set-group-hint">Approvals answers prompts from any session in one place. Read My Mind captures your prompts and predicts the next one on demand; both cost tokens and never auto-send.</p>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="set-chips" data-search="approvals inbox read my mind ultracode agents floating windows workflow">
                     <label class="set-chip" data-preview="header" data-preview-order="7"><input type="checkbox" id="appSettingsApprovalsInbox"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Approvals Inbox</span></label>
                     <label class="set-chip" data-preview="header" data-preview-order="8"><input type="checkbox" id="appSettingsReadMyMind"><span class="set-chip-ico set-chip-emoji" aria-hidden="true">🧠</span><span>Read My Mind</span></label>
@@ -2157,7 +2157,7 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Scheduling</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="set-chips" data-search="cron scheduled jobs toolbar">
                     <label class="set-chip" data-preview="toolbar" data-preview-order="1"><input type="checkbox" id="appSettingsShowCronButton"><svg class="set-chip-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span>Cron</span></label>
                   </div>
@@ -2166,32 +2166,32 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Bottom bar</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="git status uncommitted unpushed commit push indicator bottom bar toolbar">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Git status <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">Shows, at the right of the bottom bar, when the active session's repository (or each repository inside its folder, up to two levels down) has uncommitted files or commits that are not pushed. Click it for the list. Read-only: Codeman never fetches or changes the repository. Not shown for Docker or remote sessions. Off by default.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="git status uncommitted unpushed commit push indicator bottom bar toolbar">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Git status <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">Shows, at the right of the bottom bar, when the active session's repository (or each repository inside its folder, up to two levels down) has uncommitted files or commits that are not pushed. Click it for the list. Read-only: Codeman never fetches or changes the repository. Not shown for Docker or remote sessions. Off by default.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowGitStatus"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="git status folders tree flat list collapsed expand files">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Git status: group files by folder <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">In the Git window, show changed files under their folders, collapsed until you click a folder. Off lists every file by its full path. On by default.</span>
+                  <div class="cm-row" data-search="git status folders tree flat list collapsed expand files">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Git status: group files by folder <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">In the Git window, show changed files under their folders, collapsed until you click a folder. Off lists every file by its full path. On by default.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsGitStatusTree" checked><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="git status maximum repositories folder many repos limit">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Git status: max repositories <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">When the session's folder holds several projects instead of being one, the Git window lists up to this many (1 to 50, default 12). Each one costs a few git commands per refresh.</span>
+                  <div class="cm-row" data-search="git status maximum repositories folder many repos limit">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Git status: max repositories <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">When the session's folder holds several projects instead of being one, the Git window lists up to this many (1 to 50, default 12). Each one costs a few git commands per refresh.</span>
                     </div>
                     <input type="number" id="appSettingsGitStatusMaxRepos" class="set-num" value="12" min="1" max="50" step="1">
                   </div>
-                  <div class="set-row" data-search="git status timeout seconds slow share network">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Git status: git timeout <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">Seconds one git command may run before that repository is reported as unreadable (5 to 120, default 30). Raise it for repositories on a slow network share.</span>
+                  <div class="cm-row" data-search="git status timeout seconds slow share network">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Git status: git timeout <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">Seconds one git command may run before that repository is reported as unreadable (5 to 120, default 30). Raise it for repositories on a slow network share.</span>
                     </div>
                     <input type="number" id="appSettingsGitStatusTimeout" class="set-num" value="30" min="5" max="120" step="1">
                   </div>
@@ -2200,18 +2200,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Subagent windows</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="subagent tracking background agents">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Track background agents <span class="set-scope">synced</span></span>
-                      <span class="set-row-desc">Follow Claude Code subagents in real time.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="subagent tracking background agents">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Track background agents <span class="set-scope">synced</span></span>
+                      <span class="cm-row__hint">Follow Claude Code subagents in real time.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsSubagentTracking" checked><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="subagent active tab only windows">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Active tab only <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">Only show agent windows for the selected session.</span>
+                  <div class="cm-row" data-search="subagent active tab only windows">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Active tab only <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">Only show agent windows for the selected session.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsSubagentActiveTabOnly" checked><span class="slider"></span></label>
                   </div>
@@ -2229,11 +2229,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Theme</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="skin theme palette colors dark light">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Skin</span>
-                      <span class="set-row-desc">Palette for the terminal and the UI.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="skin theme palette colors dark light">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Skin</span>
+                      <span class="cm-row__hint">Palette for the terminal and the UI.</span>
                     </div>
                     <select id="appSettingsSkin" class="set-select">
                       <optgroup label="Light">
@@ -2254,18 +2254,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Identity</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="display name branding title">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Display Name <span class="set-scope">synced</span></span>
-                      <span class="set-row-desc">Shown in the browser UI and the window title. Unicode is fine.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="display name branding title">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Display Name <span class="set-scope">synced</span></span>
+                      <span class="cm-row__hint">Shown in the browser UI and the window title. Unicode is fine.</span>
                     </div>
                     <input type="text" id="appSettingsDisplayName" class="set-input" maxlength="40" placeholder="Codeman" autocomplete="off">
                   </div>
-                  <div class="set-row has-field" data-search="language interface chinese english">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Interface Language <span class="set-scope">device</span></span>
-                      <span class="set-row-desc">Dialogs and status messages use the same language.</span>
+                  <div class="cm-row has-field" data-search="language interface chinese english">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Interface Language <span class="set-scope">device</span></span>
+                      <span class="cm-row__hint">Dialogs and status messages use the same language.</span>
                     </div>
                     <select id="appSettingsLanguage" class="set-select">
                       <option value="en">English</option>
@@ -2277,11 +2277,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Tabs</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="tab layout grouping group by state triage needs you waiting working idle case clusters ledger columns classic old new">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Tab Layout</span>
-                      <span class="set-row-desc">By state: a row each for needs you, waiting, working and idle. By case: one box per case. Ledger: an aligned column grid. Classic: the single list, as before. By state and By case group the side rail and sidebar too. Alt+1..9 keeps the tab order.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="tab layout grouping group by state triage needs you waiting working idle case clusters ledger columns classic old new">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Tab Layout</span>
+                      <span class="cm-row__hint">By state: a row each for needs you, waiting, working and idle. By case: one box per case. Ledger: an aligned column grid. Classic: the single list, as before. By state and By case group the side rail and sidebar too. Alt+1..9 keeps the tab order.</span>
                     </div>
                     <select id="appSettingsTabArrangement" class="set-select">
                       <option value="state">By state (rows per state)</option>
@@ -2290,50 +2290,50 @@
                       <option value="classic">Classic (default)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="state order reverse needs you bottom top rows sections">
-                    <div class="set-row-text">
-                      <span class="set-row-label">State Order</span>
-                      <span class="set-row-desc">For Tab Layout by state. At the bottom flips the rows, so needs you sits right above the terminal.</span>
+                  <div class="cm-row has-field" data-search="state order reverse needs you bottom top rows sections">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">State Order</span>
+                      <span class="cm-row__hint">For Tab Layout by state. At the bottom flips the rows, so needs you sits right above the terminal.</span>
                     </div>
                     <select id="appSettingsTabStateOrder" class="set-select">
                       <option value="urgent-first">Needs you on top (default)</option>
                       <option value="urgent-last">Needs you at the bottom</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="tab orientation horizontal vertical side rail">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Tab Orientation</span>
-                      <span class="set-row-desc">Keep tabs in the header or place them beside the terminal. Phones stay horizontal.</span>
+                  <div class="cm-row has-field" data-search="tab orientation horizontal vertical side rail">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Tab Orientation</span>
+                      <span class="cm-row__hint">Keep tabs in the header or place them beside the terminal. Phones stay horizontal.</span>
                     </div>
                     <select id="appSettingsTabOrientation" class="set-select">
                       <option value="horizontal">Horizontal (top)</option>
                       <option value="vertical">Vertical (side rail)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="tab rail detail rows created working idle status pill simple">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Vertical Rail Rows</span>
-                      <span class="set-row-desc">Detailed rows carry the home screen's per-session line (created, how long it has been working or idle) and a status pill. Needs ~280px of rail; a rail narrower than 240px drops back to simple rows.</span>
+                  <div class="cm-row has-field" data-search="tab rail detail rows created working idle status pill simple">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Vertical Rail Rows</span>
+                      <span class="cm-row__hint">Detailed rows carry the home screen's per-session line (created, how long it has been working or idle) and a status pill. Needs ~280px of rail; a rail narrower than 240px drops back to simple rows.</span>
                     </div>
                     <select id="appSettingsTabRailDetail" class="set-select">
                       <option value="rich">Detailed</option>
                       <option value="simple">Simple (name only)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="tab rail sort order activity manual drag reorder">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Vertical Rail Order</span>
-                      <span class="set-row-desc">By activity uses the home screen's order: blocked on you first, then whatever has been running longest, then the most recently quiet. Manual keeps your tab order and is the only mode you can drag rows in. With Tab Layout by state or by case it orders the rows inside each section. Alt+1..9 always follows the tab order either way.</span>
+                  <div class="cm-row has-field" data-search="tab rail sort order activity manual drag reorder">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Vertical Rail Order</span>
+                      <span class="cm-row__hint">By activity uses the home screen's order: blocked on you first, then whatever has been running longest, then the most recently quiet. Manual keeps your tab order and is the only mode you can drag rows in. With Tab Layout by state or by case it orders the rows inside each section. Alt+1..9 always follows the tab order either way.</span>
                     </div>
                     <select id="appSettingsTabRailSort" class="set-select">
                       <option value="activity">By activity (home screen order)</option>
                       <option value="manual">Manual (drag to reorder)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="tab rail width resize compact wide maximum">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Vertical Rail Width</span>
-                      <span class="set-row-desc">Set the preferred rail width for this device.</span>
+                  <div class="cm-row has-field" data-search="tab rail width resize compact wide maximum">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Vertical Rail Width</span>
+                      <span class="cm-row__hint">Set the preferred rail width for this device.</span>
                     </div>
                     <select id="appSettingsTabRailWidth" class="set-select">
                       <option value="208">Compact (208px)</option>
@@ -2343,10 +2343,10 @@
                       <option value="custom" disabled>Custom</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="session list layout sidebar tab strip vertical">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Session List Layout</span>
-                      <span class="set-row-desc">Horizontal strip in the header, or a collapsible left sidebar (Alt+B). The rich sidebar carries the same per-session detail as the home screen.</span>
+                  <div class="cm-row has-field" data-search="session list layout sidebar tab strip vertical">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Session List Layout</span>
+                      <span class="cm-row__hint">Horizontal strip in the header, or a collapsible left sidebar (Alt+B). The rich sidebar carries the same per-session detail as the home screen.</span>
                     </div>
                     <select id="appSettingsSessionListLayout" class="set-select">
                       <option value="header">Header tab strip</option>
@@ -2354,10 +2354,10 @@
                       <option value="sidebar-rich">Left sidebar</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="session sidebar name font size text">
-                    <div class="set-row-text">
-                      <span class="set-row-label" id="appSettingsSessionSidebarFontSizeLabel">Session Name Font Size</span>
-                      <span class="set-row-desc">Adjust only session names in the vertical sidebar.</span>
+                  <div class="cm-row has-field" data-search="session sidebar name font size text">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label" id="appSettingsSessionSidebarFontSizeLabel">Session Name Font Size</span>
+                      <span class="cm-row__hint">Adjust only session names in the vertical sidebar.</span>
                     </div>
                     <label class="set-range-field" for="appSettingsSessionSidebarFontSize">
                       <input type="range" id="appSettingsSessionSidebarFontSize" min="11" max="18" step="1" value="12"
@@ -2366,59 +2366,59 @@
                       <output id="appSettingsSessionSidebarFontSizeValue" for="appSettingsSessionSidebarFontSize">12 px</output>
                     </label>
                   </div>
-                  <div class="set-row" data-search="tall tabs folder name two rows">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Tall Tabs</span>
-                      <span class="set-row-desc">Show the folder under the session name and let the tab bar wrap.</span>
+                  <div class="cm-row" data-search="tall tabs folder name two rows">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Tall Tabs</span>
+                      <span class="cm-row__hint">Show the folder under the session name and let the tab bar wrap.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsTabTwoRows"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="cli logos on tabs logo icon harness agent cli tab hide">
-                    <div class="set-row-text">
-                      <span class="set-row-label">CLI Logos on Tabs</span>
-                      <span class="set-row-desc">Show each agent's CLI logo before the session name on tabs and the home screen's tab list. Off leaves the status dot and the shell's SH badge. Tile headers and the Run menus keep their logos.</span>
+                  <div class="cm-row" data-search="cli logos on tabs logo icon harness agent cli tab hide">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">CLI Logos on Tabs</span>
+                      <span class="cm-row__hint">Show each agent's CLI logo before the session name on tabs and the home screen's tab list. Off leaves the status dot and the shell's SH badge. Tile headers and the Run menus keep their logos.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowTabCliLogos" checked><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="pop out detach tab window">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Pop-out Button on Tabs</span>
-                      <span class="set-row-desc">Open a session in its own window from the tab.</span>
+                  <div class="cm-row" data-search="pop out detach tab window">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Pop-out Button on Tabs</span>
+                      <span class="cm-row__hint">Open a session in its own window from the tab.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowTabDetachButton"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsTileDetachItem" data-search="detach tiles tile pop out window drag move another window">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Detach Tiles <span class="set-tag">desktop</span> <span class="set-tag set-tag-beta">beta</span></span>
-                      <span class="set-row-desc">Drag a tile's header out of the browser to open it in its own window, or onto another Codeman window's tiles to move it there. A popped-out window's title drags back onto tiles.</span>
+                  <div class="cm-row" id="appSettingsTileDetachItem" data-search="detach tiles tile pop out window drag move another window">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Detach Tiles <span class="set-tag">desktop</span> <span class="set-tag set-tag-beta">beta</span></span>
+                      <span class="cm-row__hint">Drag a tile's header out of the browser to open it in its own window, or onto another Codeman window's tiles to move it there. A popped-out window's title drags back onto tiles.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsTileDetach"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsLineageLinesItem" data-search="lineage lines spawned worker parent connection">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Spawn Lineage Lines <span class="set-tag">desktop</span></span>
-                      <span class="set-row-desc">Draw lines from each session to the sessions it spawned. The selected tab's family is drawn thicker.</span>
+                  <div class="cm-row" id="appSettingsLineageLinesItem" data-search="lineage lines spawned worker parent connection">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Spawn Lineage Lines <span class="set-tag">desktop</span></span>
+                      <span class="cm-row__hint">Draw lines from each session to the sessions it spawned. The selected tab's family is drawn thicker.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsLineageLines" checked><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsAutoNameSessionsItem" data-search="auto name session title first prompt tab rename">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Auto-name Sessions <span class="set-tag">synced</span></span>
-                      <span class="set-row-desc">Title a new tab after its first prompt, keeping the case prefix. Renamed tabs are never touched.</span>
+                  <div class="cm-row" id="appSettingsAutoNameSessionsItem" data-search="auto name session title first prompt tab rename">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Auto-name Sessions <span class="set-tag">synced</span></span>
+                      <span class="cm-row__hint">Title a new tab after its first prompt, keeping the case prefix. Renamed tabs are never touched.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsAutoNameSessions"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsSpawnedTabsFollowParentItem" data-search="spawned child session follow parent tab group lineage move">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Spawned Tabs Follow Their Parent <span class="set-tag">synced</span></span>
-                      <span class="set-row-desc">A session started by another one keeps following its parent's tab into its group and moves with it, until you move it by hand. Off: it starts next to its parent and stays where it is.</span>
+                  <div class="cm-row" id="appSettingsSpawnedTabsFollowParentItem" data-search="spawned child session follow parent tab group lineage move">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Spawned Tabs Follow Their Parent <span class="set-tag">synced</span></span>
+                      <span class="cm-row__hint">A session started by another one keeps following its parent's tab into its group and moves with it, until you move it by hand. Off: it starts next to its parent and stays where it is.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsSpawnedTabsFollowParent"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="appSettingsMobileOverviewItem" data-search="overview home screen phone logo">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Overview Home Screen <span class="set-tag">phone</span></span>
-                      <span class="set-row-desc">The C logo opens the session overview instead of the welcome screen.</span>
+                  <div class="cm-row" id="appSettingsMobileOverviewItem" data-search="overview home screen phone logo">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Overview Home Screen <span class="set-tag">phone</span></span>
+                      <span class="cm-row__hint">The C logo opens the session overview instead of the welcome screen.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsMobileOverview" checked><span class="slider"></span></label>
                   </div>
@@ -2439,11 +2439,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Entrances</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="entrance animations theme motion tabs windows panes lines">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Entrance Theme</span>
-                      <span class="set-row-desc">One look for how new tabs, terminal panes, agent windows and their lines arrive.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="entrance animations theme motion tabs windows panes lines">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Entrance Theme</span>
+                      <span class="cm-row__hint">One look for how new tabs, terminal panes, agent windows and their lines arrive.</span>
                     </div>
                     <select id="appSettingsEntranceAnim" class="set-select">
                       <option value="legacy">Off (default)</option>
@@ -2456,10 +2456,10 @@
                       <option value="custom">Custom (set in the lab)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="tile animations tiles grid motion entrance fly deal crt beam">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Tile Animations</span>
-                      <span class="set-row-desc">How tiles arrive when the grid opens and leave when it closes. A theme above presets it.</span>
+                  <div class="cm-row has-field" data-search="tile animations tiles grid motion entrance fly deal crt beam">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Tile Animations</span>
+                      <span class="cm-row__hint">How tiles arrive when the grid opens and leave when it closes. A theme above presets it.</span>
                     </div>
                     <select id="appSettingsTileAnim" class="set-select">
                       <option value="settle">Off (default)</option>
@@ -2478,11 +2478,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Lab</h4></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="animation lab compare replay styles per surface animlab">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Animation Lab</span>
-                      <span class="set-row-desc">Closes settings and opens every style per surface side by side, with replay and speed. Same as adding ?animlab=1 to the URL.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="animation lab compare replay styles per surface animlab">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Animation Lab</span>
+                      <span class="cm-row__hint">Closes settings and opens every style per surface side by side, with replay and speed. Same as adding ?animlab=1 to the URL.</span>
                     </div>
                     <button type="button" id="appSettingsOpenAnimLab" class="btn-toolbar btn-sm">Open lab</button>
                   </div>
@@ -2501,7 +2501,7 @@
               <div class="set-group">
                 <div class="set-group-head"><h4>New Claude sessions</h4><span class="set-scope">synced</span></div>
                 <p class="set-group-hint">A soft default, pinned via the case's .claude/settings.local.json. /model still switches inside a running session.</p>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <!-- Cards are built from the select below by settings-ui.js, which keeps
                        the select as the single source of truth for load/save. -->
                   <div class="set-modelgrid" id="appSettingsModelCards" role="radiogroup" aria-label="Model for new Claude sessions" data-search="model opus sonnet haiku fable claude"></div>
@@ -2520,17 +2520,17 @@
                     <option value="sonnet" data-meta="Balanced" data-base="sonnet">Sonnet</option>
                     <option value="haiku" data-meta="Fast &amp; cheap" data-base="haiku">Haiku</option>
                   </select>
-                  <div class="set-row" id="appSettingsContextRow" data-search="1m context window opus long">
-                    <div class="set-row-text">
-                      <span class="set-row-label">1M context window</span>
-                      <span class="set-row-desc" id="appSettingsContextDesc">Available for Fable 5.1, Fable 5, Opus 5.5, Opus and Opus 4.6.</span>
+                  <div class="cm-row" id="appSettingsContextRow" data-search="1m context window opus long">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">1M context window</span>
+                      <span class="cm-row__hint" id="appSettingsContextDesc">Available for Fable 5.1, Fable 5, Opus 5.5, Opus and Opus 4.6.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsOpusContext1m"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row set-row-block" data-search="thinking effort ultracode xhigh max reasoning">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Thinking effort</span>
-                      <span class="set-row-desc">Switchable in-session with /effort. Ultracode runs multi-agent workflows.</span>
+                  <div class="cm-row set-row-block" data-search="thinking effort ultracode xhigh max reasoning">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Thinking effort</span>
+                      <span class="cm-row__hint">Switchable in-session with /effort. Ultracode runs multi-agent workflows.</span>
                     </div>
                     <div class="set-segment" id="appSettingsEffortSegment" role="radiogroup" aria-label="Thinking effort"></div>
                     <select id="appSettingsThinkingEffort" class="set-select set-field-hidden" aria-hidden="true" tabindex="-1">
@@ -2543,10 +2543,10 @@
                       <option value="ultracode">Ultracode</option>
                     </select>
                   </div>
-                  <div class="set-row set-row-block" data-search="advisor fable opus sonnet second opinion review consult">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Advisor</span>
-                      <span class="set-row-desc">A stronger model Claude consults before big decisions, on repeated errors and before calling a task done. Uses extra tokens. Switchable in-session with /advisor.</span>
+                  <div class="cm-row set-row-block" data-search="advisor fable opus sonnet second opinion review consult">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Advisor</span>
+                      <span class="cm-row__hint">A stronger model Claude consults before big decisions, on repeated errors and before calling a task done. Uses extra tokens. Switchable in-session with /advisor.</span>
                     </div>
                     <div class="set-segment" id="appSettingsAdvisorSegment" role="radiogroup" aria-label="Advisor"></div>
                     <select id="appSettingsClaudeAdvisor" class="set-select set-field-hidden" aria-hidden="true" tabindex="-1">
@@ -2568,11 +2568,11 @@
                   </span>
                 </div>
                 <p class="set-group-hint">Models for orchestrator and background work. Leave on the default unless you are tuning cost.</p>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="default model tasks orchestrator">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Default for tasks</span>
-                      <span class="set-row-desc">Used for execution tasks. Optimizer suggestions stay advisory.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="default model tasks orchestrator">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Default for tasks</span>
+                      <span class="cm-row__hint">Used for execution tasks. Optimizer suggestions stay advisory.</span>
                     </div>
                     <select id="appSettingsDefaultModel" class="set-select">
                       <option value="">Default (CLI default)</option>
@@ -2634,10 +2634,10 @@
                       </select>
                     </div>
                   </div>
-                  <div class="set-row" data-search="optimizer recommendations advisory">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Show optimizer recommendations</span>
-                      <span class="set-row-desc">Advisory only. Never overrides your choice.</span>
+                  <div class="cm-row" data-search="optimizer recommendations advisory">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Show optimizer recommendations</span>
+                      <span class="cm-row__hint">Advisory only. Never overrides your choice.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowModelRecommendations" checked><span class="slider"></span></label>
                   </div>
@@ -2647,46 +2647,46 @@
               <div class="set-group" id="customModelEndpointsGroup">
                 <div class="set-group-head"><h4>Custom model endpoints</h4><span class="set-scope">synced</span></div>
                 <p class="set-group-hint">Point a harness at your own OpenAI-compatible server (llama.cpp, vLLM, DGX Spark, Azure AI Foundry, OpenRouter) instead of its native cloud backend. When on, the Run menu offers an extra entry per harness that supports it, per saved endpoint.</p>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="custom model endpoint llama.cpp local llm run menu picker">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Enable custom model endpoints</span>
-                      <span class="set-row-desc">Adds a per-endpoint entry to the Run menu for every harness that can redirect to one.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="custom model endpoint llama.cpp local llm run menu picker">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Enable custom model endpoints</span>
+                      <span class="cm-row__hint">Adds a per-endpoint entry to the Run menu for every harness that can redirect to one.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCustomModelEndpoints" onchange="app.applyCustomModelEndpointsVisibility()"><span class="slider"></span></label>
                   </div>
                   <!-- Gated on the toggle above (applyCustomModelEndpointsVisibility): with the
                        feature off, a list of endpoints that do nothing is worse than nothing. -->
                   <div id="customModelEndpointsBody" style="display:none">
-                    <div id="customModelHostsList" class="set-group-body" data-search="endpoints"></div>
+                    <div id="customModelHostsList" class="cm-group" data-search="endpoints"></div>
                     <button type="button" class="btn-toolbar btn-sm" id="customModelHostAddBtn" onclick="app.openCustomModelHostEditor()">+ Add endpoint</button>
                     <div id="customModelHostEditor" class="set-inline-form" style="display:none">
                       <h5 id="customModelHostEditorTitle">Add endpoint</h5>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">Id</span><span class="set-row-desc">Short, stable — used in URLs, never shown to the CLI.</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">Id</span><span class="cm-row__hint">Short, stable — used in URLs, never shown to the CLI.</span></div>
                         <input type="text" id="customModelHostId" class="set-input" placeholder="llama-cpp-local">
                       </div>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">Label</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">Label</span></div>
                         <input type="text" id="customModelHostLabel" class="set-input" placeholder="llama.cpp (local)">
                       </div>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">Base URL</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">Base URL</span></div>
                         <input type="text" id="customModelHostBaseUrl" class="set-input" placeholder="http://192.168.1.50:8080">
                       </div>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">API key</span><span class="set-row-desc">Optional. Left blank on edit keeps the existing key.</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">API key</span><span class="cm-row__hint">Optional. Left blank on edit keeps the existing key.</span></div>
                         <input type="password" id="customModelHostApiKey" class="set-input" autocomplete="new-password">
                       </div>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">Auth header</span><span class="set-row-desc">Never send both — some servers hang indefinitely.</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">Auth header</span><span class="cm-row__hint">Never send both — some servers hang indefinitely.</span></div>
                         <select id="customModelHostAuthStyle" class="set-select">
                           <option value="bearer">Authorization: Bearer (default)</option>
                           <option value="api-key">api-key header (Azure)</option>
                         </select>
                       </div>
-                      <div class="set-row has-field">
-                        <div class="set-row-text"><span class="set-row-label">Default model</span><span class="set-row-desc">What the Run-menu picker applies for this endpoint. Discover models first.</span></div>
+                      <div class="cm-row has-field">
+                        <div class="cm-row__text"><span class="cm-row__label">Default model</span><span class="cm-row__hint">What the Run-menu picker applies for this endpoint. Discover models first.</span></div>
                         <select id="customModelHostDefaultModel" class="set-select" disabled></select>
                       </div>
                       <div class="set-row-actions">
@@ -2710,11 +2710,11 @@
               <div class="set-group" id="cliManagementGroup">
                 <div class="set-group-head"><h4>CLI management</h4><span class="set-scope">synced</span></div>
                 <p class="set-group-hint">Enable/disable a CLI, install one that's missing, or add your own — without hand-editing ~/.codeman/clis.json.</p>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="cli management enable disable install custom">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Enable CLI management</span>
-                      <span class="set-row-desc">Adds the list below and its write endpoints. Off by default: this changes machine configuration, not just what you see.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="cli management enable disable install custom">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Enable CLI management</span>
+                      <span class="cm-row__hint">Adds the list below and its write endpoints. Off by default: this changes machine configuration, not just what you see.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCliManagement" onchange="app.applyCliManagementVisibility()"><span class="slider"></span></label>
                   </div>
@@ -2723,55 +2723,55 @@
 
               <div class="set-group" id="cliListGroup" style="display: none;">
                 <div class="set-group-head"><h4>Installed CLIs</h4></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div id="cliListRows"></div>
-                  <div class="set-row" data-search="add custom cli">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Add a custom CLI</span>
-                      <span class="set-row-desc">A launch command Codeman doesn't ship — id, label, badge, binary and its bare argv.</span>
+                  <div class="cm-row" data-search="add custom cli">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Add a custom CLI</span>
+                      <span class="cm-row__hint">A launch command Codeman doesn't ship — id, label, badge, binary and its bare argv.</span>
                     </div>
                     <button type="button" class="btn btn-xs" id="cliCustomAddToggle" onclick="app.openCliCustomForm()">Add</button>
                   </div>
                   <form id="cliCustomForm" style="display: none;" onsubmit="app.submitCliCustomForm(event)">
-                    <div class="set-row has-field">
-                      <div class="set-row-text"><span class="set-row-label">Id</span></div>
+                    <div class="cm-row has-field">
+                      <div class="cm-row__text"><span class="cm-row__label">Id</span></div>
                       <input type="text" id="cliCustomId" class="set-input" placeholder="my-cli" maxlength="24">
                     </div>
-                    <div class="set-row has-field">
-                      <div class="set-row-text"><span class="set-row-label">Label</span></div>
+                    <div class="cm-row has-field">
+                      <div class="cm-row__text"><span class="cm-row__label">Label</span></div>
                       <input type="text" id="cliCustomLabel" class="set-input" placeholder="My CLI" maxlength="60">
                     </div>
-                    <div class="set-row has-field">
-                      <div class="set-row-text"><span class="set-row-label">Badge</span></div>
+                    <div class="cm-row has-field">
+                      <div class="cm-row__text"><span class="cm-row__label">Badge</span></div>
                       <input type="text" id="cliCustomBadge" class="set-input" placeholder="MC" maxlength="6">
                     </div>
-                    <div class="set-row has-field">
-                      <div class="set-row-text"><span class="set-row-label">Binary</span></div>
+                    <div class="cm-row has-field">
+                      <div class="cm-row__text"><span class="cm-row__label">Binary</span></div>
                       <input type="text" id="cliCustomBinary" class="set-input" placeholder="my-cli">
                     </div>
-                    <div class="set-row has-field">
-                      <div class="set-row-text">
-                        <span class="set-row-label">Launch argv</span>
-                        <span class="set-row-desc">Space-separated bare words, e.g. "my-cli --flag". No quoting or shell syntax.</span>
+                    <div class="cm-row has-field">
+                      <div class="cm-row__text">
+                        <span class="cm-row__label">Launch argv</span>
+                        <span class="cm-row__hint">Space-separated bare words, e.g. "my-cli --flag". No quoting or shell syntax.</span>
                       </div>
                       <input type="text" id="cliCustomArgv" class="set-input" placeholder="my-cli --flag">
                     </div>
-                    <div class="set-row">
+                    <div class="cm-row">
                       <button type="submit" class="btn btn-xs" id="cliCustomSubmit">Create</button>
                       <button type="button" class="btn btn-xs" id="cliCustomCancel" onclick="app.closeCliCustomForm()">Cancel</button>
                     </div>
-                    <div id="cliCustomFormError" class="set-row-desc" style="color: var(--error, #e5484d); display: none;"></div>
+                    <div id="cliCustomFormError" class="cm-row__hint" style="color: var(--error, #e5484d); display: none;"></div>
                   </form>
                 </div>
               </div>
 
               <div class="set-group" id="agentSkillGroup">
                 <div class="set-group-head"><h4>All agent CLIs</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="agent skill codeman api workers codex gemini opencode pi grok deepseek omp antigravity">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Codeman Agent Skill</span>
-                      <span class="set-row-desc">Write Codeman's agent skill into each new session's folder, where that CLI looks for skills, so the agent in it can start workers in any installed CLI, send them prompts and wait for results. Every CLI except Pi and a plain shell.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="agent skill codeman api workers codex gemini opencode pi grok deepseek omp antigravity">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Codeman Agent Skill</span>
+                      <span class="cm-row__hint">Write Codeman's agent skill into each new session's folder, where that CLI looks for skills, so the agent in it can start workers in any installed CLI, send them prompts and wait for results. Every CLI except Pi and a plain shell.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsAgentSkill"><span class="slider"></span></label>
                   </div>
@@ -2780,11 +2780,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Claude</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="startup mode permissions auto allowed tools">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Startup Mode</span>
-                      <span class="set-row-desc">How the CLI is launched in new sessions. Auto Mode runs without routine prompts behind a background safety classifier.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="startup mode permissions auto allowed tools">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Startup Mode</span>
+                      <span class="cm-row__hint">How the CLI is launched in new sessions. Auto Mode runs without routine prompts behind a background safety classifier.</span>
                     </div>
                     <select id="appSettingsClaudeMode" class="set-select">
                       <option value="dangerously-skip-permissions">Skip Permissions (default)</option>
@@ -2793,59 +2793,59 @@
                       <option value="allowedTools">Allowed Tools Only</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" id="allowedToolsRow" style="display: none;" data-search="allowed tools list">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Allowed Tools</span>
-                      <span class="set-row-desc">Comma-separated list of tools to allow.</span>
+                  <div class="cm-row has-field" id="allowedToolsRow" style="display: none;" data-search="allowed tools list">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Allowed Tools</span>
+                      <span class="cm-row__hint">Comma-separated list of tools to allow.</span>
                     </div>
                     <input type="text" id="appSettingsAllowedTools" class="set-input" placeholder="Read,Glob,Grep,Bash">
                   </div>
-                  <div class="set-row" data-search="ralph todo tracker loop">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Ralph / Todo Tracker</span>
-                      <span class="set-row-desc">Auto-enable for new sessions. Otherwise it enables itself on Ralph pattern detection.</span>
+                  <div class="cm-row" data-search="ralph todo tracker loop">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Ralph / Todo Tracker</span>
+                      <span class="cm-row__hint">Auto-enable for new sessions. Otherwise it enables itself on Ralph pattern detection.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsRalphEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="agent teams experimental">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Agent Teams</span>
-                      <span class="set-row-desc">Experimental multi-agent teams for all new Claude sessions.</span>
+                  <div class="cm-row" data-search="agent teams experimental">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Agent Teams</span>
+                      <span class="cm-row__hint">Experimental multi-agent teams for all new Claude sessions.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsAgentTeams"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="workspace hooks alerts approvals notifications settings.local.json">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Workspace Hooks</span>
-                      <span class="set-row-desc">Install Codeman's hooks in each Claude workspace, so tab alerts, the Approvals Inbox and idle detection also work in linked cases and existing repos. Off leaves your repos untouched.</span>
+                  <div class="cm-row" data-search="workspace hooks alerts approvals notifications settings.local.json">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Workspace Hooks</span>
+                      <span class="cm-row__hint">Install Codeman's hooks in each Claude workspace, so tab alerts, the Approvals Inbox and idle detection also work in linked cases and existing repos. Off leaves your repos untouched.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsWorkspaceHooks"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="pin cli session name resume title tab label">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Pin tab names on the CLI</span>
-                      <span class="set-row-desc">Launch every Claude session with its tab name, so the CLI's prompt label and /resume list match your tabs. Claude then stops generating its own titles for those sessions, and a rename in Codeman holds only until the next turn. Applies from the next session start or respawn, no server restart needed.</span>
+                  <div class="cm-row" data-search="pin cli session name resume title tab label">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Pin tab names on the CLI</span>
+                      <span class="cm-row__hint">Launch every Claude session with its tab name, so the CLI's prompt label and /resume list match your tabs. Claude then stops generating its own titles for those sessions, and a rename in Codeman holds only until the next turn. Applies from the next session start or respawn, no server restart needed.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsPinCliSessionName"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="remote auto reconnect ssh">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Remote auto-reconnect</span>
-                      <span class="set-row-desc">Reattach remote SSH sessions to their durable tmux after a dropped link.</span>
+                  <div class="cm-row" data-search="remote auto reconnect ssh">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Remote auto-reconnect</span>
+                      <span class="cm-row__hint">Reattach remote SSH sessions to their durable tmux after a dropped link.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsRemoteAutoReconnect"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="nice priority cpu">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Nice priority</span>
-                      <span class="set-row-desc">Lower the CPU priority of new sessions to reduce system impact.</span>
+                  <div class="cm-row" data-search="nice priority cpu">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Nice priority</span>
+                      <span class="cm-row__hint">Lower the CPU priority of new sessions to reduce system impact.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsNiceEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="niceValueRow" data-search="nice value priority number">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Nice value</span>
-                      <span class="set-row-desc">-20 to 19. Higher means lower priority. Default 10.</span>
+                  <div class="cm-row" id="niceValueRow" data-search="nice value priority number">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Nice value</span>
+                      <span class="cm-row__hint">-20 to 19. Higher means lower priority. Default 10.</span>
                     </div>
                     <input type="number" id="appSettingsNiceValue" class="set-num" min="-20" max="19" value="10">
                   </div>
@@ -2854,18 +2854,18 @@
 
               <div class="set-group" id="appSettingsCodexGroup">
                 <div class="set-group-head"><h4>Codex</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="codex default model">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Default Codex model</span>
-                      <span class="set-row-desc">Model ID for new local Codex sessions, including WSL. Leave empty to use Codex configuration.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="codex default model">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Default Codex model</span>
+                      <span class="cm-row__hint">Model ID for new local Codex sessions, including WSL. Leave empty to use Codex configuration.</span>
                     </div>
                     <input id="appSettingsCodexModel" class="set-input" type="text" maxlength="100" aria-label="Default Codex model" placeholder="Use Codex configuration" autocomplete="off" spellcheck="false">
                   </div>
-                  <div class="set-row has-field" data-search="codex default reasoning effort thinking">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Default Codex reasoning effort</span>
-                      <span class="set-row-desc">Applies to new local sessions; supported levels depend on the model and Codex version. Custom endpoints, Docker and remote sessions keep their own settings.</span>
+                  <div class="cm-row has-field" data-search="codex default reasoning effort thinking">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Default Codex reasoning effort</span>
+                      <span class="cm-row__hint">Applies to new local sessions; supported levels depend on the model and Codex version. Custom endpoints, Docker and remote sessions keep their own settings.</span>
                     </div>
                     <select id="appSettingsCodexReasoningEffort" class="set-select" aria-label="Default Codex reasoning effort">
                       <option value="">Use Codex configuration</option>
@@ -2879,17 +2879,17 @@
                       <option value="ultra">ultra</option>
                     </select>
                   </div>
-                  <div class="set-row" data-search="codex bypass approvals sandbox">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Bypass approvals and sandbox</span>
-                      <span class="set-row-desc">Start new Codex sessions with --dangerously-bypass-approvals-and-sandbox.</span>
+                  <div class="cm-row" data-search="codex bypass approvals sandbox">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Bypass approvals and sandbox</span>
+                      <span class="cm-row__hint">Start new Codex sessions with --dangerously-bypass-approvals-and-sandbox.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCodexDangerouslyBypassApprovals"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="codex animations status effects">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Animated status effects</span>
-                      <span class="set-row-desc">Decorative Codex TUI motion. Leave off to reduce remote and mobile redraws.</span>
+                  <div class="cm-row" data-search="codex animations status effects">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Animated status effects</span>
+                      <span class="cm-row__hint">Decorative Codex TUI motion. Leave off to reduce remote and mobile redraws.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsCodexAnimations"><span class="slider"></span></label>
                   </div>
@@ -2898,18 +2898,18 @@
 
               <div class="set-group" id="mcpSyncGroup">
                 <div class="set-group-head"><h4>MCP servers</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="mcp server sync enable claude codex gemini opencode antigravity copilot github">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Enable MCP server sync</span>
-                      <span class="set-row-desc">Adds a control that copies MCP servers between your enabled CLIs, and GitHub Copilot CLI if it is installed, by writing their own config files. Off by default: this changes other tools' configuration, not just Codeman's.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="mcp server sync enable claude codex gemini opencode antigravity copilot github">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Enable MCP server sync</span>
+                      <span class="cm-row__hint">Adds a control that copies MCP servers between your enabled CLIs, and GitHub Copilot CLI if it is installed, by writing their own config files. Off by default: this changes other tools' configuration, not just Codeman's.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsMcpSync" onchange="app.applyMcpSyncVisibility()"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="mcpSyncActionRow" style="display:none" data-search="mcp server sync preview">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Sync MCP servers across CLIs</span>
-                      <span class="set-row-desc">Copies each installed, enabled CLI's MCP servers (and GitHub Copilot CLI's) into the others. Only adds missing servers; never edits, removes or copies a server you switched off. Env values and headers are copied too, so a file that receives them is left readable by you only. The previous file is kept as <code>.codeman-bak</code> (overwritten by each sync). A config dir moved by the CLI's own env var (<code>CODEX_HOME</code>, <code>CLAUDE_CONFIG_DIR</code>, <code>XDG_CONFIG_HOME</code>, <code>GEMINI_CLI_HOME</code>, <code>COPILOT_HOME</code>) is followed as Codeman's server sees it; a per-session override is not.</span>
+                  <div class="cm-row" id="mcpSyncActionRow" style="display:none" data-search="mcp server sync preview">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Sync MCP servers across CLIs</span>
+                      <span class="cm-row__hint">Copies each installed, enabled CLI's MCP servers (and GitHub Copilot CLI's) into the others. Only adds missing servers; never edits, removes or copies a server you switched off. Env values and headers are copied too, so a file that receives them is left readable by you only. The previous file is kept as <code>.codeman-bak</code> (overwritten by each sync). A config dir moved by the CLI's own env var (<code>CODEX_HOME</code>, <code>CLAUDE_CONFIG_DIR</code>, <code>XDG_CONFIG_HOME</code>, <code>GEMINI_CLI_HOME</code>, <code>COPILOT_HOME</code>) is followed as Codeman's server sees it; a per-session override is not.</span>
                     </div>
                     <span>
                       <button class="btn-toolbar btn-sm" id="mcpSyncPreviewBtn" onclick="app.mcpSync(false)">Preview</button>
@@ -2931,18 +2931,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Channels</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="enable notifications master">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Notifications</span>
-                      <span class="set-row-desc">Master switch for every layer below.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="enable notifications master">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Notifications</span>
+                      <span class="cm-row__hint">Master switch for every layer below.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifEnabled" checked><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="browser notifications os permission">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Browser</span>
-                      <span class="set-row-desc">OS notifications while the tab is hidden. Remote access needs HTTPS: codeman web --https</span>
+                  <div class="cm-row" data-search="browser notifications os permission">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Browser</span>
+                      <span class="cm-row__hint">OS notifications while the tab is hidden. Remote access needs HTTPS: codeman web --https</span>
                     </div>
                     <div class="set-row-actions">
                       <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifBrowser"><span class="slider"></span></label>
@@ -2950,10 +2950,10 @@
                       <span class="settings-status" id="notifPermissionStatus">?</span>
                     </div>
                   </div>
-                  <div class="set-row" data-search="push notifications subscribe pwa">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Push</span>
-                      <span class="set-row-desc">Works with the tab closed, and through a Cloudflare tunnel. Requires HTTPS or localhost; iOS requires the PWA.</span>
+                  <div class="cm-row" data-search="push notifications subscribe pwa">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Push</span>
+                      <span class="cm-row__hint">Works with the tab closed, and through a Cloudflare tunnel. Requires HTTPS or localhost; iOS requires the PWA.</span>
                     </div>
                     <div class="set-row-actions">
                       <label class="switch switch-sm"><input type="checkbox" id="appSettingsPushEnabled"><span class="slider"></span></label>
@@ -2961,37 +2961,37 @@
                       <span class="settings-status" id="pushSubscriptionStatus">off</span>
                     </div>
                   </div>
-                  <div class="set-row" data-search="audio alerts beep sound">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Audio alerts</span>
-                      <span class="set-row-desc">Short beep on critical events.</span>
+                  <div class="cm-row" data-search="audio alerts beep sound">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Audio alerts</span>
+                      <span class="cm-row__hint">Short beep on critical events.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifAudio"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="idle threshold stuck minutes">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Idle threshold</span>
-                      <span class="set-row-desc">Notify when a session sits idle longer than this.</span>
+                  <div class="cm-row" data-search="idle threshold stuck minutes">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Idle threshold</span>
+                      <span class="cm-row__hint">Notify when a session sits idle longer than this.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="appSettingsNotifStuckMins" class="set-num" value="10" min="1" max="120">
                       <span class="set-unit">min</span>
                     </div>
                   </div>
-                  <div class="set-row" data-search="toast display time popup dismiss seconds notification">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Toast display time</span>
-                      <span class="set-row-desc">How long the corner pop-ups stay on screen.</span>
+                  <div class="cm-row" data-search="toast display time popup dismiss seconds notification">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Toast display time</span>
+                      <span class="cm-row__hint">How long the corner pop-ups stay on screen.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="appSettingsNotifToastSecs" class="set-num" value="3" min="1" max="300">
                       <span class="set-unit">sec</span>
                     </div>
                   </div>
-                  <div class="set-row" data-search="browser notification auto close dismiss seconds">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Browser notification display time</span>
-                      <span class="set-row-desc">How long a desktop notification stays up before Codeman closes it. Your OS may close it sooner.</span>
+                  <div class="cm-row" data-search="browser notification auto close dismiss seconds">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Browser notification display time</span>
+                      <span class="cm-row__hint">How long a desktop notification stays up before Codeman closes it. Your OS may close it sooner.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="appSettingsNotifBrowserSecs" class="set-num" value="8" min="1" max="300">
@@ -3003,7 +3003,7 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Levels</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="set-chips" data-search="critical warning info levels">
                     <label class="set-chip"><input type="checkbox" id="appSettingsNotifCritical" checked><span>Critical</span></label>
                     <label class="set-chip"><input type="checkbox" id="appSettingsNotifWarning" checked><span>Warning</span></label>
@@ -3014,7 +3014,7 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Per event</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div class="event-type-grid" data-search="per event permission question idle response respawn task subagent">
                     <div class="event-header">Event</div>
                     <div class="event-header">On</div>
@@ -3069,16 +3069,16 @@
 
               <div class="set-group" id="webhookGroup" style="display:none">
                 <div class="set-group-head"><h4>Webhook (ntfy, Slack, Discord)</h4><span class="set-scope">server</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="webhook ntfy slack discord notification phone headless">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Send alerts to a webhook</span>
-                      <span class="set-row-desc">Posts the same events as push notifications (permission prompts, questions, errors, idle) to ntfy, Slack, Discord or any URL, so a server with no browser open can still reach your phone. The URL is a secret: it is stored on the server only and is never shown again once saved. On public ntfy.sh anyone who guesses the topic can read it, so pick a long random one.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="webhook ntfy slack discord notification phone headless">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Send alerts to a webhook</span>
+                      <span class="cm-row__hint">Posts the same events as push notifications (permission prompts, questions, errors, idle) to ntfy, Slack, Discord or any URL, so a server with no browser open can still reach your phone. The URL is a secret: it is stored on the server only and is never shown again once saved. On public ntfy.sh anyone who guesses the topic can read it, so pick a long random one.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="webhookEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row has-field">
-                    <div class="set-row-text"><span class="set-row-label">Service</span></div>
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text"><span class="cm-row__label">Service</span></div>
                     <select id="webhookKind" class="set-select">
                       <option value="ntfy">ntfy</option>
                       <option value="slack">Slack</option>
@@ -3086,27 +3086,27 @@
                       <option value="generic">Generic JSON</option>
                     </select>
                   </div>
-                  <div class="set-row has-field">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Webhook URL</span>
-                      <span class="set-row-desc" id="webhookUrlHint">Nothing saved yet.</span>
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Webhook URL</span>
+                      <span class="cm-row__hint" id="webhookUrlHint">Nothing saved yet.</span>
                     </div>
                     <input type="password" id="webhookUrl" class="set-input" autocomplete="off" spellcheck="false" placeholder="https://ntfy.sh/your-topic">
                   </div>
-                  <div class="set-row has-field">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Which events</span>
-                      <span class="set-row-desc">"Needs attention" skips the routine "response complete" message.</span>
+                  <div class="cm-row has-field">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Which events</span>
+                      <span class="cm-row__hint">"Needs attention" skips the routine "response complete" message.</span>
                     </div>
                     <select id="webhookScope" class="set-select">
                       <option value="attention">Needs attention</option>
                       <option value="all">Everything</option>
                     </select>
                   </div>
-                  <div class="set-row">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Save and test</span>
-                      <span class="set-row-desc">The main Settings Save saves this group too. Send test saves pending edits first.</span>
+                  <div class="cm-row">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Save and test</span>
+                      <span class="cm-row__hint">The main Settings Save saves this group too. Send test saves pending edits first.</span>
                     </div>
                     <span>
                       <button class="btn-toolbar btn-sm btn-primary" id="webhookSaveBtn" onclick="app.saveWebhook()">Save</button>
@@ -3129,15 +3129,15 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Provider</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="voice provider active">
-                    <div class="set-row-text"><span class="set-row-label">Active provider</span></div>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="voice provider active">
+                    <div class="cm-row__text"><span class="cm-row__label">Active provider</span></div>
                     <span class="voice-provider-status" id="voiceProviderStatus">&mdash;</span>
                   </div>
-                  <div class="set-row has-field" data-search="voice provider claude deepgram web speech engine">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Speech engine</span>
-                      <span class="set-row-desc">Auto prefers Claude when this server can transcribe, then Deepgram, then the browser.</span>
+                  <div class="cm-row has-field" data-search="voice provider claude deepgram web speech engine">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Speech engine</span>
+                      <span class="cm-row__hint">Auto prefers Claude when this server can transcribe, then Deepgram, then the browser.</span>
                     </div>
                     <select id="voiceProvider" class="set-select">
                       <option value="auto">Auto</option>
@@ -3146,20 +3146,20 @@
                       <option value="webspeech">Browser (Web Speech)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="voice insert mode compose">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Insert mode</span>
-                      <span class="set-row-desc">Where dictated text lands.</span>
+                  <div class="cm-row has-field" data-search="voice insert mode compose">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Insert mode</span>
+                      <span class="cm-row__hint">Where dictated text lands.</span>
                     </div>
                     <select id="voiceInsertMode" class="set-select">
                       <option value="direct">Direct to input</option>
                       <option value="compose">Compose dialog</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="voice language">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Language</span>
-                      <span class="set-row-desc">Applies to whichever engine is active.</span>
+                  <div class="cm-row has-field" data-search="voice language">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Language</span>
+                      <span class="cm-row__hint">Applies to whichever engine is active.</span>
                     </div>
                     <select id="voiceLanguage" class="set-select">
                       <option value="en-US">English (US)</option>
@@ -3171,10 +3171,10 @@
                       <option value="multi">Auto-detect (multi)</option>
                     </select>
                   </div>
-                  <div class="set-row has-field" data-search="voice keyterms domain keywords">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Domain keywords</span>
-                      <span class="set-row-desc">Comma-separated terms to boost recognition accuracy. Sent to Claude and Deepgram alike.</span>
+                  <div class="cm-row has-field" data-search="voice keyterms domain keywords">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Domain keywords</span>
+                      <span class="cm-row__hint">Comma-separated terms to boost recognition accuracy. Sent to Claude and Deepgram alike.</span>
                     </div>
                     <input type="text" id="voiceKeyterms" class="set-input" placeholder="codeman, tmux, respawn, subagent">
                   </div>
@@ -3183,16 +3183,16 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Claude</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="claude voice dictation subscription no api key">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Transcribe with this server's Claude login</span>
-                      <span class="set-row-desc">Dictation with no API key, through the same service Claude Code's own /voice mode uses. Microphone audio goes to Anthropic and is billed to this machine's Claude subscription, for everyone who can reach this UI.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="claude voice dictation subscription no api key">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Transcribe with this server's Claude login</span>
+                      <span class="cm-row__hint">Dictation with no API key, through the same service Claude Code's own /voice mode uses. Microphone audio goes to Anthropic and is billed to this machine's Claude subscription, for everyone who can reach this UI.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsClaudeVoice"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="claude voice status credentials">
-                    <div class="set-row-text"><span class="set-row-label">Server status</span></div>
+                  <div class="cm-row" data-search="claude voice status credentials">
+                    <div class="cm-row__text"><span class="cm-row__label">Server status</span></div>
                     <span class="voice-provider-status" id="voiceClaudeStatus" data-i18n-skip>&mdash;</span>
                   </div>
                 </div>
@@ -3200,11 +3200,11 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Deepgram Nova-3</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="deepgram api key">
-                    <div class="set-row-text">
-                      <span class="set-row-label">API key</span>
-                      <span class="set-row-desc">Stored on this device only, never sent to the server. Get a key at console.deepgram.com</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="deepgram api key">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">API key</span>
+                      <span class="cm-row__hint">Stored on this device only, never sent to the server. Get a key at console.deepgram.com</span>
                     </div>
                     <div class="set-row-actions set-row-actions-wide">
                       <input type="password" id="voiceDeepgramKey" class="set-input" placeholder="Enter Deepgram API key" autocomplete="off">
@@ -3224,7 +3224,7 @@
               <p class="set-section-blurb">Click a binding to capture a new key combination.</p>
               <div class="set-group">
                 <div class="set-group-head"><h4>Keyboard</h4><span class="set-scope">device</span></div>
-                <div class="set-group-body">
+                <div class="cm-group">
                   <div id="appSettingsShortcutsList" data-search="keyboard shortcuts bindings keys">
                     <!-- Populated by app.renderShortcutSettingsList() -->
                   </div>
@@ -3243,11 +3243,11 @@
 
               <div class="set-group" id="doctorGroup">
                 <div class="set-group-head"><h4>Diagnostics</h4><span class="set-scope">server</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="diagnostics doctor dependencies tmux node claude codex check install">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Check this machine</span>
-                      <span class="set-row-desc">Runs <code>codeman doctor</code> on the server: which agent CLIs, tmux, Node and the optional office tools are installed, their versions, and how to install what is missing.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="diagnostics doctor dependencies tmux node claude codex check install">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Check this machine</span>
+                      <span class="cm-row__hint">Runs <code>codeman doctor</code> on the server: which agent CLIs, tmux, Node and the optional office tools are installed, their versions, and how to install what is missing.</span>
                     </div>
                     <button class="btn-toolbar btn-sm" id="doctorRunBtn" onclick="app.runDoctor()">Run checks</button>
                   </div>
@@ -3257,18 +3257,18 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Paths</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row has-field" data-search="claude.md template path new cases">
-                    <div class="set-row-text">
-                      <span class="set-row-label">CLAUDE.md template</span>
-                      <span class="set-row-desc">Used when creating new cases. Leave empty for the built-in template.</span>
+                <div class="cm-group">
+                  <div class="cm-row has-field" data-search="claude.md template path new cases">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">CLAUDE.md template</span>
+                      <span class="cm-row__hint">Used when creating new cases. Leave empty for the built-in template.</span>
                     </div>
                     <input type="text" id="appSettingsClaudeMdPath" class="set-input" placeholder="/path/to/CLAUDE.md template">
                   </div>
-                  <div class="set-row has-field" data-search="default working directory">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Default working directory</span>
-                      <span class="set-row-desc">Starting directory for new sessions.</span>
+                  <div class="cm-row has-field" data-search="default working directory">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Default working directory</span>
+                      <span class="cm-row__hint">Starting directory for new sessions.</span>
                     </div>
                     <input type="text" id="appSettingsDefaultDir" class="set-input" placeholder="~/projects">
                   </div>
@@ -3277,25 +3277,25 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Automation</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="image watcher popup screenshots">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Image watcher</span>
-                      <span class="set-row-desc">Detect and pop up new images found in session directories.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="image watcher popup screenshots">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Image watcher</span>
+                      <span class="cm-row__hint">Detect and pop up new images found in session directories.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsImageWatcherEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="prompt cache keep warm keep-alive nudge idle expire">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Keep prompt caches warm</span>
-                      <span class="set-row-desc">Default for Claude sessions that have not chosen on their Respawn tab (a session an agent started needs its own switch): shortly before an idle session's prompt cache would expire, send a one-line keep-alive turn so the next prompt still reads the conversation from cache instead of re-processing it.</span>
+                  <div class="cm-row" data-search="prompt cache keep warm keep-alive nudge idle expire">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Keep prompt caches warm</span>
+                      <span class="cm-row__hint">Default for Claude sessions that have not chosen on their Respawn tab (a session an agent started needs its own switch): shortly before an idle session's prompt cache would expire, send a one-line keep-alive turn so the next prompt still reads the conversation from cache instead of re-processing it.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsPromptCacheKeepWarm"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" data-search="prompt cache keep warm hours limit cap window">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Keep warm for at most</span>
-                      <span class="set-row-desc">Hours after your last prompt in a session during which keep-alives are sent; past that the cache is left to expire. A keep-alive costs a small fraction of the re-write it prevents, so a few hours of them pay off, an overnight gap does not.</span>
+                  <div class="cm-row" data-search="prompt cache keep warm hours limit cap window">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Keep warm for at most</span>
+                      <span class="cm-row__hint">Hours after your last prompt in a session during which keep-alives are sent; past that the cache is left to expire. A keep-alive costs a small fraction of the re-write it prevents, so a few hours of them pay off, an overnight gap does not.</span>
                     </div>
                     <div class="set-row-actions">
                       <input type="number" id="appSettingsPromptCacheKeepWarmMaxHours" class="set-num" min="0.5" max="24" step="0.5" value="2">
@@ -3307,16 +3307,16 @@
 
               <div class="set-group">
                 <div class="set-group-head"><h4>Remote access</h4><span class="set-scope">synced</span></div>
-                <div class="set-group-body">
-                  <div class="set-row" data-search="cloudflare tunnel remote access url">
-                    <div class="set-row-text">
-                      <span class="set-row-label">Cloudflare Tunnel</span>
-                      <span class="set-row-desc">Expose Codeman on a public URL. Set CODEMAN_PASSWORD first.</span>
+                <div class="cm-group">
+                  <div class="cm-row" data-search="cloudflare tunnel remote access url">
+                    <div class="cm-row__text">
+                      <span class="cm-row__label">Cloudflare Tunnel</span>
+                      <span class="cm-row__hint">Expose Codeman on a public URL. Set CODEMAN_PASSWORD first.</span>
                     </div>
                     <label class="switch switch-sm"><input type="checkbox" id="appSettingsTunnelEnabled"><span class="slider"></span></label>
                   </div>
-                  <div class="set-row" id="tunnelUrlRow" style="display:none">
-                    <div class="set-row-text"><span class="set-row-label">Tunnel URL</span></div>
+                  <div class="cm-row" id="tunnelUrlRow" style="display:none">
+                    <div class="cm-row__text"><span class="cm-row__label">Tunnel URL</span></div>
                     <div class="set-row-actions">
                       <span id="tunnelUrlDisplay" class="set-copy" title="Click to copy"></span>
                       <button class="btn-icon-sm" id="tunnelQrBtn" onclick="app.showTunnelQR()" title="Show QR code">&#x229E;</button>
