@@ -4253,6 +4253,10 @@
     </div>
   </div>
 
+  <!-- The panel dock's tab strip (panel-dock.js, design-system phase 4c): shown while
+       a dockable panel is open on a wide window, one tab per open panel. -->
+  <div class="cm-tabs panel-dock-tabs" id="panelDockTabs" role="tablist" aria-label="Docked panels"></div>
+
   <!-- The Inbox (design-system phase 4b): approvals and notifications as tabs of one
        drawer, opened by the header's Inbox button (approvals-ui.js toggleInbox). The
        notification list keeps its ids (#notifList/#notifEmpty) so notification-manager.js
@@ -4310,6 +4314,7 @@
   <script defer src="readmymind-ui.js"></script>
   <script defer src="ultracode-panel.js"></script>
   <script defer src="approvals-ui.js"></script>
+  <script defer src="panel-dock.js"></script>
   <script defer src="reboot-restore-ui.js"></script>
   <script defer src="admin-ui.js"></script>
   <script defer src="session-ui.js"></script>

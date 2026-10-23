@@ -1156,13 +1156,14 @@ Object.assign(CodemanApp.prototype, {
     };
 
     // Named handle-level listeners (stored for explicit cleanup on window close)
+    // A panel docked in the right column (panel-dock.js) stays put.
     const handleMouseDown = (e) => {
-      if (e.target.tagName === 'BUTTON') return;
+      if (e.target.tagName === 'BUTTON' || win.dataset.docked) return;
       startDrag(e.clientX, e.clientY);
       e.preventDefault();
     };
     const handleTouchStart = (e) => {
-      if (e.target.tagName === 'BUTTON') return;
+      if (e.target.tagName === 'BUTTON' || win.dataset.docked) return;
       const touch = e.touches[0];
       startDrag(touch.clientX, touch.clientY);
     };

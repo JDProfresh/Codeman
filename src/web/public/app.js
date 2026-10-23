@@ -1252,6 +1252,8 @@ class CodemanApp {
     this.loadQuickStartCases(null, settingsPromise);
     this._initRunMode();
     this.initWebviews?.();
+    // Right-side panels share one docked column on wide windows (panel-dock.js).
+    this.initPanelDock?.();
     this.setupEventListeners();
     // Mobile: ensure button taps register even when keyboard is visible.
     // On mobile, tapping a button while the soft keyboard is up causes the
