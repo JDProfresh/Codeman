@@ -7,7 +7,7 @@ panels, and after-the-fact summaries.
 Everything on this page is Claude-only. It reads Claude Code's transcripts and team state;
 the other CLIs expose no equivalent.
 
-![Subagent windows](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/subagent-windows-20260724.png)
+![Subagent windows](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/subagent-windows-20261023.png)
 
 ## Subagent windows
 

@@ -6,7 +6,7 @@ Most of Codeman's UI is **opt-in**. A stock install shows a deliberately small h
 feature you read about here may simply not be on screen yet. Where that is the case, this
 page says so and names the setting.
 
-![Codeman dashboard](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/codeman-tour-20261010.png)
+![Codeman dashboard](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/codeman-tour-20261023.png)
 
 ## Layout
 
@@ -88,7 +88,7 @@ headers and the Run menus keep theirs.
 | No dot                        | The session is not running.                                              |
 | Muted grey dot plus an `exited (137)` badge | The agent inside the pane has exited, with that exit code (or `exited (signal 9)`). A bare `exited` means tmux saw the pane die but did not report how, which is not the same as a clean `exited (0)`. Detailed sidebar and rail rows read `exited` in their pill. |
 
-![Tab alerts](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/tab-alerts-20260815.png)
+![Tab alerts](https://raw.githubusercontent.com/Ark0N/Codeman/master/docs/images/tab-alerts-20261023.png)
 
 The alert states are steady colour with a pulse layered on top, not a blink between the
 alert colour and nothing, so a tab that needs you looks like it needs you at every point in

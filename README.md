@@ -51,7 +51,7 @@ The installer asks before every system change, and re-running the same line upda
 - **Self-hosted and private** - loopback-only by default, MIT licensed, no telemetry, runs entirely on your machine
 
 <p align="center">
-  <img src="docs/images/codeman-tour-20261010.png" alt="Codeman dashboard tour: session tabs per case, one-click Run for new agents, live plan usage in the header" width="900">
+  <img src="docs/images/codeman-tour-20261023.png" alt="Codeman dashboard tour: session tabs per case, one-click Run for new agents, live plan usage in the header" width="900">
 </p>
 
 ---
@@ -331,7 +331,7 @@ A pixel-perfect DOM overlay inside xterm.js renders keystrokes at 0ms. Backgroun
 Watch background agents work in real-time. Codeman monitors agent activity and displays each agent in a draggable floating window with animated Matrix-style connection lines back to the parent session.
 
 <p align="center">
-  <img src="docs/images/subagent-windows-20260724.png" alt="Subagent Visualization: three parallel Explore agents as floating windows with live tool-call feeds" width="900">
+  <img src="docs/images/subagent-windows-20261023.png" alt="Subagent Visualization: three parallel Explore agents as floating windows with live tool-call feeds" width="900">
 </p>
 
 - **Floating terminal windows** — draggable, resizable panels for each agent with a live activity log showing every tool call, file read, and progress update as it happens
