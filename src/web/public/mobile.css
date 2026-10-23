@@ -139,7 +139,6 @@ html.mobile-init .file-browser-panel {
 
   .session-tab {
     padding: 0.4rem 0.6rem;
-    font-size: 0.75rem;
     min-height: 40px;
   }
 
@@ -173,10 +172,6 @@ html.mobile-init .file-browser-panel {
 
   .case-combobox {
     width: 160px;
-  }
-
-  .toolbar-select {
-    font-size: 0.75rem;
   }
 
   /* Stack panels vertically */
@@ -1210,8 +1205,6 @@ html.mobile-init .file-browser-panel {
 
   .run-mode-option {
     padding: 10px 12px;
-    font-size: 0.8rem;
-    cursor: pointer;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
   }
 
@@ -1395,30 +1388,15 @@ html.mobile-init .file-browser-panel {
     will-change: transform;
   }
 
-  .keyboard-accessory-bar.visible {
-    display: flex;
-  }
-
   /* 隐藏滚动条但保留滑动能力 */
   .keyboard-accessory-bar::-webkit-scrollbar {
     display: none;
   }
 
   .accessory-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    gap: 4px;
-    padding: 6px 12px;
     background: #2a2a2a;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
     color: #e5e5e5;
-    font-size: 0.65rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
   }
 
   /* Confirm state — button turns amber and shows "Tap again" */
@@ -1444,13 +1422,7 @@ html.mobile-init .file-browser-panel {
     background: #3a3a3a;
   }
 
-  .accessory-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
   .accessory-btn-arrow {
-    padding: 6px 10px;
     background: #2563eb;
     border-color: rgba(59, 130, 246, 0.5);
     color: #fff;
@@ -1461,19 +1433,9 @@ html.mobile-init .file-browser-panel {
   }
 
   .accessory-btn-dismiss {
-    margin-left: auto;
-    flex: 1 1 0;
-    max-width: 100px;
-    padding: 10px 8px;
     background: #2563eb;
     border-color: rgba(59, 130, 246, 0.5);
     color: #fff;
-    font-weight: 600;
-  }
-
-  .accessory-btn-dismiss svg {
-    width: 22px;
-    height: 22px;
   }
 
   .accessory-btn-dismiss:active {
@@ -1671,7 +1633,6 @@ html.mobile-init .file-browser-panel {
     padding-bottom: var(--safe-area-bottom, 0px);
     /* dvh tracks the visible viewport on iOS Safari (vh = large viewport and would clip
        the header/close button off-screen); the vh line is the old-engine fallback */
-    max-height: 88vh;
     max-height: 92dvh;
   }
 
@@ -1773,7 +1734,6 @@ html.mobile-init .file-browser-panel {
   .wizard-step-number {
     width: 24px;
     height: 24px;
-    font-size: 0.7rem;
   }
 
   .wizard-step-label {
@@ -1921,14 +1881,11 @@ html.mobile-init .file-browser-panel {
     min-height: 24px;
     padding: 0.1rem 0.4rem;
     font-size: 0.6rem;
-    border-radius: 4px;
     text-align: center;
   }
 
   .duration-custom {
-    display: flex;
     gap: 0.2rem;
-    align-items: center;
   }
 
   .duration-custom-input.visible {
@@ -2037,7 +1994,6 @@ html.mobile-init .file-browser-panel {
 
   .filter-btn {
     padding: 0.35rem 0.75rem;
-    font-size: 0.7rem;
     min-height: 32px;
   }
 
@@ -2056,23 +2012,13 @@ html.mobile-init .file-browser-panel {
   }
 
   .run-summary-actions {
-    flex-wrap: wrap;
     gap: 0.3rem;
   }
 
   .run-summary-actions .btn-toolbar {
     flex: 1;
     min-height: 36px;
-    font-size: 0.7rem;
     white-space: nowrap;
-  }
-
-  .auto-refresh-label {
-    font-size: 0.7rem;
-  }
-
-  .ralph-panel {
-    font-size: 0.75rem;
   }
 
   .ralph-summary {
@@ -2271,7 +2217,6 @@ html.mobile-init .file-browser-panel {
   }
 
   .form-row label {
-    font-size: 0.7rem;
     margin-bottom: 0.2rem;
   }
 
@@ -3360,7 +3305,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 
   .offline-banner-retry {
-    padding: var(--cm-space-1) var(--cm-space-2);
     margin-left: auto;
   }
 
@@ -3404,7 +3348,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-body {
     display: flex;
     flex-direction: column;
-    min-height: 0;
   }
 
   /* Rail keeps only its search field, laid out as a bar */
@@ -3532,7 +3475,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 
   :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-jump-veil {
-    display: none;
     position: fixed;
     inset: 0;
     z-index: 8;
@@ -3540,7 +3482,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 
   :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-jump-menu {
-    display: none;
     position: absolute;
     left: 14px;
     right: 14px;
@@ -3623,7 +3564,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
   :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section-head h2 {
     font-size: 0.6rem;
-    font-weight: 640;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-muted);
