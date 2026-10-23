@@ -442,14 +442,7 @@ body {
   overflow: hidden;
 }
 
-/* App Layout - Terminal First */
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-  height: var(--app-height, 100dvh);
-}
+/* App layout: the .app element is the .cm-shell grid (css/layout.css). */
 
 /* Compact Header */
 .header {
@@ -13661,28 +13654,27 @@ kbd {
 }
 /* ===== Panel dock (panel-dock.js, design-system phase 4c) =====
    While a dockable panel (Files, Inbox, Subagents, Monitor) is open on a wide
-   window, <html> carries .dock-open: the main area gives up --dock-w on the
-   right and the open panels share that column, one shown at a time under the
-   dock's tab strip. Only panel-dock.js sets .dock-open, and only at 1180px and
-   wider, so narrower windows keep the floating panels with no media query here.
-   A panel the user detached (.detached) never gets [data-docked]. */
+   window, <html> carries .dock-open and --cm-panel-w opens the shell's panel
+   column (css/layout.css): the strip takes the `tabs` area, the front panel the
+   `panel` area, and main reflows beside them. Only panel-dock.js sets
+   .dock-open, and only at 1180px and wider, so narrower windows keep the
+   floating panels with no media query here. A panel the user detached
+   (.detached) never gets [data-docked]. Every dockable panel and the strip are
+   children of the shell (.app), which is what lets them take a grid area. */
 .panel-dock-tabs {
   display: none;
 }
 html.dock-open {
   --dock-w: 400px;
   --dock-tabs-h: 37px;
-}
-html.dock-open .main {
-  margin-right: var(--dock-w);
+  --cm-panel-w: var(--dock-w);
 }
 html.dock-open .panel-dock-tabs {
   display: flex;
-  position: fixed;
-  top: var(--header-height);
-  right: 0;
+  grid-area: tabs;
+  position: relative;
   z-index: 100;
-  width: var(--dock-w);
+  min-width: 0;
   height: var(--dock-tabs-h);
   overflow-x: auto;
   border-left: 1px solid var(--border);
@@ -13701,13 +13693,11 @@ html.dock-open .panel-dock-tabs {
   color: var(--cm-text);
 }
 html.dock-open [data-docked] {
-  position: fixed;
-  top: calc(var(--header-height) + var(--dock-tabs-h));
-  right: 0;
-  bottom: var(--toolbar-height);
-  left: auto;
+  grid-area: panel;
+  position: relative;
+  inset: auto;
   z-index: 100;
-  width: var(--dock-w);
+  width: auto;
   height: auto;
   min-width: 0;
   max-width: none;

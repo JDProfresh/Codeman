@@ -132,6 +132,7 @@ run('minify styles.css', 'npx esbuild dist/web/public/styles.css --minify --outf
 run('minify mobile.css', 'npx esbuild dist/web/public/mobile.css --minify --outfile=dist/web/public/mobile.css --allow-overwrite');
 run('minify tokens.css', 'npx esbuild dist/web/public/css/tokens.css --minify --outfile=dist/web/public/css/tokens.css --allow-overwrite');
 run('minify components.css', 'npx esbuild dist/web/public/css/components.css --minify --outfile=dist/web/public/css/components.css --allow-overwrite');
+run('minify layout.css', 'npx esbuild dist/web/public/css/layout.css --minify --outfile=dist/web/public/css/layout.css --allow-overwrite');
 
 // 5. Content-hash cache busting
 console.log('\n[build] content-hash cache busting');
@@ -141,6 +142,7 @@ console.log('\n[build] content-hash cache busting');
     'vendor/open-props.css',
     'css/tokens.css',
     'css/components.css',
+    'css/layout.css',
     'styles.css',
     'mobile.css',
     'constants.js',

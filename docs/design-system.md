@@ -21,7 +21,8 @@ Every stylesheet declares the same layer order:
 | `skins`      | `styles.css` (top)           | every skin palette, custom properties only                             |
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
-| `layout`, `features` | reserved              | for code moved out of the unlayered sheets                             |
+| `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
+| `features`   | reserved                     | for code moved out of the unlayered sheets                             |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -98,11 +99,31 @@ script's header shows how to start the two servers on separate instances.
   `show*` per-device key, add a row to `HEADER_MORE_ITEMS`, and decide its phone
   behaviour (`test/mobile-header-buttons-policy.test.ts` fails until you do).
 
+## The shell (`css/layout.css`)
+
+`.app` is the `.cm-shell` grid from board S04:
+
+```
+"header  header"   auto
+"banners banners"  auto     offline, host-wake, reboot-restore, timer, respawn, orchestrator, Ralph
+"main    tabs"     auto     the panel dock's tab strip
+"main    panel"    1fr      the docked panel
+"toolbar toolbar"  auto
+columns: minmax(0, 1fr) var(--cm-panel-w, 0)
+```
+
+The banner strips stack inside one `.cm-region--banners`; main stays one element (the
+terminal, tiles, web tabs and the welcome screen mount inside it); fixed-position
+overlays are outside the grid's flow. The panel column is 0 wide until a panel docks
+(`test/app-shell-layout.test.ts`).
+
 ## Right-side panels (desktop)
 
-Files, Inbox, Subagents and Monitor **dock** into one right column at 1180px and
-wider (`panel-dock.js`): a tab strip, the most recent panel in front, the
-terminal reflowed rather than covered. Docking is a layout state, never a
+Files, Inbox, Subagents and Monitor **dock** into the shell's panel column at
+1180px and wider (`panel-dock.js` sets `html.dock-open`, which sets
+`--cm-panel-w`): a tab strip in the `tabs` area, the most recent panel in the
+`panel` area, the terminal reflowed rather than covered. Every dockable panel is
+a direct child of the shell for that reason. Docking is a layout state, never a
 re-parent; each panel keeps its own open/close code. A new right-side panel joins
 by adding a row to `DOCK_PANELS` (its element id, how to read "open", its own
 close) and nothing else (`test/panel-dock.test.ts`).
@@ -128,7 +149,7 @@ controls stay off phones.
 | 1 | type/space/radius snapped onto tokens | done |
 | 2 | skins in `@layer skins`, semantic button colors | done |
 | 3 | the kit; Run split-button tokens; toolbar and banner families | kit done; more families can migrate |
-| 4 | header More + pins, Inbox, panel dock, split removed, phone P07 | done |
+| 4 | header More + pins, Inbox, panel dock, split removed, phone P07, `.cm-shell` grid | done; mobile.css shrink and wiki re-shoots next |
 
 **Dialogs are on the kit.** Every dialog box is a `.cm-dialog` with a titled
 `__head` (`test/dialog-kit-migration.test.ts` refuses the old `.modal-content`

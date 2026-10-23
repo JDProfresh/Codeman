@@ -39,6 +39,9 @@ describe('panel dock', () => {
   it('docked layout rules live only under html.dock-open, which only the JS sets', () => {
     const css = read('styles.css');
     for (const m of css.matchAll(/^[^\n{]*\[data-docked[^\n{]*\{/gm)) expect(m[0]).toMatch(/^html\.dock-open /);
-    expect(css).toMatch(/html\.dock-open \.main \{\s*margin-right: var\(--dock-w\);/);
+    // The dock opens the shell's panel column (css/layout.css) instead of a margin on main.
+    expect(css).toMatch(/html\.dock-open \{[^}]*--cm-panel-w: var\(--dock-w\);/);
+    expect(css).toMatch(/html\.dock-open \[data-docked\] \{\s*grid-area: panel;/);
+    expect(css).not.toMatch(/html\.dock-open \.main \{/);
   });
 });

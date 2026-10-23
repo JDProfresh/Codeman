@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="vendor/open-props.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="mobile.css" media="(max-width: 1023px)">
   <!-- xterm.css loaded async — terminal won't display until xterm.js runs anyway -->
@@ -112,7 +113,7 @@
   <!-- onclick scrolls/focuses directly: with <base href="/"> a bare href="#..." would
        navigate to /#... (the dashboard) from a /session/:id solo window. -->
   <a href="#terminalContainer" class="skip-link" onclick="event.preventDefault(); var t=document.getElementById('terminalContainer'); if(t){t.scrollIntoView(); var f=t.querySelector('textarea,[tabindex]'); (f||t).focus&&(f||t).focus();}">Skip to terminal</a>
-  <div class="app">
+  <div class="app cm-shell">
     <!-- Compact Header with Session Tabs -->
     <header class="header">
       <div class="header-brand">
@@ -207,185 +208,191 @@
       </div>
     </header>
 
-    <!-- Connection-loss banner: shown once session state HAS loaded and the
-         link then drops, so the terminal stays readable behind it.
-         The blocking variant is #offlineOverlay at the end of <body>. -->
-    <div class="offline-banner" id="offlineBanner" role="status" hidden>
-      <span class="offline-banner-dot" aria-hidden="true"></span>
-      <span class="offline-banner-text" id="offlineBannerText">No connection to the Codeman server</span>
-      <span class="offline-banner-detail" id="offlineBannerDetail"></span>
-      <button class="offline-banner-retry" id="offlineBannerRetry" onclick="app.retryConnection()">Retry now</button>
-    </div>
+    <!-- Shell region: banners and status strips stack here, between the header and
+         main (css/layout.css .cm-shell, design-system phase 4). -->
+    <div class="cm-region cm-region--banners">
 
-    <!-- Remote-host unreachable: the machine SLEEPS, the local ssh pane stalls
-         silently (send-keys succeeds against it, so typed input would vanish) and
-         Codeman can wake it. Amber, not red: the session is fine, the host is
-         asleep. Without a configured wake target the action becomes "Configure
-         WoL" and opens the small config dialog. -->
-    <div class="offline-banner host-wake-banner" id="hostWakeBanner" role="status" hidden>
-      <span class="offline-banner-dot" aria-hidden="true"></span>
-      <span class="offline-banner-text" id="hostWakeBannerText">Remote host is unreachable</span>
-      <span class="offline-banner-detail" id="hostWakeBannerDetail"></span>
-      <button class="offline-banner-retry" id="hostWakeBannerAction" onclick="app.hostWakeAction()">Wake</button>
-    </div>
-
-    <!-- Reboot-restore offer: shown when the server found sessions a host reboot
-         killed and is asking whether to rebuild them. Populated by
-         reboot-restore-ui.js; nothing is created until the user clicks. -->
-    <div class="reboot-restore-banner" id="rebootRestoreBanner" role="status" hidden>
-      <span class="reboot-restore-banner-icon" aria-hidden="true">↺</span>
-      <span class="reboot-restore-banner-text" id="rebootRestoreBannerText"></span>
-      <span class="reboot-restore-banner-detail" id="rebootRestoreBannerDetail"></span>
-      <span class="reboot-restore-banner-note">Conversations return; terminal history does not.</span>
-      <button
-        class="reboot-restore-banner-accept"
-        id="rebootRestoreBannerAccept"
-        onclick="app.restoreRebootSessions()"
-      >
-        Restore
-      </button>
-      <button class="reboot-restore-banner-dismiss" onclick="app.dismissRebootRestore()">Dismiss</button>
-    </div>
-
-    <!-- Timer Banner (shown when timed run is active) -->
-    <div class="timer-banner" id="timerBanner" style="display: none;">
-      <div class="timer-content">
-        <span class="timer-value" id="timerValue">00:00:00</span>
-        <div class="timer-progress"><div class="timer-progress-fill" id="timerProgress"></div></div>
-        <span class="timer-meta" id="timerMeta">0 tasks | $0.00</span>
+      <!-- Connection-loss banner: shown once session state HAS loaded and the
+           link then drops, so the terminal stays readable behind it.
+           The blocking variant is #offlineOverlay at the end of <body>. -->
+      <div class="offline-banner" id="offlineBanner" role="status" hidden>
+        <span class="offline-banner-dot" aria-hidden="true"></span>
+        <span class="offline-banner-text" id="offlineBannerText">No connection to the Codeman server</span>
+        <span class="offline-banner-detail" id="offlineBannerDetail"></span>
+        <button class="offline-banner-retry" id="offlineBannerRetry" onclick="app.retryConnection()">Retry now</button>
       </div>
-      <button class="btn-icon-only" onclick="app.stopCurrentRun()" title="Stop" aria-label="Stop current run">&#x25A0;</button>
-    </div>
 
-    <!-- Respawn Banner - Compact 2-column layout -->
-    <div class="respawn-banner" id="respawnBanner" style="display: none;">
-      <div class="respawn-compact-layout">
-        <div class="respawn-status-col">
-          <div class="respawn-status-row1">
-            <span class="respawn-indicator">&#x21BB;</span>
-            <span class="respawn-state" id="respawnState">Watching</span>
-            <span class="detection-confidence" id="detectionConfidence"></span>
-            <span class="respawn-cycles">#<span id="respawnCycleCount">0</span></span>
-            <span class="respawn-timer" id="respawnTimer" style="display: none;"></span>
-            <span class="respawn-tokens" id="respawnTokens" style="display: none;"></span>
-            <button class="btn-icon-only" onclick="app.stopRespawn()" title="Stop Respawn" aria-label="Stop respawn">&#x25A0;</button>
-          </div>
-          <div class="respawn-status-row2" id="respawnStatusRow2">
-            <span class="detection-hook" id="detectionHook" style="display: none;"></span>
-            <span class="detection-ai-check" id="detectionAiCheck" style="display: none;"></span>
-            <span class="detection-status" id="detectionStatus"></span>
-            <span class="detection-waiting" id="detectionWaiting" style="display: none;"></span>
-            <div class="respawn-countdown-timers" id="respawnCountdownTimers"></div>
-          </div>
+      <!-- Remote-host unreachable: the machine SLEEPS, the local ssh pane stalls
+           silently (send-keys succeeds against it, so typed input would vanish) and
+           Codeman can wake it. Amber, not red: the session is fine, the host is
+           asleep. Without a configured wake target the action becomes "Configure
+           WoL" and opens the small config dialog. -->
+      <div class="offline-banner host-wake-banner" id="hostWakeBanner" role="status" hidden>
+        <span class="offline-banner-dot" aria-hidden="true"></span>
+        <span class="offline-banner-text" id="hostWakeBannerText">Remote host is unreachable</span>
+        <span class="offline-banner-detail" id="hostWakeBannerDetail"></span>
+        <button class="offline-banner-retry" id="hostWakeBannerAction" onclick="app.hostWakeAction()">Wake</button>
+      </div>
+
+      <!-- Reboot-restore offer: shown when the server found sessions a host reboot
+           killed and is asking whether to rebuild them. Populated by
+           reboot-restore-ui.js; nothing is created until the user clicks. -->
+      <div class="reboot-restore-banner" id="rebootRestoreBanner" role="status" hidden>
+        <span class="reboot-restore-banner-icon" aria-hidden="true">↺</span>
+        <span class="reboot-restore-banner-text" id="rebootRestoreBannerText"></span>
+        <span class="reboot-restore-banner-detail" id="rebootRestoreBannerDetail"></span>
+        <span class="reboot-restore-banner-note">Conversations return; terminal history does not.</span>
+        <button
+          class="reboot-restore-banner-accept"
+          id="rebootRestoreBannerAccept"
+          onclick="app.restoreRebootSessions()"
+        >
+          Restore
+        </button>
+        <button class="reboot-restore-banner-dismiss" onclick="app.dismissRebootRestore()">Dismiss</button>
+      </div>
+
+      <!-- Timer Banner (shown when timed run is active) -->
+      <div class="timer-banner" id="timerBanner" style="display: none;">
+        <div class="timer-content">
+          <span class="timer-value" id="timerValue">00:00:00</span>
+          <div class="timer-progress"><div class="timer-progress-fill" id="timerProgress"></div></div>
+          <span class="timer-meta" id="timerMeta">0 tasks | $0.00</span>
         </div>
-        <div class="respawn-action-log" id="respawnActionLog"></div>
+        <button class="btn-icon-only" onclick="app.stopCurrentRun()" title="Stop" aria-label="Stop current run">&#x25A0;</button>
       </div>
-    </div>
 
-    <!-- Orchestrator Loop Panel -->
-    <div class="orchestrator-panel" id="orchestratorPanel" style="display: none;">
-      <div class="orchestrator-header">
-        <span class="orchestrator-title">Orchestrator</span>
-        <span class="orchestrator-state-badge" id="orchestratorStateBadge">idle</span>
-        <div class="orchestrator-actions" id="orchestratorActions"></div>
-        <button class="orchestrator-close-btn" onclick="app.closeOrchestratorPanel()" title="Close">&times;</button>
-      </div>
-      <div class="orchestrator-body" id="orchestratorBody"></div>
-    </div>
-
-    <!-- Ralph / Todo Tracker Panel -->
-    <div class="ralph-panel collapsed" id="ralphStatePanel" style="display: none;">
-      <!-- Collapsed Summary Bar -->
-      <div class="ralph-summary" id="ralphSummary">
-        <div class="ralph-summary-content" onclick="app.toggleRalphStatePanel()">
-          <div class="ralph-ring-mini" id="ralphRingMini">
-            <svg viewBox="0 0 36 36" class="ralph-ring-svg">
-              <defs>
-                <linearGradient id="ralphGradientMini" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#3ec8ee" />
-                  <stop offset="100%" stop-color="#2b8fd9" />
-                </linearGradient>
-              </defs>
-              <circle class="ralph-ring-bg" cx="18" cy="18" r="15.9" />
-              <circle class="ralph-ring-progress-mini" cx="18" cy="18" r="15.9" id="ralphRingMiniProgress" style="stroke-dashoffset: 100" />
-            </svg>
-            <span class="ralph-ring-text" id="ralphRingMiniText">0%</span>
-          </div>
-          <div class="ralph-summary-info">
-            <span class="ralph-title">Ralph / Todo Tracker</span>
-            <span class="ralph-status-badge" id="ralphStatusBadge">
-              <span class="ralph-status-dot"></span>
-              <span class="ralph-status-text">Idle</span>
-            </span>
-          </div>
-          <div class="ralph-summary-stats">
-            <span class="ralph-stat"><span class="ralph-stat-icon">&#x23F1;</span><span id="ralphStatTime">0m</span></span>
-            <span class="ralph-stat"><span class="ralph-stat-icon">&#x2713;</span><span id="ralphStatTasks">0/0</span></span>
-          </div>
-          <span class="ralph-toggle" id="ralphToggle">&#x25BC;</span>
-        </div>
-        <div class="ralph-controls">
-          <div class="ralph-menu-container">
-            <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphMenu()" title="Fix Plan Menu" id="ralphMenuBtn">&#x2630;</button>
-            <div class="ralph-dropdown" id="ralphDropdown">
-              <button onclick="event.stopPropagation(); app.showFixPlan(); app.closeRalphMenu()">View Fix Plan</button>
-              <button onclick="event.stopPropagation(); app.writeFixPlanToFile(); app.closeRalphMenu()">Write to File</button>
-              <button onclick="event.stopPropagation(); app.importFixPlanFromFile(); app.closeRalphMenu()">Import from File</button>
-              <hr>
-              <button onclick="event.stopPropagation(); app.resetCircuitBreaker(); app.closeRalphMenu()">Reset Circuit Breaker</button>
+      <!-- Respawn Banner - Compact 2-column layout -->
+      <div class="respawn-banner" id="respawnBanner" style="display: none;">
+        <div class="respawn-compact-layout">
+          <div class="respawn-status-col">
+            <div class="respawn-status-row1">
+              <span class="respawn-indicator">&#x21BB;</span>
+              <span class="respawn-state" id="respawnState">Watching</span>
+              <span class="detection-confidence" id="detectionConfidence"></span>
+              <span class="respawn-cycles">#<span id="respawnCycleCount">0</span></span>
+              <span class="respawn-timer" id="respawnTimer" style="display: none;"></span>
+              <span class="respawn-tokens" id="respawnTokens" style="display: none;"></span>
+              <button class="btn-icon-only" onclick="app.stopRespawn()" title="Stop Respawn" aria-label="Stop respawn">&#x25A0;</button>
+            </div>
+            <div class="respawn-status-row2" id="respawnStatusRow2">
+              <span class="detection-hook" id="detectionHook" style="display: none;"></span>
+              <span class="detection-ai-check" id="detectionAiCheck" style="display: none;"></span>
+              <span class="detection-status" id="detectionStatus"></span>
+              <span class="detection-waiting" id="detectionWaiting" style="display: none;"></span>
+              <div class="respawn-countdown-timers" id="respawnCountdownTimers"></div>
             </div>
           </div>
-          <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphDetach()" title="Detach/Attach panel" id="ralphDetachBtn">&#x29C9;</button>
-          <button class="btn-icon-sm" onclick="event.stopPropagation(); app.closeRalphTracker()" title="Close tracker">&times;</button>
+          <div class="respawn-action-log" id="respawnActionLog"></div>
         </div>
       </div>
 
-      <!-- Expanded Detail View - Compact horizontal layout -->
-      <div class="ralph-detail" id="ralphDetail">
-        <div class="ralph-detail-row">
-          <!-- Progress Ring -->
-          <div class="ralph-ring-compact">
-            <svg viewBox="0 0 100 100" class="ralph-ring-svg-large">
-              <defs>
-                <linearGradient id="ralphGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#3ec8ee" />
-                  <stop offset="100%" stop-color="#2b8fd9" />
-                </linearGradient>
-              </defs>
-              <circle class="ralph-ring-track" cx="50" cy="50" r="42" />
-              <circle class="ralph-ring-fill" cx="50" cy="50" r="42" id="ralphRingProgress" style="stroke-dashoffset: 264" />
-            </svg>
-            <div class="ralph-ring-center">
-              <div class="ralph-ring-percent" id="ralphRingPercent">0%</div>
-              <div class="ralph-ring-label">Complete</div>
+      <!-- Orchestrator Loop Panel -->
+      <div class="orchestrator-panel" id="orchestratorPanel" style="display: none;">
+        <div class="orchestrator-header">
+          <span class="orchestrator-title">Orchestrator</span>
+          <span class="orchestrator-state-badge" id="orchestratorStateBadge">idle</span>
+          <div class="orchestrator-actions" id="orchestratorActions"></div>
+          <button class="orchestrator-close-btn" onclick="app.closeOrchestratorPanel()" title="Close">&times;</button>
+        </div>
+        <div class="orchestrator-body" id="orchestratorBody"></div>
+      </div>
+
+      <!-- Ralph / Todo Tracker Panel -->
+      <div class="ralph-panel collapsed" id="ralphStatePanel" style="display: none;">
+        <!-- Collapsed Summary Bar -->
+        <div class="ralph-summary" id="ralphSummary">
+          <div class="ralph-summary-content" onclick="app.toggleRalphStatePanel()">
+            <div class="ralph-ring-mini" id="ralphRingMini">
+              <svg viewBox="0 0 36 36" class="ralph-ring-svg">
+                <defs>
+                  <linearGradient id="ralphGradientMini" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3ec8ee" />
+                    <stop offset="100%" stop-color="#2b8fd9" />
+                  </linearGradient>
+                </defs>
+                <circle class="ralph-ring-bg" cx="18" cy="18" r="15.9" />
+                <circle class="ralph-ring-progress-mini" cx="18" cy="18" r="15.9" id="ralphRingMiniProgress" style="stroke-dashoffset: 100" />
+              </svg>
+              <span class="ralph-ring-text" id="ralphRingMiniText">0%</span>
             </div>
+            <div class="ralph-summary-info">
+              <span class="ralph-title">Ralph / Todo Tracker</span>
+              <span class="ralph-status-badge" id="ralphStatusBadge">
+                <span class="ralph-status-dot"></span>
+                <span class="ralph-status-text">Idle</span>
+              </span>
+            </div>
+            <div class="ralph-summary-stats">
+              <span class="ralph-stat"><span class="ralph-stat-icon">&#x23F1;</span><span id="ralphStatTime">0m</span></span>
+              <span class="ralph-stat"><span class="ralph-stat-icon">&#x2713;</span><span id="ralphStatTasks">0/0</span></span>
+            </div>
+            <span class="ralph-toggle" id="ralphToggle">&#x25BC;</span>
           </div>
-          <!-- Meta Info + Tasks unified -->
-          <div class="ralph-info-unified">
-            <div class="ralph-info-labels">
-              <div class="ralph-info-row">
-                <span class="ralph-info-label">Tasks</span>
-                <span class="ralph-tasks-count" id="ralphTasksCount">0/0</span>
+          <div class="ralph-controls">
+            <div class="ralph-menu-container">
+              <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphMenu()" title="Fix Plan Menu" id="ralphMenuBtn">&#x2630;</button>
+              <div class="ralph-dropdown" id="ralphDropdown">
+                <button onclick="event.stopPropagation(); app.showFixPlan(); app.closeRalphMenu()">View Fix Plan</button>
+                <button onclick="event.stopPropagation(); app.writeFixPlanToFile(); app.closeRalphMenu()">Write to File</button>
+                <button onclick="event.stopPropagation(); app.importFixPlanFromFile(); app.closeRalphMenu()">Import from File</button>
+                <hr>
+                <button onclick="event.stopPropagation(); app.resetCircuitBreaker(); app.closeRalphMenu()">Reset Circuit Breaker</button>
               </div>
-              <div class="ralph-info-row">
-                <span class="ralph-info-label">Phrase</span>
-                <code id="ralphPhrase">--</code>
+            </div>
+            <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphDetach()" title="Detach/Attach panel" id="ralphDetachBtn">&#x29C9;</button>
+            <button class="btn-icon-sm" onclick="event.stopPropagation(); app.closeRalphTracker()" title="Close tracker">&times;</button>
+          </div>
+        </div>
+
+        <!-- Expanded Detail View - Compact horizontal layout -->
+        <div class="ralph-detail" id="ralphDetail">
+          <div class="ralph-detail-row">
+            <!-- Progress Ring -->
+            <div class="ralph-ring-compact">
+              <svg viewBox="0 0 100 100" class="ralph-ring-svg-large">
+                <defs>
+                  <linearGradient id="ralphGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3ec8ee" />
+                    <stop offset="100%" stop-color="#2b8fd9" />
+                  </linearGradient>
+                </defs>
+                <circle class="ralph-ring-track" cx="50" cy="50" r="42" />
+                <circle class="ralph-ring-fill" cx="50" cy="50" r="42" id="ralphRingProgress" style="stroke-dashoffset: 264" />
+              </svg>
+              <div class="ralph-ring-center">
+                <div class="ralph-ring-percent" id="ralphRingPercent">0%</div>
+                <div class="ralph-ring-label">Complete</div>
               </div>
-              <div class="ralph-info-row">
-                <span class="ralph-info-label">Elapsed</span>
-                <span id="ralphElapsed">0m</span>
-              </div>
-              <div class="ralph-info-row" id="ralphVersionRow" style="display: none;">
-                <span class="ralph-info-label">Plan</span>
-                <div class="ralph-version-info">
-                  <span class="version-badge" id="ralphPlanVersion">v1</span>
-                  <button class="rollback-btn" id="ralphRollbackBtn" onclick="app.showPlanHistory()" title="View history">history</button>
+            </div>
+            <!-- Meta Info + Tasks unified -->
+            <div class="ralph-info-unified">
+              <div class="ralph-info-labels">
+                <div class="ralph-info-row">
+                  <span class="ralph-info-label">Tasks</span>
+                  <span class="ralph-tasks-count" id="ralphTasksCount">0/0</span>
+                </div>
+                <div class="ralph-info-row">
+                  <span class="ralph-info-label">Phrase</span>
+                  <code id="ralphPhrase">--</code>
+                </div>
+                <div class="ralph-info-row">
+                  <span class="ralph-info-label">Elapsed</span>
+                  <span id="ralphElapsed">0m</span>
+                </div>
+                <div class="ralph-info-row" id="ralphVersionRow" style="display: none;">
+                  <span class="ralph-info-label">Plan</span>
+                  <div class="ralph-version-info">
+                    <span class="version-badge" id="ralphPlanVersion">v1</span>
+                    <button class="rollback-btn" id="ralphRollbackBtn" onclick="app.showPlanHistory()" title="View history">history</button>
+                  </div>
                 </div>
               </div>
+              <div class="ralph-tasks-grid" id="ralphTasksGrid"></div>
             </div>
-            <div class="ralph-tasks-grid" id="ralphTasksGrid"></div>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -667,6 +674,36 @@
     <div class="response-viewer-backdrop" id="responseViewerBackdrop" onclick="app.toggleResponseViewer()"></div>
 
     <!-- Bottom Toolbar -->
+    <!-- The panel dock's tab strip (panel-dock.js, design-system phase 4c): shown while
+         a dockable panel is open on a wide window, one tab per open panel. -->
+    <div class="cm-tabs panel-dock-tabs" id="panelDockTabs" role="tablist" aria-label="Docked panels"></div>
+
+    <!-- The Inbox (design-system phase 4b): approvals and notifications as tabs of one
+         drawer, opened by the header's Inbox button (approvals-ui.js toggleInbox). The
+         notification list keeps its ids (#notifList/#notifEmpty) so notification-manager.js
+         renders into it unchanged. -->
+    <div class="approvals-drawer inbox-drawer" id="approvalsDrawer" role="complementary" aria-label="Inbox">
+      <div class="approvals-header inbox-header">
+        <div class="cm-tabs inbox-tabs" role="tablist" aria-label="Inbox" onkeydown="app.handleInboxTabKey(event)">
+          <button class="cm-tabs__tab" role="tab" id="inboxTabApprovals" data-inbox-tab="approvals" aria-selected="true" aria-controls="inboxPanelApprovals" onclick="app.showInboxTab('approvals')">Approvals <span class="cm-badge" id="inboxApprovalsCount"></span></button>
+          <button class="cm-tabs__tab" role="tab" id="inboxTabNotifications" data-inbox-tab="notifications" aria-selected="false" aria-controls="inboxPanelNotifications" tabindex="-1" onclick="app.showInboxTab('notifications')">Notifications <span class="cm-badge" id="inboxNotifCount"></span></button>
+        </div>
+        <button class="approvals-close" onclick="app.closeApprovalsInbox()" title="Close" aria-label="Close inbox">✕</button>
+      </div>
+      <div class="inbox-panel" id="inboxPanelApprovals" role="tabpanel" aria-labelledby="inboxTabApprovals">
+        <div class="approvals-subtitle inbox-panel-note">Prompts waiting on you, across all sessions</div>
+        <div class="approvals-list"></div>
+      </div>
+      <div class="inbox-panel" id="inboxPanelNotifications" role="tabpanel" aria-labelledby="inboxTabNotifications" hidden>
+        <div class="notif-drawer-actions inbox-panel-note">
+          <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.markAllRead()" title="Mark all read">&#x2713; Mark all read</button>
+          <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.clearAll()" title="Clear all">Clear all</button>
+        </div>
+        <div class="notif-drawer-list" id="notifList"></div>
+        <div class="notif-drawer-empty" id="notifEmpty">No notifications</div>
+      </div>
+    </div>
+
     <footer class="toolbar">
       <div class="toolbar-left">
         <!-- Run AI -->
@@ -4265,36 +4302,6 @@
         <button class="btn-toolbar" onclick="app.sendReadMyMind(false)" title="Put the text on the session's composer without submitting it">Insert</button>
         <button class="btn-toolbar btn-primary" onclick="app.sendReadMyMind(true)">Send</button>
       </div>
-    </div>
-  </div>
-
-  <!-- The panel dock's tab strip (panel-dock.js, design-system phase 4c): shown while
-       a dockable panel is open on a wide window, one tab per open panel. -->
-  <div class="cm-tabs panel-dock-tabs" id="panelDockTabs" role="tablist" aria-label="Docked panels"></div>
-
-  <!-- The Inbox (design-system phase 4b): approvals and notifications as tabs of one
-       drawer, opened by the header's Inbox button (approvals-ui.js toggleInbox). The
-       notification list keeps its ids (#notifList/#notifEmpty) so notification-manager.js
-       renders into it unchanged. -->
-  <div class="approvals-drawer inbox-drawer" id="approvalsDrawer" role="complementary" aria-label="Inbox">
-    <div class="approvals-header inbox-header">
-      <div class="cm-tabs inbox-tabs" role="tablist" aria-label="Inbox" onkeydown="app.handleInboxTabKey(event)">
-        <button class="cm-tabs__tab" role="tab" id="inboxTabApprovals" data-inbox-tab="approvals" aria-selected="true" aria-controls="inboxPanelApprovals" onclick="app.showInboxTab('approvals')">Approvals <span class="cm-badge" id="inboxApprovalsCount"></span></button>
-        <button class="cm-tabs__tab" role="tab" id="inboxTabNotifications" data-inbox-tab="notifications" aria-selected="false" aria-controls="inboxPanelNotifications" tabindex="-1" onclick="app.showInboxTab('notifications')">Notifications <span class="cm-badge" id="inboxNotifCount"></span></button>
-      </div>
-      <button class="approvals-close" onclick="app.closeApprovalsInbox()" title="Close" aria-label="Close inbox">✕</button>
-    </div>
-    <div class="inbox-panel" id="inboxPanelApprovals" role="tabpanel" aria-labelledby="inboxTabApprovals">
-      <div class="approvals-subtitle inbox-panel-note">Prompts waiting on you, across all sessions</div>
-      <div class="approvals-list"></div>
-    </div>
-    <div class="inbox-panel" id="inboxPanelNotifications" role="tabpanel" aria-labelledby="inboxTabNotifications" hidden>
-      <div class="notif-drawer-actions inbox-panel-note">
-        <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.markAllRead()" title="Mark all read">&#x2713; Mark all read</button>
-        <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.clearAll()" title="Clear all">Clear all</button>
-      </div>
-      <div class="notif-drawer-list" id="notifList"></div>
-      <div class="notif-drawer-empty" id="notifEmpty">No notifications</div>
     </div>
   </div>
 

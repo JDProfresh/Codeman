@@ -91,7 +91,10 @@ describe('read my mind phone key + alternates (static guards)', () => {
   });
 
   it('styles the footer with btn-toolbar (bare "btn btn-*" matches no CSS in this codebase)', () => {
-    const modal = html.slice(html.indexOf('id="readMyMindModal"'), html.indexOf('id="approvalsDrawer"'));
+    const modal = html.slice(
+      html.indexOf('id="readMyMindModal"'),
+      html.indexOf('<script defer src="constants.js"></script>')
+    );
     // The unstyled classes the footer originally shipped with must not return.
     expect(modal).not.toMatch(/class="btn /);
     expect(modal.match(/class="btn-toolbar/g)?.length).toBe(4);

@@ -4577,6 +4577,9 @@ Object.assign(CodemanApp.prototype, {
           if (header) {
             // Convert right-positioned to left/top before drag so makeWindowDraggable works
             const onFirstDrag = () => {
+              // A docked panel is a grid item (panel-dock.js) and never moves;
+              // an inline left/top would offset it inside its column.
+              if (fileBrowserPanel.dataset.docked) return;
               if (!fileBrowserPanel.style.left) {
                 const rect = fileBrowserPanel.getBoundingClientRect();
                 fileBrowserPanel.style.left = `${rect.left}px`;
