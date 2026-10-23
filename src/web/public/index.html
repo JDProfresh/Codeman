@@ -186,7 +186,7 @@
         <button class="btn-icon-header btn-response-viewer-header btn-response-viewer-header--hidden" onclick="app.toggleResponseViewer()" title="View last response" aria-label="View last response"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         <button class="btn-icon-header btn-away-digest btn-away-digest--hidden" onclick="app.openAwayDigest()" title="Away Digest" aria-label="Open away digest"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></button>
         <button class="btn-icon-header btn-session-manager btn-session-manager--hidden" onclick="app.openSessionManager()" title="Session Manager" aria-label="Open session manager"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></button>
-        <button class="btn-icon-header btn-approvals btn-approvals--hidden" id="approvalsBtn" onclick="app.toggleApprovalsInbox()" title="Approvals waiting on you" aria-label="Open approvals inbox" aria-expanded="false">
+        <button class="btn-icon-header btn-approvals btn-approvals--hidden" id="approvalsBtn" onclick="app.toggleInbox()" title="Inbox: approvals and notifications" aria-label="Open inbox" aria-expanded="false" aria-controls="approvalsDrawer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="approvals-badge" id="approvalsBadge">0</span>
         </button>
@@ -201,10 +201,6 @@
         <button class="btn-icon-header btn-tile-grid btn-tile-grid--hidden" onclick="app.toggleTileGrid()" oncontextmenu="app.openTileCountMenu(event)" aria-describedby="tileGridHint" aria-label="Tiles: show several sessions side by side (right-click for how many)" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></button>
         <button class="btn-icon-header btn-ultracode-agents btn-ultracode-agents--hidden" onclick="app.toggleUltracodeAgentsPanel()" title="Ultracode / Workflow agents" aria-label="Open ultracode workflow agents"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.2 7.2 15.6 11M8.2 16.8 15.6 13"/></svg></button>
         <div class="header-plan-usage header-plan-usage--hidden" id="planUsageChip" title="Claude and Codex plan usage limits">—</div>
-        <button class="btn-icon-header btn-notifications" onclick="app.toggleNotifications()" title="Notifications" aria-label="Toggle notifications" style="display:none;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
-        </button>
         <button class="btn-icon-header btn-lifecycle-log" style="display: none" onclick="app.openLifecycleLog()" title="Session Lifecycle Log" aria-label="Open session lifecycle log"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
         <button class="btn-icon-header btn-header-more" id="headerMoreBtn" onclick="app.toggleHeaderMoreMenu(event)" title="More" aria-label="More header actions" aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <button class="btn-icon-header btn-settings" onclick="app.openAppSettings()" title="App Settings" aria-label="Open app settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
@@ -3988,20 +3984,6 @@
       </div>
     </div>
 
-    <!-- Notification Drawer -->
-    <div class="notification-drawer" id="notifDrawer">
-      <div class="notif-drawer-header">
-        <span class="notif-drawer-title">Notifications</span>
-        <div class="notif-drawer-actions">
-          <button class="btn-notif-action" onclick="app.notificationManager?.markAllRead()" title="Mark all read">&#x2713;</button>
-          <button class="btn-notif-action" onclick="app.notificationManager?.clearAll()" title="Clear all">&#x1F5D1;</button>
-          <button class="btn-notif-action" onclick="app.toggleNotifications()" title="Close">&times;</button>
-        </div>
-      </div>
-      <div class="notif-drawer-list" id="notifList"></div>
-      <div class="notif-drawer-empty" id="notifEmpty">No notifications</div>
-    </div>
-
     <!-- Away Digest Modal -->
     <div class="modal" id="awayDigestModal">
       <div class="modal-backdrop" onclick="app.closeAwayDigest()"></div>
@@ -4271,15 +4253,30 @@
     </div>
   </div>
 
-  <div class="approvals-drawer" id="approvalsDrawer" role="complementary" aria-label="Approvals inbox">
-    <div class="approvals-header">
-      <div>
-        <div class="approvals-title">Approvals</div>
-        <div class="approvals-subtitle">Prompts waiting on you, across all sessions</div>
+  <!-- The Inbox (design-system phase 4b): approvals and notifications as tabs of one
+       drawer, opened by the header's Inbox button (approvals-ui.js toggleInbox). The
+       notification list keeps its ids (#notifList/#notifEmpty) so notification-manager.js
+       renders into it unchanged. -->
+  <div class="approvals-drawer inbox-drawer" id="approvalsDrawer" role="complementary" aria-label="Inbox">
+    <div class="approvals-header inbox-header">
+      <div class="cm-tabs inbox-tabs" role="tablist" aria-label="Inbox" onkeydown="app.handleInboxTabKey(event)">
+        <button class="cm-tabs__tab" role="tab" id="inboxTabApprovals" data-inbox-tab="approvals" aria-selected="true" aria-controls="inboxPanelApprovals" onclick="app.showInboxTab('approvals')">Approvals <span class="cm-badge" id="inboxApprovalsCount"></span></button>
+        <button class="cm-tabs__tab" role="tab" id="inboxTabNotifications" data-inbox-tab="notifications" aria-selected="false" aria-controls="inboxPanelNotifications" tabindex="-1" onclick="app.showInboxTab('notifications')">Notifications <span class="cm-badge" id="inboxNotifCount"></span></button>
       </div>
-      <button class="approvals-close" onclick="app.closeApprovalsInbox()" title="Close" aria-label="Close approvals inbox">✕</button>
+      <button class="approvals-close" onclick="app.closeApprovalsInbox()" title="Close" aria-label="Close inbox">✕</button>
     </div>
-    <div class="approvals-list"></div>
+    <div class="inbox-panel" id="inboxPanelApprovals" role="tabpanel" aria-labelledby="inboxTabApprovals">
+      <div class="approvals-subtitle inbox-panel-note">Prompts waiting on you, across all sessions</div>
+      <div class="approvals-list"></div>
+    </div>
+    <div class="inbox-panel" id="inboxPanelNotifications" role="tabpanel" aria-labelledby="inboxTabNotifications" hidden>
+      <div class="notif-drawer-actions inbox-panel-note">
+        <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.markAllRead()" title="Mark all read">&#x2713; Mark all read</button>
+        <button class="cm-btn cm-btn--sm cm-btn--ghost" onclick="app.notificationManager?.clearAll()" title="Clear all">Clear all</button>
+      </div>
+      <div class="notif-drawer-list" id="notifList"></div>
+      <div class="notif-drawer-empty" id="notifEmpty">No notifications</div>
+    </div>
   </div>
 
   <script defer src="constants.js"></script>

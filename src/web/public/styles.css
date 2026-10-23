@@ -13734,6 +13734,36 @@ kbd {
   overflow-y: auto;
   padding: 8px;
 }
+/* The Inbox (design-system phase 4b): the drawer's header is a tab strip (kit
+   .cm-tabs) and each tab owns one panel. The strip's own rule is dropped so the
+   header's border is the only line. */
+.inbox-header {
+  align-items: flex-end;
+  padding: 0 var(--cm-space-2) 0 0;
+}
+.inbox-tabs {
+  flex: 1;
+  border-bottom: 0;
+}
+.inbox-header .approvals-close {
+  align-self: center;
+}
+.inbox-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.inbox-panel[hidden] {
+  display: none;
+}
+.inbox-panel-note {
+  padding: var(--cm-space-2) var(--cm-space-3) 0;
+}
+.inbox-panel .notif-drawer-actions {
+  justify-content: flex-end;
+  padding-bottom: var(--cm-space-1);
+}
 .approvals-empty {
   color: var(--text-dim);
   font-size: 0.78rem;

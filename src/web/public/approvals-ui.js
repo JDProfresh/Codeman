@@ -178,20 +178,115 @@ Object.assign(CodemanApp.prototype, {
 
   // ─── Rendering ───────────────────────────────────────────────
 
-  toggleApprovalsInbox() {
+  /**
+   * The Inbox drawer (design-system phase 4b): approvals and notifications as two
+   * tabs of #approvalsDrawer. `tab` picks the one to show; without it the drawer
+   * opens on Approvals when that tab has something waiting, else Notifications.
+   * Toggling closes it only when it is already open on the requested tab.
+   */
+  toggleInbox(tab) {
     const drawer = document.getElementById('approvalsDrawer');
     if (!drawer) return;
-    if (drawer.classList.contains('open')) this.closeApprovalsInbox();
-    else {
-      drawer.classList.add('open');
-      document.querySelector('.btn-approvals')?.setAttribute('aria-expanded', 'true');
-      this.renderApprovals();
+    const want = tab ?? this._defaultInboxTab();
+    if (drawer.classList.contains('open') && (tab === undefined || this._inboxTab === want)) {
+      this.closeApprovalsInbox();
+      return;
     }
+    drawer.classList.add('open');
+    document.querySelector('.btn-approvals')?.setAttribute('aria-expanded', 'true');
+    this.showInboxTab(want);
+  },
+
+  /** The approvals entry point (overview, push actions): the Inbox on its Approvals tab. */
+  toggleApprovalsInbox() {
+    this.toggleInbox(this.approvalsInboxEnabled() ? 'approvals' : 'notifications');
+  },
+
+  _defaultInboxTab() {
+    return this.approvalsInboxEnabled() && this.pendingApprovalsCount() > 0 ? 'approvals' : 'notifications';
+  },
+
+  /** Selects an Inbox tab (an unavailable Approvals tab falls back to Notifications). */
+  showInboxTab(tab) {
+    const approvalsOn = this.approvalsInboxEnabled();
+    const active = tab === 'approvals' && approvalsOn ? 'approvals' : 'notifications';
+    this._inboxTab = active;
+    const drawer = document.getElementById('approvalsDrawer');
+    const open = !!drawer?.classList.contains('open');
+    for (const btn of document.querySelectorAll('[data-inbox-tab]')) {
+      const selected = btn.dataset.inboxTab === active;
+      btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+      btn.tabIndex = selected ? 0 : -1;
+      // The Approvals tab exists only while the opt-in inbox is on.
+      if (btn.dataset.inboxTab === 'approvals') btn.hidden = !approvalsOn;
+    }
+    const approvalsPanel = document.getElementById('inboxPanelApprovals');
+    const notifPanel = document.getElementById('inboxPanelNotifications');
+    if (approvalsPanel) approvalsPanel.hidden = active !== 'approvals';
+    if (notifPanel) notifPanel.hidden = active !== 'notifications';
+    // notification-manager.js treats an open drawer as "the user is reading them".
+    const nm = this.notificationManager;
+    if (nm) {
+      nm.isDrawerOpen = open && active === 'notifications';
+      if (nm.isDrawerOpen) nm.renderDrawer();
+    }
+    if (active === 'approvals') this.renderApprovalsDrawer();
+    this.renderInboxBadge();
+  },
+
+  /** Arrow keys, Home and End move between the visible Inbox tabs (ARIA tabs pattern). */
+  handleInboxTabKey(e) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    const tabs = [...document.querySelectorAll('[data-inbox-tab]')].filter((t) => !t.hidden);
+    const at = tabs.indexOf(document.activeElement);
+    if (at === -1) return;
+    e.preventDefault();
+    const next =
+      e.key === 'Home'
+        ? 0
+        : e.key === 'End'
+          ? tabs.length - 1
+          : (at + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    this.showInboxTab(tabs[next].dataset.inboxTab);
+    tabs[next].focus();
   },
 
   closeApprovalsInbox() {
     document.getElementById('approvalsDrawer')?.classList.remove('open');
     document.querySelector('.btn-approvals')?.setAttribute('aria-expanded', 'false');
+    if (this.notificationManager) this.notificationManager.isDrawerOpen = false;
+  },
+
+  /**
+   * The Inbox button and its badges. The button follows its per-device pin
+   * (`showInboxButton`, the header More menu; default ON on desktop) and the badge
+   * sums approvals still waiting on a human plus unread notifications.
+   */
+  renderInboxBadge() {
+    const approvals = this.approvalsInboxEnabled() ? this.pendingApprovalsCount() : 0;
+    const unread = this.notificationManager?.unreadCount ?? 0;
+    const settings = this.loadAppSettingsFromStorage();
+    const pinned = settings.showInboxButton ?? this.getDefaultSettings().showInboxButton ?? true;
+    const btn = document.querySelector('.btn-approvals');
+    if (btn) {
+      // Marker-class visibility (base header rules are display !important).
+      btn.classList.toggle('btn-approvals--hidden', !pinned);
+      const title =
+        approvals + unread > 0
+          ? `Inbox: ${approvals} approvals, ${unread} unread`
+          : 'Inbox: approvals and notifications';
+      btn.title = title;
+    }
+    const badge = document.getElementById('approvalsBadge');
+    if (badge) {
+      const total = approvals + unread;
+      badge.textContent = total > 99 ? '99+' : String(total);
+      badge.style.display = total > 0 ? '' : 'none';
+    }
+    const a = document.getElementById('inboxApprovalsCount');
+    if (a) a.textContent = approvals > 0 ? String(approvals) : '';
+    const n = document.getElementById('inboxNotifCount');
+    if (n) n.textContent = unread > 0 ? (unread > 99 ? '99+' : String(unread)) : '';
   },
 
   /**
@@ -208,16 +303,7 @@ Object.assign(CodemanApp.prototype, {
   },
 
   renderApprovals() {
-    const count = this.pendingApprovalsCount();
-    const btn = document.querySelector('.btn-approvals');
-    if (btn) {
-      // Marker-class visibility (base header rules are display !important):
-      // the bell exists only while something is pending, so the header stays
-      // untouched for everyone else.
-      btn.classList.toggle('btn-approvals--hidden', count === 0 || !this.approvalsInboxEnabled());
-      const badge = document.getElementById('approvalsBadge');
-      if (badge) badge.textContent = String(count);
-    }
+    this.renderInboxBadge();
     this.renderApprovalsDrawer();
     // Phone overview NEEDS YOU rows re-render on the tab-render tail; nudge it
     // so inline approve/deny buttons appear without a state change elsewhere.
@@ -226,7 +312,7 @@ Object.assign(CodemanApp.prototype, {
 
   renderApprovalsDrawer() {
     const drawer = document.getElementById('approvalsDrawer');
-    if (!drawer || !drawer.classList.contains('open')) return;
+    if (!drawer || !drawer.classList.contains('open') || this._inboxTab === 'notifications') return;
     const list = drawer.querySelector('.approvals-list');
     if (!list) return;
     const items = this.approvals ? [...this.approvals.values()].sort((a, b) => a.createdAt - b.createdAt) : [];

@@ -457,6 +457,9 @@
     font: var(--cm-weight-semibold) var(--cm-text-sm) / 1 var(--cm-font-ui);
     cursor: pointer;
   }
+  .cm-tabs__tab[hidden] {
+    display: none;
+  }
   .cm-tabs__tab:hover {
     color: var(--cm-text);
   }

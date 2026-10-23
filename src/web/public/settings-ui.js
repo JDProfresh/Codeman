@@ -3964,6 +3964,7 @@ Object.assign(CodemanApp.prototype, {
         showFileViewerButton: false,
         showRedrawButton: false,
         showSessionButton: false,
+        showInboxButton: false,
         showAwayDigestButton: false,
         showCronButton: false,
         // Phone home screen: the C logo opens the session overview instead of the
@@ -4358,18 +4359,11 @@ Object.assign(CodemanApp.prototype, {
     // match the setting, so a live toggle needs no reload.
     this.applyGitStatusVisibility?.();
 
-    // Notification bell is retired (notifications live in Settings → Notifications
-    // + the drawer); keep it hidden regardless of the notification-enabled state.
-    const notifBtn = document.querySelector('.btn-notifications');
-    if (notifBtn) {
-      notifBtn.style.display = 'none';
-    }
-    // Close the drawer if notifications got disabled while it's open
+    // The Inbox button (approvals + notifications, approvals-ui.js): its pin and badge.
+    this.renderInboxBadge?.();
+    // Leave the Notifications tab if notifications got disabled while it is open.
     const notifEnabled = this.notificationManager?.preferences?.enabled ?? true;
-    if (!notifEnabled) {
-      const drawer = document.getElementById('notifDrawer');
-      if (drawer) drawer.classList.remove('open');
-    }
+    if (!notifEnabled && this.notificationManager?.isDrawerOpen) this.closeApprovalsInbox?.();
   },
 
   applyTabOrientation(options = {}) {
@@ -4720,7 +4714,7 @@ Object.assign(CodemanApp.prototype, {
       'language',
       'terminalWheelLocalScrollback',
       'autoCopySelection', 'copyStripMargin',
-      'showSessionButton', 'showAwayDigestButton', 'showCronButton', 'showGitStatus', 'gitStatusTree', 'gitStatusMaxRepos', 'gitStatusTimeoutSeconds',
+      'showSessionButton', 'showInboxButton', 'showAwayDigestButton', 'showCronButton', 'showGitStatus', 'gitStatusTree', 'gitStatusMaxRepos', 'gitStatusTimeoutSeconds',
       'showTabDetachButton',
       'mobileOverviewEnabled',
       'sessionLineageLines',

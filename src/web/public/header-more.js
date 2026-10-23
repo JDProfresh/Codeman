@@ -31,6 +31,7 @@
  */
 const HEADER_MORE_ITEMS = [
   { id: 'files', label: 'Files', key: 'showFileViewerButton', fallback: true, button: '.btn-file-viewer' },
+  { id: 'inbox', label: 'Inbox', key: 'showInboxButton', fallback: true, button: '#approvalsBtn' },
   { id: 'search', label: 'Search sessions', key: 'showSessionButton', fallback: true, button: '.btn-session-manager' },
   { id: 'tiles', label: 'Tiles', key: 'showTileGridButton', fallback: true, button: '.btn-tile-grid', gate: 'tiles' },
   {

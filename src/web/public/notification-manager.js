@@ -464,14 +464,10 @@ class NotificationManager {
   }
 
   // UI interactions
+  // The list lives in the Inbox drawer's Notifications tab (approvals-ui.js), which
+  // owns open/close and keeps isDrawerOpen in step with it.
   toggleDrawer() {
-    const drawer = document.getElementById('notifDrawer');
-    if (!drawer) return;
-    this.isDrawerOpen = !this.isDrawerOpen;
-    drawer.classList.toggle('open', this.isDrawerOpen);
-    if (this.isDrawerOpen) {
-      this.renderDrawer();
-    }
+    this.app?.toggleInbox?.('notifications');
   }
 
   clickNotification(notifId) {
@@ -511,6 +507,8 @@ class NotificationManager {
   }
 
   updateBadge() {
+    // The header Inbox button carries the combined approvals + unread badge.
+    this.app?.renderInboxBadge?.();
     const badge = document.getElementById('notifBadge');
     if (!badge) return;
     if (this.unreadCount > 0) {

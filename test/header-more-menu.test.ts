@@ -50,10 +50,10 @@ describe('header More menu registry', () => {
     }
   });
 
-  it('lists the approved defaults: Files, Search and Tiles pinned, the rest in More', () => {
+  it('lists the approved defaults: Files, Inbox, Search and Tiles pinned, the rest in More', () => {
     const src = read('header-more.js');
     const pinnedByDefault = [...src.matchAll(/\{ id: '([^']+)'[^}]*fallback: true/g)].map((m) => m[1]);
-    expect(pinnedByDefault).toEqual(['files', 'search', 'tiles']);
+    expect(pinnedByDefault).toEqual(['files', 'inbox', 'search', 'tiles']);
     for (const id of ['away', 'cron', 'lifecycle', 'font']) expect(registry().some((i) => i.id === id)).toBe(true);
   });
 
