@@ -867,13 +867,13 @@ html.mobile-init .file-browser-panel {
   }
 
   /* The working dot is the one glance-state a phone needs: keep idle tiny, but
-     let the pulsing green "working" dot read from arm's length. !important on
-     the glow because the skin block's no-halo rule (styles.css, nested under
-     html:not([data-skin="og"])) outranks any plain class rule here. */
+     let the pulsing green "working" dot read from arm's length. No !important:
+     the skin's no-halo rule sits in styles.css's :where()-qualified skin block,
+     so this later rule of equal specificity wins on its own. */
   .session-tab .tab-status.busy {
     width: 9px;
     height: 9px;
-    box-shadow: 0 0 8px 2px color-mix(in srgb, var(--green) 55%, transparent) !important;
+    box-shadow: 0 0 8px 2px color-mix(in srgb, var(--green) 55%, transparent);
   }
 
   /* No orbiting ring on phone tabs (styles.css draws one on desktop/tablet):
@@ -884,18 +884,16 @@ html.mobile-init .file-browser-panel {
   }
 
   /* The exited-agent mute, a third time, for the phone (Ark0N/Codeman#446).
-     The rule above enlarges the working dot and gives it a green glow with
-     !important, and `status` deliberately stays `busy` for a pane whose agent
-     died mid-turn — so without this a phone renders a 9px grey dot still
+     The rule above enlarges the working dot and gives it a green glow, and
+     `status` deliberately stays `busy` for a pane whose agent died mid-turn — so without this a phone renders a 9px grey dot still
      wearing the green halo, beside a badge reading "exited". Measured; the
-     desktop rules cannot reach it, since they declare no box-shadow and lose
-     to !important anyway. !important here for the reason the glow needs it:
-     the skin block in styles.css outranks any plain class rule in this file.
+     desktop rules cannot reach it, since they declare no box-shadow. This
+     selector outranks the glow rule above on specificity, so no !important.
      ⚠ The alert classes and the error state are excluded exactly as they are
      on desktop — a colour that means "this needs you" outranks "it exited". */
   .session-tab.tab-agent-exited:not(.tab-alert-action):not(.tab-alert-idle) .tab-status:not(.error) {
-    background: var(--text-muted) !important;
-    box-shadow: none !important;
+    background: var(--text-muted);
+    box-shadow: none;
     opacity: 0.5;
   }
 

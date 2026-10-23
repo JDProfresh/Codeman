@@ -39,6 +39,10 @@
   src: url('fonts/symbols-nerd-font-mono.woff2') format('woff2');
 }
 
+/* Skin tokens live in the `skins` layer (design-system phase 2): custom properties
+   only, so a later unlayered rule can never be outranked by a skin by accident.
+   The component rules that still recolor per skin sit at the END of this file. */
+@layer skins {
 :root {
   /* Dark is the safe fallback. Light skins override this so native selects,
      date/time pickers, form controls, and scrollbars match the chosen skin. */
@@ -309,78 +313,8 @@ html[data-skin="rose-pine-dawn"] {
   --session-green: #286983; --session-blue: #477f91; --session-purple: #907aa9; --session-pink: #b4637a;
   --ui-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+} /* @layer skins */
 
-/* Components that predate skin tokens used literal dark glass fills. Keep
-   their structure, but make those elevated surfaces coherent in light mode. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) {
-  scrollbar-color: var(--border-light) var(--bg-input);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .modal-content,
-  .ralph-dropdown,
-  .ralph-panel.detached,
-  .mobile-case-picker-sheet,
-  .command-palette,
-  .case-combobox-list
-) {
-  background: var(--floating-bg);
-  border-color: var(--control-border);
-  color: var(--text);
-  box-shadow: var(--elevated-shadow);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .settings-item,
-  .cron-job-row,
-  #cronModal .form-row-switch.cron-switch-row,
-  .cron-weekdays label
-) {
-  background: var(--control-bg);
-  border-color: var(--control-border);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .settings-item:hover,
-  .cron-job-row:hover,
-  .cron-weekdays label:hover
-) {
-  background: var(--control-bg-hover);
-  border-color: var(--control-border-hover);
-}
-
-/* Status badges and accent-tinted pills bake in pale light-on-dark ink
-   (#cdddff, #9dc0ff, #ffc107, #fff, …) over a low-alpha tint. That reads at
-   1.0–1.9:1 once the tint sits on a light surface — the search filter chips
-   literally vanish. Re-point the ink at each skin's own dark tokens and keep
-   the tint as the category signal. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .search-filter-chip.active,
-  .search-badge-session,
-  .history-view-all-btn
-) {
-  color: var(--accent-d);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .search-badge-file,
-  .tunnel-panel-btn.btn-start,
-  .voice-provider-status.active
-) {
-  color: var(--green);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .ralph-task-priority.priority-p1,
-  .ralph-circuit-breaker.half-open
-) {
-  color: var(--yellow);
-}
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(
-  .search-badge-event,
-  .respawn-state,
-  .history-detail-path,
-  .mobile-case-item,
-  .mobile-case-picker-header h3,
-  .btn-toolbar.btn-case-mobile:hover
-) {
-  color: var(--text);
-}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -9791,9 +9725,6 @@ kbd {
   transform: none;
 }
 
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .security-notice {
-  --notice-ink: color-mix(in srgb, var(--yellow) 85%, black);
-}
 
 /* The update toast carrying a notice is still an update: its frame takes the accent colour,
    and the amber is left to the warning section inside it. */
@@ -11595,9 +11526,9 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
    per path and dot from the CodemanLineage.COLORS palette (per SPAWNING tab,
    first-seen order). The first spawning tab gets no override and falls through to
    --session-blue, which EVERY skin block already defines and tunes for its own
-   background. Do not add a per-skin `.lineage-line` override inside the
-   html:not([data-skin="og"]) block: a bare class rule in there resolves to
-   (0,2,1) and would outrank this one from a surprising place.
+   background. Do not add a per-skin `.lineage-line` override to the skin
+   component rules at the end of this file: one placed in the weighted
+   html:not([data-skin="og"]) block would outrank this one from a surprising place.
 
    Opacity lives on the family GROUP (`.lineage-family`), not on the paths: a
    parent's routes overlap exactly along the trunk, and translucent paths would
@@ -13718,12 +13649,10 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   padding: 0.75rem 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
-/* Send keeps the primary accent: the skin block's bare .btn-toolbar rule is
-   (0,2,1) under html:not([data-skin="og"]) and outranks the base
-   .btn-toolbar.btn-primary (0,2,0) — the specificity trap CLAUDE.md documents
-   for mobile.css — so the accent is re-asserted here at (0,4,0). Scoped to
-   this modal on purpose; un-greying every btn-primary on the new skins is a
-   design call, not this feature's. */
+/* Send keeps the primary accent. Predates design-system phase 2, which made
+   the skin's .btn-toolbar catch-all skip .btn-primary/.btn-danger/.btn-success
+   everywhere (owner decision 2026-10-23), so the base primary rule already
+   gives this accent; the modal-scoped copy stays as the pinned look here. */
 .readmymind-modal .modal-footer .btn-toolbar.btn-primary {
   background: var(--accent);
   border-color: var(--accent);
@@ -16533,265 +16462,6 @@ body.touch-device.cjk-input-visible .main {
   cursor: default;
 }
 
-/* ============================================================
-   === v1.0 Carbon Aurora · Daylight overrides ===
-   Single appended block — trivially removable. Retones the hardcoded
-   component colors that don't flow through :root: the active session
-   tab (#00FF66), the banners' literal gradients, the Ralph Material
-   palette, the Run/welcome/stop gradient buttons, the panels' glass,
-   and the welcome title. Calms heavy glows; the ONLY real saturation/
-   glow is reserved for the Run button + the progress ring.
-   ============================================================ */
-
-html:not([data-skin="og"]) {
-/* ---- Brand wordmark: emerald, calm (kill the blue glow) ---- */
-.logo:hover {
-  color: var(--accent-hover);
-  text-shadow: none;
-  filter: brightness(1.06);
-}
-
-/* ---- Active session tab: crisp emerald (replaces neon #00FF66) ---- */
-.session-tab.active {
-  background: rgba(var(--accent-rgb), 0.13) !important;
-  border: 1px solid var(--accent) !important;
-  color: var(--text) !important;
-  box-shadow: none !important;
-}
-.session-tab:hover {
-  background: rgba(var(--accent-rgb), 0.06);
-  border-color: rgba(var(--accent-rgb), 0.2);
-  box-shadow: none;
-}
-.session-tab .tab-number {
-  background: var(--control-bg-hover);
-  border: 1px solid var(--control-border-hover);
-  color: var(--text-dim);
-}
-.session-tab.active .tab-number {
-  background: rgba(var(--accent-rgb), 0.2) !important;
-  border-color: rgba(var(--accent-rgb), 0.45) !important;
-  color: var(--accent-hover) !important;
-}
-/* per-color active tints: calm the glow, keep the identity hue as a quiet border */
-.session-tab.active[data-color] {
-  box-shadow: none;
-}
-/* tab status dots: quiet, no halo */
-.session-tab .tab-status.idle,
-.session-tab .tab-status.busy {
-  box-shadow: none;
-}
-.tab-glow { animation: none; box-shadow: none; }
-
-/* ---- Timer banner: emerald-teal, flat ---- */
-.timer-banner {
-  background: linear-gradient(90deg, var(--banner-bg-a), var(--banner-bg-b));
-  border-bottom: 1px solid var(--glass-border);
-}
-.timer-value { color: var(--accent); }
-.timer-progress-fill { background: linear-gradient(90deg, var(--accent-grad-a), var(--accent-grad-b)); }
-
-/* ---- Respawn banner: lifted slate, calm green hairline ---- */
-.respawn-banner {
-  background: linear-gradient(90deg, var(--banner-bg-a), var(--banner-bg-b));
-  border-bottom: 1px solid var(--glass-border);
-}
-.respawn-countdown-timer .respawn-timer-value,
-.action-type { color: var(--accent); }
-.respawn-timer-progress { background: var(--accent); }
-.respawn-action-log { border-left-color: rgba(var(--accent-rgb), 0.18); }
-.respawn-action-log::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.28); }
-
-/* ---- Ralph panel: replace the blue->green ring gradient + Material badges ---- */
-.ralph-ring-text {
-  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-.ralph-ring-bg, .ralph-ring-track { stroke: var(--control-border); }
-/* Ralph status badges: collapse the off-token Material palette onto the system */
-.ralph-status-badge { color: var(--text-dim); }
-.ralph-status-dot { box-shadow: none; }
-.ralph-info { background: rgba(var(--accent-rgb), 0.05); }
-
-/* ---- Bottom toolbar + neutral buttons ---- */
-.toolbar { box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.22), 0 -4px 14px rgba(0, 0, 0, 0.14); }
-.btn-toolbar {
-  background: var(--control-bg);
-  border-color: var(--control-border);
-  color: var(--text-dim);
-}
-.btn-toolbar:hover {
-  background: var(--control-bg-hover);
-  border-color: var(--control-border-hover);
-  color: var(--text);
-  box-shadow: none;
-}
-
-/* ---- RUN button: THE focal saturated accent (flat emerald->teal fill) ---- */
-.btn-toolbar.btn-run,
-.btn-toolbar.btn-run.mode-claude {
-  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
-  font-weight: 700;
-  text-shadow: none;
-}
-.btn-toolbar.btn-run:hover,
-.btn-toolbar.btn-run.mode-claude:hover {
-  background: linear-gradient(135deg, var(--run-hover-a), var(--run-hover-b));
-  box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.5);
-}
-.btn-toolbar.btn-run.mode-opencode {
-  background: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.btn-toolbar.btn-run.mode-opencode:hover { box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.45); }
-.btn-toolbar.btn-run.mode-codex {
-  background: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
-  border-color: var(--accent-grad-b);
-  color: #061c20;
-}
-.btn-toolbar.btn-run.mode-codex:hover { box-shadow: 0 0 14px -2px rgba(43, 203, 187, 0.45); }
-/* Gemini, Antigravity, Pi, OMP, Grok and DeepSeek all keep their own identity
-   on the non-og skins. Each rule has to live INSIDE this nested block: the
-   generic `.btn-toolbar.btn-run` above resolves to (0,3,1) here and would
-   otherwise beat the base sheet's (0,3,0) `.mode-<id>` pair — which is exactly
-   what gemini/antigravity/omp did until this fix, rendering as generic claude
-   blue on `daylight-blue`, the actual DEFAULT skin for a fresh install
-   (`index.html`'s pre-paint script), not just a corner case on `og`. */
-.btn-toolbar.btn-run.mode-gemini {
-  background: linear-gradient(135deg, #174ea6, #4f46e5);
-  border-color: #123a7a;
-  color: #dbeafe;
-}
-.btn-toolbar.btn-run.mode-gemini:hover { box-shadow: 0 0 14px -2px rgba(96, 165, 250, 0.45); }
-.btn-toolbar.btn-run.mode-antigravity {
-  background: linear-gradient(135deg, #0e7490, #0891b2);
-  border-color: #0b5566;
-  color: #cffafe;
-}
-.btn-toolbar.btn-run.mode-antigravity:hover { box-shadow: 0 0 14px -2px rgba(34, 211, 238, 0.45); }
-.btn-toolbar.btn-run.mode-omp {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  border-color: #3730a3;
-  color: #e0e7ff;
-}
-.btn-toolbar.btn-run.mode-omp:hover { box-shadow: 0 0 14px -2px rgba(129, 140, 248, 0.45); }
-.btn-toolbar.btn-run.mode-copilot {
-  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
-  border-color: #5b21b6;
-  color: #ede9fe;
-}
-.btn-toolbar.btn-run.mode-copilot:hover { box-shadow: 0 0 14px -2px rgba(163, 113, 247, 0.45); }
-.btn-toolbar.btn-run.mode-pi {
-  background: linear-gradient(135deg, #be185d, #f472b6);
-  border-color: #be185d;
-  color: #fff1f7;
-}
-.btn-toolbar.btn-run.mode-pi:hover { box-shadow: 0 0 14px -2px rgba(244, 114, 182, 0.45); }
-/* Grok keeps its charcoal identity on the non-og skins. Same specificity trap
-   as pi above: without this rule the generic `.btn-toolbar.btn-run` in this
-   nested block wins and grok renders as generic claude blue. */
-.btn-toolbar.btn-run.mode-grok {
-  background: linear-gradient(135deg, #27272a, #52525b);
-  border-color: #18181b;
-  color: #fafafa;
-}
-.btn-toolbar.btn-run.mode-grok:hover { box-shadow: 0 0 14px -2px rgba(161, 161, 170, 0.5); }
-/* DeepSeek keeps its indigo on the non-og skins — same specificity trap as pi
-   and grok above: without this rule the generic `.btn-toolbar.btn-run` in this
-   nested block wins and deepseek renders as generic claude blue, which is the
-   one colour it must not be mistaken for. */
-.btn-toolbar.btn-run.mode-deepseek {
-  background: linear-gradient(135deg, #2740c4, #4d6bfe);
-  border-color: #1b2a8f;
-  color: #f8faff;
-}
-.btn-toolbar.btn-run.mode-deepseek:hover { box-shadow: 0 0 14px -2px rgba(77, 107, 254, 0.55); }
-.btn-toolbar.btn-run-gear {
-  background: var(--accent-d);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.btn-toolbar.btn-run-gear:hover { background: var(--gear-hover); box-shadow: none; }
-
-/* ---- Shell button: quiet neutral with a calm green tint ---- */
-.btn-toolbar.btn-shell {
-  background: rgba(68, 185, 147, 0.1);
-  border: 1px solid rgba(68, 185, 147, 0.28);
-  color: var(--green);
-  text-shadow: none;
-}
-.btn-toolbar.btn-shell:hover {
-  background: rgba(68, 185, 147, 0.16);
-  border-color: rgba(68, 185, 147, 0.4);
-  box-shadow: none;
-}
-
-/* ---- Stop button: quiet neutral control (no rose glow) ---- */
-.btn-toolbar.btn-stop {
-  background: var(--control-bg);
-  border: 1px solid var(--control-border);
-  color: var(--text-dim);
-  text-shadow: none;
-}
-.btn-toolbar.btn-stop:hover {
-  background: rgba(224, 99, 99, 0.14);
-  border-color: rgba(224, 99, 99, 0.4);
-  color: #f0a0a0;
-  box-shadow: none;
-}
-.btn-toolbar.btn-stop.confirming {
-  background: linear-gradient(135deg, #5a4a1a, #6b5620);
-  border-color: rgba(240, 194, 90, 0.6);
-  color: var(--yellow);
-}
-
-/* ---- Case selector + add ---- */
-.toolbar-select {
-  background: var(--control-bg);
-  border-color: var(--control-border);
-  color: var(--text-dim);
-}
-.toolbar-select:hover { background: var(--control-bg-hover); border-color: var(--control-border-hover); }
-.toolbar-select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
-}
-
-/* ---- Header system stats: cohesive accent meters ---- */
-.stat-bar-mem { background: linear-gradient(90deg, var(--accent), var(--accent-hover)); }
-.header-tokens.clickable:hover { background: rgba(var(--accent-rgb), 0.16); }
-
-/* ---- Monitor + Subagents panels: lifted frosted slate ---- */
-.monitor-panel,
-.subagents-panel {
-  background: var(--floating-bg);
-  border: 1px solid var(--control-border);
-}
-
-/* ---- Subagent progress ring: emerald, calm glow ---- */
-.subagent-ring-progress,
-.subagent-ring circle.progress { stroke: var(--accent); }
-
-/* ---- PROGRESS RING (Ralph large): the one place a soft glow lives ---- */
-.ralph-ring-fill { filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.45)); }
-
-/* ---- Welcome overlay: emerald title (the launchers are token-driven
-   already, see `.welcome-primary` / `.welcome-chip`) ---- */
-.welcome-title {
-  background: linear-gradient(135deg, var(--accent-grad-a) 0%, var(--accent-grad-b) 50%, var(--accent-grad-a) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ---- Focus rings (driven by --accent, now emerald) stay accessible ---- */
-:focus-visible { outline-color: var(--accent); }
-}
 
 /* ── Cron Jobs ───────────────────────────────── */
 /* There is no global `.hidden{display:none}` utility in this stylesheet — each
@@ -19470,12 +19140,11 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 /* ============================================================
    === Collapsible session sidebar (opt-in layout) ===
-   Appended at top level ON PURPOSE: styles.css:12171-12390 is one
-   html:not([data-skin="og"]) { … } native-nesting block whose bare
-   selectors resolve at (0,2,x) and re-tone .session-tab with
-   !important. Everything below is LAYOUT ONLY (flex/size/overflow/
-   display) and sets no colour on .session-tab, so it composes with
-   every skin instead of fighting it. Keep it that way.
+   Top level ON PURPOSE: the skin component rules at the END of this
+   file re-tone .session-tab (some with !important). Everything below
+   is LAYOUT ONLY (flex/size/overflow/display) and sets no colour on
+   .session-tab, so it composes with every skin instead of fighting
+   it. Keep it that way.
 
    The list itself is not a second DOM tree: applySessionListLayout()
    moves the one #sessionTabs element between #sessionTabsHost (header)
@@ -22982,4 +22651,361 @@ html[data-header-stats='tiles'] .header-plan-usage:not(:has(.pu-row)) {
    inside .xterm-screen, so they move with it, and every hit test reads rects. */
 body.keyboard-visible .terminal-container .xterm-screen {
   transform: translateY(calc(-1 * var(--kb-clip, 0px)));
+}
+
+
+/* ============================================================
+   Skin component rules (design-system phase 2)
+   Rules that still recolor components per skin, kept LAST in this file and
+   qualified with :where(), so the skin adds NO specificity: each rule beats
+   earlier base rules of equal specificity by source order, and a later rule
+   (mobile.css included) overrides it without !important. Keep their relative
+   order: light-skin rules, then the og-excluding Daylight overrides.
+   ============================================================ */
+
+/* Components that predate skin tokens used literal dark glass fills. Keep
+   their structure, but make those elevated surfaces coherent in light mode. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) {
+  scrollbar-color: var(--border-light) var(--bg-input);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .modal-content,
+  .ralph-dropdown,
+  .ralph-panel.detached,
+  .mobile-case-picker-sheet,
+  .command-palette,
+  .case-combobox-list
+) {
+  background: var(--floating-bg);
+  border-color: var(--control-border);
+  color: var(--text);
+  box-shadow: var(--elevated-shadow);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .settings-item,
+  .cron-job-row,
+  #cronModal .form-row-switch.cron-switch-row,
+  .cron-weekdays label
+) {
+  background: var(--control-bg);
+  border-color: var(--control-border);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .settings-item:hover,
+  .cron-job-row:hover,
+  .cron-weekdays label:hover
+) {
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+}
+
+/* Status badges and accent-tinted pills bake in pale light-on-dark ink
+   (#cdddff, #9dc0ff, #ffc107, #fff, …) over a low-alpha tint. That reads at
+   1.0–1.9:1 once the tint sits on a light surface — the search filter chips
+   literally vanish. Re-point the ink at each skin's own dark tokens and keep
+   the tint as the category signal. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .search-filter-chip.active,
+  .search-badge-session,
+  .history-view-all-btn
+) {
+  color: var(--accent-d);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .search-badge-file,
+  .tunnel-panel-btn.btn-start,
+  .voice-provider-status.active
+) {
+  color: var(--green);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .ralph-task-priority.priority-p1,
+  .ralph-circuit-breaker.half-open
+) {
+  color: var(--yellow);
+}
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) :is(
+  .search-badge-event,
+  .respawn-state,
+  .history-detail-path,
+  .mobile-case-item,
+  .mobile-case-picker-header h3,
+  .btn-toolbar.btn-case-mobile:hover
+) {
+  color: var(--text);
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .security-notice {
+  --notice-ink: color-mix(in srgb, var(--yellow) 85%, black);
+}
+
+/* ============================================================
+   === v1.0 Carbon Aurora · Daylight overrides ===
+   Single appended block — trivially removable. Retones the hardcoded
+   component colors that don't flow through :root: the active session
+   tab (#00FF66), the banners' literal gradients, the Ralph Material
+   palette, the Run/welcome/stop gradient buttons, the panels' glass,
+   and the welcome title. Calms heavy glows; the ONLY real saturation/
+   glow is reserved for the Run button + the progress ring.
+   ============================================================ */
+
+:where(html:not([data-skin="og"])) {
+/* ---- Brand wordmark: emerald, calm (kill the blue glow) ---- */
+.logo:hover {
+  color: var(--accent-hover);
+  text-shadow: none;
+  filter: brightness(1.06);
+}
+
+/* ---- Active session tab: crisp emerald (replaces neon #00FF66) ---- */
+.session-tab.active {
+  background: rgba(var(--accent-rgb), 0.13) !important;
+  border: 1px solid var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+.session-tab:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+  border-color: rgba(var(--accent-rgb), 0.2);
+  box-shadow: none;
+}
+.session-tab .tab-number {
+  background: var(--control-bg-hover);
+  border: 1px solid var(--control-border-hover);
+  color: var(--text-dim);
+}
+.session-tab.active .tab-number {
+  background: rgba(var(--accent-rgb), 0.2) !important;
+  border-color: rgba(var(--accent-rgb), 0.45) !important;
+  color: var(--accent-hover) !important;
+}
+/* per-color active tints: calm the glow, keep the identity hue as a quiet border */
+.session-tab.active[data-color] {
+  box-shadow: none;
+}
+/* tab status dots: quiet, no halo */
+.session-tab .tab-status.idle,
+.session-tab .tab-status.busy {
+  box-shadow: none;
+}
+.tab-glow { animation: none; box-shadow: none; }
+
+/* ---- Timer banner: emerald-teal, flat ---- */
+.timer-banner {
+  background: linear-gradient(90deg, var(--banner-bg-a), var(--banner-bg-b));
+  border-bottom: 1px solid var(--glass-border);
+}
+.timer-value { color: var(--accent); }
+.timer-progress-fill { background: linear-gradient(90deg, var(--accent-grad-a), var(--accent-grad-b)); }
+
+/* ---- Respawn banner: lifted slate, calm green hairline ---- */
+.respawn-banner {
+  background: linear-gradient(90deg, var(--banner-bg-a), var(--banner-bg-b));
+  border-bottom: 1px solid var(--glass-border);
+}
+.respawn-countdown-timer .respawn-timer-value,
+.action-type { color: var(--accent); }
+.respawn-timer-progress { background: var(--accent); }
+.respawn-action-log { border-left-color: rgba(var(--accent-rgb), 0.18); }
+.respawn-action-log::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.28); }
+
+/* ---- Ralph panel: replace the blue->green ring gradient + Material badges ---- */
+.ralph-ring-text {
+  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.ralph-ring-bg, .ralph-ring-track { stroke: var(--control-border); }
+/* Ralph status badges: collapse the off-token Material palette onto the system */
+.ralph-status-badge { color: var(--text-dim); }
+.ralph-status-dot { box-shadow: none; }
+.ralph-info { background: rgba(var(--accent-rgb), 0.05); }
+
+/* ---- Bottom toolbar + neutral buttons ---- */
+.toolbar { box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.22), 0 -4px 14px rgba(0, 0, 0, 0.14); }
+/* .btn-toolbar catch-all, Run/gear, Shell and Stop: in the weighted block below. */
+
+/* ---- Case selector + add ---- */
+.toolbar-select {
+  background: var(--control-bg);
+  border-color: var(--control-border);
+  color: var(--text-dim);
+}
+.toolbar-select:hover { background: var(--control-bg-hover); border-color: var(--control-border-hover); }
+.toolbar-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
+}
+
+/* ---- Header system stats: cohesive accent meters ---- */
+.stat-bar-mem { background: linear-gradient(90deg, var(--accent), var(--accent-hover)); }
+.header-tokens.clickable:hover { background: rgba(var(--accent-rgb), 0.16); }
+
+/* ---- Monitor + Subagents panels: lifted frosted slate ---- */
+.monitor-panel,
+.subagents-panel {
+  background: var(--floating-bg);
+  border: 1px solid var(--control-border);
+}
+
+/* ---- Subagent progress ring: emerald, calm glow ---- */
+.subagent-ring-progress,
+.subagent-ring circle.progress { stroke: var(--accent); }
+
+/* ---- PROGRESS RING (Ralph large): the one place a soft glow lives ---- */
+.ralph-ring-fill { filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.45)); }
+
+/* ---- Welcome overlay: emerald title (the launchers are token-driven
+   already, see `.welcome-primary` / `.welcome-chip`) ---- */
+.welcome-title {
+  background: linear-gradient(135deg, var(--accent-grad-a) 0%, var(--accent-grad-b) 50%, var(--accent-grad-a) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+}
+
+/* Daylight overrides that KEEP the skin's extra weight (html:not(), 0,1,1): the
+   toolbar-button catch-all, the Run split button, Shell and Stop, and the focus ring.
+   Without it, base rules of higher specificity win: the Run body and its gear
+   split into two colors per CLI, and focus rings turn near-white. The catch-all
+   skips the semantic variants (:where, so it adds no specificity), which keep
+   their own accent / red / green, as the proposed dialog design calls for. */
+html:not([data-skin="og"]) {
+.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success)) {
+  background: var(--control-bg);
+  border-color: var(--control-border);
+  color: var(--text-dim);
+}
+.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success)):hover {
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+  color: var(--text);
+  box-shadow: none;
+}
+
+/* ---- RUN button: THE focal saturated accent (flat emerald->teal fill) ---- */
+.btn-toolbar.btn-run,
+.btn-toolbar.btn-run.mode-claude {
+  background: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  text-shadow: none;
+}
+.btn-toolbar.btn-run:hover,
+.btn-toolbar.btn-run.mode-claude:hover {
+  background: linear-gradient(135deg, var(--run-hover-a), var(--run-hover-b));
+  box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.5);
+}
+.btn-toolbar.btn-run.mode-opencode {
+  background: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-toolbar.btn-run.mode-opencode:hover { box-shadow: 0 0 14px -2px rgba(var(--accent-rgb), 0.45); }
+.btn-toolbar.btn-run.mode-codex {
+  background: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
+  border-color: var(--accent-grad-b);
+  color: #061c20;
+}
+.btn-toolbar.btn-run.mode-codex:hover { box-shadow: 0 0 14px -2px rgba(43, 203, 187, 0.45); }
+/* Gemini, Antigravity, Pi, OMP, Grok and DeepSeek all keep their own identity
+   on the non-og skins. Each rule has to live INSIDE this nested block: the
+   generic `.btn-toolbar.btn-run` above resolves to (0,3,1) here and would
+   otherwise beat the base sheet's (0,3,0) `.mode-<id>` pair — which is exactly
+   what gemini/antigravity/omp did until this fix, rendering as generic claude
+   blue on `daylight-blue`, the actual DEFAULT skin for a fresh install
+   (`index.html`'s pre-paint script), not just a corner case on `og`. */
+.btn-toolbar.btn-run.mode-gemini {
+  background: linear-gradient(135deg, #174ea6, #4f46e5);
+  border-color: #123a7a;
+  color: #dbeafe;
+}
+.btn-toolbar.btn-run.mode-gemini:hover { box-shadow: 0 0 14px -2px rgba(96, 165, 250, 0.45); }
+.btn-toolbar.btn-run.mode-antigravity {
+  background: linear-gradient(135deg, #0e7490, #0891b2);
+  border-color: #0b5566;
+  color: #cffafe;
+}
+.btn-toolbar.btn-run.mode-antigravity:hover { box-shadow: 0 0 14px -2px rgba(34, 211, 238, 0.45); }
+.btn-toolbar.btn-run.mode-omp {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border-color: #3730a3;
+  color: #e0e7ff;
+}
+.btn-toolbar.btn-run.mode-omp:hover { box-shadow: 0 0 14px -2px rgba(129, 140, 248, 0.45); }
+.btn-toolbar.btn-run.mode-copilot {
+  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  border-color: #5b21b6;
+  color: #ede9fe;
+}
+.btn-toolbar.btn-run.mode-copilot:hover { box-shadow: 0 0 14px -2px rgba(163, 113, 247, 0.45); }
+.btn-toolbar.btn-run.mode-pi {
+  background: linear-gradient(135deg, #be185d, #f472b6);
+  border-color: #be185d;
+  color: #fff1f7;
+}
+.btn-toolbar.btn-run.mode-pi:hover { box-shadow: 0 0 14px -2px rgba(244, 114, 182, 0.45); }
+/* Grok keeps its charcoal identity on the non-og skins. Same specificity trap
+   as pi above: without this rule the generic `.btn-toolbar.btn-run` in this
+   nested block wins and grok renders as generic claude blue. */
+.btn-toolbar.btn-run.mode-grok {
+  background: linear-gradient(135deg, #27272a, #52525b);
+  border-color: #18181b;
+  color: #fafafa;
+}
+.btn-toolbar.btn-run.mode-grok:hover { box-shadow: 0 0 14px -2px rgba(161, 161, 170, 0.5); }
+/* DeepSeek keeps its indigo on the non-og skins — same specificity trap as pi
+   and grok above: without this rule the generic `.btn-toolbar.btn-run` in this
+   nested block wins and deepseek renders as generic claude blue, which is the
+   one colour it must not be mistaken for. */
+.btn-toolbar.btn-run.mode-deepseek {
+  background: linear-gradient(135deg, #2740c4, #4d6bfe);
+  border-color: #1b2a8f;
+  color: #f8faff;
+}
+.btn-toolbar.btn-run.mode-deepseek:hover { box-shadow: 0 0 14px -2px rgba(77, 107, 254, 0.55); }
+.btn-toolbar.btn-run-gear {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-toolbar.btn-run-gear:hover { background: var(--gear-hover); box-shadow: none; }
+
+/* ---- Shell button: quiet neutral with a calm green tint ---- */
+.btn-toolbar.btn-shell {
+  background: rgba(68, 185, 147, 0.1);
+  border: 1px solid rgba(68, 185, 147, 0.28);
+  color: var(--green);
+  text-shadow: none;
+}
+.btn-toolbar.btn-shell:hover {
+  background: rgba(68, 185, 147, 0.16);
+  border-color: rgba(68, 185, 147, 0.4);
+  box-shadow: none;
+}
+
+/* ---- Stop button: quiet neutral control (no rose glow) ---- */
+.btn-toolbar.btn-stop {
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  color: var(--text-dim);
+  text-shadow: none;
+}
+.btn-toolbar.btn-stop:hover {
+  background: rgba(224, 99, 99, 0.14);
+  border-color: rgba(224, 99, 99, 0.4);
+  color: #f0a0a0;
+  box-shadow: none;
+}
+.btn-toolbar.btn-stop.confirming {
+  background: linear-gradient(135deg, #5a4a1a, #6b5620);
+  border-color: rgba(240, 194, 90, 0.6);
+  color: var(--yellow);
+}
+
+/* ---- Focus rings (driven by --accent, now emerald) stay accessible ---- */
+:focus-visible { outline-color: var(--accent); }
 }

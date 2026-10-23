@@ -988,8 +988,10 @@ describe('the card styles', () => {
 
   it('darkens the amber ink on the light skins only', () => {
     expect(block).toContain('--notice-ink: var(--yellow);');
-    expect(block).toMatch(
-      /html:is\(\[data-skin="paper-gray"\], \[data-skin="solarized-light"\], \[data-skin="catppuccin-latte"\], \[data-skin="rose-pine-dawn"\]\) \.security-notice \{\s*--notice-ink: color-mix\(in srgb, var\(--yellow\) 85%, black\);/
+    // The light-skin override lives with the other skin component rules at the
+    // end of styles.css (design-system phase 2), so match it in the whole file.
+    expect(css).toMatch(
+      /:where\(html:is\(\[data-skin="paper-gray"\], \[data-skin="solarized-light"\], \[data-skin="catppuccin-latte"\], \[data-skin="rose-pine-dawn"\]\)\) \.security-notice \{\s*--notice-ink: color-mix\(in srgb, var\(--yellow\) 85%, black\);/
     );
   });
 });

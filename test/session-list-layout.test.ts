@@ -530,13 +530,18 @@ describe('session list layout wiring', () => {
     expect(STYLES_CSS).toContain('body.solo-mode .btn-sidebar-toggle,');
   });
 
-  it('puts the sidebar rules after the skin nesting block and adds no colour to .session-tab', () => {
-    // Match the RULE (column 0 + opening brace), not the prose about it in the
-    // sidebar block's own header comment.
-    const skinRule = [...STYLES_CSS.matchAll(/^html:not\(\[data-skin="og"\]\) \{/gm)].pop();
-    expect(skinRule).toBeDefined();
+  it('keeps the sidebar rules at top level, outside the skin blocks that close styles.css', () => {
+    // Match the RULES (column 0 + opening brace), not the prose about them in the
+    // sidebar block's own header comment. Since design-system phase 2 the skin
+    // component rules are the LAST section of the file (:where()-qualified, plus
+    // one weighted html:not() block), so the layout-only sidebar block precedes them.
     const sidebarBlock = STYLES_CSS.indexOf('=== Collapsible session sidebar');
-    expect(sidebarBlock).toBeGreaterThan(skinRule!.index!);
+    const lightSkin = STYLES_CSS.search(/^:where\(html:not\(\[data-skin="og"\]\)\) \{/m);
+    const weightedSkin = [...STYLES_CSS.matchAll(/^html:not\(\[data-skin="og"\]\) \{/gm)];
+    expect(sidebarBlock).toBeGreaterThan(-1);
+    expect(lightSkin).toBeGreaterThan(sidebarBlock);
+    expect(weightedSkin).toHaveLength(1);
+    expect(weightedSkin[0].index!).toBeGreaterThan(lightSkin);
   });
 
   it('makes the handheld sidebar an off-canvas overlay from the END of mobile.css', () => {

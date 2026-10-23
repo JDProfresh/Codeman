@@ -9,6 +9,9 @@
  *   hashes both.
  * - tokens.css only declares --cm-* custom properties inside the `tokens`
  *   layer, so it cannot change a pixel by itself.
+ * - Phase 2: the skin palettes sit in `@layer skins` and set custom properties
+ *   only; the skin component rules close styles.css, :where()-qualified except
+ *   one weighted html:not() block whose contents are an explicit allowlist.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -98,5 +101,79 @@ describe('design tokens wiring', () => {
     };
     const ratio = (a: string, b: string) => (lum(a) + 0.05) / (lum(b) + 0.05);
     for (const bg of ['#11151c', '#1b222c', '#202833']) expect(ratio('#8b95a6', bg)).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe('skins (design-system phase 2)', () => {
+  const styles = read('src/web/public/styles.css');
+  const code = styles.replace(/\/\*[\s\S]*?\*\//g, '');
+  const blockAt = (text: string, open: number) => {
+    let depth = 0;
+    for (let i = text.indexOf('{', open); i < text.length; i++) {
+      if (text[i] === '{') depth++;
+      else if (text[i] === '}' && --depth === 0) return text.slice(open, i + 1);
+    }
+    throw new Error('unbalanced block');
+  };
+
+  it('keeps every skin palette in @layer skins, as custom properties only', () => {
+    const layer = blockAt(code, code.indexOf('@layer skins {'));
+    for (const skin of [
+      'og',
+      'daylight-green',
+      'daylight-blue',
+      'paper-gray',
+      'solarized-light',
+      'catppuccin-latte',
+      'rose-pine-dawn',
+    ]) {
+      expect(layer).toContain(`html[data-skin="${skin}"] {`);
+    }
+    expect(layer).toContain(':root {');
+    const props = [...layer.matchAll(/([a-z0-9-]+)\s*:[^;{}]+;/g)].map((m) => m[1]);
+    expect(props.filter((p) => !p.startsWith('--') && p !== 'color-scheme')).toEqual([]);
+    // No palette block left outside the layer.
+    expect(code.replace(layer, '').match(/^html\[data-skin="[a-z-]+"\] \{/m)).toBeNull();
+  });
+
+  it('closes the file with the skin component rules, light first, then the weighted block', () => {
+    const light = code.search(/^:where\(html:not\(\[data-skin="og"\]\)\) \{/m);
+    const weighted = [...code.matchAll(/^html:not\(\[data-skin="og"\]\) \{/gm)];
+    expect(light).toBeGreaterThan(-1);
+    expect(weighted).toHaveLength(1);
+    expect(weighted[0].index!).toBeGreaterThan(light);
+    // Nothing but the weighted block follows it.
+    expect(blockAt(code, weighted[0].index!).length + weighted[0].index!).toBe(code.trimEnd().length);
+    // Every light-skin component rule is :where()-qualified.
+    const lightSkins =
+      'html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])';
+    expect(code.split(lightSkins).length).toBe(code.split(':where(' + lightSkins + ')').length);
+  });
+
+  const splitTop = (list: string) => {
+    const out: string[] = [];
+    let depth = 0;
+    let cur = '';
+    for (const ch of list) {
+      if (ch === '(') depth++;
+      if (ch === ')') depth--;
+      if (ch === ',' && depth === 0) {
+        out.push(cur.trim());
+        cur = '';
+      } else cur += ch;
+    }
+    return [...out, cur.trim()];
+  };
+
+  it('weights only the allowlisted rules, and the catch-all skips the semantic buttons', () => {
+    const weighted = [...code.matchAll(/^html:not\(\[data-skin="og"\]\) \{/gm)][0];
+    const body = blockAt(code, weighted.index!);
+    const selectors = [...body.slice(body.indexOf('{') + 1).matchAll(/([^{};]+)\{/g)].flatMap((m) => splitTop(m[1]));
+    for (const sel of selectors) {
+      expect(sel, sel).toMatch(
+        /^(\.btn-toolbar(\.btn-(run|run-gear|shell|stop)\b|:where\(:not\(\.btn-primary, \.btn-danger, \.btn-success\)\))|:focus-visible$)/
+      );
+    }
+    expect(selectors).toContain('.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success))');
   });
 });
