@@ -16711,12 +16711,12 @@ body.touch-device.cjk-input-visible .main {
 .reboot-restore-banner {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 1rem;
+  gap: var(--cm-space-2);
+  padding: var(--cm-space-2) var(--cm-space-4);
   background: linear-gradient(90deg, #b45309, #92400e);
   border-bottom: 1px solid rgba(0, 0, 0, 0.35);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: var(--cm-text-sm);
   font-weight: 600;
   letter-spacing: 0.01em;
   flex-shrink: 0;
@@ -16729,7 +16729,7 @@ body.touch-device.cjk-input-visible .main {
 
 .reboot-restore-banner-icon {
   flex-shrink: 0;
-  font-size: 0.95rem;
+  font-size: var(--cm-text-md);
   line-height: 1;
 }
 
@@ -16759,12 +16759,12 @@ body.touch-device.cjk-input-visible .main {
 .reboot-restore-banner-accept,
 .reboot-restore-banner-dismiss {
   flex-shrink: 0;
-  padding: 0.2rem 0.6rem;
-  border-radius: 5px;
+  padding: var(--cm-space-1) var(--cm-space-2);
+  border-radius: var(--cm-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.55);
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
-  font-size: 0.72rem;
+  font-size: var(--cm-text-xs);
   font-weight: 600;
   cursor: pointer;
 }
@@ -16788,12 +16788,12 @@ body.touch-device.cjk-input-visible .main {
 .offline-banner {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 1rem;
+  gap: var(--cm-space-2);
+  padding: var(--cm-space-2) var(--cm-space-4);
   background: linear-gradient(90deg, #b91c1c, #991b1b);
   border-bottom: 1px solid rgba(0, 0, 0, 0.35);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: var(--cm-text-sm);
   font-weight: 600;
   letter-spacing: 0.01em;
   flex-shrink: 0;
@@ -16833,12 +16833,12 @@ body.touch-device.cjk-input-visible .main {
 
 .offline-banner-retry {
   flex-shrink: 0;
-  padding: 0.2rem 0.6rem;
-  border-radius: 5px;
+  padding: var(--cm-space-1) var(--cm-space-2);
+  border-radius: var(--cm-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.55);
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
-  font-size: 0.72rem;
+  font-size: var(--cm-text-xs);
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;

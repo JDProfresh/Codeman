@@ -3548,7 +3548,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
   .reboot-restore-banner-accept,
   .reboot-restore-banner-dismiss {
-    padding: 0.25rem 0.5rem;
+    padding: var(--cm-space-1) var(--cm-space-2);
   }
 
   .reboot-restore-banner-accept {
@@ -3556,11 +3556,11 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 
   .offline-banner {
-    padding: 0.4rem 0.5rem;
-    padding-left: calc(0.5rem + var(--safe-area-left));
-    padding-right: calc(0.5rem + var(--safe-area-right));
-    font-size: 0.7rem;
-    gap: 0.4rem;
+    padding: var(--cm-space-1h) var(--cm-space-2);
+    padding-left: calc(var(--cm-space-2) + var(--safe-area-left));
+    padding-right: calc(var(--cm-space-2) + var(--safe-area-right));
+    font-size: var(--cm-text-xs);
+    gap: var(--cm-space-1h);
   }
 
   /* The countdown is the first thing to go when the bar gets tight. The
@@ -3570,7 +3570,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 
   .offline-banner-retry {
-    padding: 0.25rem 0.5rem;
+    padding: var(--cm-space-1) var(--cm-space-2);
     margin-left: auto;
   }
 
