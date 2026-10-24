@@ -8326,11 +8326,14 @@ class CodemanApp {
     const tabGroupId =
       this.tabLayout?.groups?.find((group) => group.refs.some((ref) => ref.kind === 'session' && ref.id === sessionId))
         ?.id || null;
-    // Same list and gating as the phone overview's Run picker (shell is never gated).
+    // Same list and gating as the phone overview's Run picker (shell is never gated),
+    // in the toolbar Run menu's order: the agent CLIs in catalog order, the shell last.
     // ponytail: host availability only; a Docker case's container modes are not probed here.
-    const modes = (typeof mobileOverviewRunModes === 'function' ? mobileOverviewRunModes() : []).filter(
-      (entry) => entry.mode === 'shell' || this.isCliAvailable(entry.mode)
+    const isShell = (entry) => registryCliById(entry.mode)?.kind === 'shell';
+    const available = (typeof mobileOverviewRunModes === 'function' ? mobileOverviewRunModes() : []).filter(
+      (entry) => isShell(entry) || this.isCliAvailable(entry.mode)
     );
+    const modes = [...available.filter((entry) => !isShell(entry)), ...available.filter(isShell)];
     const current = this.runMode;
     const actions = modes.map((entry) => ({
       label: entry.label,
