@@ -2887,6 +2887,12 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   color: var(--accent-hover);
 }
 
+/* Per-device toggle (App Settings → Tab Bar), mirrored as tabs-show-new on <html>
+   by settings-ui.js. !important so no layout's reveal rule (sidebar, touch) wins. */
+html:not(.tabs-show-new) .session-tab .tab-new {
+  display: none !important;
+}
+
 /* The "+" picker: installed CLIs as a single row of logos (no labels; each has
    a title and aria-label). Borrows the group menu's look and behaviour. */
 .tab-rail-action-menu.tab-new-session-menu {
