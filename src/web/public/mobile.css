@@ -949,7 +949,7 @@ html.mobile-init .file-browser-panel {
     display: none !important;
   }
 
-  /* The "+" is opt-in on phones (showTabNewButton, per-device; html.tabs-show-new).
+  /* The "+" is opt-in (showTabNewButton, per-device; html.tabs-show-new).
      Switched on it joins gear + close on the active tab only, and the label
      reserve above grows to clear all three (test/mobile-tab-tap-zones). */
   .session-tab .tab-new {
