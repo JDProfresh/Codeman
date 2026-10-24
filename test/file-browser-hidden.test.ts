@@ -29,7 +29,6 @@ const PUBLIC = resolve(import.meta.dirname, '../src/web/public');
 const panelsJs = readFileSync(resolve(PUBLIC, 'panels-ui.js'), 'utf8');
 const appJs = readFileSync(resolve(PUBLIC, 'app.js'), 'utf8');
 const indexHtml = readFileSync(resolve(PUBLIC, 'index.html'), 'utf8');
-const stylesCss = readFileSync(resolve(PUBLIC, 'styles.css'), 'utf8');
 
 const STORAGE_KEY = 'codeman:fileBrowserShowHidden';
 
@@ -238,6 +237,11 @@ describe('File Viewer show-hidden wiring', () => {
   });
 
   it('styles the active state so the toggle reads as on', () => {
-    expect(stylesCss).toContain('.btn-file-browser-hidden.active');
+    // The toggle is a kit ghost button; its "on" look is the kit's pressed
+    // state, driven by the aria-pressed that _syncFileBrowserHiddenBtn sets.
+    expect(indexHtml).toMatch(/class="cm-btn cm-btn--icon cm-btn--ghost btn-file-browser-hidden"/);
+    expect(panelsJs).toContain("btn.setAttribute('aria-pressed', String(on));");
+    const kitCss = readFileSync(resolve(PUBLIC, 'css/components.css'), 'utf8');
+    expect(kitCss).toMatch(/\.cm-btn--ghost\[aria-pressed='true'\][^{]*\{[^}]*color: var\(--cm-accent\);/);
   });
 });
