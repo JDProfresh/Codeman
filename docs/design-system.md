@@ -151,11 +151,12 @@ the block for its width; a new query is added to the header list and the test on
 purpose. Run `npm run css:diff -- --viewports all` for any change there: the extra
 viewports (360, 700, 768) sit on mobile.css's own steps.
 
-The `!important`s left in `mobile.css` are load-bearing: phone toolbar sizes beat
-the phone block's own `!important` sizing on `.cm-btn--bar` (and every button that
-carries that class, the overview's Run included), toolbar colours beat the weighted skin block, and
-`display` beats JS inline toggles. Removing them is a toolbar refactor, not a
-cleanup.
+The phone toolbar needs no `!important` for its sizes or colours: the 26px size is
+`.toolbar .cm-btn--bar`, so it no longer reaches the home screen's Run or the case
+sheet (which size themselves), and the per-button rules carry the `.toolbar` prefix
+((0,3,0)), which outranks the skin block's (0,2,1) catch-all. What is left in
+`mobile.css` is mostly `display` beating JS inline toggles and the hidden-marker
+pattern (`test/phone-toolbar-important.test.ts`).
 
 The toolbar is Run, Stop, Enter, mic and More (⋯) (board P07). The More sheet
 holds Case, Attach and App Settings. The agent key bar opens with Compose (accent),
@@ -217,5 +218,5 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next: the phone toolbar's `!important` chain on `.cm-btn--bar`.
+Next: the remaining `!important`s outside the toolbar (mostly `display`).
 Each one ships with a `css:diff` run showing only the intended changes.

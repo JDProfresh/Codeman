@@ -1050,13 +1050,21 @@ html.mobile-init .file-browser-panel {
     display: none !important;
   }
 
-  /* Compact toolbar buttons for mobile - white text on dark */
+  /* Compact toolbar buttons for mobile - white text on dark. The 26px size is
+     scoped to the bottom toolbar, where `.toolbar .cm-btn--bar` (0,2,0) outranks
+     every desktop sizing rule by specificity and source order, so it needs no
+     !important; the home screen's Run and the case sheet size themselves. */
+  .toolbar .cm-btn--bar {
+    min-height: 26px;
+    max-height: 26px;
+    height: 26px;
+    padding: 0 0.5rem;
+    font-size: 0.65rem;
+  }
+
   .cm-btn--bar {
-    min-height: 26px !important;
-    max-height: 26px !important;
-    height: 26px !important;
-    padding: 0 0.5rem !important;
-    font-size: 0.65rem !important;
+    padding: 0 0.5rem;
+    font-size: 0.65rem;
     border-radius: 4px;
     line-height: 26px;
     display: inline-flex;
@@ -1075,7 +1083,7 @@ html.mobile-init .file-browser-panel {
 
   .cm-btn--bar.btn-run {
     flex: 0 0 auto;
-    padding: 0 0.6rem !important;
+    padding: 0 0.6rem;
     font-weight: 500;
     border-radius: 4px 0 0 4px;
     border-right: none;
@@ -1089,7 +1097,7 @@ html.mobile-init .file-browser-panel {
 
   .cm-btn--bar.btn-run-gear {
     flex: 0 0 auto;
-    padding: 0 0.35rem !important;
+    padding: 0 0.35rem;
     min-width: unset;
     border-radius: 0 4px 4px 0;
     border-left: 1px solid rgba(255,255,255,0.15);
@@ -1237,10 +1245,10 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Stop button - visible on mobile, icon-only */
-  .cm-btn--bar.btn-stop {
-    display: flex !important;
+  .toolbar .cm-btn--bar.btn-stop {
+    display: flex;
     flex: 0 0 auto;
-    padding: 0 8px !important;
+    padding: 0 8px;
     min-width: unset;
     order: 3; /* Left of Run Shell */
   }
@@ -1255,40 +1263,40 @@ html.mobile-init .file-browser-panel {
      (Terminal / Shell), freeing this slot for Enter. Starting a shell is a rare,
      deliberate act; sending Enter is a constant one, so the scarce phone real
      estate goes to Enter. */
-  .cm-btn--bar.btn-shell {
-    display: none !important;
+  .toolbar .cm-btn--bar.btn-shell {
+    display: none;
   }
 
   /* Secondary action - Enter - right side, in the slot the Shell button used to
      hold. Since P07 moved the case picker into the More sheet, Enter takes the
      toolbar's free width (a wider target for the key pressed most). */
-  .cm-btn--bar.btn-enter {
-    display: flex !important;
+  .toolbar .cm-btn--bar.btn-enter {
+    display: flex;
     flex: 1 1 0;
     align-items: center;
     justify-content: center;
     min-width: 54px;
     white-space: nowrap;
-    padding: 0 8px !important;
+    padding: 0 8px;
     overflow: hidden;
     font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.01em;
-    /* !important is REQUIRED here, not defensive habit: styles.css nests its skin
-       overrides inside `html:not([data-skin="og"]) { … }`, so a plain `.cm-btn--bar`
-       in that block resolves to (0,2,1) and outranks this (0,2,0) rule. Without
-       !important the button silently renders in generic toolbar grey. */
-    background: rgba(30, 58, 95, 0.85) !important;
-    border: 1px solid rgba(59, 130, 246, 0.45) !important;
-    color: #dbeafe !important;
+    /* The skin block's toolbar catch-all is `html:not([data-skin="og"])
+       .cm-btn--bar…` (0,2,1); this rule's `.toolbar` prefix makes it (0,3,0),
+       which outranks it without !important. Drop the prefix and the button
+       silently renders in generic toolbar grey. */
+    background: rgba(30, 58, 95, 0.85);
+    border: 1px solid rgba(59, 130, 246, 0.45);
+    color: #dbeafe;
     order: 4; /* Right position — same slot Shell used to occupy */
   }
 
-  .cm-btn--bar.btn-enter:hover,
-  .cm-btn--bar.btn-enter:active {
-    background: rgba(37, 74, 122, 0.95) !important;
-    border-color: rgba(59, 130, 246, 0.7) !important;
-    color: #fff !important;
+  .toolbar .cm-btn--bar.btn-enter:hover,
+  .toolbar .cm-btn--bar.btn-enter:active {
+    background: rgba(37, 74, 122, 0.95);
+    border-color: rgba(59, 130, 246, 0.7);
+    color: #fff;
   }
 
   /* Hide case selector on mobile - simplified toolbar */
@@ -2168,12 +2176,13 @@ html.mobile-init .file-browser-panel {
     }
   }
 
-  /* Mobile case picker - larger create button (override btn-toolbar !important) */
+  /* Mobile case picker - larger create button (the phone 26px size is scoped to
+     the toolbar, so this needs no !important) */
   .btn-case-create-mobile {
-    min-height: 48px !important;
-    max-height: 48px !important;
-    height: 48px !important;
-    font-size: 0.85rem !important;
+    min-height: 48px;
+    max-height: 48px;
+    height: 48px;
+    font-size: 0.85rem;
     font-weight: 500;
     border-radius: 10px;
   }
@@ -2430,23 +2439,22 @@ html.mobile-init .file-browser-panel {
 
   /* Sized well past the 44px touch minimum: this is the primary action on the
      home screen, and the caret is a separate target right next to it.
-     ⚠️ The !important is required, not decorative: the phone block clamps every
-     .cm-btn--bar to `height/min-height/max-height: 26px !important`, and this
-     button deliberately carries .cm-btn--bar to inherit the run-mode gradient.
-     Without matching !important (max-height included) it renders 26px tall. */
+     It carries .cm-btn--bar to inherit the run-mode gradient; the phone block's
+     26px size is scoped to `.toolbar`, so these sizes win without !important
+     (same specificity as the Run/gear phone rules, and later). */
   .mobile-overview-run-group .mobile-overview-run {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    min-height: 48px !important;
-    height: 48px !important;
-    max-height: 48px !important;
-    padding: 0 1.15rem !important;
-    font-size: 0.95rem !important;
+    min-height: 48px;
+    height: 48px;
+    max-height: 48px;
+    padding: 0 1.15rem;
+    font-size: 0.95rem;
     line-height: 1;
     font-weight: 700;
     font-family: inherit;
-    border-radius: 10px 0 0 10px !important;
+    border-radius: 10px 0 0 10px;
   }
 
   .mobile-overview-run-mode {
@@ -2459,15 +2467,15 @@ html.mobile-init .file-browser-panel {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 48px !important;
-    height: 48px !important;
-    max-height: 48px !important;
-    min-width: 48px !important;
-    width: 48px !important;
-    padding: 0 !important;
+    min-height: 48px;
+    height: 48px;
+    max-height: 48px;
+    min-width: 48px;
+    width: 48px;
+    padding: 0;
     line-height: 1;
     font-family: inherit;
-    border-radius: 0 10px 10px 0 !important;
+    border-radius: 0 10px 10px 0;
   }
 
   /* The phone block shrinks every run-gear glyph to 10px; this one is a 48px
@@ -2475,9 +2483,9 @@ html.mobile-init .file-browser-panel {
      inline-baseline gap that would otherwise push it a pixel low. */
   .mobile-overview-run-group .mobile-overview-run-caret svg {
     display: block;
-    width: 20px !important;
-    height: 20px !important;
-    margin: 0 !important;
+    width: 20px;
+    height: 20px;
+    margin: 0;
   }
 
   .mobile-overview-run-menu {
