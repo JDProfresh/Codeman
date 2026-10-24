@@ -165,6 +165,6 @@ describe('phone tab tap zones', () => {
   it('the pop-out icon stays out of the cluster on handhelds', () => {
     // `icons` above counts gear + close only. If detach ever became visible on a
     // phone the reserve would be ~30px short and the centre would walk back.
-    expect(mobileDeclarations('.session-tab .tab-detach').display).toBe('none !important');
+    expect(mobileDeclarations('.session-tab .tab-detach').display).toBe('none');
   });
 });

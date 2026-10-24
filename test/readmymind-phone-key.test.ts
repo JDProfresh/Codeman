@@ -57,7 +57,7 @@ describe('read my mind phone key + alternates (static guards)', () => {
   });
 
   it('keeps the header 🧠 button off phones (the accessory key is the phone surface)', () => {
-    expect(phoneBlock).toMatch(/\.btn-icon-header\.btn-readmymind\s*\{\s*display: none !important;/);
+    expect(phoneBlock).toMatch(/\.btn-icon-header\.btn-readmymind\s*\{\s*display: none;/);
   });
 
   it('renders the modal as a small dialog on phones, not the full-screen default', () => {

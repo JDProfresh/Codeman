@@ -154,9 +154,17 @@ viewports (360, 700, 768) sit on mobile.css's own steps.
 The phone toolbar needs no `!important` for its sizes or colours: the 26px size is
 `.toolbar .cm-btn--bar`, so it no longer reaches the home screen's Run or the case
 sheet (which size themselves), and the per-button rules carry the `.toolbar` prefix
-((0,3,0)), which outranks the skin block's (0,2,1) catch-all. What is left in
-`mobile.css` is mostly `display` beating JS inline toggles and the hidden-marker
-pattern (`test/phone-toolbar-important.test.ts`).
+((0,3,0)), which outranks the skin block's (0,2,1) catch-all. The rest of
+`mobile.css` followed: its show/hide rules win by order or specificity, and the
+opt-in header buttons' marker pairs in `styles.css` (approvals, Read My Mind,
+Session Manager, Away Digest, File Viewer) plus the mic and cron toggles dropped
+the `!important` the phone rules used to escalate against. Three declarations keep
+it, each for a reason specificity cannot cover: the 16px input floor that stops
+iOS zooming into a field, and the subagent dropdown's `left` and `transform`,
+which JS writes inline (`test/phone-toolbar-important.test.ts`). Each removal was
+checked with `css:diff --viewports all` plus a probe of the states the default page
+never shows (every opt-in header button revealed, the detach icon shown, the
+dropdown JS-positioned, the pre-init class).
 
 The toolbar is Run, Stop, Enter, mic and More (⋯) (board P07). The More sheet
 holds Case, Attach and App Settings. The agent key bar opens with Compose (accent),
@@ -218,5 +226,7 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next: the remaining `!important`s outside the toolbar (mostly `display`).
+Next: the `!important`s left in `styles.css` (the other header marker pairs, the
+active tab's fill, the xterm helper textarea and the busy/resizing states), and
+moving component rules into the `features` layer.
 Each one ships with a `css:diff` run showing only the intended changes.

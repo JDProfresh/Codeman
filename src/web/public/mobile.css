@@ -33,7 +33,7 @@ html.mobile-init .monitor-panel,
 html.mobile-init .subagents-panel,
 html.mobile-init .project-insights-panel,
 html.mobile-init .file-browser-panel {
-  display: none !important;
+  display: none;
 }
 
 /* ============================================================================
@@ -54,12 +54,12 @@ html.mobile-init .file-browser-panel {
   }
 
   /* No "open in new window" (detach) on phones/tablets — popped-out browser
-     windows aren't usable there. !important beats the hover/detached reveal
-     rules in styles.css. A native wrapper that opens windows of its own (side
+     windows aren't usable there. Plain specificity is enough: styles.css only
+     ever HIDES the icon (the reveal is that hide not matching). A native wrapper that opens windows of its own (side
      by side on a foldable) keeps it at tablet widths: app.js sets
      html.host-windows. Phone widths hide it again in the 599px block. */
   html:not(.host-windows) .session-tab .tab-detach {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -304,7 +304,7 @@ html.mobile-init .file-browser-panel {
   /* Show desktop voice button on tablet (hidden by max-width:1023px in styles.css,
      mobile .btn-voice-mobile only shows at <600px) */
   .toolbar-center .cm-btn--bar.btn-voice {
-    display: flex !important;
+    display: flex;
   }
 
   /* Toolbar — use desktop-style sizing on tablet (plenty of room at 600-768px) */
@@ -586,21 +586,21 @@ html.mobile-init .file-browser-panel {
      (inline approve/deny in mobile-overview.js); the bell would only crowd the
      header it was designed to stay out of. */
   .btn-icon-header.btn-approvals {
-    display: none !important;
+    display: none;
   }
 
   /* Read My Mind 🧠 header button: never in the phone header; the phone
      surface is the keyboard-accessory 🧠 key (same `readMyMindEnabled` gate,
      see keyboard-accessory.js + the rmm-enabled rules in styles.css). */
   .btn-icon-header.btn-readmymind {
-    display: none !important;
+    display: none;
   }
 
   /* The big labeled Admin Panel button is desktop-only (admin-gated, revealed by
      admin-ui.js). On phones admins still reach user management via App Settings →
      Users, so the cramped header stays minimal. */
   .btn-admin-panel {
-    display: none !important;
+    display: none;
   }
 
   /* Mobile voice input button in toolbar — initially hidden via inline style,
@@ -675,7 +675,7 @@ html.mobile-init .file-browser-panel {
 
   /* Mobile app settings gear in toolbar - far right */
   .btn-settings-mobile {
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 26px;
@@ -926,7 +926,7 @@ html.mobile-init .file-browser-panel {
      so the pop-out icon stays off phone tabs even under a window-opening host,
      which offers the pop-out from its own chrome (app.detachSession). */
   .session-tab .tab-detach {
-    display: none !important;
+    display: none;
   }
 
   /* Gear icon on active tab - tiny, subtle */
@@ -1003,21 +1003,21 @@ html.mobile-init .file-browser-panel {
 
   /* Show case selector in center */
   .toolbar-center {
-    display: flex !important;
+    display: flex;
     align-items: center;
   }
 
   .toolbar-center .cm-btn--bar.btn-voice {
-    display: none !important;
+    display: none;
   }
 
   .toolbar-right {
-    display: none !important;
+    display: none;
   }
 
   /* Hide version display on mobile */
   .version-display {
-    display: none !important;
+    display: none;
   }
 
   /* Toolbar layout */
@@ -1047,7 +1047,7 @@ html.mobile-init .file-browser-panel {
 
   /* Hide instance count buttons (±) on mobile - cleaner UI */
   .tab-count-group {
-    display: none !important;
+    display: none;
   }
 
   /* Compact toolbar buttons for mobile - white text on dark. The 26px size is
@@ -1301,7 +1301,7 @@ html.mobile-init .file-browser-panel {
 
   /* Hide case selector on mobile - simplified toolbar */
   .case-select-group {
-    display: none !important;
+    display: none;
   }
 
   /* Phone toolbar (design-system P07): Run, Stop, Enter, mic and More (⋯); the
@@ -1313,7 +1313,6 @@ html.mobile-init .file-browser-panel {
 
   /* Mobile case settings gear button - next to Run */
   .btn-case-settings-mobile {
-    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     width: 26px;
@@ -1333,7 +1332,7 @@ html.mobile-init .file-browser-panel {
   }
 
   .btn-case-settings-mobile {
-    display: none !important;
+    display: none;
   }
 
   /* Mobile case settings popover */
@@ -1352,7 +1351,7 @@ html.mobile-init .file-browser-panel {
   }
 
   .case-settings-popover-mobile.hidden {
-    display: none !important;
+    display: none;
   }
 
   .case-settings-popover-mobile .checkbox-inline {
@@ -1465,7 +1464,7 @@ html.mobile-init .file-browser-panel {
 
   /* LEGACY: Hide old toolbar select (no longer used on mobile) */
   .toolbar-select {
-    display: none !important;
+    display: none;
   }
 
   /* Panels on mobile - full width, positioned above toolbar, visibility controlled by JS */
@@ -2361,14 +2360,16 @@ html.mobile-init .file-browser-panel {
     font-size: 0.45rem;
   }
 
-  /* Subagent dropdown - full width near badge on mobile (JS sets top from badge position) */
+  /* Subagent dropdown - full width near badge on mobile (JS sets top from badge position).
+     left and transform keep !important: showSubagentDropdown() writes both
+     INLINE to centre the dropdown under its badge on desktop. */
   .subagent-dropdown {
-    position: fixed !important;
+    position: fixed;
     left: 8px !important;
-    right: 8px !important;
-    bottom: auto !important;
-    min-width: auto !important;
-    max-width: none !important;
+    right: 8px;
+    bottom: auto;
+    min-width: auto;
+    max-width: none;
     border-radius: 8px;
     transform: none !important;
   }
