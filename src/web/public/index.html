@@ -1190,14 +1190,14 @@
                 <span class="cron-switch-label">Auto-close previous run's session</span>
                 <span class="cron-switch-desc">Recurring schedules only: close the prior run's still-open session before the next run fires</span>
               </div>
-              <label class="switch switch-sm"><input type="checkbox" id="schAutoClosePrev" checked><span class="slider"></span></label>
+              <label class="cm-switch cm-switch--sm"><input type="checkbox" id="schAutoClosePrev" checked><span></span></label>
             </div>
             <div class="form-row form-row-switch cron-switch-row">
               <div class="cron-switch-text">
                 <span class="cron-switch-label">Enabled</span>
                 <span class="cron-switch-desc">Off keeps the job saved but skips its schedule</span>
               </div>
-              <label class="switch switch-sm"><input type="checkbox" id="schEnabled" checked><span class="slider"></span></label>
+              <label class="cm-switch cm-switch--sm"><input type="checkbox" id="schEnabled" checked><span></span></label>
             </div>
             <div class="form-row"><label>Notes</label><input type="text" id="schNotes" placeholder="Optional"></div>
 
@@ -1370,7 +1370,7 @@
                   <span class="set-callout-desc">Claude stops on a subscription limit ("limit reached &middot; resets 3pm") and sits there until you come back. Switch this on and Codeman waits out the reset, then continues the work on its own. Independent of the respawn loop below.</span>
                   <span class="auto-resume-status" id="autoResumeStatus"></span>
                 </span>
-                <span class="switch switch-sm set-callout-switch"><input type="checkbox" id="modalAutoResumeEnabled" onchange="app.autoSaveAutoResume()"><span class="slider"></span></span>
+                <span class="cm-switch cm-switch--sm set-callout-switch"><input type="checkbox" id="modalAutoResumeEnabled" onchange="app.autoSaveAutoResume()"><span></span></span>
               </label>
 
               <!-- Hidden wholesale for non-claude sessions and for a session with
@@ -1398,7 +1398,7 @@
                         <span class="cm-row__label">Keep the cache warm while idle</span>
                         <span class="cm-row__hint">Sends a one-line keep-alive just before the cache expires, so your next prompt still reads from cache. Runs only while idle, up to the limit in App Settings &rarr; System &rarr; Automation; switch on before launch to also stop Claude Code's own idle compaction.</span>
                       </div>
-                      <label class="switch switch-sm"><input type="checkbox" id="modalKeepWarmEnabled" onchange="app.autoSaveKeepWarm()"><span class="slider"></span></label>
+                      <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalKeepWarmEnabled" onchange="app.autoSaveKeepWarm()"><span></span></label>
                     </div>
                   </div>
                 </div>
@@ -1571,7 +1571,7 @@
                       <span class="cm-row__label">Pop-out button on this tab</span>
                       <span class="cm-row__hint">Show the open-in-a-window button on this tab even while the general App Settings toggle is off.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="sessionOptShowTabDetach" onchange="app.onSessionTabDetachToggle(this.checked)"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="sessionOptShowTabDetach" onchange="app.onSessionTabDetachToggle(this.checked)"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -1587,7 +1587,7 @@
                     <div class="set-row-actions">
                       <input type="number" id="modalAutoCompactThreshold" class="set-num set-num-wide" value="110000" min="10000" max="500000" step="10000" onchange="app.autoSaveAutoCompact()">
                       <span class="set-unit">tokens</span>
-                      <label class="switch switch-sm"><input type="checkbox" id="modalAutoCompactEnabled" onchange="app.autoSaveAutoCompact()"><span class="slider"></span></label>
+                      <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalAutoCompactEnabled" onchange="app.autoSaveAutoCompact()"><span></span></label>
                     </div>
                   </div>
                   <div class="cm-row has-field">
@@ -1605,7 +1605,7 @@
                     <div class="set-row-actions">
                       <input type="number" id="modalAutoClearThreshold" class="set-num set-num-wide" value="140000" min="10000" max="500000" step="10000" onchange="app.autoSaveAutoClear()">
                       <span class="set-unit">tokens</span>
-                      <label class="switch switch-sm"><input type="checkbox" id="modalAutoClearEnabled" onchange="app.autoSaveAutoClear()"><span class="slider"></span></label>
+                      <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalAutoClearEnabled" onchange="app.autoSaveAutoClear()"><span></span></label>
                     </div>
                   </div>
                 </div>
@@ -1619,14 +1619,14 @@
                       <span class="cm-row__label">Image watcher</span>
                       <span class="cm-row__hint">Pops up new images (screenshots, generated files) found in this session's directory.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="modalImageWatcherEnabled" checked onchange="app.toggleSessionImageWatcher()"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalImageWatcherEnabled" checked onchange="app.toggleSessionImageWatcher()"><span></span></label>
                   </div>
                   <div class="cm-row">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Flicker filter</span>
                       <span class="cm-row__hint">Buffers output after screen clears to reduce Ink UI flickering. Adds ~50ms latency.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="modalFlickerFilterEnabled" onchange="app.toggleFlickerFilter()"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalFlickerFilterEnabled" onchange="app.toggleFlickerFilter()"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -1648,7 +1648,7 @@
                       <span class="cm-row__label">Enable tracker</span>
                       <span class="cm-row__hint">Auto-detects loops and todos in Claude's output.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="modalRalphEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="modalRalphEnabled"><span></span></label>
                   </div>
                   <div class="cm-row has-field">
                     <div class="cm-row__text">
@@ -1956,28 +1956,28 @@
                       <span class="cm-row__label">Local Echo</span>
                       <span class="cm-row__hint">Paint keystrokes instantly instead of waiting for the round trip. Recommended on phones and high-latency links.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsLocalEcho"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsLocalEcho"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="keyboard hold rows resize redraw mobile">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Keep Size Under Keyboard</span>
                       <span class="cm-row__hint">For Claude sessions, opening the on-screen keyboard keeps the session's size and scrolls the view instead, so Claude does not reprint its screen and lose transcript lines. Full-screen CLIs such as Codex are resized as before.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsKeyboardHoldsRows"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsKeyboardHoldsRows"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="cjk input ime chinese japanese korean">
                     <div class="cm-row__text">
                       <span class="cm-row__label">CJK Input</span>
                       <span class="cm-row__hint">Dedicated IME field for Chinese, Japanese and Korean composition.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCjkInput"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCjkInput"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="extended keyboard bar tab esc arrows phone">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Extended Keyboard Bar <span class="set-tag">phone</span></span>
                       <span class="cm-row__hint">Extra phone keys: Tab, Shift+Tab, Esc, arrows, Ctrl+O.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsExtendedKeyboardBar"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsExtendedKeyboardBar"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -1990,14 +1990,14 @@
                       <span class="cm-row__label">Auto Copy Selection</span>
                       <span class="cm-row__hint">Put highlighted terminal text on the clipboard as soon as you finish selecting it, with mouse, double-click or long-press. Ctrl+C still copies on demand, and nothing outside the terminal is copied.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsAutoCopySelection"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsAutoCopySelection"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="copy indent margin gutter dedent trim leading whitespace paste">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Trim the pane margin on copy</span>
                       <span class="cm-row__hint">Drop the left margin a full-screen agent CLI paints down its own edge, so copied text pastes flush instead of indented. Each CLI declares its own width, and the strip is never wider than the indent every selected line shares, so nesting inside the selection is kept. Claude Code and Codex declare a margin today; a shell, and any CLI that declares none, is left alone.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCopyStripMargin"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCopyStripMargin"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2059,21 +2059,21 @@
                       <span class="cm-row__label">Wheel Scrolls Local History <span class="set-scope">device</span></span>
                       <span class="cm-row__hint">Plain wheel or two-finger swipe pages the terminal's own scrollback instead of the CLI transcript. Shift+wheel always reaches local scrollback.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsTerminalWheelLocal"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsTerminalWheelLocal"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsWebglRendererItem" data-search="webgl renderer gpu terminal">
                     <div class="cm-row__text">
                       <span class="cm-row__label">WebGL Renderer <span class="set-tag">desktop</span> <span class="set-scope">device</span></span>
                       <span class="cm-row__hint">GPU-accelerated terminal drawing. Codeman falls back to the DOM renderer after repeated GPU stalls.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsWebglRenderer"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsWebglRenderer"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsGestureControlItem" data-search="gesture control camera hand tracking">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Gesture Control <span class="set-tag set-tag-beta">beta</span> <span class="set-scope">synced</span></span>
                       <span class="cm-row__hint">Camera hand-tracking overlay. Applied on reload; the instance must run with CODEMAN_GESTURE=1.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsGestureControl"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsGestureControl"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2209,14 +2209,14 @@
                       <span class="cm-row__label">Git status <span class="set-scope">device</span></span>
                       <span class="cm-row__hint">Shows, at the right of the bottom bar, when the active session's repository (or each repository inside its folder, up to two levels down) has uncommitted files or commits that are not pushed. Click it for the list. Read-only: Codeman never fetches or changes the repository. Not shown for Docker or remote sessions. Off by default.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowGitStatus"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsShowGitStatus"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="git status folders tree flat list collapsed expand files">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Git status: group files by folder <span class="set-scope">device</span></span>
                       <span class="cm-row__hint">In the Git window, show changed files under their folders, collapsed until you click a folder. Off lists every file by its full path. On by default.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsGitStatusTree" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsGitStatusTree" checked><span></span></label>
                   </div>
                   <div class="cm-row" data-search="git status maximum repositories folder many repos limit">
                     <div class="cm-row__text">
@@ -2243,14 +2243,14 @@
                       <span class="cm-row__label">Track background agents <span class="set-scope">synced</span></span>
                       <span class="cm-row__hint">Follow Claude Code subagents in real time.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsSubagentTracking" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsSubagentTracking" checked><span></span></label>
                   </div>
                   <div class="cm-row" data-search="subagent active tab only windows">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Active tab only <span class="set-scope">device</span></span>
                       <span class="cm-row__hint">Only show agent windows for the selected session.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsSubagentActiveTabOnly" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsSubagentActiveTabOnly" checked><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2408,56 +2408,56 @@
                       <span class="cm-row__label">Tall Tabs</span>
                       <span class="cm-row__hint">Show the folder under the session name and let the tab bar wrap.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsTabTwoRows"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsTabTwoRows"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="cli logos on tabs logo icon harness agent cli tab hide">
                     <div class="cm-row__text">
                       <span class="cm-row__label">CLI Logos on Tabs</span>
                       <span class="cm-row__hint">Show each agent's CLI logo before the session name on tabs and the home screen's tab list. Off leaves the status dot and the shell's SH badge. Tile headers and the Run menus keep their logos.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowTabCliLogos" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsShowTabCliLogos" checked><span></span></label>
                   </div>
                   <div class="cm-row" data-search="pop out detach tab window">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Pop-out Button on Tabs</span>
                       <span class="cm-row__hint">Open a session in its own window from the tab.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowTabDetachButton"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsShowTabDetachButton"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsTileDetachItem" data-search="detach tiles tile pop out window drag move another window">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Detach Tiles <span class="set-tag">desktop</span> <span class="set-tag set-tag-beta">beta</span></span>
                       <span class="cm-row__hint">Drag a tile's header out of the browser to open it in its own window, or onto another Codeman window's tiles to move it there. A popped-out window's title drags back onto tiles.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsTileDetach"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsTileDetach"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsLineageLinesItem" data-search="lineage lines spawned worker parent connection">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Spawn Lineage Lines <span class="set-tag">desktop</span></span>
                       <span class="cm-row__hint">Draw lines from each session to the sessions it spawned. The selected tab's family is drawn thicker.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsLineageLines" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsLineageLines" checked><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsAutoNameSessionsItem" data-search="auto name session title first prompt tab rename">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Auto-name Sessions <span class="set-tag">synced</span></span>
                       <span class="cm-row__hint">Title a new tab after its first prompt, keeping the case prefix. Renamed tabs are never touched.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsAutoNameSessions"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsAutoNameSessions"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsSpawnedTabsFollowParentItem" data-search="spawned child session follow parent tab group lineage move">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Spawned Tabs Follow Their Parent <span class="set-tag">synced</span></span>
                       <span class="cm-row__hint">A session started by another one keeps following its parent's tab into its group and moves with it, until you move it by hand. Off: it starts next to its parent and stays where it is.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsSpawnedTabsFollowParent"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsSpawnedTabsFollowParent"><span></span></label>
                   </div>
                   <div class="cm-row" id="appSettingsMobileOverviewItem" data-search="overview home screen phone logo">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Overview Home Screen <span class="set-tag">phone</span></span>
                       <span class="cm-row__hint">The C logo opens the session overview instead of the welcome screen.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsMobileOverview" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsMobileOverview" checked><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2562,7 +2562,7 @@
                       <span class="cm-row__label">1M context window</span>
                       <span class="cm-row__hint" id="appSettingsContextDesc">Available for Fable 5.1, Fable 5, Opus 5.5, Opus and Opus 4.6.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsOpusContext1m"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsOpusContext1m"><span></span></label>
                   </div>
                   <div class="cm-row set-row-block" data-search="thinking effort ultracode xhigh max reasoning">
                     <div class="cm-row__text">
@@ -2676,7 +2676,7 @@
                       <span class="cm-row__label">Show optimizer recommendations</span>
                       <span class="cm-row__hint">Advisory only. Never overrides your choice.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsShowModelRecommendations" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsShowModelRecommendations" checked><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2690,7 +2690,7 @@
                       <span class="cm-row__label">Enable custom model endpoints</span>
                       <span class="cm-row__hint">Adds a per-endpoint entry to the Run menu for every harness that can redirect to one.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCustomModelEndpoints" onchange="app.applyCustomModelEndpointsVisibility()"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCustomModelEndpoints" onchange="app.applyCustomModelEndpointsVisibility()"><span></span></label>
                   </div>
                   <!-- Gated on the toggle above (applyCustomModelEndpointsVisibility): with the
                        feature off, a list of endpoints that do nothing is worse than nothing. -->
@@ -2753,7 +2753,7 @@
                       <span class="cm-row__label">Enable CLI management</span>
                       <span class="cm-row__hint">Adds the list below and its write endpoints. Off by default: this changes machine configuration, not just what you see.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCliManagement" onchange="app.applyCliManagementVisibility()"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCliManagement" onchange="app.applyCliManagementVisibility()"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2810,7 +2810,7 @@
                       <span class="cm-row__label">Codeman Agent Skill</span>
                       <span class="cm-row__hint">Write Codeman's agent skill into each new session's folder, where that CLI looks for skills, so the agent in it can start workers in any installed CLI, send them prompts and wait for results. Every CLI except Pi and a plain shell.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsAgentSkill"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsAgentSkill"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2842,42 +2842,42 @@
                       <span class="cm-row__label">Ralph / Todo Tracker</span>
                       <span class="cm-row__hint">Auto-enable for new sessions. Otherwise it enables itself on Ralph pattern detection.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsRalphEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsRalphEnabled"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="agent teams experimental">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Agent Teams</span>
                       <span class="cm-row__hint">Experimental multi-agent teams for all new Claude sessions.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsAgentTeams"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsAgentTeams"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="workspace hooks alerts approvals notifications settings.local.json">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Workspace Hooks</span>
                       <span class="cm-row__hint">Install Codeman's hooks in each Claude workspace, so tab alerts, the Approvals Inbox and idle detection also work in linked cases and existing repos. Off leaves your repos untouched.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsWorkspaceHooks"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsWorkspaceHooks"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="pin cli session name resume title tab label">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Pin tab names on the CLI</span>
                       <span class="cm-row__hint">Launch every Claude session with its tab name, so the CLI's prompt label and /resume list match your tabs. Claude then stops generating its own titles for those sessions, and a rename in Codeman holds only until the next turn. Applies from the next session start or respawn, no server restart needed.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsPinCliSessionName"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsPinCliSessionName"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="remote auto reconnect ssh">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Remote auto-reconnect</span>
                       <span class="cm-row__hint">Reattach remote SSH sessions to their durable tmux after a dropped link.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsRemoteAutoReconnect"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsRemoteAutoReconnect"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="nice priority cpu">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Nice priority</span>
                       <span class="cm-row__hint">Lower the CPU priority of new sessions to reduce system impact.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsNiceEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsNiceEnabled"><span></span></label>
                   </div>
                   <div class="cm-row" id="niceValueRow" data-search="nice value priority number">
                     <div class="cm-row__text">
@@ -2921,14 +2921,14 @@
                       <span class="cm-row__label">Bypass approvals and sandbox</span>
                       <span class="cm-row__hint">Start new Codex sessions with --dangerously-bypass-approvals-and-sandbox.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCodexDangerouslyBypassApprovals"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCodexDangerouslyBypassApprovals"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="codex animations status effects">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Animated status effects</span>
                       <span class="cm-row__hint">Decorative Codex TUI motion. Leave off to reduce remote and mobile redraws.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsCodexAnimations"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsCodexAnimations"><span></span></label>
                   </div>
                 </div>
               </div>
@@ -2941,7 +2941,7 @@
                       <span class="cm-row__label">Enable MCP server sync</span>
                       <span class="cm-row__hint">Adds a control that copies MCP servers between your enabled CLIs, and GitHub Copilot CLI if it is installed, by writing their own config files. Off by default: this changes other tools' configuration, not just Codeman's.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsMcpSync" onchange="app.applyMcpSyncVisibility()"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsMcpSync" onchange="app.applyMcpSyncVisibility()"><span></span></label>
                   </div>
                   <div class="cm-row" id="mcpSyncActionRow" style="display:none" data-search="mcp server sync preview">
                     <div class="cm-row__text">
@@ -2974,7 +2974,7 @@
                       <span class="cm-row__label">Notifications</span>
                       <span class="cm-row__hint">Master switch for every layer below.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifEnabled" checked><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsNotifEnabled" checked><span></span></label>
                   </div>
                   <div class="cm-row" data-search="browser notifications os permission">
                     <div class="cm-row__text">
@@ -2982,7 +2982,7 @@
                       <span class="cm-row__hint">OS notifications while the tab is hidden. Remote access needs HTTPS: codeman web --https</span>
                     </div>
                     <div class="set-row-actions">
-                      <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifBrowser"><span class="slider"></span></label>
+                      <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsNotifBrowser"><span></span></label>
                       <button class="btn-toolbar btn-sm" onclick="app.notificationManager?.requestPermission()" title="Request browser notification permission">Ask</button>
                       <span class="settings-status" id="notifPermissionStatus">?</span>
                     </div>
@@ -2993,7 +2993,7 @@
                       <span class="cm-row__hint">Works with the tab closed, and through a Cloudflare tunnel. Requires HTTPS or localhost; iOS requires the PWA.</span>
                     </div>
                     <div class="set-row-actions">
-                      <label class="switch switch-sm"><input type="checkbox" id="appSettingsPushEnabled"><span class="slider"></span></label>
+                      <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsPushEnabled"><span></span></label>
                       <button class="btn-toolbar btn-sm" id="pushSubscribeBtn" onclick="app.togglePushSubscription()" title="Subscribe or unsubscribe to push notifications">Subscribe</button>
                       <span class="settings-status" id="pushSubscriptionStatus">off</span>
                     </div>
@@ -3003,7 +3003,7 @@
                       <span class="cm-row__label">Audio alerts</span>
                       <span class="cm-row__hint">Short beep on critical events.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsNotifAudio"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsNotifAudio"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="idle threshold stuck minutes">
                     <div class="cm-row__text">
@@ -3112,7 +3112,7 @@
                       <span class="cm-row__label">Send alerts to a webhook</span>
                       <span class="cm-row__hint">Posts the same events as push notifications (permission prompts, questions, errors, idle) to ntfy, Slack, Discord or any URL, so a server with no browser open can still reach your phone. The URL is a secret: it is stored on the server only and is never shown again once saved. On public ntfy.sh anyone who guesses the topic can read it, so pick a long random one.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="webhookEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="webhookEnabled"><span></span></label>
                   </div>
                   <div class="cm-row has-field">
                     <div class="cm-row__text"><span class="cm-row__label">Service</span></div>
@@ -3226,7 +3226,7 @@
                       <span class="cm-row__label">Transcribe with this server's Claude login</span>
                       <span class="cm-row__hint">Dictation with no API key, through the same service Claude Code's own /voice mode uses. Microphone audio goes to Anthropic and is billed to this machine's Claude subscription, for everyone who can reach this UI.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsClaudeVoice"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsClaudeVoice"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="claude voice status credentials">
                     <div class="cm-row__text"><span class="cm-row__label">Server status</span></div>
@@ -3320,14 +3320,14 @@
                       <span class="cm-row__label">Image watcher</span>
                       <span class="cm-row__hint">Detect and pop up new images found in session directories.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsImageWatcherEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsImageWatcherEnabled"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="prompt cache keep warm keep-alive nudge idle expire">
                     <div class="cm-row__text">
                       <span class="cm-row__label">Keep prompt caches warm</span>
                       <span class="cm-row__hint">Default for Claude sessions that have not chosen on their Respawn tab (a session an agent started needs its own switch): shortly before an idle session's prompt cache would expire, send a one-line keep-alive turn so the next prompt still reads the conversation from cache instead of re-processing it.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsPromptCacheKeepWarm"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsPromptCacheKeepWarm"><span></span></label>
                   </div>
                   <div class="cm-row" data-search="prompt cache keep warm hours limit cap window">
                     <div class="cm-row__text">
@@ -3350,7 +3350,7 @@
                       <span class="cm-row__label">Cloudflare Tunnel</span>
                       <span class="cm-row__hint">Expose Codeman on a public URL. Set CODEMAN_PASSWORD first.</span>
                     </div>
-                    <label class="switch switch-sm"><input type="checkbox" id="appSettingsTunnelEnabled"><span class="slider"></span></label>
+                    <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsTunnelEnabled"><span></span></label>
                   </div>
                   <div class="cm-row" id="tunnelUrlRow" style="display:none">
                     <div class="cm-row__text"><span class="cm-row__label">Tunnel URL</span></div>
@@ -3985,9 +3985,9 @@
               <div class="advanced-options-content">
                 <div class="form-row form-row-switch">
                   <label>Enable Respawn</label>
-                  <label class="switch">
+                  <label class="cm-switch">
                     <input type="checkbox" id="ralphEnableRespawn">
-                    <span class="slider"></span>
+                    <span></span>
                   </label>
                   <span class="form-hint">Auto-restart sessions when context fills up (usually not needed)</span>
                 </div>

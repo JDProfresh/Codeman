@@ -163,7 +163,7 @@ describe('the App Settings row', () => {
 
   it('is a switch in Appearance → Tabs (device scope), right after Tall Tabs', () => {
     expect(input?.type).toBe('checkbox');
-    expect(input.parentElement!.matches('label.switch.switch-sm')).toBe(true);
+    expect(input.parentElement!.matches('label.cm-switch.cm-switch--sm')).toBe(true);
     const group = row.closest('.set-group')!;
     expect(group.querySelector('.set-group-head h4')!.textContent).toBe('Tabs');
     expect(group.querySelector('.set-group-head .set-scope')!.textContent).toBe('device');

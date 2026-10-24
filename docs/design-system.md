@@ -54,7 +54,7 @@ introduces a hue.
 | Family   | Classes |
 | -------- | ------- |
 | Button   | `.cm-btn` + `--sm`, `--lg`, `--icon`, `--primary`, `--ghost`, `--danger` |
-| Form     | `.cm-input`, `.cm-select`, `.cm-switch`, `.cm-segmented` |
+| Form     | `.cm-input`, `.cm-select`, `.cm-switch` (`--sm`), `.cm-segmented` |
 | Tags     | `.cm-chip`, `.cm-pill`, `.cm-dot`, `.cm-badge`, tones `.cm-tone-success|warning|danger|info|accent` |
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
 | Menu     | `.cm-menu` (`--popover`), `__item` (`--danger`, `--stacked` with `__sub`), `__row`, `__pin`, `__kbd`, `__sep`, `__heading`, `__note` |
@@ -189,11 +189,15 @@ menus, the Session Manager row menu and the Tiles count menu are all
 `.cm-menu--popover`; a legacy menu class stays only for that menu's own z-index
 layer (`test/menu-kit-migration.test.ts`).
 
+**Toggles are on the kit.** Every toggle is a `.cm-switch` (`--sm` in settings
+rows), whose track reads the skin's ink, so an unchecked toggle stays visible on the
+light skins (`test/switch-kit-migration.test.ts`).
+
 **Settings rows are on the kit.** App Settings, Session Options and Add Case draw
 each row as a `.cm-row` (`__text`, `__label`, `__hint`) inside a `.cm-group` box, as
 board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next migrations: buttons (`.btn-toolbar`, `.btn-icon-sm` onto `.cm-btn`), the Run dropdown (`.run-mode-menu`) and the switches.
+Next migrations: buttons (`.btn-toolbar`, `.btn-icon-sm` onto `.cm-btn`), and the Run dropdown (`.run-mode-menu`).
 Each one ships with a `css:diff` run showing only the intended changes.

@@ -6919,75 +6919,7 @@ html[data-skin="og"] .welcome-primary:hover {
   margin-top: 0.25rem;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 20px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 2px;
-  bottom: 2px;
-  background-color: var(--text-muted);
-  transition: 0.2s;
-  border-radius: 50%;
-}
-
-.switch input:checked + .slider {
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(16px);
-  background-color: white;
-}
-
-.switch input:focus + .slider {
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-}
-
-/* Smaller switch variant for compact settings grid */
-.switch-sm {
-  width: 28px;
-  height: 16px;
-}
-
-.switch-sm .slider:before {
-  height: 10px;
-  width: 10px;
-  left: 2px;
-  bottom: 2px;
-}
-
-.switch-sm input:checked + .slider:before {
-  transform: translateX(12px);
-}
+/* Toggles are the kit's .cm-switch (--sm in settings rows), css/components.css. */
 
 /* Status badge in settings */
 .settings-status {

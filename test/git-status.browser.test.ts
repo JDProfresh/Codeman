@@ -42,7 +42,7 @@ describe('Git status indicator in a real browser', () => {
   const setSetting = async (on: boolean) => {
     await page.evaluate(() => (window as any).app.openAppSettings());
     if ((await page.isChecked('#appSettingsShowGitStatus')) !== on)
-      await page.click('label.switch:has(#appSettingsShowGitStatus)');
+      await page.click('label.cm-switch:has(#appSettingsShowGitStatus)');
     await page.evaluate(() => (window as any).app.saveAppSettings());
     await page.waitForTimeout(300);
     await page.evaluate(() => (window as any).app.closeAppSettings());
@@ -267,7 +267,7 @@ describe('Git status indicator in a real browser', () => {
 
     // Setting off: the flat list, every file by its full path.
     await page.evaluate(() => (window as any).app.openAppSettings());
-    await page.click('label.switch:has(#appSettingsGitStatusTree)');
+    await page.click('label.cm-switch:has(#appSettingsGitStatusTree)');
     await page.evaluate(() => (window as any).app.saveAppSettings());
     await page.waitForTimeout(300);
     await page.evaluate(() => (window as any).app.closeAppSettings());
@@ -276,7 +276,7 @@ describe('Git status indicator in a real browser', () => {
     expect(await page.locator('.git-status-path', { hasText: 'docs/a.md' }).count()).toBe(1);
     // Back on for the rest of the file.
     await page.evaluate(() => (window as any).app.openAppSettings());
-    await page.click('label.switch:has(#appSettingsGitStatusTree)');
+    await page.click('label.cm-switch:has(#appSettingsGitStatusTree)');
     await page.evaluate(() => (window as any).app.saveAppSettings());
     await page.waitForTimeout(300);
     await page.evaluate(() => (window as any).app.closeAppSettings());

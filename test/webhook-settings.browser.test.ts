@@ -50,7 +50,7 @@ describe('Webhook settings in a real browser', () => {
 
   // The checkbox sits behind a styled slider, so click the switch like a user does.
   const setSwitch = async (on: boolean) => {
-    if ((await page.isChecked('#webhookEnabled')) !== on) await page.click('label.switch:has(#webhookEnabled)');
+    if ((await page.isChecked('#webhookEnabled')) !== on) await page.click('label.cm-switch:has(#webhookEnabled)');
     expect(await page.isChecked('#webhookEnabled')).toBe(on);
   };
 

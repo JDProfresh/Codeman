@@ -3748,9 +3748,9 @@ Object.assign(CodemanApp.prototype, {
              <button type="button" class="btn-toolbar btn-danger btn-sm" onclick="app.deleteCliCustom(${idArg})">Delete</button>`;
         const toggle = untoggleable
           ? '<span class="cm-row__hint">Always available</span>'
-          : `<label class="switch switch-sm">
+          : `<label class="cm-switch cm-switch--sm">
               <input type="checkbox" ${c.enabled ? 'checked' : ''} onchange="app.toggleCliEnabled(${idArg}, this)">
-              <span class="slider"></span>
+              <span></span>
             </label>`;
         return `
           <div class="cm-row" data-cli-id="${escapeHtml(c.id)}">
