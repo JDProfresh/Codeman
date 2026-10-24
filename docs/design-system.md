@@ -53,7 +53,7 @@ introduces a hue.
 
 | Family   | Classes |
 | -------- | ------- |
-| Button   | `.cm-btn` + `--sm`, `--lg`, `--icon`, `--primary`, `--ghost`, `--danger` |
+| Button   | `.cm-btn` + `--sm`, `--lg`, `--icon` (32px, 44px on touch, 16px glyph), `--primary`, `--ghost` (`aria-pressed` = on), `--danger` |
 | Form     | `.cm-input`, `.cm-select`, `.cm-switch` (`--sm`), `.cm-segmented` |
 | Tags     | `.cm-chip`, `.cm-pill`, `.cm-dot`, `.cm-badge`, tones `.cm-tone-success|warning|danger|info|accent` |
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
@@ -189,6 +189,12 @@ menus, the Session Manager row menu and the Tiles count menu are all
 `.cm-menu--popover`; a legacy menu class stays only for that menu's own z-index
 layer (`test/menu-kit-migration.test.ts`).
 
+**Icon buttons are on the kit.** Every small icon button (panel, preview and
+drawer toolbars) is `.cm-btn.cm-btn--icon.cm-btn--ghost`: 32px with a mouse, the
+44px touch size under a coarse pointer, 16px glyph (owner decision, option D of
+four compared side by side). Text toggles in a toolbar are `.cm-btn--sm`
+(`test/icon-button-kit-migration.test.ts`).
+
 **Toggles are on the kit.** Every toggle is a `.cm-switch` (`--sm` in settings
 rows), whose track reads the skin's ink, so an unchecked toggle stays visible on the
 light skins (`test/switch-kit-migration.test.ts`).
@@ -199,5 +205,5 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next migrations: buttons (`.btn-toolbar`, `.btn-icon-sm` onto `.cm-btn`), and the Run dropdown (`.run-mode-menu`).
+Next migrations: `.btn-toolbar` onto `.cm-btn`, and the Run dropdown (`.run-mode-menu`).
 Each one ships with a `css:diff` run showing only the intended changes.

@@ -265,7 +265,7 @@ Reset in `closeFilePreview()` and on every `openFilePreview()` entry.
 
 ### 5.2 Markup (`index.html:420-432`)
 
-Add one header button (pencil, `btn-icon-sm`, `id="filePreviewEditBtn"`, hidden by default) next to the
+Add one header button (pencil, `cm-btn cm-btn--icon` (was `btn-icon-sm`), `id="filePreviewEditBtn"`, hidden by default) next to the
 copy button, and an edit bar inside the footer region holding Save / Cancel / a dirty dot. Keep the
 existing footer text element; the edit bar is a sibling toggled by class so the read-mode footer is
 untouched.

@@ -331,7 +331,7 @@
           </div>
           <div class="ralph-controls">
             <div class="ralph-menu-container">
-              <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphMenu()" title="Fix Plan Menu" id="ralphMenuBtn">&#x2630;</button>
+              <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="event.stopPropagation(); app.toggleRalphMenu()" title="Fix Plan Menu" id="ralphMenuBtn">&#x2630;</button>
               <div class="ralph-dropdown" id="ralphDropdown">
                 <button onclick="event.stopPropagation(); app.showFixPlan(); app.closeRalphMenu()">View Fix Plan</button>
                 <button onclick="event.stopPropagation(); app.writeFixPlanToFile(); app.closeRalphMenu()">Write to File</button>
@@ -340,8 +340,8 @@
                 <button onclick="event.stopPropagation(); app.resetCircuitBreaker(); app.closeRalphMenu()">Reset Circuit Breaker</button>
               </div>
             </div>
-            <button class="btn-icon-sm" onclick="event.stopPropagation(); app.toggleRalphDetach()" title="Detach/Attach panel" id="ralphDetachBtn">&#x29C9;</button>
-            <button class="btn-icon-sm" onclick="event.stopPropagation(); app.closeRalphTracker()" title="Close tracker">&times;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="event.stopPropagation(); app.toggleRalphDetach()" title="Detach/Attach panel" id="ralphDetachBtn">&#x29C9;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="event.stopPropagation(); app.closeRalphTracker()" title="Close tracker">&times;</button>
           </div>
         </div>
 
@@ -575,7 +575,7 @@
     <div class="project-insights-panel" id="projectInsightsPanel">
       <div class="project-insights-header">
         <span class="project-insights-title">Project Insights</span>
-        <button class="btn-icon-sm" onclick="app.closeProjectInsightsPanel()" title="Close">&times;</button>
+        <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeProjectInsightsPanel()" title="Close">&times;</button>
       </div>
       <div class="project-insights-body" id="projectInsightsList"></div>
       <div class="project-insights-resize-handle"></div>
@@ -586,10 +586,10 @@
       <div class="cm-panel__head file-browser-header">
         <span class="cm-panel__title">Files</span>
         <div class="cm-panel__actions">
-          <button class="btn-icon-sm btn-file-browser-hidden" onclick="app.toggleFileBrowserHidden()" title="Show hidden files and folders" aria-label="Show hidden files and folders" aria-pressed="false" id="fileBrowserHiddenBtn">.*</button>
-          <button class="btn-icon-sm" onclick="app.refreshFileBrowser()" title="Refresh">&#x21BB;</button>
-          <button class="btn-icon-sm" onclick="app.toggleFileBrowserExpand()" title="Expand/Collapse All" id="fileBrowserExpandBtn">&#x229E;</button>
-          <button class="btn-icon-sm" onclick="app.closeFileBrowserPanel()" title="Close">&times;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost btn-file-browser-hidden" onclick="app.toggleFileBrowserHidden()" title="Show hidden files and folders" aria-label="Show hidden files and folders" aria-pressed="false" id="fileBrowserHiddenBtn">.*</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.refreshFileBrowser()" title="Refresh">&#x21BB;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleFileBrowserExpand()" title="Expand/Collapse All" id="fileBrowserExpandBtn">&#x229E;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeFileBrowserPanel()" title="Close">&times;</button>
         </div>
       </div>
       <div class="file-browser-search">
@@ -606,8 +606,8 @@
       <div class="git-status-header">
         <span class="git-status-title">Git <span class="git-status-branch" id="gitStatusBranch" data-i18n-skip></span></span>
         <div class="git-status-actions">
-          <button class="btn-icon-sm" onclick="app.refreshGitStatusNow()" title="Refresh" aria-label="Refresh git status">&#x21BB;</button>
-          <button class="btn-icon-sm" onclick="app.closeGitStatusPanel()" title="Close" aria-label="Close git status">&times;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.refreshGitStatusNow()" title="Refresh" aria-label="Refresh git status">&#x21BB;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeGitStatusPanel()" title="Close" aria-label="Close git status">&times;</button>
         </div>
       </div>
       <div class="git-status-body" id="gitStatusBody" data-i18n-skip></div>
@@ -620,17 +620,17 @@
         <div class="file-preview-header">
           <span class="file-preview-title" id="filePreviewTitle">file.ts</span>
           <div class="file-preview-actions">
-            <button class="btn-icon-sm" id="filePreviewPrevBtn" onclick="app.stepFolderPreview(-1)" title="Previous file in folder (←)" aria-label="Previous file in folder" hidden>&lsaquo;</button>
-            <button class="btn-icon-sm" id="filePreviewNextBtn" onclick="app.stepFolderPreview(1)" title="Next file in folder (→)" aria-label="Next file in folder" hidden>&rsaquo;</button>
-            <button class="btn-icon-sm" id="filePreviewFolderBtn" onclick="app.openFolderOfPreview()" title="Show folder" aria-label="Show folder" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
-            <button class="btn-icon-sm file-preview-pill" id="filePreviewMdBtn" onclick="app.toggleFilePreviewMd()" title="Rendered markdown" aria-label="Rendered markdown" aria-pressed="true" hidden>MD</button>
-            <button class="btn-icon-sm file-preview-pill" id="filePreviewPageBtn" onclick="app.toggleFilePreviewPage()" title="Rendered page" aria-label="Rendered page" aria-pressed="true" hidden>Page</button>
-            <button class="btn-icon-sm" id="filePreviewLinesBtn" onclick="app.toggleFilePreviewLines()" title="Line numbers" aria-label="Line numbers" aria-pressed="false" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
-            <button class="btn-icon-sm" id="filePreviewWrapBtn" onclick="app.toggleFilePreviewWrap()" title="Wrap lines" aria-label="Wrap lines" aria-pressed="true" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><path d="M3 12h15a3 3 0 1 1 0 6h-4"/><polyline points="16 16 14 18 16 20"/><line x1="3" y1="18" x2="10" y2="18"/></svg></button>
-            <button class="btn-icon-sm file-preview-edit-btn" id="filePreviewEditBtn" onclick="app.enterFilePreviewEdit()" title="Edit file" aria-label="Edit file" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></button>
-            <button class="btn-icon-sm" onclick="app.copyFilePreviewContent()" title="Copy content">&#x2398;</button>
-            <button class="btn-icon-sm" id="filePreviewDetachBtn" onclick="app.detachFilePreview()" title="Open in new tab" aria-label="Open in new tab" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
-            <button class="btn-icon-sm" onclick="app.closeFilePreview()" title="Close">&times;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewPrevBtn" onclick="app.stepFolderPreview(-1)" title="Previous file in folder (←)" aria-label="Previous file in folder" hidden>&lsaquo;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewNextBtn" onclick="app.stepFolderPreview(1)" title="Next file in folder (→)" aria-label="Next file in folder" hidden>&rsaquo;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewFolderBtn" onclick="app.openFolderOfPreview()" title="Show folder" aria-label="Show folder" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+            <button class="cm-btn cm-btn--sm cm-btn--ghost file-preview-pill" id="filePreviewMdBtn" onclick="app.toggleFilePreviewMd()" title="Rendered markdown" aria-label="Rendered markdown" aria-pressed="true" hidden>MD</button>
+            <button class="cm-btn cm-btn--sm cm-btn--ghost file-preview-pill" id="filePreviewPageBtn" onclick="app.toggleFilePreviewPage()" title="Rendered page" aria-label="Rendered page" aria-pressed="true" hidden>Page</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewLinesBtn" onclick="app.toggleFilePreviewLines()" title="Line numbers" aria-label="Line numbers" aria-pressed="false" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewWrapBtn" onclick="app.toggleFilePreviewWrap()" title="Wrap lines" aria-label="Wrap lines" aria-pressed="true" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><path d="M3 12h15a3 3 0 1 1 0 6h-4"/><polyline points="16 16 14 18 16 20"/><line x1="3" y1="18" x2="10" y2="18"/></svg></button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost file-preview-edit-btn" id="filePreviewEditBtn" onclick="app.enterFilePreviewEdit()" title="Edit file" aria-label="Edit file" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.copyFilePreviewContent()" title="Copy content">&#x2398;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="filePreviewDetachBtn" onclick="app.detachFilePreview()" title="Open in new tab" aria-label="Open in new tab" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeFilePreview()" title="Close">&times;</button>
           </div>
         </div>
         <div class="file-preview-body" id="filePreviewBody"></div>
@@ -650,8 +650,8 @@
         <div class="file-preview-header">
           <span class="file-preview-title" id="folderGridTitle" data-i18n-skip></span>
           <div class="file-preview-actions">
-            <button class="btn-icon-sm" id="folderGridUpBtn" onclick="app.folderGridUp()" title="Parent folder" aria-label="Parent folder">&uarr;</button>
-            <button class="btn-icon-sm" onclick="app.closeFolderGrid()" title="Close" aria-label="Close">&times;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" id="folderGridUpBtn" onclick="app.folderGridUp()" title="Parent folder" aria-label="Parent folder">&uarr;</button>
+            <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeFolderGrid()" title="Close" aria-label="Close">&times;</button>
           </div>
         </div>
         <div class="folder-grid-folders" id="folderGridFolders" data-i18n-skip></div>
@@ -1217,10 +1217,10 @@
         <div class="cm-panel__title">Monitor</div>
         <div class="cm-panel__actions">
           <button class="btn-toolbar btn-sm btn-danger" onclick="app.killAllMuxSessions()" title="Kill all sessions and their tmux processes">Kill All</button>
-          <button class="btn-icon-sm" onclick="app.reconcileMuxSessions()" title="Refresh tmux sessions">&#x21BB;</button>
-          <button class="btn-icon-sm" onclick="app.toggleMonitorDetach()" title="Detach panel" id="monitorDetachBtn">&#x29C9;</button>
-          <button class="btn-icon-sm" onclick="app.toggleMonitorPanel()" title="Toggle panel" id="monitorToggleBtn">&#x25B2;</button>
-          <button class="btn-icon-sm" onclick="app.closeMonitor()" title="Close monitor">&times;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.reconcileMuxSessions()" title="Refresh tmux sessions">&#x21BB;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleMonitorDetach()" title="Detach panel" id="monitorDetachBtn">&#x29C9;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleMonitorPanel()" title="Toggle panel" id="monitorToggleBtn">&#x25B2;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeMonitor()" title="Close monitor">&times;</button>
         </div>
       </div>
       <div class="monitor-resize-handle" id="monitorResizeHandle"></div>
@@ -1272,9 +1272,9 @@
         </div>
         <div class="cm-panel__actions">
           <button class="btn-toolbar btn-sm btn-danger" onclick="app.clearAllSubagents()" title="Clear all tracked subagents">Clear All</button>
-          <button class="btn-icon-sm" onclick="app.toggleSubagentsDetach()" title="Detach panel" id="subagentsDetachBtn">&#x29C9;</button>
-          <button class="btn-icon-sm" onclick="app.toggleSubagentsPanel()" title="Toggle panel" id="subagentsToggleBtn">&#x25B2;</button>
-          <button class="btn-icon-sm" onclick="app.closeSubagentsPanel()" title="Close">&times;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleSubagentsDetach()" title="Detach panel" id="subagentsDetachBtn">&#x29C9;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleSubagentsPanel()" title="Toggle panel" id="subagentsToggleBtn">&#x25B2;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeSubagentsPanel()" title="Close">&times;</button>
         </div>
       </div>
       <div class="subagents-resize-handle" id="subagentsResizeHandle"></div>
@@ -1297,8 +1297,8 @@
           Ultracode Agents <span id="ultracodeCountBadge" class="subagent-badge"></span>
         </div>
         <div class="cm-panel__actions">
-          <button class="btn-icon-sm" onclick="app.toggleUltracodeAgentsPanel()" title="Toggle panel">&#x25B2;</button>
-          <button class="btn-icon-sm" onclick="app.closeUltracodeAgentsPanel()" title="Close">&times;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleUltracodeAgentsPanel()" title="Toggle panel">&#x25B2;</button>
+          <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeUltracodeAgentsPanel()" title="Close">&times;</button>
         </div>
       </div>
       <div class="cm-panel__body subagents-panel-body">
@@ -3356,7 +3356,7 @@
                     <div class="cm-row__text"><span class="cm-row__label">Tunnel URL</span></div>
                     <div class="set-row-actions">
                       <span id="tunnelUrlDisplay" class="set-copy" title="Click to copy"></span>
-                      <button class="btn-icon-sm" id="tunnelQrBtn" onclick="app.showTunnelQR()" title="Show QR code">&#x229E;</button>
+                      <button class="cm-btn cm-btn--icon cm-btn--ghost" id="tunnelQrBtn" onclick="app.showTunnelQR()" title="Show QR code">&#x229E;</button>
                     </div>
                   </div>
                 </div>

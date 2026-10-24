@@ -358,8 +358,7 @@ html[data-skin="rose-pine-dawn"] {
 button:focus-visible,
 .btn-toolbar:focus-visible,
 .btn-icon:focus-visible,
-.btn-icon-header:focus-visible,
-.btn-icon-sm:focus-visible {
+.btn-icon-header:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -6774,22 +6773,6 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text);
 }
 
-.btn-icon-sm {
-  background: transparent;
-  border: none;
-  color: var(--text-dim);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
-  border-radius: 4px;
-}
-
-.btn-icon-sm:hover {
-  color: var(--text);
-  background: var(--bg-hover);
-}
-
 .form-row {
   margin-bottom: 0.75rem;
 }
@@ -10934,11 +10917,6 @@ kbd {
   letter-spacing: -0.05em;
 }
 
-.btn-file-browser-hidden.active {
-  color: var(--accent);
-  background: var(--bg-hover);
-}
-
 .file-browser-search {
   padding: 0.4rem;
   border-bottom: 1px solid var(--border);
@@ -11285,11 +11263,6 @@ kbd {
   gap: 0.25rem;
   /* The title yields on a phone, not the buttons. */
   flex-shrink: 0;
-}
-
-.file-preview-actions .btn-icon-sm[aria-pressed='true'] {
-  color: var(--accent, #4ea1ff);
-  background: var(--bg-hover, rgba(255, 255, 255, 0.08));
 }
 
 .file-preview-actions .file-preview-pill {

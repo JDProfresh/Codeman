@@ -108,11 +108,6 @@ html.mobile-init .file-browser-panel {
     padding: 0.15rem 0.25rem;
   }
 
-  .header-font-controls .btn-icon-sm {
-    width: 18px;
-    height: 18px;
-  }
-
   /* System stats - compact on tablet, visibility controlled by JS */
   .header-system-stats {
     font-size: 0.6rem;
@@ -464,11 +459,6 @@ html.mobile-init .file-browser-panel {
   .header-font-controls {
     gap: 0.1rem;
     padding: 0.1rem 0.2rem;
-  }
-
-  .header-font-controls .btn-icon-sm {
-    width: 16px;
-    height: 16px;
   }
 
   .header-font-controls .font-size-display {

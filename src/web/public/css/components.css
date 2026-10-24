@@ -38,6 +38,9 @@
       border-color var(--cm-dur-fast) var(--cm-ease),
       color var(--cm-dur-fast) var(--cm-ease);
   }
+  .cm-btn[hidden] {
+    display: none;
+  }
   .cm-btn:hover {
     background: var(--control-bg-hover, var(--cm-surface-hover));
     border-color: var(--control-border-hover, var(--cm-border-strong));
@@ -66,13 +69,18 @@
     padding: 0 var(--cm-space-4);
     font-size: var(--cm-text-base);
   }
+  /* An icon button: square at the control size (32px, 44px under a coarse
+     pointer), with a 16px glyph. */
   .cm-btn--icon {
     width: var(--cm-control);
     padding: 0;
+    font-size: var(--cm-text-md);
   }
   .cm-btn--sm.cm-btn--icon {
     width: var(--cm-control-sm);
+    font-size: var(--cm-text-xs);
   }
+
   .cm-btn--primary {
     background: var(--cm-accent);
     border-color: var(--cm-accent);
@@ -91,6 +99,13 @@
   .cm-btn--ghost:hover {
     background: var(--control-bg-hover, var(--cm-surface-hover));
     color: var(--cm-text);
+  }
+  /* A toggle that is on (aria-pressed): accent ink on the hover wash, and it
+     stays accent under the pointer. */
+  .cm-btn--ghost[aria-pressed='true'],
+  .cm-btn--ghost[aria-pressed='true']:hover {
+    background: var(--control-bg-hover, var(--cm-surface-hover));
+    color: var(--cm-accent);
   }
   .cm-btn--danger {
     background: transparent;

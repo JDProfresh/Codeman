@@ -5360,8 +5360,8 @@ Object.assign(CodemanApp.prototype, {
           <div class="attachment-history-subtitle" id="attachmentHistorySubtitle">0 files</div>
         </div>
         <div class="attachment-history-header-actions">
-          <button type="button" class="btn-icon-sm" id="attachmentHistoryRefreshBtn" title="Refresh" aria-label="Refresh attachments">&#x21BB;</button>
-          <button type="button" class="btn-icon-sm" id="attachmentHistoryCloseBtn" title="Close" aria-label="Close attachments">&times;</button>
+          <button type="button" class="cm-btn cm-btn--icon cm-btn--ghost" id="attachmentHistoryRefreshBtn" title="Refresh" aria-label="Refresh attachments">&#x21BB;</button>
+          <button type="button" class="cm-btn cm-btn--icon cm-btn--ghost" id="attachmentHistoryCloseBtn" title="Close" aria-label="Close attachments">&times;</button>
         </div>
       </div>
       <div class="attachment-history-list" id="attachmentHistoryList"></div>
