@@ -7115,7 +7115,7 @@ class CodemanApp {
         : `<span class="tab-harness run-mode-dot ${escapeHtml(mode)}" aria-hidden="true"></span>`;
 
       const inlineSessionActions = this.shouldInlineSessionActions();
-      const tabActionsHtml = `<span class="tab-actions"><span class="tab-gear" onclick="event.stopPropagation(); app.openSessionOptions(${escapeHtml(JSON.stringify(id))})" title="Session options" aria-label="Session options" tabindex="0">&#x2699;</span><span class="tab-detach" onclick="event.stopPropagation(); app.detachSession(${escapeHtml(JSON.stringify(id))})" title="Open in a new window" aria-label="Open session in a new window" tabindex="0">&#x29C9;</span><span class="tab-close" onclick="event.stopPropagation(); app.requestCloseSession(${escapeHtml(JSON.stringify(id))})" title="Close session" aria-label="Close session" tabindex="0">&times;</span><button type="button" class="tab-more" onclick="event.stopPropagation(); app.openTabRailActionMenu(event, ${escapeHtml(JSON.stringify(id))})" title="Session actions" aria-label="Session actions">&#x22EF;</button></span>`;
+      const tabActionsHtml = `<span class="tab-actions"><span class="tab-gear" onclick="event.stopPropagation(); app.openSessionOptions(${escapeHtml(JSON.stringify(id))})" title="Session options" aria-label="Session options" tabindex="0">&#x2699;</span><span class="tab-detach" onclick="event.stopPropagation(); app.detachSession(${escapeHtml(JSON.stringify(id))})" title="Open in a new window" aria-label="Open session in a new window" tabindex="0">&#x29C9;</span><span class="tab-new" onclick="event.stopPropagation(); app.openTabNewSessionMenu(event, ${escapeHtml(JSON.stringify(id))})" title="New session here" aria-label="New session in this tab's case" aria-haspopup="menu" tabindex="0">+</span><span class="tab-close" onclick="event.stopPropagation(); app.requestCloseSession(${escapeHtml(JSON.stringify(id))})" title="Close session" aria-label="Close session" tabindex="0">&times;</span><button type="button" class="tab-more" onclick="event.stopPropagation(); app.openTabRailActionMenu(event, ${escapeHtml(JSON.stringify(id))})" title="Session actions" aria-label="Session actions">&#x22EF;</button></span>`;
 
       rowHtml.set(id, `<div class="session-tab ${isActive ? 'active' : ''}${alertClass}${richClass}${paneExitBadge ? ' tab-agent-exited' : ''}${loadState ? ' tab-loading' : ''}${this.hasTabDetachOverride(id) ? ' tab-show-detach' : ''}${this._tileGrid?.has(id) ? ' in-tiles' : ''}"${richData}${railOrderStyle} data-id="${id}" data-color="${color}" ${loadState ? `data-load-phase="${escapeHtml(loadState.phase)}"` : ''} onclick="app.handleSessionTabClick(event, ${escapeHtml(JSON.stringify(id))})" oncontextmenu="event.preventDefault(); app.startInlineRename(${escapeHtml(JSON.stringify(id))})" tabindex="0" role="tab" aria-selected="${isActive ? 'true' : 'false'}" aria-busy="${loadState ? 'true' : 'false'}" aria-label="${escapeHtml(paneExitAriaLabel(name, paneExitBadge))}" data-aria-source="${escapeHtml(paneExitAriaLabel(name, paneExitBadge))}" ${tabTooltip ? `title="${escapeHtml(tabTooltip)}"` : ''}>
           ${_tabIdx < 9 ? '<span class="tab-number">' + (_tabIdx + 1) + '</span>' : ''}
@@ -8344,6 +8344,62 @@ class CodemanApp {
     return true;
   }
 
+  /**
+   * A tab's "+": the installed CLIs as a row of logos. A pick starts ONE session
+   * beside that tab: its case (or the managed worktree it runs in) and its named
+   * group, if it has one. One-off: the same temporary `_runMode` swap as
+   * `_launchInWorktree`, so the Run button's mode and case are untouched.
+   */
+  openTabNewSessionMenu(event, sessionId) {
+    const session = this.sessions.get(sessionId);
+    const worktree = this._managedWorktreeOfSession?.(session) || null;
+    const dir = (session?.workingDir || '').replace(/\/+$/, '');
+    const caseEntry = worktree ? null : this._mobileOverviewCaseFor?.(dir, this.cases);
+    if (!worktree && !caseEntry) {
+      event?.stopPropagation?.();
+      this.showToast?.("This tab's folder is not a case, so there is nothing to start beside it.", 'info');
+      return false;
+    }
+    const tabGroupId =
+      this.tabLayout?.groups?.find((group) => group.refs.some((ref) => ref.kind === 'session' && ref.id === sessionId))
+        ?.id || null;
+    // Same list and gating as the phone overview's Run picker (shell is never gated).
+    // ponytail: host availability only; a Docker case's container modes are not probed here.
+    const modes = (typeof mobileOverviewRunModes === 'function' ? mobileOverviewRunModes() : []).filter(
+      (entry) => entry.mode === 'shell' || this.isCliAvailable(entry.mode)
+    );
+    const current = this.runMode;
+    const actions = modes.map((entry) => ({
+      label: entry.label,
+      icon: entry.mode,
+      selected: entry.mode === current,
+      run: () => this._launchBesideTab(entry.mode, { caseName: caseEntry?.name, worktree, tabGroupId }),
+    }));
+    return this._openTabLayoutMenu(event, `new:${sessionId}`, 'New session here', actions, {
+      anyLayout: true,
+      className: 'tab-new-session-menu',
+    });
+  }
+
+  async _launchBesideTab(mode, { caseName, worktree, tabGroupId }) {
+    if (this._runInFlight) {
+      this.showToast?.('A session is already starting.', 'info');
+      return;
+    }
+    if (tabGroupId) this.toggleTabGroupCollapsed(tabGroupId, false);
+    const previous = this._runMode;
+    this._runMode = mode;
+    try {
+      await this.run({
+        count: 1,
+        ...(worktree ? { worktree } : { caseName }),
+        ...(tabGroupId ? { tabGroupId } : {}),
+      });
+    } finally {
+      this._runMode = previous;
+    }
+  }
+
   // ─── Group and web-tab menus (right-click, the header's ⋯, Shift+F10) ──
 
   /**
@@ -8409,7 +8465,7 @@ class CodemanApp {
     ]);
   }
 
-  _openTabLayoutMenu(event, identity, ariaLabel, actions) {
+  _openTabLayoutMenu(event, identity, ariaLabel, actions, { anyLayout = false, className = '' } = {}) {
     event?.preventDefault?.();
     event?.stopPropagation?.();
     const trigger = event?.currentTarget || null;
@@ -8420,17 +8476,28 @@ class CodemanApp {
     }
     this.closeTabGroupMenu();
     this.closeTabRailActionMenu?.();
-    if (!this._tabLayoutEditable()) return false;
+    if (!anyLayout && !this._tabLayoutEditable()) return false;
     const menu = document.createElement('div');
-    menu.className = 'tab-rail-action-menu tab-layout-group-action-menu';
+    menu.className = `tab-rail-action-menu tab-layout-group-action-menu${className ? ` ${className}` : ''}`;
     menu.setAttribute('role', 'menu');
     menu.setAttribute('aria-label', ariaLabel);
     for (const action of actions) {
       const button = document.createElement('button');
       button.type = 'button';
       button.setAttribute('role', 'menuitem');
-      button.textContent = action.label;
+      if (action.icon) {
+        // Icon-only item: the logo slot every Run menu shares, named for AT and hover.
+        const dot = document.createElement('span');
+        dot.className = `run-mode-dot ${action.icon}`;
+        dot.setAttribute('aria-hidden', 'true');
+        button.appendChild(dot);
+        button.setAttribute('aria-label', action.label);
+        button.title = action.label;
+      } else {
+        button.textContent = action.label;
+      }
       if (action.className) button.className = action.className;
+      if (action.selected) button.classList.add('selected');
       button.addEventListener('click', () => {
         this.closeTabGroupMenu();
         action.run();
@@ -8467,9 +8534,10 @@ class CodemanApp {
     menu.addEventListener('keydown', (keyEvent) => {
       const buttons = [...menu.querySelectorAll('button')];
       const at = buttons.indexOf(document.activeElement);
-      if (keyEvent.key === 'ArrowDown' || keyEvent.key === 'ArrowUp') {
+      const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[keyEvent.key];
+      if (step) {
         keyEvent.preventDefault();
-        buttons[(at + (keyEvent.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length]?.focus();
+        buttons[(at + step + buttons.length) % buttons.length]?.focus();
       } else if (keyEvent.key === 'Home' || keyEvent.key === 'End') {
         keyEvent.preventDefault();
         buttons[keyEvent.key === 'Home' ? 0 : buttons.length - 1]?.focus();
@@ -8485,7 +8553,7 @@ class CodemanApp {
       if (focusEvent.relatedTarget && menu.contains(focusEvent.relatedTarget)) return;
       if (this._tabGroupMenu === menu) this.closeTabGroupMenu();
     });
-    menu.querySelector('button')?.focus();
+    (menu.querySelector('button.selected') || menu.querySelector('button'))?.focus();
     return true;
   }
 

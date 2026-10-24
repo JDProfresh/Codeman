@@ -36,7 +36,7 @@ function harness(caseData: Record<string, unknown>, extra: { mode?: string } = {
       const body = init?.body ? JSON.parse(init.body) : undefined;
       requests.push({ url, body });
       const json = (value: unknown) => ({ json: async () => value });
-      if (url === '/api/cases/proj') return json({ success: true, data: caseData });
+      if (url.startsWith('/api/cases/')) return json({ success: true, data: caseData });
       if (url.endsWith('/status')) return json({ success: true, data: { available: true, runnable: true } });
       if (url === '/api/sessions') {
         const id = `sess-${++counter}`;
@@ -122,6 +122,22 @@ describe('launching into a tab group', () => {
     expect(made[0].url).toBe('/api/quick-start');
     expect(made[0].body.tabGroupId).toBe('g1');
     expect(app._applyTabLayout).toHaveBeenCalledWith(LAYOUT);
+  });
+
+  // A tab's "+" launches beside that tab: its case, never the toolbar's selected one.
+  it.each([
+    ['local Claude', 'claude', '/api/sessions'],
+    ['local Shell', 'shell', '/api/sessions'],
+    ['an external CLI', 'gemini', '/api/quick-start'],
+  ])('%s launches in `caseName` instead of the toolbar case', async (_label, mode, url) => {
+    const { app, elements, requests } = harness({ name: 'other', path: '/tmp/other' }, { mode });
+    await app.run({ count: 1, caseName: 'other' });
+    const made = creates(requests);
+    expect(made).toHaveLength(1);
+    expect(made[0].url).toBe(url);
+    expect(JSON.stringify(made[0].body)).toContain('other');
+    expect(JSON.stringify(made[0].body)).not.toContain('proj');
+    expect(elements.quickStartCase.value).toBe('proj');
   });
 
   it('an ordinary Run sends no group and keeps the stepper count', async () => {
