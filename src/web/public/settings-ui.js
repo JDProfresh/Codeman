@@ -3513,9 +3513,9 @@ Object.assign(CodemanApp.prototype, {
               <span class="cm-row__hint">${escapeHtml(h.baseUrl)} — ${modelSummary}</span>
             </div>
             <div class="set-row-actions">
-              <button type="button" class="btn-toolbar btn-sm" onclick="app.discoverCustomModelHostModels(${idArg})">Discover</button>
-              <button type="button" class="btn-toolbar btn-sm" onclick="app.openCustomModelHostEditor(${idArg})">Edit</button>
-              <button type="button" class="btn-toolbar btn-danger btn-sm" onclick="app.deleteCustomModelHost(${idArg})">Delete</button>
+              <button type="button" class="cm-btn cm-btn--sm" onclick="app.discoverCustomModelHostModels(${idArg})">Discover</button>
+              <button type="button" class="cm-btn cm-btn--sm" onclick="app.openCustomModelHostEditor(${idArg})">Edit</button>
+              <button type="button" class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.deleteCustomModelHost(${idArg})">Delete</button>
             </div>
           </div>`;
       })
@@ -3740,12 +3740,12 @@ Object.assign(CodemanApp.prototype, {
         const untoggleable = c.kind === 'shell';
         const installBtn =
           c.stock && !c.installed
-            ? `<button type="button" class="btn-toolbar btn-sm" onclick="app.installCliEntry(${idArg})" id="cliInstallBtn-${escapeHtml(c.id)}">Install</button>`
+            ? `<button type="button" class="cm-btn cm-btn--sm" onclick="app.installCliEntry(${idArg})" id="cliInstallBtn-${escapeHtml(c.id)}">Install</button>`
             : '';
         const customActions = c.stock
           ? ''
-          : `<button type="button" class="btn-toolbar btn-sm" onclick="app.openCliCustomForm(${idArg})">Edit</button>
-             <button type="button" class="btn-toolbar btn-danger btn-sm" onclick="app.deleteCliCustom(${idArg})">Delete</button>`;
+          : `<button type="button" class="cm-btn cm-btn--sm" onclick="app.openCliCustomForm(${idArg})">Edit</button>
+             <button type="button" class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.deleteCliCustom(${idArg})">Delete</button>`;
         const toggle = untoggleable
           ? '<span class="cm-row__hint">Always available</span>'
           : `<label class="cm-switch cm-switch--sm">

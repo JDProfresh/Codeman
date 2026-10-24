@@ -78,10 +78,10 @@ Object.assign(CodemanApp.prototype, {
             </div>
           </div>
           <div class="cron-job-actions">
-            <button class="btn-toolbar btn-sm btn-primary" onclick="app.runCronJob('${j.id}')">Run Now</button>
-            <button class="btn-toolbar btn-sm" onclick="app.toggleCronJob('${j.id}', ${j.enabled ? 'false' : 'true'})">${j.enabled ? 'Disable' : 'Enable'}</button>
-            <button class="btn-toolbar btn-sm" onclick="app.editCronJob('${j.id}')">Edit</button>
-            <button class="btn-toolbar btn-sm btn-danger" onclick="app.deleteCronJob('${j.id}')">Delete</button>
+            <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.runCronJob('${j.id}')">Run Now</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.toggleCronJob('${j.id}', ${j.enabled ? 'false' : 'true'})">${j.enabled ? 'Disable' : 'Enable'}</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.editCronJob('${j.id}')">Edit</button>
+            <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.deleteCronJob('${j.id}')">Delete</button>
           </div>
         </div>`;
     });

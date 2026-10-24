@@ -122,7 +122,7 @@ describe('Webhook settings in a real browser', () => {
 
   it('the main Settings Save also saves a pending webhook edit', async () => {
     await page.selectOption('#webhookScope', 'all');
-    await page.click('#appSettingsModal .set-foot .btn-primary');
+    await page.click('#appSettingsModal .set-foot .cm-btn--primary');
     await page.waitForFunction(() => !document.getElementById('appSettingsModal')!.classList.contains('active'));
     expect(await savedWebhook()).toMatchObject({ scope: 'all', kind: 'generic', enabled: true, hasUrl: true });
     await page.evaluate(() => (window as any).app.openAppSettings());
@@ -131,7 +131,7 @@ describe('Webhook settings in a real browser', () => {
 
   it('a refused webhook keeps the modal open with the pasted URL, instead of a silent success', async () => {
     await page.fill('#webhookUrl', 'http://169.254.169.254/latest');
-    await page.click('#appSettingsModal .set-foot .btn-primary');
+    await page.click('#appSettingsModal .set-foot .cm-btn--primary');
     await page.waitForFunction(() =>
       /metadata|link-local/.test(document.getElementById('webhookResult')?.textContent ?? '')
     );

@@ -261,9 +261,9 @@ Object.assign(CodemanApp.prototype, {
           </div>
           <div class="cm-dialog__foot">
             <span class="fix-plan-stats" id="fixPlanStats"></span>
-            <button class="btn btn-secondary" onclick="app.copyFixPlan()">Copy</button>
-            <button class="btn btn-primary" onclick="app.writeFixPlanToFile()">Write to File</button>
-            <button class="btn btn-secondary" onclick="app.closeFixPlanModal()">Close</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.copyFixPlan()">Copy</button>
+            <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.writeFixPlanToFile()">Write to File</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.closeFixPlanModal()">Close</button>
           </div>
         </div>
       `;
@@ -1042,7 +1042,7 @@ Object.assign(CodemanApp.prototype, {
           </div>
         </div>
         <div class="cm-dialog__foot">
-          <button class="btn-toolbar" onclick="app.closePlanHistoryModal()">Close</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.closePlanHistoryModal()">Close</button>
         </div>
       </div>
     `;

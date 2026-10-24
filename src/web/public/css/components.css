@@ -116,6 +116,18 @@
     background: color-mix(in srgb, var(--cm-danger) 14%, transparent);
     border-color: var(--cm-danger);
   }
+  /* A positive commit (Enable, Start): solid green with light ink, like the
+     legacy success button it replaces. */
+  .cm-btn--success {
+    background: var(--cm-success);
+    border-color: var(--cm-success);
+    color: #fff;
+  }
+  .cm-btn--success:hover {
+    background: color-mix(in srgb, var(--cm-success) 82%, #000);
+    border-color: color-mix(in srgb, var(--cm-success) 82%, #000);
+    color: #fff;
+  }
 
   /* ---------- Form controls ---------- */
   .cm-input,

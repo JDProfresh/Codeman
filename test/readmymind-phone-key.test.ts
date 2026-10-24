@@ -90,22 +90,20 @@ describe('read my mind phone key + alternates (static guards)', () => {
     expect(ui).toMatch(/steer\.value = ''/);
   });
 
-  it('styles the footer with btn-toolbar (bare "btn btn-*" matches no CSS in this codebase)', () => {
+  it('styles the footer with kit buttons (bare "btn btn-*" matches no CSS in this codebase)', () => {
     const modal = html.slice(
       html.indexOf('id="readMyMindModal"'),
       html.indexOf('<script defer src="constants.js"></script>')
     );
     // The unstyled classes the footer originally shipped with must not return.
     expect(modal).not.toMatch(/class="btn /);
-    expect(modal.match(/class="btn-toolbar/g)?.length).toBe(4);
-    expect(modal).toMatch(/class="btn-toolbar btn-primary"[^>]*sendReadMyMind\(true\)/);
-    // btn-toolbar is display:flex (block-level): without the desktop footer
-    // row rule the four buttons would stack vertically.
+    expect(modal.match(/class="cm-btn cm-btn--sm/g)?.length).toBe(4);
+    // Send is the kit's primary button: its accent comes from the kit, which
+    // the skin block no longer reaches (it styles .btn-toolbar only).
+    expect(modal).toMatch(/class="cm-btn cm-btn--sm cm-btn--primary"[^>]*sendReadMyMind\(true\)/);
+    // Without the desktop footer row rule the four buttons would stack.
     expect(styles).toMatch(/\.readmymind-modal \.cm-dialog__foot \{[^}]*display: flex/);
-    // The skin block's bare .btn-toolbar (0,2,1) greys out .btn-primary
-    // (0,2,0), so Send's accent must be re-asserted at higher specificity.
-    expect(styles).toMatch(/\.readmymind-modal \.cm-dialog__foot \.btn-toolbar\.btn-primary \{[^}]*var\(--accent\)/);
-    // The phone block sizes the same class for finger targets.
-    expect(phoneBlock).toMatch(/\.readmymind-modal \.cm-dialog__foot \.btn-toolbar/);
+    // The phone block sizes the same buttons for finger targets.
+    expect(phoneBlock).toMatch(/\.readmymind-modal \.cm-dialog__foot \.cm-btn/);
   });
 });

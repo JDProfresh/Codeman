@@ -844,7 +844,7 @@
 
         <!-- Directory (hidden) -->
         <div class="toolbar-group" style="display: none;">
-          <button class="btn-toolbar" onclick="app.toggleDirInput()" title="Set working directory">
+          <button class="cm-btn cm-btn--sm" onclick="app.toggleDirInput()" title="Set working directory">
             <span id="dirDisplay">No directory</span>
           </button>
           <input type="text" id="dirInput" class="toolbar-input hidden" placeholder="Working directory..." onblur="app.hideDirInput()">
@@ -865,7 +865,7 @@
 
       <div class="toolbar-right">
         <!-- Orchestrator button hidden until feature is ready -->
-        <!-- <button class="btn-toolbar btn-sm" onclick="app.toggleOrchestratorPanel()" title="Orchestrator Loop">&#x2699; Orchestrator</button> -->
+        <!-- <button class="cm-btn cm-btn--sm" onclick="app.toggleOrchestratorPanel()" title="Orchestrator Loop">&#x2699; Orchestrator</button> -->
         <button class="btn-toolbar btn-sm btn-cron btn-cron--hidden" onclick="app.openCron()" title="Cron Jobs">&#x23F0; Cron</button>
         <!-- Git status of the active session's repository (git-status-ui.js). Optional and per-device
              (App Settings → Header & Panels → Bottom bar, default OFF), so it is hidden until that
@@ -1022,14 +1022,14 @@
             </span>
           </div>
           <div class="form-row">
-            <button class="btn-secondary" onclick="app.testWebviewUrl()">Test</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.testWebviewUrl()">Test</button>
             <span class="form-hint webview-probe-result" id="webviewProbeResult"></span>
           </div>
         </div>
         <div class="form-actions webview-modal-actions">
-          <button class="btn-danger" id="webviewDeleteBtn" onclick="app.deleteWebview()">Delete</button>
-          <button class="btn-secondary" onclick="app.closeWebviewModal()">Cancel</button>
-          <button class="btn-primary" onclick="app.saveWebview()">Save</button>
+          <button class="cm-btn cm-btn--sm cm-btn--danger" id="webviewDeleteBtn" onclick="app.deleteWebview()">Delete</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.closeWebviewModal()">Cancel</button>
+          <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.saveWebview()">Save</button>
         </div>
       </div>
     </div>
@@ -1066,8 +1066,8 @@
           <p class="form-hint" id="customModelSwapConfirmMessage"></p>
         </div>
         <div class="cm-dialog__foot">
-          <button class="btn-toolbar" onclick="app._resolveModelSwapConfirm(false)">Cancel</button>
-          <button class="btn-toolbar btn-primary" onclick="app._resolveModelSwapConfirm(true)">Switch anyway</button>
+          <button class="cm-btn cm-btn--sm" onclick="app._resolveModelSwapConfirm(false)">Cancel</button>
+          <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app._resolveModelSwapConfirm(true)">Switch anyway</button>
         </div>
       </div>
     </div>
@@ -1089,8 +1089,8 @@
           <p class="form-hint" id="customModelContextWarningMessage" style="white-space: pre-wrap;"></p>
         </div>
         <div class="cm-dialog__foot">
-          <button class="btn-toolbar" onclick="app._resolveContextWarningConfirm(false)">Cancel</button>
-          <button class="btn-toolbar btn-primary" onclick="app._resolveContextWarningConfirm(true)">Launch anyway</button>
+          <button class="cm-btn cm-btn--sm" onclick="app._resolveContextWarningConfirm(false)">Cancel</button>
+          <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app._resolveContextWarningConfirm(true)">Launch anyway</button>
         </div>
       </div>
     </div>
@@ -1106,8 +1106,8 @@
         <div class="cm-dialog__body">
           <p class="form-hint cron-modal-hint">Times use the server's local timezone.</p>
           <div class="cron-toolbar">
-            <button class="btn-toolbar btn-primary" onclick="app.openCronJobForm()">+ New Job</button>
-            <button class="btn-toolbar" onclick="app.refreshCron()">Refresh</button>
+            <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.openCronJobForm()">+ New Job</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.refreshCron()">Refresh</button>
           </div>
           <!-- Job list -->
           <div id="cronJobList" class="cron-job-list"></div>
@@ -1203,8 +1203,8 @@
 
             <div id="cronFormError" class="form-hint cron-form-error"></div>
             <div class="cron-form-actions">
-              <button class="btn-toolbar" onclick="app.cancelCronJobForm()">Cancel</button>
-              <button class="btn-toolbar btn-primary" onclick="app.saveCronJob()">Save</button>
+              <button class="cm-btn cm-btn--sm" onclick="app.cancelCronJobForm()">Cancel</button>
+              <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.saveCronJob()">Save</button>
             </div>
           </div>
         </div>
@@ -1216,7 +1216,7 @@
       <div class="cm-panel__head monitor-panel-header" id="monitorPanelHeader">
         <div class="cm-panel__title">Monitor</div>
         <div class="cm-panel__actions">
-          <button class="btn-toolbar btn-sm btn-danger" onclick="app.killAllMuxSessions()" title="Kill all sessions and their tmux processes">Kill All</button>
+          <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.killAllMuxSessions()" title="Kill all sessions and their tmux processes">Kill All</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.reconcileMuxSessions()" title="Refresh tmux sessions">&#x21BB;</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleMonitorDetach()" title="Detach panel" id="monitorDetachBtn">&#x29C9;</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleMonitorPanel()" title="Toggle panel" id="monitorToggleBtn">&#x25B2;</button>
@@ -1237,7 +1237,7 @@
           <div class="monitor-section-header">
             <span>Plan Wizard Agents</span>
             <span class="task-stats" id="monitorPlanAgentStats">0 active</span>
-            <button class="btn-toolbar btn-sm btn-danger" onclick="app.cancelPlanFromMonitor()" title="Cancel plan generation">Cancel</button>
+            <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.cancelPlanFromMonitor()" title="Cancel plan generation">Cancel</button>
           </div>
           <div class="monitor-section-body" id="monitorPlanAgentsBody">
             <div class="monitor-empty">No plan agents</div>
@@ -1247,7 +1247,7 @@
           <div class="monitor-section-header">
             <span>Background Agents</span>
             <span class="task-stats" id="monitorSubagentStats">0 tracked</span>
-            <button class="btn-toolbar btn-sm btn-danger" onclick="app.clearAllSubagents()" title="Clear all">Clear</button>
+            <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.clearAllSubagents()" title="Clear all">Clear</button>
           </div>
           <div class="monitor-section-body" id="monitorSubagentsBody">
             <div class="monitor-empty">No background agents</div>
@@ -1271,7 +1271,7 @@
           Subagents <span id="subagentCountBadge" class="subagent-badge"></span>
         </div>
         <div class="cm-panel__actions">
-          <button class="btn-toolbar btn-sm btn-danger" onclick="app.clearAllSubagents()" title="Clear all tracked subagents">Clear All</button>
+          <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.clearAllSubagents()" title="Clear all tracked subagents">Clear All</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleSubagentsDetach()" title="Detach panel" id="subagentsDetachBtn">&#x29C9;</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.toggleSubagentsPanel()" title="Toggle panel" id="subagentsToggleBtn">&#x25B2;</button>
           <button class="cm-btn cm-btn--icon cm-btn--ghost" onclick="app.closeSubagentsPanel()" title="Close">&times;</button>
@@ -1415,8 +1415,8 @@
                         </div>
                       </div>
                       <div class="set-row-actions">
-                        <button class="btn-toolbar btn-success btn-sm" onclick="app.enableRespawnFromModal()" id="modalEnableRespawnBtn">Enable</button>
-                        <button class="btn-toolbar btn-danger btn-sm" onclick="app.stopRespawnFromModal()" id="modalStopRespawnBtn" style="display: none;">Stop</button>
+                        <button class="cm-btn cm-btn--sm cm-btn--success" onclick="app.enableRespawnFromModal()" id="modalEnableRespawnBtn">Enable</button>
+                        <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.stopRespawnFromModal()" id="modalStopRespawnBtn" style="display: none;">Stop</button>
                       </div>
                     </div>
                   </div>
@@ -1461,8 +1461,8 @@
                           <optgroup label="Custom" id="customPresetsGroup">
                           </optgroup>
                         </select>
-                        <button type="button" class="btn-toolbar btn-sm" onclick="app.loadRespawnPreset()" title="Apply preset">Apply</button>
-                        <button type="button" class="btn-toolbar btn-sm" onclick="app.saveCurrentAsPreset()" title="Save current config as preset">Save As&hellip;</button>
+                        <button type="button" class="cm-btn cm-btn--sm" onclick="app.loadRespawnPreset()" title="Apply preset">Apply</button>
+                        <button type="button" class="cm-btn cm-btn--sm" onclick="app.saveCurrentAsPreset()" title="Save current config as preset">Save As&hellip;</button>
                       </div>
                       <!-- Filled by updatePresetDescription() and CLEARED on every
                            open, so it can never hold the row's own description. -->
@@ -1531,7 +1531,7 @@
                     </div>
                     <div class="set-row-actions">
                       <code id="modalSessionPath" class="set-static mono" style="flex: 1; min-width: 0; word-break: break-all; user-select: all;"></code>
-                      <button type="button" class="btn-toolbar btn-sm" id="modalSessionPathCopy" onclick="app.copySessionPath()">Copy</button>
+                      <button type="button" class="cm-btn cm-btn--sm" id="modalSessionPathCopy" onclick="app.copySessionPath()">Copy</button>
                     </div>
                   </div>
                   <div class="cm-row set-row-block">
@@ -1692,7 +1692,7 @@
                       <span class="cm-row__label">Apply</span>
                       <span class="cm-row__hint">Ralph settings are the one group here that does not save on change.</span>
                     </div>
-                    <button class="btn-toolbar btn-primary btn-sm" onclick="app.saveRalphConfig()">Save Ralph config</button>
+                    <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.saveRalphConfig()">Save Ralph config</button>
                   </div>
                 </div>
               </div>
@@ -1725,9 +1725,9 @@
                       Auto-refresh
                     </label>
                     <div class="run-summary-actions">
-                      <button class="btn-toolbar btn-sm" onclick="app.refreshRunSummary()" title="Refresh summary">&#x21BB; Refresh</button>
-                      <button class="btn-toolbar btn-sm" onclick="app.exportRunSummary('json')" title="Export as JSON">Export JSON</button>
-                      <button class="btn-toolbar btn-sm" onclick="app.exportRunSummary('md')" title="Export as Markdown">Export MD</button>
+                      <button class="cm-btn cm-btn--sm" onclick="app.refreshRunSummary()" title="Refresh summary">&#x21BB; Refresh</button>
+                      <button class="cm-btn cm-btn--sm" onclick="app.exportRunSummary('json')" title="Export as JSON">Export JSON</button>
+                      <button class="cm-btn cm-btn--sm" onclick="app.exportRunSummary('md')" title="Export as Markdown">Export MD</button>
                     </div>
                   </div>
                 </div>
@@ -1772,7 +1772,7 @@
           </div>
         </div>
         <div class="modal-footer-cancel">
-          <button class="btn-toolbar btn-sm" onclick="app.cancelCloseSession()">Cancel</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.cancelCloseSession()">Cancel</button>
         </div>
       </div>
     </div>
@@ -1927,12 +1927,12 @@
                       <span class="cm-row__label">Check for updates</span>
                       <span class="cm-row__hint">Looks at GitHub for a newer Codeman release.</span>
                     </div>
-                    <button class="btn-toolbar btn-sm" id="updateCheckBtn" onclick="app.checkForUpdate()">Check now</button>
+                    <button class="cm-btn cm-btn--sm" id="updateCheckBtn" onclick="app.checkForUpdate()">Check now</button>
                   </div>
                   <div id="updateResult" class="set-note" style="display:none"></div>
                   <div class="cm-row" id="updateActionRow" style="display:none">
                     <div class="cm-row__text"><span class="cm-row__label" id="updateActionLabel">Update available</span></div>
-                    <button class="btn-toolbar btn-sm btn-primary" id="updateNowBtn" onclick="app.startSelfUpdate()">Update now</button>
+                    <button class="cm-btn cm-btn--sm cm-btn--primary" id="updateNowBtn" onclick="app.startSelfUpdate()">Update now</button>
                   </div>
                   <div id="updateNotes" class="set-notes" style="display:none"></div>
                   <div id="updateProgress" class="set-progress" style="display:none"></div>
@@ -2521,7 +2521,7 @@
                       <span class="cm-row__label">Animation Lab</span>
                       <span class="cm-row__hint">Closes settings and opens every style per surface side by side, with replay and speed. Same as adding ?animlab=1 to the URL.</span>
                     </div>
-                    <button type="button" id="appSettingsOpenAnimLab" class="btn-toolbar btn-sm">Open lab</button>
+                    <button type="button" id="appSettingsOpenAnimLab" class="cm-btn cm-btn--sm">Open lab</button>
                   </div>
                 </div>
               </div>
@@ -2696,7 +2696,7 @@
                        feature off, a list of endpoints that do nothing is worse than nothing. -->
                   <div id="customModelEndpointsBody" style="display:none">
                     <div id="customModelHostsList" class="cm-group" data-search="endpoints"></div>
-                    <button type="button" class="btn-toolbar btn-sm" id="customModelHostAddBtn" onclick="app.openCustomModelHostEditor()">+ Add endpoint</button>
+                    <button type="button" class="cm-btn cm-btn--sm" id="customModelHostAddBtn" onclick="app.openCustomModelHostEditor()">+ Add endpoint</button>
                     <div id="customModelHostEditor" class="set-inline-form" style="display:none">
                       <h5 id="customModelHostEditorTitle">Add endpoint</h5>
                       <div class="cm-row has-field">
@@ -2727,8 +2727,8 @@
                         <select id="customModelHostDefaultModel" class="set-select" disabled></select>
                       </div>
                       <div class="set-row-actions">
-                        <button type="button" class="btn-toolbar btn-sm" onclick="app.saveCustomModelHostFromEditor()">Save</button>
-                        <button type="button" class="btn-toolbar btn-sm" onclick="app.closeCustomModelHostEditor()">Cancel</button>
+                        <button type="button" class="cm-btn cm-btn--sm" onclick="app.saveCustomModelHostFromEditor()">Save</button>
+                        <button type="button" class="cm-btn cm-btn--sm" onclick="app.closeCustomModelHostEditor()">Cancel</button>
                       </div>
                     </div>
                   </div>
@@ -2767,7 +2767,7 @@
                       <span class="cm-row__label">Add a custom CLI</span>
                       <span class="cm-row__hint">A launch command Codeman doesn't ship — id, label, badge, binary and its bare argv.</span>
                     </div>
-                    <button type="button" class="btn btn-xs" id="cliCustomAddToggle" onclick="app.openCliCustomForm()">Add</button>
+                    <button type="button" class="cm-btn cm-btn--sm" id="cliCustomAddToggle" onclick="app.openCliCustomForm()">Add</button>
                   </div>
                   <form id="cliCustomForm" style="display: none;" onsubmit="app.submitCliCustomForm(event)">
                     <div class="cm-row has-field">
@@ -2794,8 +2794,8 @@
                       <input type="text" id="cliCustomArgv" class="set-input" placeholder="my-cli --flag">
                     </div>
                     <div class="cm-row">
-                      <button type="submit" class="btn btn-xs" id="cliCustomSubmit">Create</button>
-                      <button type="button" class="btn btn-xs" id="cliCustomCancel" onclick="app.closeCliCustomForm()">Cancel</button>
+                      <button type="submit" class="cm-btn cm-btn--sm" id="cliCustomSubmit">Create</button>
+                      <button type="button" class="cm-btn cm-btn--sm" id="cliCustomCancel" onclick="app.closeCliCustomForm()">Cancel</button>
                     </div>
                     <div id="cliCustomFormError" class="cm-row__hint" style="color: var(--error, #e5484d); display: none;"></div>
                   </form>
@@ -2949,8 +2949,8 @@
                       <span class="cm-row__hint">Copies each installed, enabled CLI's MCP servers (and GitHub Copilot CLI's) into the others. Only adds missing servers; never edits, removes or copies a server you switched off. Env values and headers are copied too, so a file that receives them is left readable by you only. The previous file is kept as <code>.codeman-bak</code> (overwritten by each sync). A config dir moved by the CLI's own env var (<code>CODEX_HOME</code>, <code>CLAUDE_CONFIG_DIR</code>, <code>XDG_CONFIG_HOME</code>, <code>GEMINI_CLI_HOME</code>, <code>COPILOT_HOME</code>) is followed as Codeman's server sees it; a per-session override is not.</span>
                     </div>
                     <span>
-                      <button class="btn-toolbar btn-sm" id="mcpSyncPreviewBtn" onclick="app.mcpSync(false)">Preview</button>
-                      <button class="btn-toolbar btn-sm btn-primary" id="mcpSyncApplyBtn" onclick="app.mcpSync(true)">Sync now</button>
+                      <button class="cm-btn cm-btn--sm" id="mcpSyncPreviewBtn" onclick="app.mcpSync(false)">Preview</button>
+                      <button class="cm-btn cm-btn--sm cm-btn--primary" id="mcpSyncApplyBtn" onclick="app.mcpSync(true)">Sync now</button>
                     </span>
                   </div>
                   <div id="mcpSyncResult" class="set-note" style="display:none"></div>
@@ -2983,7 +2983,7 @@
                     </div>
                     <div class="set-row-actions">
                       <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsNotifBrowser"><span></span></label>
-                      <button class="btn-toolbar btn-sm" onclick="app.notificationManager?.requestPermission()" title="Request browser notification permission">Ask</button>
+                      <button class="cm-btn cm-btn--sm" onclick="app.notificationManager?.requestPermission()" title="Request browser notification permission">Ask</button>
                       <span class="settings-status" id="notifPermissionStatus">?</span>
                     </div>
                   </div>
@@ -2994,7 +2994,7 @@
                     </div>
                     <div class="set-row-actions">
                       <label class="cm-switch cm-switch--sm"><input type="checkbox" id="appSettingsPushEnabled"><span></span></label>
-                      <button class="btn-toolbar btn-sm" id="pushSubscribeBtn" onclick="app.togglePushSubscription()" title="Subscribe or unsubscribe to push notifications">Subscribe</button>
+                      <button class="cm-btn cm-btn--sm" id="pushSubscribeBtn" onclick="app.togglePushSubscription()" title="Subscribe or unsubscribe to push notifications">Subscribe</button>
                       <span class="settings-status" id="pushSubscriptionStatus">off</span>
                     </div>
                   </div>
@@ -3146,9 +3146,9 @@
                       <span class="cm-row__hint">The main Settings Save saves this group too. Send test saves pending edits first.</span>
                     </div>
                     <span>
-                      <button class="btn-toolbar btn-sm btn-primary" id="webhookSaveBtn" onclick="app.saveWebhook()">Save</button>
-                      <button class="btn-toolbar btn-sm" id="webhookTestBtn" onclick="app.testWebhook()">Send test</button>
-                      <button class="btn-toolbar btn-sm" id="webhookClearBtn" onclick="app.clearWebhook()" style="display:none">Remove URL</button>
+                      <button class="cm-btn cm-btn--sm cm-btn--primary" id="webhookSaveBtn" onclick="app.saveWebhook()">Save</button>
+                      <button class="cm-btn cm-btn--sm" id="webhookTestBtn" onclick="app.testWebhook()">Send test</button>
+                      <button class="cm-btn cm-btn--sm" id="webhookClearBtn" onclick="app.clearWebhook()" style="display:none">Remove URL</button>
                     </span>
                   </div>
                   <div id="webhookResult" class="set-note" style="display:none" data-i18n-skip></div>
@@ -3245,7 +3245,7 @@
                     </div>
                     <div class="set-row-actions set-row-actions-wide">
                       <input type="password" id="voiceDeepgramKey" class="set-input" placeholder="Enter Deepgram API key" autocomplete="off">
-                      <button class="btn-toolbar btn-sm" onclick="app.toggleDeepgramKeyVisibility()" id="voiceKeyToggleBtn" type="button">Show</button>
+                      <button class="cm-btn cm-btn--sm" onclick="app.toggleDeepgramKeyVisibility()" id="voiceKeyToggleBtn" type="button">Show</button>
                     </div>
                   </div>
                 </div>
@@ -3286,7 +3286,7 @@
                       <span class="cm-row__label">Check this machine</span>
                       <span class="cm-row__hint">Runs <code>codeman doctor</code> on the server: which agent CLIs, tmux, Node and the optional office tools are installed, their versions, and how to install what is missing.</span>
                     </div>
-                    <button class="btn-toolbar btn-sm" id="doctorRunBtn" onclick="app.runDoctor()">Run checks</button>
+                    <button class="cm-btn cm-btn--sm" id="doctorRunBtn" onclick="app.runDoctor()">Run checks</button>
                   </div>
                   <div id="doctorResult" class="set-note" style="display:none" data-i18n-skip></div>
                 </div>
@@ -3365,9 +3365,9 @@
           </div>
         </div>
         <div class="form-actions set-foot">
-          <button class="btn-toolbar" onclick="app.closeAppSettings()">Cancel</button>
-          <button class="btn-toolbar" onclick="app.applyAppSettings()" title="Save and keep Settings open">Apply</button>
-          <button class="btn-toolbar btn-primary" onclick="app.saveAppSettings()">Save</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.closeAppSettings()">Cancel</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.applyAppSettings()" title="Save and keep Settings open">Apply</button>
+          <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.saveAppSettings()">Save</button>
         </div>
       </div>
     </div>
@@ -3383,7 +3383,7 @@
         <div class="cm-dialog__body">
           <div id="shortcutOverlayList"></div>
           <div class="shortcut-overlay-footer">
-            <button class="btn btn-sm" onclick="app.closeShortcutOverlay(); app.showHelp()">Full shortcut reference</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.closeShortcutOverlay(); app.showHelp()">Full shortcut reference</button>
           </div>
         </div>
       </div>
@@ -3464,7 +3464,7 @@
               <label>Parent Folder</label>
               <div class="path-input-group">
                 <input type="text" id="newCasePath" placeholder="~/projects" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" oninput="app.updateNewCasePathPreview()">
-                <button type="button" class="btn path-input-browse" onclick="app.openNewCasePathPicker()">Browse&hellip;</button>
+                <button type="button" class="cm-btn cm-btn--sm path-input-browse" onclick="app.openNewCasePathPicker()">Browse&hellip;</button>
               </div>
               <span class="form-hint" id="newCasePathPreview">Pick the folder the new case folder should be created inside.</span>
             </div>
@@ -3588,7 +3588,7 @@
               <label>Folder Path</label>
               <div class="path-input-group">
                 <input type="text" id="linkCasePath" placeholder="/mnt/d/AI/my-project" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-                <button type="button" class="btn path-input-browse" onclick="app.openLinkCasePathPicker()">Browse&hellip;</button>
+                <button type="button" class="cm-btn cm-btn--sm path-input-browse" onclick="app.openLinkCasePathPicker()">Browse&hellip;</button>
               </div>
               <span class="form-hint">Choose an existing folder from this computer or enter its absolute path</span>
             </div>
@@ -3673,7 +3673,7 @@
               <div class="advanced-options-content">
                 <span class="form-hint">Find <code>codeman-*</code> tmux sessions already running on this host (started by the remote's own Codeman or another instance) and attach to one. Attaching shares the session; closing the tab detaches it — it is never killed.</span>
                 <div class="form-row" style="margin-top: 8px;">
-                  <button type="button" class="btn-toolbar" id="remoteDiscoverBtn" onclick="app.discoverRemoteSessions()">Discover existing sessions</button>
+                  <button type="button" class="cm-btn cm-btn--sm" id="remoteDiscoverBtn" onclick="app.discoverRemoteSessions()">Discover existing sessions</button>
                 </div>
                 <div id="remoteDiscoverResults" class="remote-discover-results"></div>
               </div>
@@ -3707,7 +3707,7 @@
               <label>Container Workdir</label>
               <div class="path-input-group">
                 <input type="text" id="dockerAdoptWorkdir" placeholder="/workspace" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-                <button type="button" class="btn path-input-browse" onclick="app.openDockerWorkdirPicker()">Browse&hellip;</button>
+                <button type="button" class="cm-btn cm-btn--sm path-input-browse" onclick="app.openDockerWorkdirPicker()">Browse&hellip;</button>
               </div>
               <span class="form-hint">A path that already exists inside the container. Adoption mounts nothing, so this need not match the host workspace path.</span>
             </div>
@@ -3720,7 +3720,7 @@
               <label>Workspace Path</label>
               <div class="path-input-group">
                 <input type="text" id="dockerWorkspacePath" placeholder="/home/user/projects/sandbox" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-                <button type="button" class="btn path-input-browse" onclick="app.openDockerWorkspacePathPicker()">Browse&hellip;</button>
+                <button type="button" class="cm-btn cm-btn--sm path-input-browse" onclick="app.openDockerWorkspacePathPicker()">Browse&hellip;</button>
               </div>
               <span class="form-hint">Absolute HOST directory, bind-mounted into the container. Codeman scaffolds CLAUDE.md + hooks into it.</span>
             </div>
@@ -3780,7 +3780,7 @@
             <div id="dockerExportsSection" style="margin-top: 16px; border-top: 1px solid var(--border, #333); padding-top: 12px;">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
                 <strong style="font-size: 13px;">Docker exports</strong>
-                <button class="btn-toolbar" onclick="app.refreshDockerExports()">Refresh</button>
+                <button class="cm-btn cm-btn--sm" onclick="app.refreshDockerExports()">Refresh</button>
               </div>
               <div class="case-manage-list" id="dockerExportsList"><span class="form-hint">No exports yet. Export a docker case from its tab.</span></div>
             </div>
@@ -3788,8 +3788,8 @@
           </div>
         </div>
         <div class="form-actions set-foot">
-          <button class="btn-toolbar" onclick="app.closeCreateCaseModal()">Cancel</button>
-          <button class="btn-toolbar btn-primary" id="caseModalSubmit" onclick="app.submitCaseModal()">Create</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.closeCreateCaseModal()">Cancel</button>
+          <button class="cm-btn cm-btn--sm cm-btn--primary" id="caseModalSubmit" onclick="app.submitCaseModal()">Create</button>
         </div>
       </div>
     </div>
@@ -3874,7 +3874,7 @@
                 <label>Working Directory <span id="existingPlanBadge" class="existing-plan-badge" style="display:none"></span></label>
                 <div class="case-select-inline">
                   <select id="ralphCaseSelect" class="form-select" onchange="app.onRalphCaseChange()"></select>
-                  <button class="btn-toolbar btn-sm" onclick="app.showCreateCaseModal()">+</button>
+                  <button class="cm-btn cm-btn--sm" onclick="app.showCreateCaseModal()">+</button>
                 </div>
               </div>
               <div class="wizard-inline-field wizard-inline-field-small">
@@ -3909,8 +3909,8 @@
               </div>
               <p class="plan-loading-hint" id="planLoadingHint">Initializing deep reasoning model</p>
               <div class="plan-loading-actions">
-                <button class="btn-toolbar btn-sm plan-cancel-btn" onclick="app.cancelPlanGeneration()">Stop</button>
-                <button class="btn-toolbar btn-sm" onclick="app.regeneratePlan()">Regenerate</button>
+                <button class="cm-btn cm-btn--sm plan-cancel-btn" onclick="app.cancelPlanGeneration()">Stop</button>
+                <button class="cm-btn cm-btn--sm" onclick="app.regeneratePlan()">Regenerate</button>
               </div>
               <!-- Auto-start toggle visible during generation -->
               <div class="plan-autostart-toggle">
@@ -3929,7 +3929,7 @@
               </div>
               <p class="plan-error-msg" id="planErrorMsg"></p>
               <div class="plan-actions">
-                <button class="btn-toolbar btn-primary" onclick="app.generatePlan()">Regenerate Plan</button>
+                <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.generatePlan()">Regenerate Plan</button>
               </div>
               <p class="plan-skip-hint">Use <strong>Back</strong> to edit your task, or <strong>Next</strong> to continue without a plan</p>
             </div>
@@ -3946,7 +3946,7 @@
                       <button type="button" class="plan-detail-btn active" data-detail="detailed" onclick="app.setPlanDetail('detailed')" title="Enhanced: parallel subagents + verification (slower but more thorough)">Enhanced</button>
                     </div>
                   </div>
-                  <button class="btn-toolbar btn-sm" onclick="app.regeneratePlan()">Regenerate</button>
+                  <button class="cm-btn cm-btn--sm" onclick="app.regeneratePlan()">Regenerate</button>
                 </div>
               </div>
               <div id="planItemsList" class="plan-items-list"></div>
@@ -3998,11 +3998,11 @@
 
         <!-- Wizard Footer -->
         <div class="wizard-footer">
-          <button class="btn-toolbar" id="ralphBackBtn" onclick="app.ralphWizardBack()" style="display: none;">Back</button>
+          <button class="cm-btn cm-btn--sm" id="ralphBackBtn" onclick="app.ralphWizardBack()" style="display: none;">Back</button>
           <div class="wizard-footer-right">
-            <button class="btn-toolbar" onclick="app.closeRalphWizard()">Cancel</button>
-            <button class="btn-toolbar btn-primary" id="ralphNextBtn" onclick="app.ralphWizardNext()">Next</button>
-            <button class="btn-toolbar btn-success" id="ralphStartBtn" onclick="app.startRalphLoop()" style="display: none;">Start Loop</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.closeRalphWizard()">Cancel</button>
+            <button class="cm-btn cm-btn--sm cm-btn--primary" id="ralphNextBtn" onclick="app.ralphWizardNext()">Next</button>
+            <button class="cm-btn cm-btn--sm cm-btn--success" id="ralphStartBtn" onclick="app.startRalphLoop()" style="display: none;">Start Loop</button>
           </div>
         </div>
       </div>
@@ -4031,7 +4031,7 @@
           </button>
         </div>
         <div class="modal-footer-cancel">
-          <button class="btn-toolbar btn-sm" onclick="app.closeKillAllModal()">Cancel</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.closeKillAllModal()">Cancel</button>
         </div>
       </div>
     </div>
@@ -4043,7 +4043,7 @@
         <div class="cm-dialog__head">
           <h3 class="cm-dialog__title">Away Digest</h3>
           <div class="modal-header-actions">
-            <button class="btn-toolbar btn-sm" onclick="app.loadAwayDigest()" title="Refresh away digest">&#x21BB; Refresh</button>
+            <button class="cm-btn cm-btn--sm" onclick="app.loadAwayDigest()" title="Refresh away digest">&#x21BB; Refresh</button>
             <button class="modal-close" onclick="app.closeAwayDigest()" aria-label="Close away digest">&times;</button>
           </div>
         </div>
@@ -4147,8 +4147,8 @@
         </div>
       </div>
       <div class="cm-dialog__foot">
-        <button class="btn btn-secondary" onclick="app.closeSavePresetModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="app.confirmSavePreset()">Save Preset</button>
+        <button class="cm-btn cm-btn--sm" onclick="app.closeSavePresetModal()">Cancel</button>
+        <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.confirmSavePreset()">Save Preset</button>
       </div>
     </div>
   </div>
@@ -4261,8 +4261,8 @@
         <div class="form-hint" id="wakeConfigStatus"></div>
       </div>
       <div class="cm-dialog__foot">
-        <button class="btn-toolbar" onclick="app.closeWakeConfigDialog()">Cancel</button>
-        <button class="btn-toolbar btn-primary" id="wakeConfigSave" onclick="app.saveWakeConfig()">Save</button>
+        <button class="cm-btn cm-btn--sm" onclick="app.closeWakeConfigDialog()">Cancel</button>
+        <button class="cm-btn cm-btn--sm cm-btn--primary" id="wakeConfigSave" onclick="app.saveWakeConfig()">Save</button>
       </div>
     </div>
   </div>
@@ -4297,10 +4297,10 @@
            in this codebase, so the bare classes render as unstyled UA buttons.
            btn-toolbar is the convention every other modal footer uses. -->
       <div class="cm-dialog__foot">
-        <button class="btn-toolbar" onclick="app.closeReadMyMind()">Dismiss</button>
-        <button class="btn-toolbar" id="readMyMindRethink" onclick="app.rethinkReadMyMind()">Rethink</button>
-        <button class="btn-toolbar" onclick="app.sendReadMyMind(false)" title="Put the text on the session's composer without submitting it">Insert</button>
-        <button class="btn-toolbar btn-primary" onclick="app.sendReadMyMind(true)">Send</button>
+        <button class="cm-btn cm-btn--sm" onclick="app.closeReadMyMind()">Dismiss</button>
+        <button class="cm-btn cm-btn--sm" id="readMyMindRethink" onclick="app.rethinkReadMyMind()">Rethink</button>
+        <button class="cm-btn cm-btn--sm" onclick="app.sendReadMyMind(false)" title="Put the text on the session's composer without submitting it">Insert</button>
+        <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.sendReadMyMind(true)">Send</button>
       </div>
     </div>
   </div>

@@ -53,7 +53,7 @@ introduces a hue.
 
 | Family   | Classes |
 | -------- | ------- |
-| Button   | `.cm-btn` + `--sm`, `--lg`, `--icon` (32px, 44px on touch, 16px glyph), `--primary`, `--ghost` (`aria-pressed` = on), `--danger` |
+| Button   | `.cm-btn` + `--sm`, `--lg`, `--icon` (32px, 44px on touch, 16px glyph), `--primary`, `--ghost` (`aria-pressed` = on), `--danger`, `--success` |
 | Form     | `.cm-input`, `.cm-select`, `.cm-switch` (`--sm`), `.cm-segmented` |
 | Tags     | `.cm-chip`, `.cm-pill`, `.cm-dot`, `.cm-badge`, tones `.cm-tone-success|warning|danger|info|accent` |
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
@@ -188,6 +188,11 @@ on every skin.
 menus, the Session Manager row menu and the Tiles count menu are all
 `.cm-menu--popover`; a legacy menu class stays only for that menu's own z-index
 layer (`test/menu-kit-migration.test.ts`).
+
+**Text buttons are on the kit.** Every dialog, settings and panel text button is
+`.cm-btn.cm-btn--sm` plus a variant (`test/button-kit-migration.test.ts`); the bare
+`btn`/`btn-xs`/`btn-secondary` classes, which no CSS styled, are gone with them.
+`.btn-toolbar` now means the bottom toolbar family only.
 
 **Icon buttons are on the kit.** Every small icon button (panel, preview and
 drawer toolbars) is `.cm-btn.cm-btn--icon.cm-btn--ghost`: 32px with a mouse, the

@@ -1501,7 +1501,7 @@ html.mobile-init .file-browser-panel {
     flex-wrap: wrap;
   }
 
-  .readmymind-modal .cm-dialog__foot .btn-toolbar {
+  .readmymind-modal .cm-dialog__foot .cm-btn {
     flex: 1 1 auto;
     justify-content: center;
     min-height: 38px;
@@ -1981,7 +1981,7 @@ html.mobile-init .file-browser-panel {
     gap: 0.3rem;
   }
 
-  .run-summary-actions .btn-toolbar {
+  .run-summary-actions .cm-btn {
     flex: 1;
     min-height: 36px;
     white-space: nowrap;
@@ -2136,11 +2136,11 @@ html.mobile-init .file-browser-panel {
     gap: 0.75rem;
   }
 
-  #createCaseModal .form-actions .btn-toolbar {
-    min-height: 44px !important;
-    max-height: 44px !important;
-    height: 44px !important;
-    font-size: 0.85rem !important;
+  #createCaseModal .form-actions .cm-btn {
+    min-height: 44px;
+    max-height: 44px;
+    height: 44px;
+    font-size: 0.85rem;
     font-weight: 500;
     border-radius: 8px;
   }
@@ -2240,12 +2240,12 @@ html.mobile-init .file-browser-panel {
     gap: 0.5rem;
   }
 
-  .form-actions .btn-toolbar {
+  .form-actions .cm-btn {
     flex: 1;
-    min-height: 36px !important;
-    max-height: 36px !important;
-    height: 36px !important;
-    font-size: 0.75rem !important;
+    min-height: 36px;
+    max-height: 36px;
+    height: 36px;
+    font-size: 0.75rem;
   }
 
   /* ---- Subagent Windows: Mobile Optimizations ---- */

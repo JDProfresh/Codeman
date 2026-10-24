@@ -6089,7 +6089,7 @@ Object.assign(CodemanApp.prototype, {
             </div>
           </div>
           <div class="process-actions">
-            <button class="btn-toolbar btn-sm btn-danger" onclick="event.stopPropagation(); app.killMuxSession(${sid})" title="Kill session">Kill</button>
+            <button class="cm-btn cm-btn--sm cm-btn--danger" onclick="event.stopPropagation(); app.killMuxSession(${sid})" title="Kill session">Kill</button>
           </div>
         </div>
       `;
@@ -6132,7 +6132,7 @@ Object.assign(CodemanApp.prototype, {
             </div>
           </div>
           <div class="process-actions">
-            ${agent.status !== 'completed' ? `<button class="btn-toolbar btn-sm btn-danger" onclick="app.killSubagent(${escapeHtml(JSON.stringify(agent.agentId))})" title="Kill agent">Kill</button>` : ''}
+            ${agent.status !== 'completed' ? `<button class="cm-btn cm-btn--sm cm-btn--danger" onclick="app.killSubagent(${escapeHtml(JSON.stringify(agent.agentId))})" title="Kill agent">Kill</button>` : ''}
           </div>
         </div>
       `;

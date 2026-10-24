@@ -658,7 +658,7 @@ Object.assign(CodemanApp.prototype, {
     const el = (tag, cls, text) => this._gitEl(tag, cls, text);
     body.replaceChildren();
     const bar = el('div', 'git-diff-bar');
-    const back = el('button', 'btn-toolbar btn-sm', '← Back');
+    const back = el('button', 'cm-btn cm-btn--sm', '← Back');
     back.type = 'button';
     back.addEventListener('click', () => this.closeGitDiff());
     bar.append(back);
@@ -666,7 +666,7 @@ Object.assign(CodemanApp.prototype, {
     const kindLabel = { staged: 'staged', unstaged: 'not staged', untracked: 'new file', conflicted: 'conflict' };
     bar.append(el('span', 'git-diff-kind', kindLabel[view.file.kind] || ''));
     if (view.letter !== 'D') {
-      const open = el('button', 'btn-toolbar btn-sm', 'Open file');
+      const open = el('button', 'cm-btn cm-btn--sm', 'Open file');
       open.type = 'button';
       open.addEventListener('click', () =>
         this.openFilePreview?.(`${view.repoRoot}/${view.file.path}`, this.activeSessionId)

@@ -2061,7 +2061,7 @@ class CodemanApp {
     el.className = 'solo-gone-overlay';
     el.innerHTML = '<h2>Session unavailable</h2>'
       + '<p>This session has ended or is no longer available.</p>'
-      + '<button class="btn-primary" onclick="app._closeSoloWindow()">Close window</button>';
+      + '<button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app._closeSoloWindow()">Close window</button>';
     document.body.appendChild(el);
     document.title = (window.codemanT?.('Session ended') || 'Session ended')
       + ' — ' + (window.CodemanI18n?.displayName || 'Codeman');

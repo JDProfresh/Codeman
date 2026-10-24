@@ -493,9 +493,9 @@ Object.assign(CodemanApp.prototype, {
         <h3>This URL did not load</h3>
         <p>It may be unreachable from the Codeman server, or it may refuse to be embedded.</p>
         <div class="webview-failure-actions">
-          <button class="btn-secondary" onclick="app.reloadWebview(${jsonId})">Reload</button>
-          <button class="btn-secondary" onclick="app.openWebviewExternal(${jsonId})">Open in new tab</button>
-          <button class="btn-secondary" onclick="app.showWebviewModal(${jsonId})">Edit</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.reloadWebview(${jsonId})">Reload</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.openWebviewExternal(${jsonId})">Open in new tab</button>
+          <button class="cm-btn cm-btn--sm" onclick="app.showWebviewModal(${jsonId})">Edit</button>
         </div>
       </div>`;
   },

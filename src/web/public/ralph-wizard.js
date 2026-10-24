@@ -213,10 +213,10 @@ Object.assign(CodemanApp.prototype, {
               <span class="stat total">${total} total</span>
             </div>
             <div class="existing-plan-actions">
-              <button class="btn-toolbar btn-primary btn-sm" onclick="app.useExistingPlan()">
+              <button class="cm-btn cm-btn--sm cm-btn--primary" onclick="app.useExistingPlan()">
                 Use Existing Plan
               </button>
-              <button class="btn-toolbar btn-sm" onclick="app.generateNewPlan()">
+              <button class="cm-btn cm-btn--sm" onclick="app.generateNewPlan()">
                 Generate New
               </button>
             </div>

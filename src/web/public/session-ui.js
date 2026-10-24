@@ -4528,9 +4528,9 @@ Object.assign(CodemanApp.prototype, {
           return `<div class="case-manage-item" style="display:flex; align-items:center; gap:8px; justify-content:space-between;">
             <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${nm}">${nm} <span class="form-hint">(${mb} MB)</span></span>
             <span style="flex-shrink:0;">
-              <a class="btn-toolbar" href="${CodemanBase.url(`/api/docker-exports/${encodeURIComponent(e.name)}`)}" download>Download</a>
-              <button class="btn-toolbar" onclick="app.importDockerBundle('${nm.replace(/'/g, "\\'")}')">Import</button>
-              <button class="btn-toolbar" onclick="app.deleteDockerExport('${nm.replace(/'/g, "\\'")}')">Delete</button>
+              <a class="cm-btn cm-btn--sm" href="${CodemanBase.url(`/api/docker-exports/${encodeURIComponent(e.name)}`)}" download>Download</a>
+              <button class="cm-btn cm-btn--sm" onclick="app.importDockerBundle('${nm.replace(/'/g, "\\'")}')">Import</button>
+              <button class="cm-btn cm-btn--sm" onclick="app.deleteDockerExport('${nm.replace(/'/g, "\\'")}')">Delete</button>
             </span>
           </div>`;
         })
@@ -4708,7 +4708,7 @@ Object.assign(CodemanApp.prototype, {
             <span class="remote-discover-name">${escapeHtml(s.name)} ${attachedBadge}</span>
             <span class="form-hint">age ${age} · ${s.windows || 1} window(s)</span>
           </div>
-          <button type="button" class="btn-toolbar" onclick="app.attachDiscoveredSession('${escapeHtml(hostId)}', '${escapeHtml(s.name)}')">Attach</button>
+          <button type="button" class="cm-btn cm-btn--sm" onclick="app.attachDiscoveredSession('${escapeHtml(hostId)}', '${escapeHtml(s.name)}')">Attach</button>
         </div>`;
     }).join('');
     results.innerHTML = rows;
