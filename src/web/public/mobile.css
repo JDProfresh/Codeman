@@ -1878,21 +1878,21 @@ html.mobile-init .file-browser-panel {
   /* Textareas — prevent iOS zoom with 16px font, compact height */
   #sessionOptionsModal textarea {
     font-size: 16px;
-    min-height: 32px !important;
+    min-height: 32px;
     max-height: 56px;
-    height: auto !important;
+    height: auto;
     border-radius: 6px;
     padding: 0.3rem 0.5rem;
   }
 
   /* Override inline min-height styles on respawn textareas */
   #modalRespawnPrompt {
-    min-height: 32px !important;
+    min-height: 32px;
     max-height: 56px;
   }
 
   #modalRespawnKickstart {
-    min-height: 32px !important;
+    min-height: 32px;
     max-height: 48px;
   }
 
@@ -2308,8 +2308,8 @@ html.mobile-init .file-browser-panel {
   }
 
   .subagent-model-badge {
-    font-size: 0.45rem !important;
-    padding: 0.05rem 0.15rem !important;
+    font-size: 0.45rem;
+    padding: 0.05rem 0.15rem;
   }
 
   .subagent-window-actions button {

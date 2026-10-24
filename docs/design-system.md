@@ -136,6 +136,21 @@ The split pane was removed: the tile grid covers "several sessions side by side"
 
 ## The phone
 
+`mobile.css` (loaded below 1024px) is **breakpoint modifiers**: one block per media
+query, in the order its header lists, with touch, reduced motion and the fold last
+(`test/mobile-css-breakpoints.test.ts`). A kit component carries its own phone
+modifiers inside `css/components.css` instead: a `.cm-dialog` goes full-screen
+under 600px (`--sm` stays a box) with no rule in `mobile.css`. Add a phone rule to
+the block for its width; a new query is added to the header list and the test on
+purpose. Run `npm run css:diff -- --viewports all` for any change there: the extra
+viewports (360, 700, 768) sit on mobile.css's own steps.
+
+The `!important`s left in `mobile.css` are load-bearing: phone toolbar sizes beat
+`.btn-toolbar`'s own `!important` sizing (and every button that carries that class,
+the overview's Run included), toolbar colours beat the weighted skin block, and
+`display` beats JS inline toggles. Removing them is a toolbar refactor, not a
+cleanup.
+
 The toolbar is Run, Stop, Enter, mic and More (⋯) (board P07). The More sheet
 holds Case, Attach and App Settings. The agent key bar opens with Compose (accent),
 Esc, Tab, ⇧Tab, then the arrows (`test/phone-toolbar-p07.test.ts`). Header
@@ -149,7 +164,7 @@ controls stay off phones.
 | 1 | type/space/radius snapped onto tokens | done |
 | 2 | skins in `@layer skins`, semantic button colors | done |
 | 3 | the kit; Run split-button tokens; toolbar and banner families | kit done; more families can migrate |
-| 4 | header More + pins, Inbox, panel dock, split removed, phone P07, `.cm-shell` grid, wiki re-shoots | done; mobile.css shrunk by dead and redundant rules, breakpoint modifiers still to come |
+| 4 | header More + pins, Inbox, panel dock, split removed, phone P07, `.cm-shell` grid, wiki re-shoots, mobile.css as one block per breakpoint, kit phone modifiers | done |
 
 **Dialogs are on the kit.** Every dialog box is a `.cm-dialog` with a titled
 `__head` (`test/dialog-kit-migration.test.ts` refuses the old `.modal-content`
