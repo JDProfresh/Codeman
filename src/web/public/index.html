@@ -215,11 +215,11 @@
       <!-- Connection-loss banner: shown once session state HAS loaded and the
            link then drops, so the terminal stays readable behind it.
            The blocking variant is #offlineOverlay at the end of <body>. -->
-      <div class="offline-banner" id="offlineBanner" role="status" hidden>
-        <span class="offline-banner-dot" aria-hidden="true"></span>
-        <span class="offline-banner-text" id="offlineBannerText">No connection to the Codeman server</span>
-        <span class="offline-banner-detail" id="offlineBannerDetail"></span>
-        <button class="offline-banner-retry" id="offlineBannerRetry" onclick="app.retryConnection()">Retry now</button>
+      <div class="cm-banner cm-banner--alert cm-banner--danger" id="offlineBanner" role="status" hidden>
+        <span class="cm-banner__dot" aria-hidden="true"></span>
+        <span class="cm-banner__title" id="offlineBannerText">No connection to the Codeman server</span>
+        <span class="cm-banner__aside" id="offlineBannerDetail"></span>
+        <button class="cm-banner__btn" id="offlineBannerRetry" onclick="app.retryConnection()">Retry now</button>
       </div>
 
       <!-- Remote-host unreachable: the machine SLEEPS, the local ssh pane stalls
@@ -227,29 +227,29 @@
            Codeman can wake it. Amber, not red: the session is fine, the host is
            asleep. Without a configured wake target the action becomes "Configure
            WoL" and opens the small config dialog. -->
-      <div class="offline-banner host-wake-banner" id="hostWakeBanner" role="status" hidden>
-        <span class="offline-banner-dot" aria-hidden="true"></span>
-        <span class="offline-banner-text" id="hostWakeBannerText">Remote host is unreachable</span>
-        <span class="offline-banner-detail" id="hostWakeBannerDetail"></span>
-        <button class="offline-banner-retry" id="hostWakeBannerAction" onclick="app.hostWakeAction()">Wake</button>
+      <div class="cm-banner cm-banner--alert cm-banner--warning" id="hostWakeBanner" role="status" hidden>
+        <span class="cm-banner__dot" aria-hidden="true"></span>
+        <span class="cm-banner__title" id="hostWakeBannerText">Remote host is unreachable</span>
+        <span class="cm-banner__aside" id="hostWakeBannerDetail"></span>
+        <button class="cm-banner__btn" id="hostWakeBannerAction" onclick="app.hostWakeAction()">Wake</button>
       </div>
 
       <!-- Reboot-restore offer: shown when the server found sessions a host reboot
            killed and is asking whether to rebuild them. Populated by
            reboot-restore-ui.js; nothing is created until the user clicks. -->
-      <div class="reboot-restore-banner" id="rebootRestoreBanner" role="status" hidden>
-        <span class="reboot-restore-banner-icon" aria-hidden="true">↺</span>
-        <span class="reboot-restore-banner-text" id="rebootRestoreBannerText"></span>
-        <span class="reboot-restore-banner-detail" id="rebootRestoreBannerDetail"></span>
-        <span class="reboot-restore-banner-note">Conversations return; terminal history does not.</span>
+      <div class="cm-banner cm-banner--alert cm-banner--warning" id="rebootRestoreBanner" role="status" hidden>
+        <span class="cm-banner__icon" aria-hidden="true">↺</span>
+        <span class="cm-banner__title" id="rebootRestoreBannerText"></span>
+        <span class="cm-banner__detail" id="rebootRestoreBannerDetail"></span>
+        <span class="cm-banner__aside">Conversations return; terminal history does not.</span>
         <button
-          class="reboot-restore-banner-accept"
+          class="cm-banner__btn"
           id="rebootRestoreBannerAccept"
           onclick="app.restoreRebootSessions()"
         >
           Restore
         </button>
-        <button class="reboot-restore-banner-dismiss" onclick="app.dismissRebootRestore()">Dismiss</button>
+        <button class="cm-banner__btn cm-banner__btn--quiet" onclick="app.dismissRebootRestore()">Dismiss</button>
       </div>
 
       <!-- Timer Banner (shown when timed run is active) -->

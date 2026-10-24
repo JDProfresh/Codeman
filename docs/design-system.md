@@ -59,7 +59,7 @@ introduces a hue.
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
 | Menu     | `.cm-menu` (`--popover`), `__item`, `__row`, `__pin`, `__kbd`, `__sep`, `__heading` |
 | Tabs     | `.cm-tabs`, `.cm-tabs__tab` (`aria-selected` drives the state; `[hidden]` hides) |
-| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__actions`), `.cm-empty`, `.cm-panel` (`__head` with `__title` and `__actions`, `__head--tabs` for a tab strip, `__body`), `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
+| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__aside`, `__actions`; `--alert` is the solid, skin-independent strip with `__dot`, `__icon`, `__btn`, `__btn--quiet`), `.cm-empty`, `.cm-panel` (`__head` with `__title` and `__actions`, `__head--tabs` for a tab strip, `__body`), `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
 
 Rules for kit code: `.cm-*` selectors only, in `@layer components`, no
 `!important`, no raw type/space/radius values (`test/css-design-tokens.test.ts`
@@ -177,6 +177,12 @@ controls stay off phones.
 family). On phones only `--sm` stays a box; every other size goes full-screen. The
 overlay around it (`.modal`, `.modal-backdrop`, `.modal-close`) stays legacy until
 the shell phase.
+
+**Alert strips are on the kit.** Connection lost (red), host asleep and reboot
+restore (amber) are one `.cm-banner--alert` variant with its own phone modifiers
+(`test/banner-kit-migration.test.ts`). Its colours are the skin-independent
+`--cm-alert-*` tokens, never the skin tones: "you are disconnected" reads the same
+on every skin.
 
 **Settings rows are on the kit.** App Settings, Session Options and Add Case draw
 each row as a `.cm-row` (`__text`, `__label`, `__hint`) inside a `.cm-group` box, as

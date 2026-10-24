@@ -519,6 +519,115 @@
   .cm-banner--info {
     --cm-tone: var(--cm-accent);
   }
+  .cm-banner[hidden] {
+    display: none;
+  }
+
+  /* Alert: a solid, skin-independent strip with light ink (connection lost,
+     host asleep, reboot restore). Red with --danger, amber with --warning. */
+  .cm-banner--alert {
+    --cm-alert: var(--cm-alert-danger);
+    z-index: var(--cm-z-banner);
+    flex-shrink: 0;
+    min-height: 0;
+    padding: var(--cm-space-2) var(--cm-space-4);
+    border-bottom: 1px solid var(--cm-alert-edge);
+    background: var(--cm-alert);
+    color: var(--cm-on-alert);
+    font-weight: var(--cm-weight-semibold);
+    letter-spacing: 0.01em;
+  }
+  .cm-banner--alert.cm-banner--warning {
+    --cm-alert: var(--cm-alert-warning);
+  }
+  .cm-banner--alert .cm-banner__title {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cm-banner--alert :is(.cm-banner__detail, .cm-banner__aside) {
+    min-width: 0;
+    overflow: hidden;
+    color: color-mix(in srgb, var(--cm-on-alert) 80%, transparent);
+    font-weight: var(--cm-weight-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Secondary text pushed to the end of the strip, before the buttons. */
+  .cm-banner__aside {
+    margin-left: auto;
+  }
+  .cm-banner__icon {
+    flex-shrink: 0;
+    font-size: var(--cm-text-md);
+    line-height: 1;
+  }
+  /* A pulsing dot: "this is live and still failing". */
+  .cm-banner__dot {
+    flex-shrink: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: var(--cm-radius-pill);
+    background: currentColor;
+    animation: cm-banner-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes cm-banner-pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .cm-banner__btn {
+    flex-shrink: 0;
+    padding: var(--cm-space-1) var(--cm-space-2);
+    border: 1px solid color-mix(in srgb, var(--cm-on-alert) 55%, transparent);
+    border-radius: var(--cm-radius-sm);
+    background: color-mix(in srgb, var(--cm-on-alert) 12%, transparent);
+    color: var(--cm-on-alert);
+    font: inherit;
+    font-size: var(--cm-text-xs);
+    font-weight: var(--cm-weight-semibold);
+    cursor: pointer;
+  }
+  .cm-banner__btn:hover {
+    background: color-mix(in srgb, var(--cm-on-alert) 24%, transparent);
+  }
+  .cm-banner__btn--quiet {
+    border-color: color-mix(in srgb, var(--cm-on-alert) 30%, transparent);
+    background: transparent;
+    font-weight: var(--cm-weight-medium);
+  }
+  .cm-banner__btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  /* Phones: a tighter strip inside the safe area; the secondary text goes
+     first, and the first button takes the free room. */
+  @media (max-width: 599px) {
+    .cm-banner--alert {
+      gap: var(--cm-space-1h);
+      padding: var(--cm-space-1h) calc(var(--cm-space-2) + var(--safe-area-right, 0px)) var(--cm-space-1h)
+        calc(var(--cm-space-2) + var(--safe-area-left, 0px));
+      font-size: var(--cm-text-xs);
+    }
+    .cm-banner--alert :is(.cm-banner__detail, .cm-banner__aside) {
+      display: none;
+    }
+    .cm-banner--alert .cm-banner__btn {
+      padding: var(--cm-space-1) var(--cm-space-2);
+    }
+    .cm-banner--alert .cm-banner__btn:first-of-type {
+      margin-left: auto;
+    }
+  }
 
   /* ---------- Empty state ---------- */
   .cm-empty {

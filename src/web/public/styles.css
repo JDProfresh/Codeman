@@ -3019,7 +3019,7 @@ body.solo-mode .header-plan-usage,
 /* A solo window shows ONE session and has no tab strip to put restored ones in,
    so offering to rebuild a list of them there is an offer it cannot show the
    result of. The dashboard that spawned this window carries the banner. */
-body.solo-mode .reboot-restore-banner,
+body.solo-mode #rebootRestoreBanner,
 body.solo-mode .btn-lifecycle-log {
   display: none !important;
 }
@@ -16050,164 +16050,11 @@ body.touch-device.cjk-input-visible .main {
    ═══════════════════════════════════════════════════════════════
    The service worker serves the cached shell, so an unreachable server used to
    render as an empty-but-normal dashboard with only an 8px red dot in the
-   header. Both surfaces below are deliberately skin-independent (literal
-   colors, not tokens): "you are disconnected" must read identically on every
-   skin, including the light ones. Visibility is driven by the `hidden`
-   attribute, so the display rules need !important to lose to it. */
-
-/* Reboot-restore offer. Amber rather than red: nothing is wrong, the board is
-   asking a question, and the user can ignore it. See reboot-restore-ui.js. */
-.reboot-restore-banner {
-  display: flex;
-  align-items: center;
-  gap: var(--cm-space-2);
-  padding: var(--cm-space-2) var(--cm-space-4);
-  background: linear-gradient(90deg, #b45309, #92400e);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
-  color: #fff;
-  font-size: var(--cm-text-sm);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
-  z-index: 1250;
-}
-
-.reboot-restore-banner[hidden] {
-  display: none !important;
-}
-
-.reboot-restore-banner-icon {
-  flex-shrink: 0;
-  font-size: var(--cm-text-md);
-  line-height: 1;
-}
-
-.reboot-restore-banner-text {
-  white-space: nowrap;
-}
-
-.reboot-restore-banner-detail {
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-  /* A flex item will not shrink below its content width at the default
-     `min-width: auto`, so without this the session names push the buttons out of
-     the line between the phone breakpoint and full width. */
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.reboot-restore-banner-note {
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: 500;
-  white-space: nowrap;
-  margin-left: auto;
-}
-
-.reboot-restore-banner-accept,
-.reboot-restore-banner-dismiss {
-  flex-shrink: 0;
-  padding: var(--cm-space-1) var(--cm-space-2);
-  border-radius: var(--cm-radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  font-size: var(--cm-text-xs);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.reboot-restore-banner-accept:hover,
-.reboot-restore-banner-dismiss:hover {
-  background: rgba(255, 255, 255, 0.24);
-}
-
-.reboot-restore-banner-accept:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.reboot-restore-banner-dismiss {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: transparent;
-  font-weight: 500;
-}
-
-.offline-banner {
-  display: flex;
-  align-items: center;
-  gap: var(--cm-space-2);
-  padding: var(--cm-space-2) var(--cm-space-4);
-  background: linear-gradient(90deg, #b91c1c, #991b1b);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
-  color: #fff;
-  font-size: var(--cm-text-sm);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
-  z-index: 1250;
-}
-
-.offline-banner[hidden] {
-  display: none !important;
-}
-
-.offline-banner-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #fff;
-  flex-shrink: 0;
-  animation: offline-banner-pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes offline-banner-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.25; }
-}
-
-.offline-banner-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.offline-banner-detail {
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-  white-space: nowrap;
-  margin-left: auto;
-}
-
-.offline-banner-retry {
-  flex-shrink: 0;
-  padding: var(--cm-space-1) var(--cm-space-2);
-  border-radius: var(--cm-radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  font-size: var(--cm-text-xs);
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.offline-banner-retry:hover {
-  background: rgba(255, 255, 255, 0.24);
-}
-
-/* Remote-host unreachable (host asleep, can be woken). Reuses the offline-banner
-   layout and children; amber instead of red because the Codeman session itself is
-   perfectly healthy — only the machine is asleep. */
-.host-wake-banner {
-  background: linear-gradient(90deg, #b45309, #92400e);
-}
-
-.host-wake-banner .offline-banner-retry:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
+   header. Both surfaces are deliberately skin-independent: "you are
+   disconnected" must read identically on every skin, including the light
+   ones. The banner (and the host-asleep and reboot-restore strips) is the
+   kit's .cm-banner--alert (css/components.css), reading the --cm-alert-*
+   tokens; the overlay below keeps literal colors. */
 
 /* Above the mobile fixed header (1200) and modals (1300): this is a blocking
    "nothing works right now" state, and it only appears before any session

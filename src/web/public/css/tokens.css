@@ -92,12 +92,21 @@
     --cm-danger: var(--red);
     --cm-info: var(--session-purple, #a98fe0);
 
+    /* Alert banners (connection lost, host asleep, reboot restore) are
+       deliberately skin-independent: "you are disconnected" reads the same on
+       every skin, light ones included. */
+    --cm-alert-danger: linear-gradient(90deg, #b91c1c, #991b1b);
+    --cm-alert-warning: linear-gradient(90deg, #b45309, #92400e);
+    --cm-alert-edge: rgba(0, 0, 0, 0.35);
+    --cm-on-alert: #fff;
+
     /* Layers: the documented stack, named (values unchanged). */
     --cm-z-echo: 7;
     --cm-z-selection-bar: 900;
     --cm-z-float-window: 1000;
     --cm-z-plan-agent: 1100;
     --cm-z-fixed-header: 1200;
+    --cm-z-banner: 1250;
     --cm-z-modal: 1300;
     --cm-z-log-viewer: 2000;
     --cm-z-offline: 2500;
