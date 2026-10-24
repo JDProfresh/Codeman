@@ -24,7 +24,10 @@
  *   node scripts/css-style-diff.mjs --base http://127.0.0.1:3172 --cand http://127.0.0.1:3173
  *
  * Options: --skins a,b  --viewports desktop,tablet,phone  --raw (every row, not
- * grouped)  --limit N (rows per combination with --raw).
+ * grouped)  --limit N (rows per combination with --raw). Beyond the default
+ * three, --viewports takes phone-sm (360, under mobile.css's 374px step),
+ * tablet-sm (700, the 600-767 band) and tablet-edge (768, the band's edge),
+ * or `all` for every one: run those when a change touches mobile.css.
  * Exit code: 0 when nothing differs, 1 otherwise.
  */
 import { chromium } from 'playwright';
@@ -45,8 +48,12 @@ const VIEWPORTS = {
   desktop: { viewport: { width: 1440, height: 900 } },
   tablet: { viewport: { width: 820, height: 1180 }, hasTouch: true },
   phone: { viewport: { width: 393, height: 852 }, hasTouch: true, isMobile: true },
+  'phone-sm': { viewport: { width: 360, height: 780 }, hasTouch: true, isMobile: true },
+  'tablet-sm': { viewport: { width: 700, height: 1000 }, hasTouch: true },
+  'tablet-edge': { viewport: { width: 768, height: 1024 }, hasTouch: true },
 };
-const VPS = opt('viewports', 'desktop,tablet,phone').split(',');
+const VPS_OPT = opt('viewports', 'desktop,tablet,phone');
+const VPS = VPS_OPT === 'all' ? Object.keys(VIEWPORTS) : VPS_OPT.split(',');
 const RAW = args.includes('--raw');
 const LIMIT = Number(opt('limit', RAW ? 40 : 1e9));
 const MODES = [

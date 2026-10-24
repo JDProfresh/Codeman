@@ -34,10 +34,14 @@ describe('dialogs on the kit', () => {
     expect(titles.length).toBe(heads.length);
   });
 
-  it('phones keep only --sm dialogs as boxes; the rest go full-screen', () => {
+  it('phones keep only --sm dialogs as boxes; the rest go full-screen (the kit’s own modifiers)', () => {
+    const kit = readFileSync(join(PUBLIC, 'css/components.css'), 'utf8');
+    const phone = kit.slice(kit.indexOf('@media (max-width: 599px)'));
+    expect(phone).toMatch(/\.cm-dialog \{\s*width: 100%;\s*max-width: 100%;\s*height: 100%;/);
+    expect(phone).toMatch(/\.cm-dialog--sm \{[^}]*height: auto;/);
+    // mobile.css no longer restates them.
     const mobile = readFileSync(join(PUBLIC, 'mobile.css'), 'utf8');
-    expect(mobile).toMatch(/\.cm-dialog \{\s*width: 100%;\s*max-width: 100%;/);
-    expect(mobile).toMatch(/\.cm-dialog--sm \{\s*height: auto;/);
+    expect(mobile).not.toMatch(/^\s*\.cm-dialog(--sm)? \{/m);
   });
 
   it('the kit carries the sizes as max-widths over a full-width box', () => {

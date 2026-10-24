@@ -1,7 +1,23 @@
 /* ============================================================================
    Mobile & Touch Styles
-   Extracted from styles.css for cleaner separation.
-   Loaded only on small/medium screens via media attribute in index.html.
+   Loaded only below 1024px (the media attribute in index.html). This sheet
+   holds breakpoint modifiers: what changes at each width, never a second copy
+   of a component (the kit's own phone modifiers live in css/components.css).
+
+   One block per query, in this order (test/mobile-css-breakpoints.test.ts):
+     unwrapped           all handheld widths (init flash, sidebar drawer, ...)
+     max-width 768px     iOS zoom prevention
+     600px - 768px       tablet strip and toolbar
+     600px - 767px       tablet extras
+     max-width 599px     phone
+     max-width 374px     small phone
+     max-width 860px     settings modals as sheets
+     max-width 700px     spreadsheet preview
+     hover: none         touch input (and its reduced-motion variant)
+     reduced motion      one block
+     fold                vertical-viewport-segments: 2
+   Unwrapped rules sit between the width blocks where their cascade order
+   needs them (the light-skin section and the sidebar drawer say why).
    ============================================================================ */
 
 /* ============================================================================
@@ -370,11 +386,13 @@ html.mobile-init .file-browser-panel {
     --tab-strip-fade-start: 0px;
     --tab-strip-fade-end: 28px;
   }
+
   10%,
   90% {
     --tab-strip-fade-start: 28px;
     --tab-strip-fade-end: 28px;
   }
+
   100% {
     --tab-strip-fade-start: 28px;
     --tab-strip-fade-end: 0px;
@@ -580,6 +598,7 @@ html.mobile-init .file-browser-panel {
   .btn-icon-header.btn-approvals {
     display: none !important;
   }
+
   /* Read My Mind 🧠 header button: never in the phone header; the phone
      surface is the keyboard-accessory 🧠 key (same `readMyMindEnabled` gate,
      see keyboard-accessory.js + the rmm-enabled rules in styles.css). */
@@ -657,6 +676,7 @@ html.mobile-init .file-browser-panel {
       box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.35);
       background: rgba(239, 68, 68, 0.2);
     }
+
     50% {
       box-shadow: inset 0 0 0 2px rgba(239, 68, 68, 0.75);
       background: rgba(239, 68, 68, 0.35);
@@ -986,6 +1006,7 @@ html.mobile-init .file-browser-panel {
   .keyboard-visible.ios-device.safari-browser .toolbar {
     bottom: var(--safe-area-bottom);
   }
+
   .keyboard-visible.ios-device.safari-browser .keyboard-accessory-bar {
     bottom: calc(var(--safe-area-bottom) + 40px);
   }
@@ -1217,6 +1238,7 @@ html.mobile-init .file-browser-panel {
     font-size: 1rem;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
   }
+
   .run-mode-webview-delete { font-size: 1.2rem; }
 
   .run-mode-history {
@@ -1291,7 +1313,6 @@ html.mobile-init .file-browser-panel {
     gap: 8px;
   }
 
-
   /* Mobile case settings gear button - next to Run */
   .btn-case-settings-mobile {
     display: inline-flex !important;
@@ -1313,22 +1334,8 @@ html.mobile-init .file-browser-panel {
     color: #fff;
   }
 
-  @media (max-width: 374px) {
-    .toolbar {
-      padding: 0 2px;
-    }
-
-    .toolbar-left,
-    .toolbar-left .toolbar-group,
-    .toolbar-left .toolbar-group:first-child {
-      gap: 2px;
-    }
-  }
-
-  @media (max-width: 599px) {
-    .btn-case-settings-mobile {
-      display: none !important;
-    }
+  .btn-case-settings-mobile {
+    display: none !important;
   }
 
   /* Mobile case settings popover */
@@ -1482,27 +1489,8 @@ html.mobile-init .file-browser-panel {
     z-index: 1300;
   }
 
-  /* Full-screen modals on phones */
-  .cm-dialog {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    max-height: 100%;
-    border-radius: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Small modals (confirmations, dialogs) — auto-height, not full-screen. Only
-     --sm stays a box on a phone; every other dialog size goes full-screen. */
-  .cm-dialog--sm {
-    height: auto;
-    max-height: 85vh;
-    border-radius: 12px;
-    margin: 1rem;
-    width: calc(100% - 2rem);
-  }
+  /* Full-screen dialogs, and --sm as a box, come from the kit's own phone
+     modifiers (css/components.css). */
 
   /* Read My Mind: a small dialog (mirrors cm-dialog--sm), not a full-screen
      takeover — it opens over the keyboard from the accessory 🧠 key and
@@ -1515,20 +1503,24 @@ html.mobile-init .file-browser-panel {
     margin: 1rem;
     width: calc(100% - 2rem);
   }
+
   /* Four footer buttons on a narrow phone: let them wrap instead of clipping,
      and give buttons + alternate rows finger-sized targets. The flex row
      itself comes from the base rule in styles.css. */
   .readmymind-modal .cm-dialog__foot {
     flex-wrap: wrap;
   }
+
   .readmymind-modal .cm-dialog__foot .btn-toolbar {
     flex: 1 1 auto;
     justify-content: center;
     min-height: 38px;
   }
+
   .readmymind-alt {
     min-height: 38px;
   }
+
   .readmymind-steer-input {
     min-height: 38px;
   }
@@ -1539,22 +1531,6 @@ html.mobile-init .file-browser-panel {
     padding-bottom: var(--safe-area-bottom);
     padding-left: var(--safe-area-left);
     padding-right: var(--safe-area-right);
-  }
-
-  .cm-dialog__head {
-    padding: 0.75rem 1rem;
-  }
-
-  .cm-dialog__head h3 {
-    font-size: 1rem;
-  }
-
-  .cm-dialog__body {
-    padding: 0.75rem 1rem;
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .away-digest-modal {
@@ -1595,7 +1571,7 @@ html.mobile-init .file-browser-panel {
     min-height: 38px;
   }
 
-  .cm-dialog__foot,
+  /* The dialog's own phone padding is the kit's (css/components.css). */
   .form-actions {
     padding: 0.75rem 1rem;
     padding-bottom: calc(0.75rem + var(--safe-area-bottom));
@@ -2106,6 +2082,7 @@ html.mobile-init .file-browser-panel {
     from {
       transform: translateY(100%);
     }
+
     to {
       transform: translateY(0);
     }
@@ -2136,7 +2113,6 @@ html.mobile-init .file-browser-panel {
   /* ---- Settings Modal: Mobile Optimizations ---- */
 
   /* ---- Case Modal: Mobile Touch Optimizations ---- */
-
 
   /* Touch-friendly form inputs in case modal */
   #createCaseModal .form-row {
@@ -2195,6 +2171,7 @@ html.mobile-init .file-browser-panel {
       transform: translateY(30px);
       opacity: 0;
     }
+
     to {
       transform: translateY(0);
       opacity: 1;
@@ -2619,12 +2596,14 @@ html.mobile-init .file-browser-panel {
   .mobile-overview-row-wrap {
     width: 100%;
   }
+
   .mobile-overview-approval-strip {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0.4rem 0.2rem 0.1rem;
   }
+
   .mobile-overview-approval-btn {
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -2638,11 +2617,13 @@ html.mobile-init .file-browser-panel {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   .mobile-overview-approval-btn.primary {
     background: var(--accent);
     border-color: var(--accent);
     color: white;
   }
+
   .mobile-overview-approval-btn.danger {
     border-color: var(--error);
     color: var(--error);
@@ -2681,6 +2662,7 @@ html.mobile-init .file-browser-panel {
       background: var(--bg-card);
       border-color: var(--border);
     }
+
     50% {
       background: rgba(34, 197, 94, 0.1);
       border-color: var(--green);
@@ -2701,12 +2683,15 @@ html.mobile-init .file-browser-panel {
     0% {
       content: '';
     }
+
     25% {
       content: '.';
     }
+
     50% {
       content: '..';
     }
+
     75% {
       content: '...';
     }
@@ -2718,6 +2703,7 @@ html.mobile-init .file-browser-panel {
       background: var(--bg-card);
       border-color: var(--border);
     }
+
     50% {
       background: rgba(239, 68, 68, 0.14);
       border-color: var(--red);
@@ -2730,6 +2716,7 @@ html.mobile-init .file-browser-panel {
       background: var(--bg-card);
       border-color: var(--border);
     }
+
     50% {
       background: rgba(234, 179, 8, 0.12);
       border-color: var(--yellow);
@@ -2958,251 +2945,7 @@ html.mobile-init .file-browser-panel {
     background: var(--control-bg-hover);
     color: var(--text-muted);
   }
-}
 
-/* The overview's attention blink is an alert, so it stays visible without
-   motion: hold the alert color instead of animating to it. */
-@media (prefers-reduced-motion: reduce) {
-  .mobile-overview-row--needs,
-  .mobile-overview-row--waiting {
-    animation: none;
-  }
-
-  .mobile-overview-row--needs {
-    background: rgba(239, 68, 68, 0.14);
-  }
-
-  .mobile-overview-row--waiting {
-    background: rgba(234, 179, 8, 0.12);
-  }
-
-  .mobile-overview-dot--working {
-    animation: none;
-  }
-
-  /* The ring stays as a static full circle: it still marks the row, it just
-     stops turning. */
-  .mobile-overview-dot--working::after {
-    border-color: var(--green);
-    animation: none;
-  }
-
-  /* Working is only informational, so it drops to a static green edge and a
-     static ellipsis rather than holding a tint the way the alerts do. */
-  .mobile-overview-row--working {
-    animation: none;
-  }
-
-  .mobile-overview-pill--working::after {
-    content: '...';
-    animation: none;
-  }
-}
-
-/* Light-skin compatibility for mobile-only chrome. These components predate
-   the shared skin system and intentionally retain their original dark values
-   for the three dark skins above. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.header, .toolbar, .keyboard-accessory-bar) {
-  background: var(--glass-bg);
-  border-color: var(--glass-border);
-  color: var(--text);
-}
-
-/* `.accessory-btn:not(.armed, .accessory-btn-compose)` on purpose (Compose keeps its
-   accent tint the same way): this selector is (0,3,1) — `:is()`
-   takes the specificity of its most specific argument, and `.btn-toolbar
-   .btn-shell` is two classes — so it OUTRANKS the (0,3,0) armed-Ctrl rules in
-   both stylesheets and repainted the armed modifier back to a resting button on
-   all four light skins. Excluding the state here fixes phone and tablet at once;
-   adding a class to the armed rules would only have moved the tie. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-settings-mobile, .btn-toolbar.btn-shell, .accessory-btn:not(.armed, .accessory-btn-compose)) {
-  background: var(--control-bg);
-  border-color: var(--control-border);
-  color: var(--text-dim);
-}
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-settings-mobile:active, .btn-toolbar.btn-shell:hover, .btn-toolbar.btn-shell:active, .accessory-btn:active) {
-  background: var(--control-bg-hover);
-  border-color: var(--control-border-hover);
-  color: var(--text);
-}
-
-/* Run split button on the light skins (phone and tablet): --run-* tokens, placed
-   after the phone colours above so they win on a light skin. */
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
-  --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
-  --run-border: var(--accent);
-  --run-ink: var(--accent-ink);
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
-  --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
-  --run-border: var(--accent);
-  --run-ink: var(--accent-ink);
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
-  --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
-  --run-border: #315fc3;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #174ea6, #4f46e5);
-  --run-border-hover: #315fc3;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
-  --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
-  --run-border: #155e75;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #0e7490, #0891b2);
-  --run-border-hover: #155e75;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
-  --run-bg: linear-gradient(135deg, #be185d, #db2777);
-  --run-border: #9d174d;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #be185d, #db2777);
-  --run-border-hover: #9d174d;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
-  --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
-  --run-border: #4338ca;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #4f46e5, #6366f1);
-  --run-border-hover: #4338ca;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
-  --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
-  --run-border: #5b21b6;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #6d28d9, #8b5cf6);
-  --run-border-hover: #5b21b6;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
-  --run-bg: linear-gradient(135deg, #27272a, #52525b);
-  --run-border: #18181b;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #27272a, #52525b);
-  --run-border-hover: #18181b;
-  --run-ink-hover: #ffffff;
-}
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
-  --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
-  --run-border: #1b2a8f;
-  --run-ink: #ffffff;
-  --run-bg-hover: linear-gradient(135deg, #2740c4, #4d6bfe);
-  --run-border-hover: #1b2a8f;
-  --run-ink-hover: #ffffff;
-}
-/* The divider between Run and its gear. The [class*="mode-"] matches the token
-   rules' weight, so this needs no !important. */
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
-  border-left-color: var(--control-border-hover);
-}
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.case-settings-popover-mobile, .mobile-case-picker-sheet) {
-  background: var(--floating-bg);
-  border-color: var(--control-border);
-  color: var(--text);
-  box-shadow: var(--elevated-shadow);
-}
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.case-settings-popover-mobile .checkbox-inline, #createCaseModal .form-row label) {
-  color: var(--text);
-}
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .case-settings-popover-mobile .form-hint {
-  color: var(--text-muted);
-}
-
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .mobile-case-picker .modal-backdrop {
-  background: var(--modal-backdrop);
-}
-
-
-/* Keyboard accessory bar + paste overlay base styles moved to styles.css
-   (always loaded — covers iPad landscape where mobile.css doesn't load).
-   Phone-specific overrides remain in @media (max-width: 599px) above. */
-
-/* ============================================================================
-   iOS Safari Specific Fixes
-   ============================================================================ */
-.ios-device.safari-browser {
-  /* Prevent pull-to-refresh */
-  overscroll-behavior: none;
-}
-
-/* JS touch handler now drives terminal scrollback — no native scroll needed.
-   -webkit-overflow-scrolling and overflow-y:scroll on xterm-viewport removed. */
-
-/* ============================================================================
-   Hover State Fallbacks for Touch
-   ============================================================================ */
-@media (hover: none) and (pointer: coarse) {
-  /* Remove hover-dependent UI patterns */
-  .session-tab .tab-close,
-  .session-tab .tab-gear {
-    opacity: 1;
-    width: auto;
-    padding: 0.15rem 0.25rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Simplify button hover states */
-  .btn-toolbar:hover {
-    transform: none;
-  }
-
-  .btn-icon-header:hover {
-    transform: none;
-  }
-
-  /* Press feedback for the touch bars. The pressed look is transform + filter,
-     never a background or a shadow: the skin block (html:not([data-skin="og"]),
-     specificity 0,2,1) and the per-run-mode colors own the background and its
-     hover rules own box-shadow, so a background or shadow :active lost to them
-     on every non-og skin. Nothing on these buttons sets transform or filter
-     (the base .btn-toolbar:active nudge sits at lower specificity), so one rule
-     reads the same on all of them. 80ms so a quick tap shows the press at all. */
-  .toolbar .btn-toolbar,
-  .btn-voice-mobile,
-  .btn-settings-mobile,
-  .btn-case-settings-mobile,
-  .accessory-btn {
-    -webkit-tap-highlight-color: transparent;
-    transition: all 80ms ease;
-  }
-
-  .toolbar .btn-toolbar:active,
-  .btn-voice-mobile:active,
-  .btn-settings-mobile:active,
-  .btn-case-settings-mobile:active,
-  .accessory-btn:active {
-    transform: scale(0.94);
-    filter: brightness(1.25);
-  }
-}
-
-/* Light skins darken on press instead of brightening (white on white reads as nothing). */
-@media (hover: none) and (pointer: coarse) {
-  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .btn-toolbar:active, .btn-voice-mobile:active, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
-    filter: brightness(0.9);
-  }
-}
-
-@media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
-  .toolbar .btn-toolbar:active,
-  .btn-voice-mobile:active,
-  .btn-settings-mobile:active,
-  .btn-case-settings-mobile:active,
-  .accessory-btn:active {
-    transform: none;
-  }
-}
-
-@media (max-width: 599px) {
   /* Attachment history (COD-18): full-screen sheet on phones */
   .attachment-history-drawer {
     top: 0;
@@ -3244,15 +2987,13 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   .attachment-history-actions button {
     padding: 4px 7px;
   }
-}
 
-/* ============================================================================
+  /* ============================================================================
    Connection loss: phone sizing
    The banner sits in normal flow directly under the fixed header (the container
    already reserves that space), so it needs the same safe-area padding as the
    other banners. The overlay is fixed and handles its own insets.
    ============================================================================ */
-@media (max-width: 599px) {
   /* Reboot-restore banner: the same treatment as the offline banner below. Its
      text and note are nowrap and the two buttons cannot shrink, so without this
      the actions are pushed off a phone-width viewport and become unreachable. */
@@ -3324,6 +3065,160 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
     width: 100%;
     padding: 0.65rem 1rem;
   }
+}
+
+@media (max-width: 374px) {
+  .toolbar {
+    padding: 0 2px;
+  }
+
+  .toolbar-left,
+  .toolbar-left .toolbar-group,
+  .toolbar-left .toolbar-group:first-child {
+    gap: 2px;
+  }
+}
+
+/* Light-skin compatibility for mobile-only chrome. These components predate
+   the shared skin system and intentionally retain their original dark values
+   for the three dark skins above. */
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.header, .toolbar, .keyboard-accessory-bar) {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--text);
+}
+
+/* `.accessory-btn:not(.armed, .accessory-btn-compose)` on purpose (Compose keeps its
+   accent tint the same way): this selector is (0,3,1) — `:is()`
+   takes the specificity of its most specific argument, and `.btn-toolbar
+   .btn-shell` is two classes — so it OUTRANKS the (0,3,0) armed-Ctrl rules in
+   both stylesheets and repainted the armed modifier back to a resting button on
+   all four light skins. Excluding the state here fixes phone and tablet at once;
+   adding a class to the armed rules would only have moved the tie. */
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-settings-mobile, .btn-toolbar.btn-shell, .accessory-btn:not(.armed, .accessory-btn-compose)) {
+  background: var(--control-bg);
+  border-color: var(--control-border);
+  color: var(--text-dim);
+}
+
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-settings-mobile:active, .btn-toolbar.btn-shell:hover, .btn-toolbar.btn-shell:active, .accessory-btn:active) {
+  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover);
+  color: var(--text);
+}
+
+/* Run split button on the light skins (phone and tablet): --run-* tokens, placed
+   after the phone colours above so they win on a light skin. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+  --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+  --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
+  --run-border: var(--accent);
+  --run-ink: var(--accent-ink);
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+  --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border: #315fc3;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #174ea6, #4f46e5);
+  --run-border-hover: #315fc3;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+  --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border: #155e75;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #0e7490, #0891b2);
+  --run-border-hover: #155e75;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+  --run-bg: linear-gradient(135deg, #be185d, #db2777);
+  --run-border: #9d174d;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #be185d, #db2777);
+  --run-border-hover: #9d174d;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+  --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border: #4338ca;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #4f46e5, #6366f1);
+  --run-border-hover: #4338ca;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+  --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border: #5b21b6;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  --run-border-hover: #5b21b6;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+  --run-bg: linear-gradient(135deg, #27272a, #52525b);
+  --run-border: #18181b;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #27272a, #52525b);
+  --run-border-hover: #18181b;
+  --run-ink-hover: #ffffff;
+}
+
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+  --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border: #1b2a8f;
+  --run-ink: #ffffff;
+  --run-bg-hover: linear-gradient(135deg, #2740c4, #4d6bfe);
+  --run-border-hover: #1b2a8f;
+  --run-ink-hover: #ffffff;
+}
+
+/* The divider between Run and its gear. The [class*="mode-"] matches the token
+   rules' weight, so this needs no !important. */
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
+  border-left-color: var(--control-border-hover);
+}
+
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.case-settings-popover-mobile, .mobile-case-picker-sheet) {
+  background: var(--floating-bg);
+  border-color: var(--control-border);
+  color: var(--text);
+  box-shadow: var(--elevated-shadow);
+}
+
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.case-settings-popover-mobile .checkbox-inline, #createCaseModal .form-row label) {
+  color: var(--text);
+}
+
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .case-settings-popover-mobile .form-hint {
+  color: var(--text-muted);
+}
+
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) .mobile-case-picker .modal-backdrop {
+  background: var(--modal-backdrop);
+}
+
+/* Keyboard accessory bar + paste overlay base styles moved to styles.css
+   (always loaded — covers iPad landscape where mobile.css doesn't load).
+   Phone-specific overrides remain in @media (max-width: 599px) above. */
+
+/* ============================================================================
+   iOS Safari Specific Fixes
+   ============================================================================ */
+.ios-device.safari-browser {
+  /* Prevent pull-to-refresh */
+  overscroll-behavior: none;
 }
 
 /* ============================================================================
@@ -3607,7 +3502,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
     padding: 0 3px;
   }
 
-
   /* Non-row content in a group takes the box padding from styles.css. */
   :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > .event-type-grid {
     margin: 0;
@@ -3703,9 +3597,8 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
     flex: 0 0 auto;
     padding: 8px 12px;
   }
-}
 
-/* ============================================================================
+  /* ============================================================================
    Session Options, compact layout (<= 860px)
 
    App Settings collapses its rail and hands navigation to the sticky
@@ -3713,7 +3606,6 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
    its rail stays put and becomes a horizontal, scrollable strip — which is
    what its tab bar was before the two modals started sharing a surface.
    ============================================================================ */
-@media (max-width: 860px) {
   :is(#sessionOptionsModal, #createCaseModal) .set-rail {
     padding: 8px 10px;
   }
@@ -3748,6 +3640,27 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   }
 }
 
+/* XLSX preview (spreadsheet-preview.js): larger sheet tabs and a taller,
+   touch-scrollable grid on phones. */
+@media (max-width: 700px) {
+  .spreadsheet-sheet-tabs {
+    padding-inline: 4px;
+    scroll-snap-type: x proximity;
+  }
+
+  .spreadsheet-sheet-tab {
+    min-width: 96px;
+    min-height: 40px;
+    scroll-snap-align: start;
+  }
+
+  .spreadsheet-grid {
+    min-height: 55vh;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+}
+
 /* ============================================================================
    SESSION SIDEBAR — off-canvas drawer (tablet + phone)
    ============================================================================
@@ -3757,8 +3670,8 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
    `max-width: 768px` and `max-width: 599px` and would leave 769-1023px
    unhandled.
 
-   Placement at the END of the file is load-bearing: the compact strip blocks at
-   lines ~117 and ~584 use the deliberate `.session-tabs, .session-tabs.tabs-two-rows`
+   Placement after the width blocks is load-bearing: the compact strip blocks in
+   the tablet and phone blocks use the deliberate `.session-tabs, .session-tabs.tabs-two-rows`
    (0,2,0) doubling documented there. The sidebar selectors below are (0,2,1)
    and up AND come later, so they win on both counts. Move this block and the
    list collapses to a 36px sliver that looks like an empty list.
@@ -3865,11 +3778,113 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
   padding: 0.15rem 0.25rem;
 }
 
-/* (.tab-filtered-out is handled in styles.css — its rule is already scoped to
+/* JS touch handler now drives terminal scrollback — no native scroll needed.
+   -webkit-overflow-scrolling and overflow-y:scroll on xterm-viewport removed. */
+/* ============================================================================
+   Hover State Fallbacks for Touch
+   ============================================================================ */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover-dependent UI patterns */
+  .session-tab .tab-close,
+  .session-tab .tab-gear {
+    opacity: 1;
+    width: auto;
+    padding: 0.15rem 0.25rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Simplify button hover states */
+  .btn-toolbar:hover {
+    transform: none;
+  }
+
+  .btn-icon-header:hover {
+    transform: none;
+  }
+
+  /* Press feedback for the touch bars. The pressed look is transform + filter,
+     never a background or a shadow: the skin block (html:not([data-skin="og"]),
+     specificity 0,2,1) and the per-run-mode colors own the background and its
+     hover rules own box-shadow, so a background or shadow :active lost to them
+     on every non-og skin. Nothing on these buttons sets transform or filter
+     (the base .btn-toolbar:active nudge sits at lower specificity), so one rule
+     reads the same on all of them. 80ms so a quick tap shows the press at all. */
+  .toolbar .btn-toolbar,
+  .btn-voice-mobile,
+  .btn-settings-mobile,
+  .btn-case-settings-mobile,
+  .accessory-btn {
+    -webkit-tap-highlight-color: transparent;
+    transition: all 80ms ease;
+  }
+
+  .toolbar .btn-toolbar:active,
+  .btn-voice-mobile:active,
+  .btn-settings-mobile:active,
+  .btn-case-settings-mobile:active,
+  .accessory-btn:active {
+    transform: scale(0.94);
+    filter: brightness(1.25);
+  }
+
+  /* Light skins darken on press instead of brightening (white on white reads as nothing). */
+  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .btn-toolbar:active, .btn-voice-mobile:active, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
+    filter: brightness(0.9);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
+  .toolbar .btn-toolbar:active,
+  .btn-voice-mobile:active,
+  .btn-settings-mobile:active,
+  .btn-case-settings-mobile:active,
+  .accessory-btn:active {
+    transform: none;
+  }
+}
+
+/* The overview's attention blink is an alert, so it stays visible without
+   motion: hold the alert color instead of animating to it. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-overview-row--needs,
+  .mobile-overview-row--waiting {
+    animation: none;
+  }
+
+  .mobile-overview-row--needs {
+    background: rgba(239, 68, 68, 0.14);
+  }
+
+  .mobile-overview-row--waiting {
+    background: rgba(234, 179, 8, 0.12);
+  }
+
+  .mobile-overview-dot--working {
+    animation: none;
+  }
+
+  /* The ring stays as a static full circle: it still marks the row, it just
+     stops turning. */
+  .mobile-overview-dot--working::after {
+    border-color: var(--green);
+    animation: none;
+  }
+
+  /* Working is only informational, so it drops to a static green edge and a
+     static ellipsis rather than holding a tint the way the alerts do. */
+  .mobile-overview-row--working {
+    animation: none;
+  }
+
+  .mobile-overview-pill--working::after {
+    content: '...';
+    animation: none;
+  }
+
+  /* (.tab-filtered-out is handled in styles.css — its rule is already scoped to
    html[data-session-list="sidebar"] and carries !important, so it wins here too;
    no handheld variant needed.) */
-
-@media (prefers-reduced-motion: reduce) {
   html[data-session-list="sidebar"] .session-sidebar {
     transition: none;
   }
@@ -3884,26 +3899,5 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
 @media (vertical-viewport-segments: 2) {
   .response-viewer {
     max-height: min(88vh, env(viewport-segment-height 0 1, 88vh));
-  }
-}
-
-/* XLSX preview (spreadsheet-preview.js): larger sheet tabs and a taller,
-   touch-scrollable grid on phones. */
-@media (max-width: 700px) {
-  .spreadsheet-sheet-tabs {
-    padding-inline: 4px;
-    scroll-snap-type: x proximity;
-  }
-
-  .spreadsheet-sheet-tab {
-    min-width: 96px;
-    min-height: 40px;
-    scroll-snap-align: start;
-  }
-
-  .spreadsheet-grid {
-    min-height: 55vh;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
   }
 }

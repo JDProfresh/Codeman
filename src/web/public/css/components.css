@@ -623,6 +623,41 @@
     border-top: 1px solid var(--cm-border);
   }
 
+  /* Phones: every dialog goes full-screen except --sm, which stays a box with a
+     viewport gutter. These are the kit's own breakpoint modifiers, so a new
+     dialog needs no phone CSS of its own (board S04). */
+  @media (max-width: 599px) {
+    .cm-dialog {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      max-height: 100%;
+      margin: 0;
+      border-radius: 0;
+    }
+    .cm-dialog--sm {
+      width: calc(100% - 2 * var(--cm-space-4));
+      height: auto;
+      max-height: 85vh;
+      margin: var(--cm-space-4);
+      border-radius: var(--cm-radius-card);
+    }
+    .cm-dialog__head {
+      padding: var(--cm-space-3) var(--cm-space-4);
+    }
+    .cm-dialog__title {
+      font-size: var(--cm-text-md);
+    }
+    .cm-dialog__body {
+      padding: var(--cm-space-3) var(--cm-space-4);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cm-dialog__foot {
+      padding: var(--cm-space-3) var(--cm-space-4) calc(var(--cm-space-3) + var(--safe-area-bottom, 0px));
+    }
+  }
+
   /* ---------- Bottom sheet (phone) ---------- */
   .cm-sheet {
     position: fixed;
