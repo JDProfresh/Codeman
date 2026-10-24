@@ -321,7 +321,7 @@ Object.assign(CodemanApp.prototype, {
     this.closeTabRailActionMenu();
     const trigger = event.currentTarget;
     const menu = document.createElement('div');
-    menu.className = 'tab-rail-action-menu';
+    menu.className = 'cm-menu cm-menu--popover tab-rail-action-menu';
     menu.setAttribute('role', 'menu');
     menu.setAttribute('aria-label', 'Session actions');
     const settings = this.loadAppSettingsFromStorage();
@@ -345,7 +345,7 @@ Object.assign(CodemanApp.prototype, {
       // takes no focus and no arrow stop, and describes the menu instead.
       if (action.note) {
         const note = document.createElement('div');
-        note.className = 'tab-rail-action-menu-note';
+        note.className = 'cm-menu__note tab-rail-action-menu-note';
         note.setAttribute('role', 'none');
         note.id = 'tabRailActionMenuNote';
         note.textContent = action.label;
@@ -357,7 +357,7 @@ Object.assign(CodemanApp.prototype, {
       button.type = 'button';
       button.setAttribute('role', 'menuitem');
       button.textContent = action.label;
-      if (action.className) button.className = action.className;
+      button.className = action.className === 'danger' ? 'cm-menu__item cm-menu__item--danger' : 'cm-menu__item';
       button.addEventListener('click', () => {
         this.closeTabRailActionMenu();
         action.run();

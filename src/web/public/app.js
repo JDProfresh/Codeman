@@ -8392,7 +8392,7 @@ class CodemanApp {
     this.closeTabRailActionMenu?.();
     if (!this._tabLayoutEditable()) return false;
     const menu = document.createElement('div');
-    menu.className = 'tab-rail-action-menu tab-layout-group-action-menu';
+    menu.className = 'cm-menu cm-menu--popover tab-rail-action-menu tab-layout-group-action-menu';
     menu.setAttribute('role', 'menu');
     menu.setAttribute('aria-label', ariaLabel);
     for (const action of actions) {
@@ -8400,7 +8400,7 @@ class CodemanApp {
       button.type = 'button';
       button.setAttribute('role', 'menuitem');
       button.textContent = action.label;
-      if (action.className) button.className = action.className;
+      button.className = action.className === 'danger' ? 'cm-menu__item cm-menu__item--danger' : 'cm-menu__item';
       button.addEventListener('click', () => {
         this.closeTabGroupMenu();
         action.run();

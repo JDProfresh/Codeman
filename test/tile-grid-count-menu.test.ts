@@ -63,7 +63,7 @@ function makeButton() {
 const menu = () => body.children.find((c) => c.id === 'tileCountMenu') ?? null;
 const items = () => menu()!.children.filter((c) => c.attrs.role === 'menuitemradio');
 const item = (n: number) => items().find((i) => i.dataset.count === String(n))!;
-const hint = () => menu()!.children.find((c) => c.className === 'tile-count-hint') ?? null;
+const hint = () => menu()!.children.find((c) => String(c.className).split(' ').includes('tile-count-hint')) ?? null;
 const focused = () => (activeElement() as FakeEl | null)?.dataset?.count ?? null;
 const key = (app: GridApp, k: string) => {
   const ev = { key: k, preventDefault: vi.fn() };
@@ -246,7 +246,9 @@ describe('the count menu', () => {
 
   it('the menu owns its Escape in the global handler: it closes alone, with the keyboard back on Tiles', () => {
     const escape = appSrc.slice(appSrc.indexOf("if (e.key === 'Escape') {"), appSrc.indexOf('this.closeAllPanels();'));
-    expect(escape).toMatch(/if \(this\._tileCountMenu\) \{\s*this\.closeTileCountMenu\(\{ refocus: true \}\);\s*return;/);
+    expect(escape).toMatch(
+      /if \(this\._tileCountMenu\) \{\s*this\.closeTileCountMenu\(\{ refocus: true \}\);\s*return;/
+    );
     const app = gridApp();
     open(app);
     app.closeTileCountMenu({ refocus: true });
@@ -475,6 +477,10 @@ describe('the session picker is gone', () => {
     app.openTileGrid(['s-a', 's-b']);
     const header = app._tileGrid.tiles.get('s-a').header as FakeEl;
     const actions = header.children.find((c) => c.className === 'tile-actions')!;
-    expect(actions.children.map((b) => b.className)).toEqual(['tile-btn tile-menu', 'tile-btn tile-zoom', 'tile-btn tile-remove']);
+    expect(actions.children.map((b) => b.className)).toEqual([
+      'tile-btn tile-menu',
+      'tile-btn tile-zoom',
+      'tile-btn tile-remove',
+    ]);
   });
 });

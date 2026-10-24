@@ -84,7 +84,7 @@ describe('every way in stops at the cap', () => {
     expect(items.map((i) => Number(i.dataset.count))).toEqual([2, 4, 6]);
     // The cap binds, not the window: nothing greyed out, no "fits" line.
     expect(items.every((i) => !i.disabled)).toBe(true);
-    expect(menu.children.some((c) => c.className === 'tile-count-hint')).toBe(false);
+    expect(menu.children.some((c) => String(c.className).split(' ').includes('tile-count-hint'))).toBe(false);
     items.at(-1)!.dispatch('click', { stopPropagation: vi.fn() });
     expect(app._tileGrid.ids).toHaveLength(6);
     expect(app._tileGrid.ids).toEqual(['s-other', ...EIGHT.slice(0, 5)]);

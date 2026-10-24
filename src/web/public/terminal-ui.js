@@ -3116,7 +3116,7 @@ Object.assign(CodemanApp.prototype, {
       Array.isArray(s.sources) && s.sources.includes('live') && this.sessions.has(s.sessionId);
 
     const menu = document.createElement('div');
-    menu.className = 'session-row-menu';
+    menu.className = 'cm-menu cm-menu--popover session-row-menu';
     menu.setAttribute('role', 'menu');
 
     // closeMenu tears down the menu and all transient listeners.
@@ -3143,15 +3143,14 @@ Object.assign(CodemanApp.prototype, {
     const addItem = (label, onActivate, opts) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'session-row-menu-item';
+      btn.className = 'cm-menu__item cm-menu__item--stacked';
       btn.setAttribute('role', 'menuitem');
       const text = document.createElement('span');
-      text.className = 'session-row-menu-label';
       text.textContent = label;
       btn.appendChild(text);
       if (opts && opts.sublabel) {
         const sub = document.createElement('span');
-        sub.className = 'session-row-menu-sublabel';
+        sub.className = 'cm-menu__sub';
         sub.textContent = opts.sublabel;
         btn.appendChild(sub);
       }

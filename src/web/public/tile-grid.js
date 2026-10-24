@@ -879,11 +879,11 @@ Object.assign(CodemanApp.prototype, {
     const current = this._tileGridCount();
     const menu = document.createElement('div');
     menu.id = 'tileCountMenu';
-    menu.className = 'tile-count-menu';
+    menu.className = 'cm-menu cm-menu--popover tile-count-menu';
     menu.setAttribute('role', 'menu');
     menu.setAttribute('aria-label', 'How many tiles');
     const heading = document.createElement('div');
-    heading.className = 'tile-count-heading';
+    heading.className = 'cm-menu__heading cm-label';
     heading.setAttribute('aria-hidden', 'true');
     heading.textContent = 'Tiles';
     menu.appendChild(heading);
@@ -891,7 +891,7 @@ Object.assign(CodemanApp.prototype, {
     for (const n of T.TILE_GRID_COUNTS) {
       const item = document.createElement('button');
       item.type = 'button';
-      item.className = 'tile-count-item';
+      item.className = 'cm-menu__item tile-count-item';
       item.setAttribute('role', 'menuitemradio');
       item.setAttribute('aria-checked', n === current ? 'true' : 'false');
       item.tabIndex = -1;
@@ -920,8 +920,12 @@ Object.assign(CodemanApp.prototype, {
       items.push(item);
     }
     if (capacity < T.TILE_GRID_MAX) {
+      const sep = document.createElement('div');
+      sep.className = 'cm-menu__sep';
+      sep.setAttribute('role', 'separator');
+      menu.appendChild(sep);
       const hint = document.createElement('div');
-      hint.className = 'tile-count-hint';
+      hint.className = 'cm-menu__note tile-count-hint';
       hint.textContent = fitsText;
       menu.appendChild(hint);
     }

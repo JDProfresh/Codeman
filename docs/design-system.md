@@ -57,7 +57,7 @@ introduces a hue.
 | Form     | `.cm-input`, `.cm-select`, `.cm-switch`, `.cm-segmented` |
 | Tags     | `.cm-chip`, `.cm-pill`, `.cm-dot`, `.cm-badge`, tones `.cm-tone-success|warning|danger|info|accent` |
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
-| Menu     | `.cm-menu` (`--popover`), `__item`, `__row`, `__pin`, `__kbd`, `__sep`, `__heading` |
+| Menu     | `.cm-menu` (`--popover`), `__item` (`--danger`, `--stacked` with `__sub`), `__row`, `__pin`, `__kbd`, `__sep`, `__heading`, `__note` |
 | Tabs     | `.cm-tabs`, `.cm-tabs__tab` (`aria-selected` drives the state; `[hidden]` hides) |
 | Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__aside`, `__actions`; `--alert` is the solid, skin-independent strip with `__dot`, `__icon`, `__btn`, `__btn--quiet`), `.cm-empty`, `.cm-panel` (`__head` with `__title` and `__actions`, `__head--tabs` for a tab strip, `__body`), `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
 
@@ -184,11 +184,16 @@ restore (amber) are one `.cm-banner--alert` variant with its own phone modifiers
 `--cm-alert-*` tokens, never the skin tones: "you are disconnected" reads the same
 on every skin.
 
+**Context menus are on the kit.** The header More menu, the tab rail's ⋯ and group
+menus, the Session Manager row menu and the Tiles count menu are all
+`.cm-menu--popover`; a legacy menu class stays only for that menu's own z-index
+layer (`test/menu-kit-migration.test.ts`).
+
 **Settings rows are on the kit.** App Settings, Session Options and Add Case draw
 each row as a `.cm-row` (`__text`, `__label`, `__hint`) inside a `.cm-group` box, as
 board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next migrations: the remaining toolbar and panel headers, then the shell phase.
+Next migrations: buttons (`.btn-toolbar`, `.btn-icon-sm` onto `.cm-btn`), the Run dropdown (`.run-mode-menu`) and the switches.
 Each one ships with a `css:diff` run showing only the intended changes.

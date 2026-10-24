@@ -435,6 +435,37 @@
   .cm-menu__heading {
     padding: var(--cm-space-1h) var(--cm-space-2) var(--cm-space-1);
   }
+  .cm-menu__item--danger {
+    color: var(--cm-danger);
+  }
+  .cm-menu__item:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .cm-menu__item:disabled:hover {
+    background: transparent;
+  }
+  /* A label over a muted second line (the Session Manager's row menu). */
+  .cm-menu__item--stacked {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    padding-top: var(--cm-space-1h);
+    padding-bottom: var(--cm-space-1h);
+    line-height: var(--cm-leading-tight);
+  }
+  .cm-menu__sub {
+    margin-top: 1px;
+    color: var(--cm-text-3);
+    font-size: var(--cm-text-2xs);
+  }
+  /* Information, not an action: no focus, no hover. */
+  .cm-menu__note {
+    padding: var(--cm-space-1h) var(--cm-space-2);
+    color: var(--cm-text-3);
+    font-size: var(--cm-text-xs);
+  }
 
   /* ---------- Tab (strip, rail, sidebar, panel tabs) ---------- */
   .cm-tabs {

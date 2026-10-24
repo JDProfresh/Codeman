@@ -2932,45 +2932,10 @@ html[data-tab-orientation='vertical'].tab-rail-compact .session-tab .tab-actions
   }
 }
 
+/* The rail's ⋯ and group menus are the kit's .cm-menu--popover; only their
+   layer is their own. */
 .tab-rail-action-menu {
-  position: fixed;
   z-index: 2000;
-  display: grid;
-  min-width: 180px;
-  padding: 0.3rem;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--btn-radius);
-  background: var(--floating-bg);
-  box-shadow: var(--elevated-shadow);
-}
-
-.tab-rail-action-menu button {
-  padding: 0.45rem 0.6rem;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  color: var(--text);
-  text-align: left;
-  cursor: pointer;
-}
-
-.tab-rail-action-menu button:hover,
-.tab-rail-action-menu button:focus-visible {
-  background: var(--control-bg-hover);
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
-.tab-rail-action-menu .danger {
-  color: var(--red);
-}
-
-/* A child session's placement note: information, not an action (no focus, no hover). */
-.tab-rail-action-menu .tab-rail-action-menu-note {
-  padding: 0.45rem 0.6rem;
-  color: var(--text-muted);
-  font-size: 0.85em;
-  cursor: default;
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-range-field {
@@ -8365,46 +8330,7 @@ kbd {
 /* COD-130: per-row ⋯ kebab context menu (appended to <body>, fixed-positioned).
    z-index must clear the Session Manager modal (.modal is z-index: 1000). */
 .session-row-menu {
-  position: fixed;
   z-index: 10010;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 4px;
-  background: var(--floating-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.session-row-menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1px;
-  width: 100%;
-  padding: 7px 12px;
-  background: none;
-  border: none;
-  border-radius: var(--btn-radius);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 0.8rem;
-  text-align: left;
-  white-space: nowrap;
-  transition: background var(--transition-smooth);
-}
-
-.session-row-menu-item:hover {
-  background: var(--bg-hover);
-}
-
-.session-row-menu-sublabel {
-  color: var(--text-muted);
-  font-size: 0.72rem;
 }
 
 /* Shortcut settings rows (App Settings → Shortcuts, COD-157) */
@@ -19528,23 +19454,10 @@ body.tile-grid-resizing--row * {
 
 /* The Tiles button's right-click menu (tile-grid.js openTileCountMenu): how
    many tiles, 2, 4 or 6, each with its shape; positioned `fixed` under the
-   button, above the header (100) on the .run-mode-menu dropdown's layer, in
-   the floating-menu style. */
+   button, above the header (100) on the .run-mode-menu dropdown's layer. The
+   box and items are the kit's .cm-menu--popover; the shape glyph is its own. */
 .tile-count-menu {
-  position: fixed;
   z-index: 1000;
-  min-width: 168px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 6px;
-  background: var(--floating-bg, var(--bg-secondary, #1a1a1a));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--control-border, var(--border-color, #333));
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
-  font-size: 13px;
   transform-origin: top right;
   animation: tile-count-menu-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -19554,40 +19467,6 @@ body.tile-grid-resizing--row * {
     opacity: 0;
     transform: translateY(-4px) scale(0.96);
   }
-}
-
-.tile-count-heading {
-  padding: 2px 8px 4px;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-muted, #888);
-}
-
-.tile-count-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 6px 8px;
-  border: none;
-  border-radius: 6px;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.tile-count-item:hover:not(:disabled),
-.tile-count-item:focus {
-  outline: none;
-  background: color-mix(in srgb, var(--text-muted, #888) 16%, transparent);
-}
-
-.tile-count-item:disabled {
-  opacity: 0.4;
-  cursor: default;
 }
 
 /* The shape: the grid's own layout for that count, as outlined cells; the
@@ -19617,14 +19496,6 @@ body.tile-grid-resizing--row * {
   flex: 0 0 1em;
   color: var(--accent, #4a9eff);
   text-align: center;
-}
-
-.tile-count-hint {
-  padding: 4px 8px 2px;
-  border-top: 1px solid var(--control-border, var(--border-color, #333));
-  margin-top: 2px;
-  color: var(--text-muted, #888);
-  font-size: 11px;
 }
 
 /* The Tiles button's hover card (tile-grid.js _installTileGridHint): the
