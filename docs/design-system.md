@@ -59,7 +59,7 @@ introduces a hue.
 | Layout   | `.cm-label`, `.cm-group`, `.cm-row` (`__text`, `__label`, `__hint`), `.cm-item` (`__text`, `__title`, `__meta`, `__end`) |
 | Menu     | `.cm-menu` (`--popover`), `__item`, `__row`, `__pin`, `__kbd`, `__sep`, `__heading` |
 | Tabs     | `.cm-tabs`, `.cm-tabs__tab` (`aria-selected` drives the state; `[hidden]` hides) |
-| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__actions`), `.cm-empty`, `.cm-panel`, `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
+| Surfaces | `.cm-banner` (`--danger|warning|info`, `__title`, `__detail`, `__actions`), `.cm-empty`, `.cm-panel` (`__head` with `__title` and `__actions`, `__head--tabs` for a tab strip, `__body`), `.cm-dialog` (`--sm` 420 · `--md` 480 · default 720 · `--lg` 980, all max-widths; `__head|title|body|foot`), `.cm-sheet` (`[hidden]` hides), `.cm-toast` |
 
 Rules for kit code: `.cm-*` selectors only, in `@layer components`, no
 `!important`, no raw type/space/radius values (`test/css-design-tokens.test.ts`
@@ -127,6 +127,12 @@ a direct child of the shell for that reason. Docking is a layout state, never a
 re-parent; each panel keeps its own open/close code. A new right-side panel joins
 by adding a row to `DOCK_PANELS` (its element id, how to read "open", its own
 close) and nothing else (`test/panel-dock.test.ts`).
+
+Every right-side panel (Files, Inbox, Subagents, Monitor, Ultracode) draws its
+title bar from the kit: `.cm-panel__head` > `.cm-panel__title` + `.cm-panel__actions`,
+the body `.cm-panel__body` (`test/panel-kit-migration.test.ts`). A legacy header
+class stays only as a hook (the Files drag handle, the detached gradient), never
+with layout of its own.
 
 The **Inbox** is one drawer with Approvals and Notifications tabs
 (`approvals-ui.js`). Its header button's badge sums pending approvals and unread

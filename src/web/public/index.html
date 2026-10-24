@@ -583,9 +583,9 @@
 
     <!-- File Browser Panel -->
     <div class="file-browser-panel" id="fileBrowserPanel">
-      <div class="file-browser-header">
-        <span class="file-browser-title">Files</span>
-        <div class="file-browser-actions">
+      <div class="cm-panel__head file-browser-header">
+        <span class="cm-panel__title">Files</span>
+        <div class="cm-panel__actions">
           <button class="btn-icon-sm btn-file-browser-hidden" onclick="app.toggleFileBrowserHidden()" title="Show hidden files and folders" aria-label="Show hidden files and folders" aria-pressed="false" id="fileBrowserHiddenBtn">.*</button>
           <button class="btn-icon-sm" onclick="app.refreshFileBrowser()" title="Refresh">&#x21BB;</button>
           <button class="btn-icon-sm" onclick="app.toggleFileBrowserExpand()" title="Expand/Collapse All" id="fileBrowserExpandBtn">&#x229E;</button>
@@ -595,7 +595,7 @@
       <div class="file-browser-search">
         <input type="text" id="fileBrowserSearch" placeholder="Filter files..." oninput="app.filterFileBrowser(this.value)">
       </div>
-      <div class="file-browser-body" id="fileBrowserTree">
+      <div class="cm-panel__body file-browser-body" id="fileBrowserTree">
         <div class="file-browser-empty">Select a session to view files</div>
       </div>
       <div class="file-browser-status" id="fileBrowserStatus"></div>
@@ -683,8 +683,8 @@
          notification list keeps its ids (#notifList/#notifEmpty) so notification-manager.js
          renders into it unchanged. -->
     <div class="approvals-drawer inbox-drawer" id="approvalsDrawer" role="complementary" aria-label="Inbox">
-      <div class="approvals-header inbox-header">
-        <div class="cm-tabs inbox-tabs" role="tablist" aria-label="Inbox" onkeydown="app.handleInboxTabKey(event)">
+      <div class="cm-panel__head cm-panel__head--tabs">
+        <div class="cm-tabs" role="tablist" aria-label="Inbox" onkeydown="app.handleInboxTabKey(event)">
           <button class="cm-tabs__tab" role="tab" id="inboxTabApprovals" data-inbox-tab="approvals" aria-selected="true" aria-controls="inboxPanelApprovals" onclick="app.showInboxTab('approvals')">Approvals <span class="cm-badge" id="inboxApprovalsCount"></span></button>
           <button class="cm-tabs__tab" role="tab" id="inboxTabNotifications" data-inbox-tab="notifications" aria-selected="false" aria-controls="inboxPanelNotifications" tabindex="-1" onclick="app.showInboxTab('notifications')">Notifications <span class="cm-badge" id="inboxNotifCount"></span></button>
         </div>
@@ -1213,9 +1213,9 @@
 
     <!-- Monitor Panel (Tmux Sessions + Background Tasks) -->
     <div class="monitor-panel" id="monitorPanel">
-      <div class="monitor-panel-header" id="monitorPanelHeader">
-        <div class="monitor-panel-title">Monitor</div>
-        <div class="monitor-panel-actions">
+      <div class="cm-panel__head monitor-panel-header" id="monitorPanelHeader">
+        <div class="cm-panel__title">Monitor</div>
+        <div class="cm-panel__actions">
           <button class="btn-toolbar btn-sm btn-danger" onclick="app.killAllMuxSessions()" title="Kill all sessions and their tmux processes">Kill All</button>
           <button class="btn-icon-sm" onclick="app.reconcileMuxSessions()" title="Refresh tmux sessions">&#x21BB;</button>
           <button class="btn-icon-sm" onclick="app.toggleMonitorDetach()" title="Detach panel" id="monitorDetachBtn">&#x29C9;</button>
@@ -1224,7 +1224,7 @@
         </div>
       </div>
       <div class="monitor-resize-handle" id="monitorResizeHandle"></div>
-      <div class="monitor-panel-body" id="monitorTabContent">
+      <div class="cm-panel__body monitor-panel-body" id="monitorTabContent">
         <div class="monitor-section">
           <div class="monitor-section-header">
             <span>Tmux Sessions</span>
@@ -1266,11 +1266,11 @@
 
     <!-- Subagents Panel (separate from Monitor) -->
     <div class="subagents-panel" id="subagentsPanel">
-      <div class="subagents-panel-header" id="subagentsPanelHeader">
-        <div class="subagents-panel-title">
+      <div class="cm-panel__head subagents-panel-header" id="subagentsPanelHeader">
+        <div class="cm-panel__title">
           Subagents <span id="subagentCountBadge" class="subagent-badge"></span>
         </div>
-        <div class="subagents-panel-actions">
+        <div class="cm-panel__actions">
           <button class="btn-toolbar btn-sm btn-danger" onclick="app.clearAllSubagents()" title="Clear all tracked subagents">Clear All</button>
           <button class="btn-icon-sm" onclick="app.toggleSubagentsDetach()" title="Detach panel" id="subagentsDetachBtn">&#x29C9;</button>
           <button class="btn-icon-sm" onclick="app.toggleSubagentsPanel()" title="Toggle panel" id="subagentsToggleBtn">&#x25B2;</button>
@@ -1278,7 +1278,7 @@
         </div>
       </div>
       <div class="subagents-resize-handle" id="subagentsResizeHandle"></div>
-      <div class="subagents-panel-body" id="subagentsTabContent">
+      <div class="cm-panel__body subagents-panel-body" id="subagentsTabContent">
         <div class="subagent-container">
           <div class="subagent-list" id="subagentList">
             <div class="subagent-empty">No background agents detected</div>
@@ -1292,16 +1292,16 @@
 
     <!-- Ultracode / Workflow agents master-detail panel (opt-in via showUltracodeAgents) -->
     <div class="subagents-panel ultracode-agents-panel hidden" id="ultracodeAgentsPanel">
-      <div class="subagents-panel-header">
-        <div class="subagents-panel-title">
+      <div class="cm-panel__head subagents-panel-header">
+        <div class="cm-panel__title">
           Ultracode Agents <span id="ultracodeCountBadge" class="subagent-badge"></span>
         </div>
-        <div class="subagents-panel-actions">
+        <div class="cm-panel__actions">
           <button class="btn-icon-sm" onclick="app.toggleUltracodeAgentsPanel()" title="Toggle panel">&#x25B2;</button>
           <button class="btn-icon-sm" onclick="app.closeUltracodeAgentsPanel()" title="Close">&times;</button>
         </div>
       </div>
-      <div class="subagents-panel-body">
+      <div class="cm-panel__body subagents-panel-body">
         <div class="subagent-container">
           <div class="subagent-list ultracode-run-list" id="ultracodeRunList">
             <div class="subagent-empty">No ultracode runs detected</div>

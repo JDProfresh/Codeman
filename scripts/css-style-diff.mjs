@@ -28,6 +28,8 @@
  * three, --viewports takes phone-sm (360, under mobile.css's 374px step),
  * tablet-sm (700, the 600-767 band) and tablet-edge (768, the band's edge),
  * or `all` for every one: run those when a change touches mobile.css.
+ * --by-position pairs elements by position when only their classes changed
+ * (a markup migration onto the kit), labelling a row `old => .new.classes`.
  * Exit code: 0 when nothing differs, 1 otherwise.
  */
 import { chromium } from 'playwright';
@@ -55,6 +57,9 @@ const VIEWPORTS = {
 const VPS_OPT = opt('viewports', 'desktop,tablet,phone');
 const VPS = VPS_OPT === 'all' ? Object.keys(VIEWPORTS) : VPS_OPT.split(',');
 const RAW = args.includes('--raw');
+// A class migration renames classes on the same elements: pair them by position
+// when the tag/id sequence is unchanged, instead of reporting "DOM differs".
+const BY_POSITION = args.includes('--by-position');
 const LIMIT = Number(opt('limit', RAW ? 40 : 1e9));
 const MODES = [
   'claude',
@@ -258,8 +263,12 @@ async function snapModes(page, active) {
 const groups = new Map();
 const raw = [];
 let total = 0;
+/** The tag (and id) part of a signature: a migration renames classes, never elements. */
+const shape = (s) => s.replace(/\.[^#]*$/, '');
 function diff(a, b, label) {
-  if (a.sig.length !== b.sig.length || a.sig.some((s, i) => s !== b.sig[i])) {
+  const same = a.sig.length === b.sig.length && a.sig.every((s, i) => s === b.sig[i]);
+  const paired = BY_POSITION && a.sig.length === b.sig.length && a.sig.every((s, i) => shape(s) === shape(b.sig[i]));
+  if (!same && !paired) {
     const bad = a.sig.map((s, i) => [s, b.sig[i]]).filter(([x, y]) => x !== y);
     raw.push(
       `${label}: DOM differs (${a.sig.length} vs ${b.sig.length}) e.g. ${bad
@@ -282,7 +291,8 @@ function diff(a, b, label) {
       const changes = [...parse(b.rows[i][k])]
         .filter(([p, v]) => ma.get(p) !== v)
         .map(([p, v]) => `${p}: ${ma.get(p)} -> ${v}`);
-      const el = a.sig[i].replace(/#[A-Za-z0-9_-]+\./, '#.') + ['', '::before', '::after'][k];
+      const sigI = a.sig[i] === b.sig[i] ? a.sig[i] : `${a.sig[i]} => ${b.sig[i].replace(/^[^.]*/, '')}`;
+      const el = sigI.replace(/#[A-Za-z0-9_-]+\./, '#.') + ['', '::before', '::after'][k];
       const key = `${el} | ${changes
         .map((c) => c.split(':')[0])
         .sort()
@@ -292,7 +302,7 @@ function diff(a, b, label) {
       g.n++;
       g.where.add(label.replace(/^\[|\]$/g, ''));
       groups.set(key, g);
-      if (RAW && n <= LIMIT) raw.push(`${label} ${a.sig[i]}${['', '::before', '::after'][k]}  ${changes.join(' | ')}`);
+      if (RAW && n <= LIMIT) raw.push(`${label} ${sigI}${['', '::before', '::after'][k]}  ${changes.join(' | ')}`);
     }
   }
 }

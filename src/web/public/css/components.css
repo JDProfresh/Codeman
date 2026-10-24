@@ -537,7 +537,7 @@
     font: var(--cm-weight-bold) var(--cm-text-base) / var(--cm-leading-snug) var(--cm-font-ui);
   }
 
-  /* ---------- Panel region (docked panels as tabs) ---------- */
+  /* ---------- Panel (Files, Inbox, Subagents, Monitor; docked or floating) ---------- */
   .cm-panel {
     display: flex;
     flex-direction: column;
@@ -547,15 +547,46 @@
     background: var(--cm-surface-1);
     color: var(--cm-text);
   }
+  /* The title bar: a title that takes the room, then the panel's actions. */
   .cm-panel__head {
     display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--cm-space-2);
+    padding: var(--cm-space-1h) var(--cm-space-3);
+    border-bottom: 1px solid var(--cm-border);
+  }
+  .cm-panel__title {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--cm-space-2);
+    min-width: 0;
+    margin: 0;
+    color: var(--cm-text);
+    font-size: var(--cm-text-sm);
+    font-weight: var(--cm-weight-semibold);
+  }
+  .cm-panel__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--cm-space-1h);
+  }
+  /* A tab strip as the title (the Inbox): the tabs sit on the head's bottom
+     line, which is the only line (the strip drops its own). */
+  .cm-panel__head--tabs {
     align-items: flex-end;
-    gap: var(--cm-space-1);
+    padding: 0 var(--cm-space-2) 0 0;
+  }
+  .cm-panel__head--tabs > :not(.cm-tabs) {
+    align-self: center;
   }
   .cm-panel__head > .cm-tabs {
     flex: 1;
     min-width: 0;
     overflow-x: auto;
+    border-bottom: 0;
     scrollbar-width: none;
   }
   .cm-panel__body {
