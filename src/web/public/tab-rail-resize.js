@@ -327,6 +327,11 @@ Object.assign(CodemanApp.prototype, {
     const settings = this.loadAppSettingsFromStorage();
     const actions = [
       { label: 'Session options', run: () => this.openSessionOptions(sessionId) },
+      // The row's "+" is hidden in the compact rail; this reaches the same CLI picker.
+      // Only there: tiles share this menu and carry no "+" (owner decision).
+      ...(document.documentElement.classList.contains('tab-rail-compact') && trigger.closest('.session-tab')
+        ? [{ label: 'New session here…', run: () => this.openTabNewSessionMenu({ currentTarget: trigger }, sessionId) }]
+        : []),
       // Focus and group placement (vertical rail with a tab layout only; [] elsewhere).
       ...(this._tabRefFocusActions?.({ kind: 'session', id: sessionId }) || []),
       ...(this._tabRefMoveActions?.({ kind: 'session', id: sessionId }) || []),

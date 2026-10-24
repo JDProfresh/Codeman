@@ -949,6 +949,12 @@ html.mobile-init .file-browser-panel {
     display: none !important;
   }
 
+  /* Same reserve: the "+" stays off the phone strip. The sidebar drawer's rows
+     (rules near the end of this file) outrank this and keep it. */
+  .session-tab .tab-new {
+    display: none;
+  }
+
   /* Gear icon on active tab - tiny, subtle */
   .session-tab.active .tab-gear {
     display: inline-flex;
@@ -3427,7 +3433,8 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 @media (hover: none) and (pointer: coarse) {
   /* Remove hover-dependent UI patterns */
   .session-tab .tab-close,
-  .session-tab .tab-gear {
+  .session-tab .tab-gear,
+  .session-tab .tab-new {
     opacity: 1;
     width: auto;
     padding: 0.15rem 0.25rem;
@@ -4127,6 +4134,7 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab {
    Matches the (hover: none) block above, but has to be repeated here because
    the phone block hides them on non-active tabs with (0,2,0). */
 html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-gear,
+html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-new,
 html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
   display: inline-flex;
   align-items: center;

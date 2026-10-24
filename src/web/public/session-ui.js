@@ -686,7 +686,8 @@ Object.assign(CodemanApp.prototype, {
    * Run using the selected mode (Claude Code, OpenCode, Codex, Gemini, or Antigravity).
    * `options` comes from the tab group menu's "New session": `count` overrides
    * the instance steppers for this launch only, `tabGroupId` rides every create
-   * request so the server places the session in that group.
+   * request so the server places the session in that group, and `caseName` (a
+   * tab's "+") launches in that case instead of the toolbar's selected one.
    */
   async run(options = {}) {
     if (this._runInFlight) return;
@@ -2000,7 +2001,7 @@ Object.assign(CodemanApp.prototype, {
     // `options.worktree` ({ caseName, name, path }, from the worktree modal): the session runs in
     // that git worktree of the case and its tab is named after the worktree.
     const wt = options.worktree || null;
-    const caseName = wt ? wt.caseName : document.getElementById('quickStartCase').value || 'testcase';
+    const caseName = wt ? wt.caseName : options.caseName || document.getElementById('quickStartCase').value || 'testcase';
     const nameBase = wt ? wt.name : caseName;
     const tabCount = this._readTabCount(options.count);
     const group = options.tabGroupId ? { tabGroupId: options.tabGroupId } : {};
@@ -2231,7 +2232,7 @@ Object.assign(CodemanApp.prototype, {
   async runShell(options = {}) {
     // `options.worktree`: see runClaude.
     const wt = options.worktree || null;
-    const caseName = wt ? wt.caseName : document.getElementById('quickStartCase').value || 'testcase';
+    const caseName = wt ? wt.caseName : options.caseName || document.getElementById('quickStartCase').value || 'testcase';
     const nameBase = wt ? wt.name : caseName;
     // Run Shell reads the toolbar's one instance stepper, like every other run*();
     // its own second `− 1 +` group (#shellCount) was removed (#428).
@@ -2432,7 +2433,7 @@ Object.assign(CodemanApp.prototype, {
     // `options.worktree`: see runClaude. Quick-start resolves it server-side (`worktree`), so the
     // session starts through the same path as any other, only in the worktree's folder.
     const wt = options.worktree || null;
-    const caseName = wt ? wt.caseName : document.getElementById('quickStartCase').value || 'testcase';
+    const caseName = wt ? wt.caseName : options.caseName || document.getElementById('quickStartCase').value || 'testcase';
     // Remote/docker cases run the CLI on the OTHER side — the local status
     // probe and the local-only config/env below don't apply (quick-start
     // rejects them for remote cases).
