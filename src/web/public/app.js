@@ -8510,10 +8510,15 @@ class CodemanApp {
         this.closeTabGroupMenu({ restoreFocus: true });
       }
     });
-    // Focus leaving by any other route (a click elsewhere, a programmatic move).
-    // Hops between the menu's own items are not a departure.
+    // Focus moving to another element outside the menu (a programmatic move;
+    // a click elsewhere is the pointerdown listener's). Hops between the
+    // menu's own items are not a departure, and neither is focus going nowhere:
+    // Safari never focuses a clicked button, so a press on an item blurs the
+    // focused one with no relatedTarget, and closing then dropped its click
+    // (the tile count menu's rule, tile-grid.js).
     menu.addEventListener('focusout', (focusEvent) => {
-      if (focusEvent.relatedTarget && menu.contains(focusEvent.relatedTarget)) return;
+      const to = focusEvent.relatedTarget;
+      if (!to || menu.contains(to)) return;
       if (this._tabGroupMenu === menu) this.closeTabGroupMenu();
     });
     (menu.querySelector('button.selected') || menu.querySelector('button'))?.focus();
