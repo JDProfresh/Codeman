@@ -602,7 +602,7 @@ Object.assign(CodemanApp.prototype, {
         const name = escapeHtml(w.name);
         const icon = w.icon ? escapeHtml(w.icon) : '<span class="run-mode-dot web"></span>';
         return `<div class="run-mode-row run-mode-row--web">
-          <button class="run-mode-option run-mode-option--web" onclick="app.openWebviewFromMenu(${jsonId})" title="${escapeHtml(w.url)}">
+          <button class="cm-menu__item run-mode-option run-mode-option--web" onclick="app.openWebviewFromMenu(${jsonId})" title="${escapeHtml(w.url)}">
             <span class="run-mode-menu-icon">${icon}</span><span class="run-mode-web-name">${name}</span>
           </button>
           <button class="run-mode-row-btn run-mode-webview-edit" onclick="event.stopPropagation(); app.showWebviewModal(${jsonId})"

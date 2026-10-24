@@ -184,7 +184,7 @@ restore (amber) are one `.cm-banner--alert` variant with its own phone modifiers
 `--cm-alert-*` tokens, never the skin tones: "you are disconnected" reads the same
 on every skin.
 
-**Context menus are on the kit.** The header More menu, the tab rail's ⋯ and group
+**Context menus are on the kit.** The header More menu, the Run dropdown, the tab rail's ⋯ and group
 menus, the Session Manager row menu and the Tiles count menu are all
 `.cm-menu--popover`; a legacy menu class stays only for that menu's own z-index
 layer (`test/menu-kit-migration.test.ts`).
@@ -205,5 +205,5 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next migrations: `.btn-toolbar` onto `.cm-btn`, and the Run dropdown (`.run-mode-menu`).
+Next migrations: `.btn-toolbar` onto `.cm-btn`.
 Each one ships with a `css:diff` run showing only the intended changes.

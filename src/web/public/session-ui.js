@@ -843,7 +843,7 @@ Object.assign(CodemanApp.prototype, {
       if (cli.kind !== 'agent' || !cli.enabled) continue;
       const option = document.createElement('button');
       option.type = 'button';
-      option.className = 'run-mode-option';
+      option.className = 'cm-menu__item run-mode-option';
       option.dataset.mode = cli.id;
       option.onclick = () => this.setRunMode(cli.id);
       const dot = document.createElement('span');
@@ -912,7 +912,7 @@ Object.assign(CodemanApp.prototype, {
         // deleteCase's onclick a few hundred lines down.
         const args = [cli.id, host.id].map((v) => escapeHtml(JSON.stringify(v))).join(', ');
         rows.push(`
-          <button class="run-mode-option" data-mode="${escapeHtml(cli.id)}" data-endpoint="${escapeHtml(host.id)}"
+          <button class="cm-menu__item run-mode-option" data-mode="${escapeHtml(cli.id)}" data-endpoint="${escapeHtml(host.id)}"
                   onclick="app.selectCustomModelEntry(${args})"
                   title="${escapeHtml(cli.label)} → ${escapeHtml(host.baseUrl)} (${escapeHtml(modelId)}${models.length > 1 ? `, +${models.length - 1} more` : ''})">
             <span class="run-mode-dot ${escapeHtml(cli.id)}"></span>${escapeHtml(cli.label)} (${escapeHtml(host.label)})
@@ -1067,7 +1067,7 @@ Object.assign(CodemanApp.prototype, {
         const tags = [promotion, m === host.defaultModelId ? 'Default' : null].filter(Boolean);
         const arg = escapeHtml(JSON.stringify(m));
         return `
-          <button class="run-mode-option" onclick="app.chooseCustomModelAndRun(${arg})">
+          <button class="cm-menu__item run-mode-option" onclick="app.chooseCustomModelAndRun(${arg})">
             <span class="run-mode-dot ${escapeHtml(mode)}"></span>${escapeHtml(m)}${tags.map((t) => ` <span class="set-scope">${escapeHtml(t)}</span>`).join('')}
           </button>`;
       })
@@ -1810,7 +1810,7 @@ Object.assign(CodemanApp.prototype, {
         const parentDir = (lastSlash === -1 ? '' : shortDir.slice(0, lastSlash)).replace(/\/\.claude\/worktrees$/, '');
 
         const btn = document.createElement('button');
-        btn.className = 'run-mode-option run-mode-hist-row';
+        btn.className = 'cm-menu__item run-mode-option run-mode-hist-row';
         btn.title = s.workingDir;
         btn.dataset.sessionId = s.sessionId;
         btn.dataset.workingDir = s.workingDir;

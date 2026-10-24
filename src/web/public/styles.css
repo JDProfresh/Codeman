@@ -5639,19 +5639,17 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(77, 107, 254, 0.35), 0 2px 8px rgba(39, 64, 196, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Dropdown menu */
+/* Dropdown menu. The box, items, separators and headings are the kit's
+   .cm-menu parts; this rule is its placement above the toolbar, its blur and
+   its scroll cap. */
 .run-mode-menu {
   display: none;
   position: absolute;
   bottom: 100%;
   left: 0;
   margin-bottom: 6px;
-  background: var(--floating-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--control-border);
-  border-radius: 10px;
-  padding: 4px;
   z-index: 1000;
   min-width: 190px;
   /* Every long row inside (recent-session paths, saved URL names) ellipsizes, so
@@ -5660,7 +5658,6 @@ html[data-skin="og"] .welcome-primary:hover {
      rounder 240 because it is the width at which the common `~/<dir>/<repo>` +
      timestamp recent-session row still fits whole, which is what that list is for. */
   max-width: 250px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
   /* The menu grows UPWARD from the toolbar (`bottom: 100%`), so with every CLI, the custom
      endpoint entries, Terminal and the saved URLs it can be taller than the room above the
      toolbar: its top then sits off-screen with nothing to scroll, and the entries up there
@@ -5716,24 +5713,11 @@ html[data-skin="og"] .welcome-primary:hover {
   gap: 2px;
 }
 .run-mode-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
-  background: none;
-  border: none;
-  border-radius: var(--btn-radius);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 0.8rem;
   white-space: nowrap;
-  transition: background var(--transition-smooth);
 }
-.run-mode-option:hover {
-  background: rgba(255, 255, 255, 0.07);
-}
+/* The current run mode: the kit's checked-item tint (toggled by toggleRunModeMenu). */
 .run-mode-option.selected {
-  background: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--cm-accent) 16%, transparent);
   font-weight: 600;
 }
 .run-mode-dot {
@@ -5808,19 +5792,6 @@ html[data-skin="og"] .welcome-primary:hover {
   display: none;
 }
 
-.run-mode-sep {
-  height: 1px;
-  background: var(--border);
-  margin: 4px 0;
-}
-.run-mode-header {
-  padding: 4px 10px 2px;
-  font-size: 0.72em;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 600;
-}
 .run-mode-history {
   max-height: 200px;
   overflow-y: auto;
@@ -5843,7 +5814,9 @@ html[data-skin="og"] .welcome-primary:hover {
    with only the parent path allowed to shrink, so truncation can never hide
    which project (or which worktree) a row refers to. */
 .run-mode-hist-row {
-  align-items: baseline;
+  /* Centred, not baseline: the row is the kit's item (32px, 44px on touch),
+     and baseline alignment pins the text to the top of a tall row. */
+  align-items: center;
   gap: 8px;
 }
 .run-mode-option .hist-name {
@@ -5852,7 +5825,9 @@ html[data-skin="og"] .welcome-primary:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 600;
+  /* 700: the row's font is Manrope (the kit item), whose 600 reads lighter
+     than the old default-button Arial did. */
+  font-weight: var(--cm-weight-bold);
 }
 .run-mode-option .hist-wt {
   flex: 0 0 auto;

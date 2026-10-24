@@ -58,4 +58,21 @@ describe('context menus on the kit', () => {
       expect(styles).not.toMatch(gone);
     }
   });
+
+  it('the Run dropdown is a kit menu; its own rules keep only placement, blur and scroll', () => {
+    const html = read('index.html');
+    expect(html).toContain('<div class="cm-menu run-mode-menu" id="runModeMenu">');
+    expect(html).not.toMatch(/class="run-mode-(option|sep|header)/);
+    expect(html).toMatch(/class="cm-menu__sep run-mode-sep"/);
+    expect(html).toMatch(/class="cm-menu__heading cm-label run-mode-header"/);
+    for (const [file, n] of [
+      ['session-ui.js', 4],
+      ['webview-tabs.js', 1],
+    ] as const) {
+      expect(read(file).match(/cm-menu__item run-mode-option/g)?.length, file).toBe(n);
+    }
+    const menu = styles.match(/\n\.run-mode-menu \{([^}]*)\}/)?.[1] ?? '';
+    expect(menu).not.toMatch(/background:|border:|border-radius|box-shadow|padding:/);
+    expect(styles).not.toMatch(/\.run-mode-(sep|header) \{/);
+  });
 });

@@ -1214,8 +1214,8 @@ html.mobile-init .file-browser-panel {
     max-width: 80vw;
   }
 
+  /* Rows grow to the kit's 44px touch size on their own. */
   .run-mode-option {
-    padding: 10px 12px;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
   }
 

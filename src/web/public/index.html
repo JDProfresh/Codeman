@@ -716,12 +716,12 @@
             <button class="btn-toolbar btn-run-gear" onclick="app.toggleRunModeMenu(event)" title="Select AI backend">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </button>
-            <div class="run-mode-menu" id="runModeMenu">
+            <div class="cm-menu run-mode-menu" id="runModeMenu">
               <div class="run-mode-cli-options" id="runModeCliOptions"></div>
               <!-- Shown only when `dsh` is installed but no pane-capable profile is:
                    DeepSeek ships no terminal front door, so the fix is an install,
                    not a greyed-out entry the user cannot act on. -->
-              <button class="run-mode-option run-mode-option-install" data-action="deepseek-install" id="runModeDeepSeekInstall" style="display: none;" onclick="app.installDeepSeekProfile()">
+              <button class="cm-menu__item run-mode-option run-mode-option-install" data-action="deepseek-install" id="runModeDeepSeekInstall" style="display: none;" onclick="app.installDeepSeekProfile()">
                 <span class="run-mode-dot deepseek"></span>DeepSeek — add a terminal profile…
               </button>
               <!-- Custom Model Endpoint Profiles (docs/custom-model-endpoints-plan.md): one
@@ -729,19 +729,19 @@
                    (llama.cpp)". Built entirely by _refreshCustomModelRunOptions() — hidden
                    when the feature is off or no endpoint has a usable default model, never
                    a fixed per-harness duplicate in this markup. -->
-              <div class="run-mode-sep" id="runModeCustomModelSep" style="display: none;"></div>
-              <div class="run-mode-header" id="runModeCustomModelHeader" style="display: none;">Custom Endpoints</div>
+              <div class="cm-menu__sep run-mode-sep" id="runModeCustomModelSep" style="display: none;"></div>
+              <div class="cm-menu__heading cm-label run-mode-header" id="runModeCustomModelHeader" style="display: none;">Custom Endpoints</div>
               <div class="run-mode-custom-models" id="runModeCustomModels"></div>
-              <div class="run-mode-sep"></div>
-              <button class="run-mode-option" data-mode="shell" onclick="app.setRunMode('shell')">
+              <div class="cm-menu__sep run-mode-sep"></div>
+              <button class="cm-menu__item run-mode-option" data-mode="shell" onclick="app.setRunMode('shell')">
                 <span class="run-mode-dot shell"></span>Terminal / Shell
               </button>
-              <div class="run-mode-sep"></div>
+              <div class="cm-menu__sep run-mode-sep"></div>
               <!-- Web tabs: dashboards open as tabs beside agent sessions. These do NOT
                    set runMode: the Run button always means "start an agent". -->
-              <div class="run-mode-header">Web / URL</div>
+              <div class="cm-menu__heading cm-label run-mode-header">Web / URL</div>
               <div class="run-mode-webviews" id="runModeWebviews"></div>
-              <button class="run-mode-option run-mode-option--add" onclick="app.showWebviewModal()">
+              <button class="cm-menu__item run-mode-option run-mode-option--add" onclick="app.showWebviewModal()">
                 <span class="run-mode-dot web"></span>Add URL&hellip;
               </button>
               <!-- The DeepSeek Harness browser UI is the vendor's OWN interactive
@@ -749,11 +749,11 @@
                    POST /api/deepseek/web starts a background `dsh web` fenced to
                    this origin, and the URL opens as a managed web tab.
                    Shown only when dsh is installed. -->
-              <button class="run-mode-option run-mode-option--web" id="runModeDeepSeekWeb" style="display: none;" onclick="app.runDeepSeekWeb()">
+              <button class="cm-menu__item run-mode-option run-mode-option--web" id="runModeDeepSeekWeb" style="display: none;" onclick="app.runDeepSeekWeb()">
                 <span class="run-mode-dot deepseek"></span>DeepSeek web UI&hellip;
               </button>
-              <div class="run-mode-sep"></div>
-              <div class="run-mode-header">Recent Sessions</div>
+              <div class="cm-menu__sep run-mode-sep"></div>
+              <div class="cm-menu__heading cm-label run-mode-header">Recent Sessions</div>
               <div class="run-mode-history" id="runModeHistory"></div>
             </div>
           </div>
