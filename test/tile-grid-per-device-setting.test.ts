@@ -247,6 +247,6 @@ describe('markup and styles', () => {
 
   it('ships the header button hidden by its marker class, which has a display:none rule', () => {
     expect(html).toContain('class="btn-icon-header btn-tile-grid btn-tile-grid--hidden"');
-    expect(css).toMatch(/\.btn-tile-grid--hidden\s*\{\s*display: none !important;/);
+    expect(css).toMatch(/\.btn-tile-grid--hidden\s*\{\s*display: none;/);
   });
 });

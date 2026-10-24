@@ -48,6 +48,7 @@ describe('persistent full-screen overlays do not composite while hidden', () => 
   it('the offline overlay still forces display:none when hidden', () => {
     // The base rule is `display: flex`, so [hidden] alone would not hide it —
     // this is the guard that rule stays put while the block is edited.
-    expect(ruleBody('.offline-overlay[hidden]')).toMatch(/display:\s*none\s*!important/);
+    // (0,2,0) outranks the base, so it needs no !important.
+    expect(ruleBody('.offline-overlay[hidden]')).toMatch(/display:\s*none/);
   });
 });

@@ -603,7 +603,7 @@ describe('the sidebar filter keeps its own matching', () => {
 
   it('hides an emptied case box in the sidebar stylesheet, scoped to the sidebar layout', () => {
     const css = read('styles.css');
-    const rule = /([^{}]+)\{\s*display:\s*none\s*!important;\s*\}/g;
+    const rule = /([^{}]+)\{\s*display:\s*none;\s*\}/g;
     const selectorsHiding = [...css.matchAll(rule)].flatMap((match) =>
       match[1]
         .replace(/\/\*[\s\S]*?\*\//g, '')

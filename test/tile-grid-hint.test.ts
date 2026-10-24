@@ -322,7 +322,9 @@ describe('hiding', () => {
     expect(scroll[2]).toBe(true);
     scroll[1]();
     expect(card()!.hidden).toBe(true);
-    expect((windowStub.removeEventListener as ReturnType<typeof vi.fn>).mock.calls.some(([t]) => t === 'scroll')).toBe(true);
+    expect((windowStub.removeEventListener as ReturnType<typeof vi.fn>).mock.calls.some(([t]) => t === 'scroll')).toBe(
+      true
+    );
     pointer('pointerleave');
     pointer('pointerenter');
     vi.advanceTimersByTime(300);
@@ -353,7 +355,7 @@ describe('the CSS', () => {
     expect(block).toContain('pointer-events: none;');
     const keyframes = css.match(/@keyframes tile-hint-in \{([\s\S]*?)\n\}/)![1];
     expect([...keyframes.matchAll(/^\s*([a-z-]+):/gm)].map((m) => m[1]).sort()).toEqual(['opacity', 'transform']);
-    expect(css).toMatch(/@media \(hover: none\) \{\s*\.tile-hint \{\s*display: none !important;/);
+    expect(css).toMatch(/@media \(hover: none\) \{\s*\.tile-hint \{\s*display: none;/);
     expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.tile-hint \{\s*animation: none;/);
     expect(css).toMatch(/\.tile-hint\[hidden\],\s*\.tile-hint \[hidden\] \{\s*display: none;/);
   });

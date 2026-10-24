@@ -253,9 +253,7 @@ describe('home sessions column: wiring', () => {
   });
 
   it('has a CSS backstop that suppresses the homepage rail in vertical mode', () => {
-    expect(css).toMatch(
-      /html\[data-tab-orientation='vertical'\]\s+\.home-sessions\s*\{\s*display:\s*none\s*!important;/
-    );
+    expect(css).toMatch(/html\[data-tab-orientation='vertical'\]\s+\.home-sessions\s*\{\s*display:\s*none;/);
   });
 
   it('reuses the tab-load spinner rather than declaring a second one', () => {

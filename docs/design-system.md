@@ -226,7 +226,16 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next: the `!important`s left in `styles.css` (the other header marker pairs, the
-active tab's fill, the xterm helper textarea and the busy/resizing states), and
-moving component rules into the `features` layer.
+The same `!important` pass then ran over `styles.css`
+(`test/styles-css-important.test.ts`), 82 declarations down to 32. What keeps it
+there is what specificity cannot cover: xterm's own stylesheet and inline styles,
+the `body.*-resizing *` drag cursors, the motion kill switches, the settings
+search/field hides (utilities on arbitrary rows whose own display rules share their
+weight) and the voice-send gear (a transient state over header and toolbar rules
+up to (0,4,1)). The active tab carries none: the rules that could repaint it (rich
+rail cards and their state accents, ledger cells, colour stripes, drag-over) skip it
+with `:where(:not(.active))`, which adds no specificity. Declarations inside
+`@keyframes` never take `!important` (browsers drop them).
+
+Next: moving component rules into the `features` layer.
 Each one ships with a `css:diff` run showing only the intended changes.

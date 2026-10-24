@@ -993,11 +993,11 @@ body.tab-rail-resizing * {
 }
 
 .session-tab.active {
-  background: rgba(34, 197, 94, 0.15) !important;
-  border: 2px solid #00FF66 !important;
-  color: #fff !important;
-  box-shadow: none !important;
-  outline: none !important;
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid #00FF66;
+  color: #fff;
+  box-shadow: none;
+  outline: none;
 }
 
 .session-tab.tab-loading::after {
@@ -1872,23 +1872,14 @@ html[data-line-anim="blur"] .connection-line.line-enter {
 .session-tab .tab-status.error { background: var(--red); }
 .session-tab .tab-status.ended { background: var(--text-muted); opacity: 0.5; }
 
-/* Session color coding - left border indicator */
-.session-tab[data-color="red"] { border-left: 3px solid var(--session-red); }
-.session-tab[data-color="orange"] { border-left: 3px solid var(--session-orange); }
-.session-tab[data-color="yellow"] { border-left: 3px solid var(--session-yellow); }
-.session-tab[data-color="green"] { border-left: 3px solid var(--session-green); }
-.session-tab[data-color="blue"] { border-left: 3px solid var(--session-blue); }
-.session-tab[data-color="purple"] { border-left: 3px solid var(--session-purple); }
-.session-tab[data-color="pink"] { border-left: 3px solid var(--session-pink); }
-
-/* Active tabs with color get subtle background tint */
-.session-tab.active[data-color="red"] { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
-.session-tab.active[data-color="orange"] { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.5); box-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
-.session-tab.active[data-color="yellow"] { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.5); box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
-.session-tab.active[data-color="green"] { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.5); box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
-.session-tab.active[data-color="blue"] { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
-.session-tab.active[data-color="purple"] { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
-.session-tab.active[data-color="pink"] { background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.5); box-shadow: 0 0 10px rgba(236, 72, 153, 0.3); }
+/* Session color coding - left border indicator (the active tab keeps its own border) */
+.session-tab:where(:not(.active))[data-color="red"] { border-left: 3px solid var(--session-red); }
+.session-tab:where(:not(.active))[data-color="orange"] { border-left: 3px solid var(--session-orange); }
+.session-tab:where(:not(.active))[data-color="yellow"] { border-left: 3px solid var(--session-yellow); }
+.session-tab:where(:not(.active))[data-color="green"] { border-left: 3px solid var(--session-green); }
+.session-tab:where(:not(.active))[data-color="blue"] { border-left: 3px solid var(--session-blue); }
+.session-tab:where(:not(.active))[data-color="purple"] { border-left: 3px solid var(--session-purple); }
+.session-tab:where(:not(.active))[data-color="pink"] { border-left: 3px solid var(--session-pink); }
 
 /* Tab number indicator (Alt+N shortcut hint) */
 .session-tab .tab-number {
@@ -1908,9 +1899,9 @@ html[data-line-anim="blur"] .connection-line.line-enter {
 }
 
 .session-tab.active .tab-number {
-  background: rgba(0, 255, 102, 0.2) !important;
-  border-color: rgba(0, 255, 102, 0.5) !important;
-  color: #00FF66 !important;
+  background: rgba(0, 255, 102, 0.2);
+  border-color: rgba(0, 255, 102, 0.5);
+  color: #00FF66;
 }
 
 .session-tab .tab-info {
@@ -2158,11 +2149,11 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   cursor: grabbing;
 }
 
-.session-tab.drag-over-left {
+.session-tab.drag-over-left:where(:not(.active)) {
   box-shadow: -2px 0 0 0 var(--accent);
 }
 
-.session-tab.drag-over-right {
+.session-tab.drag-over-right:where(:not(.active)) {
   box-shadow: 2px 0 0 0 var(--accent);
 }
 
@@ -2651,7 +2642,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 }
 
 .btn-admin-panel--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Admin user tables (Admin Panel modal + the App Settings Users tab). */
@@ -2666,20 +2657,20 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    Display → "Header Displays"). The server strips this class at render when the
    setting is on; the client toggles it live on save. */
 .btn-multimonitor--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Redraw terminal header button: hidden by default (opt-in via App Settings →
    Display → "Header Displays"). Pure client-side toggle. */
 .btn-redraw-terminal--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Tile grid header button: shown unless `showTileGridButton` resolves off
    (default ON on desktop, OFF on phones and on coarse-pointer tablets), and
    hard-gated to desktop widths (the backstop below). */
 .btn-tile-grid--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* While the grid is open the button's click closes it (aria-pressed too). */
@@ -2696,7 +2687,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    TILE_GRID_MIN_WIDTH (constants.js): keep the three in sync. */
 @media (max-width: 1179px) {
   .btn-icon-header.btn-tile-grid {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -2985,7 +2976,7 @@ body.solo-mode .header-plan-usage,
    result of. The dashboard that spawned this window carries the banner. */
 body.solo-mode #rebootRestoreBanner,
 body.solo-mode .btn-lifecycle-log {
-  display: none !important;
+  display: none;
 }
 .solo-session-title {
   flex: 1;
@@ -6147,6 +6138,8 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Voice send button — gear icon transforms into green Enter after voice input */
+/* !important: a transient JS state that repaints the gear wherever it sits,
+   over header, phone-toolbar and skin rules up to (0,4,1) and their :hover. */
 .voice-send-active {
   background: rgba(34, 197, 94, 0.2) !important;
   border-color: rgba(34, 197, 94, 0.7) !important;
@@ -6160,17 +6153,17 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 @keyframes voice-send-glow {
-  0%, 100% { box-shadow: 0 0 4px rgba(34, 197, 94, 0.3); border-color: rgba(34, 197, 94, 0.5) !important; }
-  50% { box-shadow: 0 0 12px rgba(34, 197, 94, 0.6); border-color: rgba(34, 197, 94, 0.9) !important; }
+  0%, 100% { box-shadow: 0 0 4px rgba(34, 197, 94, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(34, 197, 94, 0.6); }
 }
 
 .voice-send-active.voice-send-blink {
-  animation: voice-send-flash 0.4s ease-out !important;
+  animation: voice-send-flash 0.4s ease-out;
 }
 
 @keyframes voice-send-flash {
-  0% { background: rgba(34, 197, 94, 0.6) !important; box-shadow: 0 0 16px rgba(34, 197, 94, 0.8); }
-  100% { background: transparent !important; box-shadow: none; opacity: 0; }
+  0% { box-shadow: 0 0 16px rgba(34, 197, 94, 0.8); }
+  100% { box-shadow: none; opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7302,19 +7295,20 @@ html[data-skin="og"] .welcome-primary:hover {
   overflow: hidden;
 }
 
-/* Fix CSS specificity: ID selector overrides class selector, so we need this explicit rule */
+/* Fix CSS specificity: ID selector overrides class selector, so we need this explicit rule.
+   (1,1,0) beats every #x-tab display rule; #context-tab's grid rule skips .hidden. */
 #summary-tab.hidden,
 #respawn-tab.hidden,
 #context-tab.hidden,
 #ralph-tab.hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Also hide child elements when parent tab is hidden (belt and suspenders) */
 #summary-tab.hidden .run-summary-filters,
 #summary-tab.hidden .run-summary-timeline,
 #summary-tab.hidden .run-summary-footer {
-  display: none !important;
+  display: none;
 }
 
 #summary-tab .run-summary-filters {
@@ -12486,13 +12480,13 @@ kbd {
    ═══════════════════════════════════════════════════════════════ */
 
 .btn-response-viewer-header {
-  display: inline-flex !important;
+  display: inline-flex;
 }
 
 /* "Response Viewer" header toggle (App Settings → Display) — must out-specify
    the inline-flex !important above */
 .btn-response-viewer-header.btn-response-viewer-header--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* "Approvals" header bell: appears ONLY while prompts are pending (JS toggles
@@ -12982,10 +12976,10 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    default. Same pattern as the response viewer: a base inline-flex !important so
    an inline style can't override it, and a more-specific marker rule to hide. */
 .btn-attachments-history {
-  display: inline-flex !important;
+  display: inline-flex;
 }
 .btn-attachments-history.btn-attachments-history--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* "Session Manager" + "Away Digest" header buttons — opt-in (App Settings →
@@ -13028,10 +13022,10 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    default everywhere (so the mobile-header-buttons-policy guard auto-excludes it).
    Base inline-flex !important + a more-specific marker rule to hide. */
 .btn-ultracode-agents {
-  display: inline-flex !important;
+  display: inline-flex;
 }
 .btn-ultracode-agents.btn-ultracode-agents--hidden {
-  display: none !important;
+  display: none;
 }
 
 /* ===== Ultracode / Workflow agents master-detail panel ===== */
@@ -13392,7 +13386,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    server cannot read localStorage; settings-ui.js reveals it on load (desktop
    default ON, handhelds OFF) and on a live toggle. */
 .header-plan-usage {
-  display: inline-flex !important;
+  display: inline-flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
@@ -13467,7 +13461,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 /* Marker class must out-specify the display:inline-flex !important above. */
 .header-plan-usage.header-plan-usage--hidden {
-  display: none !important;
+  display: none;
 }
 
 .response-viewer {
@@ -15552,7 +15546,7 @@ body.touch-device.cjk-input-visible .main {
    component scopes its own. The cron modal shipped without one, so its
    `.hidden`-toggled create form + conditional schedule/prompt rows never
    actually collapsed (all fields showed at once). Scope one here. */
-#cronModal .hidden { display: none !important; }
+#cronModal .hidden { display: none; }
 .cron-modal-hint { margin-bottom: 1rem; }
 .cron-toolbar {
   display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
@@ -15857,7 +15851,7 @@ body.touch-device.cjk-input-visible .main {
 }
 
 .offline-overlay[hidden] {
-  display: none !important;
+  display: none;
 }
 
 .offline-overlay-card {
@@ -16016,14 +16010,14 @@ body.touch-device.cjk-input-visible .main {
 }
 
 html[data-tab-orientation='vertical'] .home-sessions {
-  display: none !important;
+  display: none;
 }
 
 /* Belt and braces with shouldShowHomeSessions(): a resize that outruns the
    matchMedia listener must never leave the column overlapping the content. */
 @media (max-width: 1179px) {
   .home-sessions {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -16901,7 +16895,8 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 /* The cards and the segmented control are the visible UI; the underlying
    <select> stays in the DOM as the single source of truth that
-   openAppSettings()/saveAppSettings() read and write by id. */
+   openAppSettings()/saveAppSettings() read and write by id. A hide utility, so
+   it keeps !important over the component display rules of equal weight. */
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-field-hidden {
   display: none !important;
 }
@@ -17367,7 +17362,9 @@ html[data-tab-orientation='vertical'] .home-sessions {
   width: 128px;
 }
 
-/* Search hides non-matching units; everything stays mounted underneath. */
+/* Search hides non-matching units; everything stays mounted underneath.
+   A hide utility on arbitrary rows, chips and sections whose own display rules
+   share its (1,1,0) weight, so it keeps !important (like .set-field-hidden). */
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-hit-hidden {
   display: none !important;
 }
@@ -17522,13 +17519,13 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 #createCaseModal .docker-adopt-only {
-  display: none !important;
+  display: none;
 }
 #createCaseModal[data-docker-adopt='1'] .docker-adopt-only {
-  display: block !important;
+  display: block;
 }
 #createCaseModal[data-docker-adopt='1'] .docker-create-only {
-  display: none !important;
+  display: none;
 }
 #createCaseModal .btn-inline-check {
   background: none;
@@ -17861,8 +17858,13 @@ html[data-tab-orientation='vertical'] .home-sessions {
   padding: 0 22px 22px;
 }
 
-#sessionOptionsModal #context-tab {
+/* Display only on the shown tab: at (2,0,0) it would out-rank the tab's own
+   #context-tab.hidden hide. The rest stays at (2,0,0) for the media rule below. */
+#sessionOptionsModal #context-tab:not(.hidden) {
   display: grid;
+}
+
+#sessionOptionsModal #context-tab {
   grid-template-columns: minmax(0, 1fr);
   gap: 0.25rem 1rem;
   align-items: start;
@@ -18204,13 +18206,13 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab.active .tab-clos
 /* Drag-reorder indicators become horizontal edges. The class names stay
    drag-over-left / drag-over-right (they read as before/after now) so app.js,
    the base rules above and the generated gesture bundle need no renaming. */
-html[data-session-list="sidebar"] .session-sidebar .session-tab.drag-over-left,
-html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-left {
+html[data-session-list="sidebar"] .session-sidebar .session-tab.drag-over-left:where(:not(.active)),
+html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-left:where(:not(.active)) {
   box-shadow: 0 -2px 0 0 var(--accent);
 }
 
-html[data-session-list="sidebar"] .session-sidebar .session-tab.drag-over-right,
-html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-right {
+html[data-session-list="sidebar"] .session-sidebar .session-tab.drag-over-right:where(:not(.active)),
+html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-right:where(:not(.active)) {
   box-shadow: 0 2px 0 0 var(--accent);
 }
 
@@ -18224,7 +18226,7 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-right {
    on screen reading 0. */
 html[data-session-list="sidebar"] .session-tab.tab-filtered-out,
 html[data-session-list="sidebar"] .tab-cluster.tab-filtered-out {
-  display: none !important;
+  display: none;
 }
 
 /* The vertical rail's session search (app.js _applyTabListFilter) uses the same
@@ -18233,7 +18235,7 @@ html[data-session-list="sidebar"] .tab-cluster.tab-filtered-out {
 html[data-tab-orientation='vertical'] .tab-rail .session-tab.tab-filtered-out,
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group.tab-filtered-out,
 html[data-tab-orientation='vertical'] .tab-rail .tab-cluster.tab-filtered-out {
-  display: none !important;
+  display: none;
 }
 
 /* The box reuses .session-sidebar-filter / -input; this only adds the clear
@@ -18518,11 +18520,16 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
   gap: 0.5rem;
   padding: 0.5rem 0.6rem;
   border-radius: 10px;
+}
+
+/* The card paint, hover and state accents skip the selected card, which keeps
+   its skin's .session-tab.active look (no !important needed for that). */
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab:where(:not(.active)) {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab:hover {
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab:where(:not(.active)):hover {
   background: var(--bg-hover);
   border-color: rgba(34, 197, 94, 0.35);
   color: var(--text);
@@ -18634,24 +18641,24 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
    same two blinks the home rail runs. `tab-alert-*` draws its own ::before ring
    on top of this for the sessions that are genuinely blocked on a human; these
    border accents are the calmer, always-on half. */
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-needs,
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-error {
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-needs:where(:not(.active)),
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-error:where(:not(.active)) {
   border-color: color-mix(in srgb, var(--red) 50%, transparent);
   animation: home-sessions-blink-red 2.5s ease-in-out infinite;
 }
 
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-waiting {
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-waiting:where(:not(.active)) {
   border-color: color-mix(in srgb, var(--yellow) 50%, transparent);
   animation: home-sessions-blink-yellow 3.5s ease-in-out infinite;
 }
 
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-working {
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-working:where(:not(.active)) {
   border-color: color-mix(in srgb, var(--green) 35%, transparent);
 }
 
 /* No `.active` rule here on purpose: `.session-tab.active` (and its per-skin
-   twin) already paints background, border and box-shadow with !important, so a
-   card rule would be dead weight that reads as if it were doing something. The
+   twin) already paints background, border and box-shadow, and every card rule
+   above skips `.active`, so a card rule would be dead weight. The
    selected card keeps the accent its skin gives every selected tab, which is
    what makes it legible against the card background the state accents above
    paint on. */
@@ -18722,7 +18729,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar .ta
 
 /* --- Toggle button ----------------------------------------------------- */
 .btn-sidebar-toggle--hidden {
-  display: none !important;
+  display: none;
 }
 
 html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle svg {
@@ -19408,7 +19415,7 @@ body.tile-grid-resizing--row * {
 
 @media (hover: none) {
   .tile-hint {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -20913,12 +20920,16 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
     box-sizing: border-box;
     gap: 7px;
     padding: 4px 8px 4px 11px;
-    border: 1px solid var(--control-border);
     border-radius: 4px;
     background: var(--control-bg);
     box-shadow: inset 3px 0 0 var(--ledger-bar);
     font-family: 'JetBrains Mono', var(--font-mono, monospace);
     font-size: 12px;
+  }
+
+  /* The active cell keeps its skin's .session-tab.active border. */
+  .session-tabs-host > .session-tabs.tabs-ledger > .session-tab:where(:not(.active)) {
+    border: 1px solid var(--control-border);
   }
 
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab .tab-info {
@@ -20930,12 +20941,17 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
     width: auto;
     min-width: 1ch;
     height: auto;
-    border: 0;
-    background: none;
-    color: var(--text-muted);
+    border-width: 0;
+    border-style: none;
     font-family: inherit;
     font-size: 11px;
     font-weight: 500;
+  }
+
+  .session-tabs-host > .session-tabs.tabs-ledger > .session-tab:where(:not(.active)) .tab-number {
+    border-color: currentColor;
+    background: none;
+    color: var(--text-muted);
   }
 
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab .tab-status {
@@ -20962,13 +20978,13 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
   }
 
   /* The active cell has to win against a grid of look-alike cells. The skin's
-     active rule (1px accent border, no shadow, both !important) is too quiet
+     active rule (1px accent border, no shadow) is too quiet
      here, so an inset second pixel doubles the border without resizing the
-     cell, and the status bar turns accent. */
+     cell, and the status bar turns accent. (0,5,0) out-ranks the skin rule. */
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab.active {
-    background: rgba(var(--accent-rgb), 0.2) !important;
-    box-shadow: inset 0 0 0 1px var(--accent), inset 4px 0 0 var(--accent) !important;
-    color: var(--text) !important;
+    background: rgba(var(--accent-rgb), 0.2);
+    box-shadow: inset 0 0 0 1px var(--accent), inset 4px 0 0 var(--accent);
+    color: var(--text);
   }
 }
 
@@ -21446,16 +21462,17 @@ body.keyboard-visible .terminal-container .xterm-screen {
   filter: brightness(1.06);
 }
 
-/* ---- Active session tab: crisp emerald (replaces neon #00FF66) ---- */
-.session-tab.active {
-  background: rgba(var(--accent-rgb), 0.13) !important;
-  border: 1px solid var(--accent) !important;
-  color: var(--text) !important;
-  box-shadow: none !important;
-}
 .session-tab:hover {
   background: rgba(var(--accent-rgb), 0.06);
   border-color: rgba(var(--accent-rgb), 0.2);
+  box-shadow: none;
+}
+/* ---- Active session tab: crisp emerald (replaces neon #00FF66) ----
+   After :hover, so the selected tab keeps its look under the pointer. */
+.session-tab.active {
+  background: rgba(var(--accent-rgb), 0.13);
+  border: 1px solid var(--accent);
+  color: var(--text);
   box-shadow: none;
 }
 .session-tab .tab-number {
@@ -21464,13 +21481,9 @@ body.keyboard-visible .terminal-container .xterm-screen {
   color: var(--text-dim);
 }
 .session-tab.active .tab-number {
-  background: rgba(var(--accent-rgb), 0.2) !important;
-  border-color: rgba(var(--accent-rgb), 0.45) !important;
-  color: var(--accent-hover) !important;
-}
-/* per-color active tints: calm the glow, keep the identity hue as a quiet border */
-.session-tab.active[data-color] {
-  box-shadow: none;
+  background: rgba(var(--accent-rgb), 0.2);
+  border-color: rgba(var(--accent-rgb), 0.45);
+  color: var(--accent-hover);
 }
 /* tab status dots: quiet, no halo */
 .session-tab .tab-status.idle,

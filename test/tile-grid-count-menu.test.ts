@@ -113,9 +113,9 @@ describe('the Tiles button', () => {
   });
 
   it('has the CSS backstops: the hidden marker, the 1179px media query, solo mode', () => {
-    expect(css).toMatch(/\.btn-tile-grid--hidden\s*\{\s*display: none !important;/);
+    expect(css).toMatch(/\.btn-tile-grid--hidden\s*\{\s*display: none;/);
     expect(css).toMatch(
-      /@media \(max-width: 1179px\)\s*\{[^}]*\.btn-icon-header\.btn-tile-grid[^{]*\{\s*display: none !important;/
+      /@media \(max-width: 1179px\)\s*\{[^}]*\.btn-icon-header\.btn-tile-grid[^{]*\{\s*display: none;/
     );
     expect(css).toMatch(/body\.solo-mode \.btn-tile-grid,/);
   });

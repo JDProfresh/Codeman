@@ -341,7 +341,7 @@ describe('tab layouts by case and ledger (static)', () => {
     expect(ledger).toContain('align-items: stretch;');
     expect(ledger).toContain('min-height: 30px;');
     expect(ledger).toMatch(
-      /\.tabs-ledger > \.session-tab\.active \{[^}]*box-shadow: inset 0 0 0 1px var\(--accent\), inset 4px 0 0 var\(--accent\) !important;/
+      /\.tabs-ledger > \.session-tab\.active \{[^}]*box-shadow: inset 0 0 0 1px var\(--accent\), inset 4px 0 0 var\(--accent\);/
     );
   });
 

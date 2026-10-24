@@ -786,7 +786,8 @@ html.mobile-init .file-browser-panel {
      floating in unmarked gaps, with nothing saying "tap me". Fill and border
      come from the skin's control tokens, so the four light skins (which repaint
      the header with --glass-bg) get a matching chip with no override block, and
-     the active tab's !important fill and border in styles.css still win.
+     the active tab's fill and border in styles.css ((0,2,0), above this
+     rule's (0,1,0)) still win.
      `:where(.header)` keeps this at (0,1,0): the per-colour left border
      (`.session-tab[data-color="red"]`, (0,2,0)) must still outrank the
      border-color here, and in sidebar layout the list leaves the header, so
