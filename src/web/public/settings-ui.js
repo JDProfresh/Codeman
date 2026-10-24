@@ -654,7 +654,7 @@ Object.assign(CodemanApp.prototype, {
       this.tabDetachButtonEnabled?.(settings, defaults)
       ?? (settings.showTabDetachButton ?? defaults.showTabDetachButton ?? false);
     document.getElementById('appSettingsShowTabNewButton').checked =
-      settings.showTabNewButton ?? defaults.showTabNewButton ?? true;
+      settings.showTabNewButton ?? defaults.showTabNewButton ?? false;
     // Detach Tiles (tile-grid.js): per-device, OFF unless switched on. The tile
     // grid is desktop-only, so the row is hidden elsewhere, like the lineage lines.
     document.getElementById('appSettingsTileDetach').checked = settings.tileDetachEnabled === true;
@@ -4139,8 +4139,6 @@ Object.assign(CodemanApp.prototype, {
         showSessionButton: false,
         showAwayDigestButton: false,
         showCronButton: false,
-        // The tab's "+": opt-in on phones, where it widens the active tab.
-        showTabNewButton: false,
         // Phone home screen: the C logo opens the session overview instead of the
         // welcome screen. ON by default here, and the escape hatch if it ever
         // misbehaves on a device (the gate treats only an explicit false as off).
@@ -4380,11 +4378,11 @@ Object.assign(CodemanApp.prototype, {
       this.tabDetachButtonEnabled?.(settings, defaults)
       ?? (settings.showTabDetachButton ?? defaults.showTabDetachButton ?? false);
     document.documentElement.classList.toggle('tabs-show-detach', showTabDetach);
-    // The tab's "+" (new session beside it): per-device, ON except on handhelds,
-    // where it widens the active phone tab (mobile.css) and so is opt-in.
+    // The tab's "+" (new session beside it): per-device and opt-in everywhere,
+    // like the pop-out button. On a phone it also widens the active tab (mobile.css).
     document.documentElement.classList.toggle(
       'tabs-show-new',
-      settings.showTabNewButton ?? defaults.showTabNewButton ?? true
+      settings.showTabNewButton ?? defaults.showTabNewButton ?? false
     );
     const compactHeader = MobileDetection.getDeviceType() !== 'desktop';
     const showFontControls = compactHeader ? false : (settings.showFontControls ?? defaults.showFontControls ?? false);
