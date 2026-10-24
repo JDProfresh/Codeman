@@ -184,17 +184,17 @@ describe('Codeman light skins', () => {
     // back to the og gradients on the DEFAULT skin (gemini, antigravity and omp all
     // shipped as generic claude blue once for the same reason). Ids come from the sheet.
     const css = stylesSource.replace(/\/\*[\s\S]*?\*\//g, '');
-    const baseIds = [...css.matchAll(/^\.btn-toolbar:is\(\.btn-run, \.btn-run-gear\)\.mode-([\w-]+) \{/gm)].map(
+    const baseIds = [...css.matchAll(/^\.cm-btn--bar:is\(\.btn-run, \.btn-run-gear\)\.mode-([\w-]+) \{/gm)].map(
       (m) => m[1]
     );
     expect(baseIds.length).toBeGreaterThanOrEqual(5);
     const generic = css.match(
-      /:where\(html:not\(\[data-skin="og"\]\)\) \.btn-toolbar:is\(\.btn-run, \.btn-run-gear\):not\(([^)]*)\) \{/
+      /:where\(html:not\(\[data-skin="og"\]\)\) \.cm-btn--bar:is\(\.btn-run, \.btn-run-gear\):not\(([^)]*)\) \{/
     );
     expect(generic).not.toBeNull();
     const identity = generic![1].split(',').map((m) => m.trim().replace(/^\.mode-/, ''));
     const ownRule = (id: string) =>
-      css.includes(`:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-${id} {`);
+      css.includes(`:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-${id} {`);
     expect(identity.filter((id) => !ownRule(id))).toEqual([]);
     expect(identity.filter((id) => !baseIds.includes(id))).toEqual([]);
   });

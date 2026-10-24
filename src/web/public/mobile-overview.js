@@ -562,7 +562,7 @@ Object.assign(CodemanApp.prototype, {
     brand.setAttribute('data-i18n-skip', '');
     top.appendChild(brand);
 
-    // Split button carrying the TOOLBAR's own classes (`btn-toolbar btn-run
+    // Split button carrying the TOOLBAR's own classes (`cm-btn cm-btn--bar btn-run
     // mode-<mode>` / `btn-run-gear`), so the per-backend gradient, border and
     // text color come from the same rules as the Run button in the toolbar and
     // stay in sync with it for free. mobile.css only sizes it.
@@ -571,7 +571,7 @@ Object.assign(CodemanApp.prototype, {
 
     const mode = this.runMode || 'claude';
     const run = document.createElement('button');
-    run.className = `btn-toolbar btn-run mode-${mode} mobile-overview-run`;
+    run.className = `cm-btn cm-btn--bar btn-run mode-${mode} mobile-overview-run`;
     run.type = 'button';
     run.dataset.moAction = 'run';
     const runLabel = document.createElement('span');
@@ -585,7 +585,7 @@ Object.assign(CodemanApp.prototype, {
     group.appendChild(run);
 
     const caret = document.createElement('button');
-    caret.className = `btn-toolbar btn-run-gear mode-${mode} mobile-overview-run-caret`;
+    caret.className = `cm-btn cm-btn--bar btn-run-gear mode-${mode} mobile-overview-run-caret`;
     caret.type = 'button';
     caret.dataset.moAction = 'run-menu';
     caret.setAttribute('aria-label', 'Choose what to run');

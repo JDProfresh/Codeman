@@ -398,10 +398,10 @@ describe('mobile overview wiring', () => {
 
   it('reuses the toolbar Run button classes instead of its own palette', () => {
     // The per-backend gradient lives in styles.css keyed on
-    // `.btn-toolbar.btn-run.mode-<backend>` (and light skins override exactly
+    // `.cm-btn--bar.btn-run.mode-<backend>` (and light skins override exactly
     // those); carrying the same classes keeps both Run buttons identical.
-    expect(moduleSrc).toContain('btn-toolbar btn-run mode-');
-    expect(moduleSrc).toContain('btn-toolbar btn-run-gear mode-');
+    expect(moduleSrc).toContain('cm-btn cm-btn--bar btn-run mode-');
+    expect(moduleSrc).toContain('cm-btn cm-btn--bar btn-run-gear mode-');
     // The two button rules (not the dropdown below them) must set no color at
     // all, or they would win over the mode gradient.
     const buttonRules = mobileCss.match(/\.mobile-overview-run(-caret)?\s*\{[^}]*\}/g) || [];

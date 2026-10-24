@@ -264,7 +264,7 @@ const groups = new Map();
 const raw = [];
 let total = 0;
 /** The tag (and id) part of a signature: a migration renames classes, never elements. */
-const shape = (s) => s.replace(/\.[^#]*$/, '');
+const shape = (s) => (/^mode-[\w-]+:/.test(s) ? s.slice(0, s.indexOf(':')) : s.replace(/\.[^#]*$/, ''));
 function diff(a, b, label) {
   const same = a.sig.length === b.sig.length && a.sig.every((s, i) => s === b.sig[i]);
   const paired = BY_POSITION && a.sig.length === b.sig.length && a.sig.every((s, i) => shape(s) === shape(b.sig[i]));

@@ -129,6 +129,33 @@
     color: #fff;
   }
 
+  /* The bottom toolbar's own buttons (Run and its gear, Stop, Shell, Enter, the
+     mic, cron, git status, the phone case sheet) keep their compact look, which
+     stays unlayered in styles.css and mobile.css so its cascade is exactly the
+     one it always had (a layered copy would lose to every unlayered rule of any
+     specificity and reorder it). This modifier only rolls back what the kit
+     base would add on top: the kit font and line height (they use the browser's
+     button font), the minimum heights, centring, the 16px svg and the
+     disabled fade. */
+  .cm-btn--bar,
+  .cm-btn--bar.cm-btn--sm {
+    justify-content: revert-layer;
+    min-height: revert-layer;
+    font-family: revert-layer;
+    font-weight: revert-layer;
+    line-height: revert-layer;
+  }
+  .cm-btn--bar svg {
+    width: revert-layer;
+    height: revert-layer;
+    flex: revert-layer;
+  }
+  .cm-btn--bar:disabled,
+  .cm-btn--bar[aria-disabled='true'] {
+    opacity: revert-layer;
+    cursor: revert-layer;
+  }
+
   /* ---------- Form controls ---------- */
   .cm-input,
   .cm-select {

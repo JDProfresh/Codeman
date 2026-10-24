@@ -356,7 +356,7 @@ html[data-skin="rose-pine-dawn"] {
 
 /* Button focus styles */
 button:focus-visible,
-.btn-toolbar:focus-visible,
+.cm-btn--bar:focus-visible,
 .btn-icon:focus-visible,
 .btn-icon-header:focus-visible {
   outline: 2px solid var(--accent);
@@ -4406,7 +4406,7 @@ body.touch-device .terminal-container .xterm .xterm-helper-textarea {
 /* OG has no designed --accent-ink (its Daylight extras are placeholders), and a
    dark ink on its brighter blue reads poorly: it gets the deeper blue and light
    text of its own toolbar Run button instead. These are that button's colours
-   (`.btn-toolbar.btn-run.mode-claude` and its :hover, below): keep the two in step. */
+   (`.cm-btn--bar.btn-run.mode-claude` and its :hover, below): keep the two in step. */
 html[data-skin="og"] .welcome-primary {
   background: linear-gradient(135deg, #1e4fb8 0%, #2563eb 100%);
   border-color: rgba(96, 165, 250, 0.5);
@@ -5436,7 +5436,10 @@ html[data-skin="og"] .welcome-primary:hover {
   gap: 0;
 }
 
-.btn-toolbar {
+/* The bottom toolbar's buttons (.cm-btn.cm-btn--bar). Their look stays here,
+   unlayered, so the cascade below (Run tokens, Shell, Stop, the skin block,
+   mobile.css) is unchanged; the kit modifier only rolls back the kit base. */
+.cm-btn--bar {
   display: flex;
   align-items: center;
   gap: var(--cm-space-1h);
@@ -5451,19 +5454,19 @@ html[data-skin="og"] .welcome-primary:hover {
   white-space: nowrap;
 }
 
-.btn-toolbar:hover {
+.cm-btn--bar:hover {
   background: rgba(255, 255, 255, 0.09);
   color: var(--text);
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-.btn-toolbar:active {
+.cm-btn--bar:active {
   background: rgba(255, 255, 255, 0.06);
   transform: translateY(0.5px);
 }
 
-.btn-toolbar.btn-sm {
+.cm-btn--bar.cm-btn--sm {
   padding: var(--cm-space-1) var(--cm-space-2);
   font-size: var(--cm-text-2xs);
 }
@@ -5474,7 +5477,7 @@ html[data-skin="og"] .welcome-primary:hover {
   position: relative;
 }
 
-.btn-toolbar.btn-run {
+.cm-btn--bar.btn-run {
   border-radius: var(--btn-radius) 0 0 var(--btn-radius);
   border-right: 1px solid rgba(255,255,255,0.12);
   font-weight: 600;
@@ -5483,13 +5486,13 @@ html[data-skin="og"] .welcome-primary:hover {
   letter-spacing: 0.01em;
 }
 
-.btn-toolbar.btn-run svg {
+.cm-btn--bar.btn-run svg {
   flex-shrink: 0;
   width: 12px;
   height: 12px;
 }
 
-.btn-toolbar.btn-run-gear {
+.cm-btn--bar.btn-run-gear {
   border-radius: 0 var(--btn-radius) var(--btn-radius) 0;
   padding: 0.45rem 0.45rem;
   min-width: unset;
@@ -5500,26 +5503,26 @@ html[data-skin="og"] .welcome-primary:hover {
    non-og skin rules at the end of this file and by mobile.css (phone colours,
    light skins). Never set background/border/colour on .btn-run or .btn-run-gear
    directly: that is what used to split the button into two colours per CLI. */
-.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek) {
+.cm-btn--bar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek) {
   background: var(--run-bg);
   border-color: var(--run-border);
   color: var(--run-ink);
   box-shadow: var(--run-shadow, none);
 }
-.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):hover {
+.cm-btn--bar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):hover {
   background: var(--run-bg-hover, var(--run-bg));
   border-color: var(--run-border-hover, var(--run-border));
   color: var(--run-ink-hover, var(--run-ink));
   box-shadow: var(--run-shadow-hover, var(--run-shadow, none));
 }
 /* Pressed reads as hovered unless a context sets an --run-*-active colour. */
-.btn-toolbar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):active {
+.cm-btn--bar:is(.btn-run, .btn-run-gear):is(.mode-claude, .mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-pi, .mode-omp, .mode-copilot, .mode-grok, .mode-deepseek):active {
   background: var(--run-bg-active, var(--run-bg-hover, var(--run-bg)));
   border-color: var(--run-border-active, var(--run-border-hover, var(--run-border)));
 }
 
 /* Claude (default) */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-claude {
   --run-bg: linear-gradient(135deg, #1a3358 0%, #1e4fb8 50%, #2563eb 100%);
   --run-border: rgba(59, 130, 246, 0.5);
   --run-ink: #e0e7ff;
@@ -5530,7 +5533,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 16px rgba(59, 130, 246, 0.4), 0 2px 8px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 /* OpenCode */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-opencode {
   --run-bg: linear-gradient(135deg, #0a2e2a 0%, #0b3d35 50%, #0d4a40 100%);
   --run-border: rgba(16, 185, 129, 0.5);
   --run-ink: #6ee7b7;
@@ -5541,7 +5544,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(16, 185, 129, 0.35), 0 2px 8px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* Codex */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-codex {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-codex {
   --run-bg: linear-gradient(135deg, #2a0a3e 0%, #350b4d 50%, #400d5e 100%);
   --run-border: rgba(168, 85, 247, 0.5);
   --run-ink: #d8b4fe;
@@ -5552,7 +5555,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(168, 85, 247, 0.35), 0 2px 8px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* Gemini */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-gemini {
   --run-bg: linear-gradient(135deg, #10243f 0%, #174ea6 55%, #4f46e5 100%);
   --run-border: rgba(96, 165, 250, 0.5);
   --run-ink: #dbeafe;
@@ -5563,7 +5566,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(96, 165, 250, 0.35), 0 2px 8px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* Antigravity */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-antigravity {
   --run-bg: linear-gradient(135deg, #0b2b33 0%, #0e7490 55%, #0891b2 100%);
   --run-border: rgba(34, 211, 238, 0.5);
   --run-ink: #cffafe;
@@ -5574,7 +5577,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(34, 211, 238, 0.35), 0 2px 8px rgba(8, 145, 178, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* Pi */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-pi {
   --run-bg: linear-gradient(135deg, #33121f 0%, #9d174d 55%, #be185d 100%);
   --run-border: rgba(244, 114, 182, 0.5);
   --run-ink: #fce7f3;
@@ -5585,7 +5588,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(244, 114, 182, 0.35), 0 2px 8px rgba(190, 24, 93, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* OMP */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-omp {
   --run-bg: linear-gradient(135deg, #312e81 0%, #4f46e5 55%, #6366f1 100%);
   --run-border: rgba(129, 140, 248, 0.5);
   --run-ink: #e0e7ff;
@@ -5596,7 +5599,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(129, 140, 248, 0.35), 0 2px 8px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* GitHub Copilot */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-copilot {
   --run-bg: linear-gradient(135deg, #2e1065 0%, #6d28d9 55%, #7c3aed 100%);
   --run-border: rgba(163, 113, 247, 0.5);
   --run-ink: #ede9fe;
@@ -5607,7 +5610,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(163, 113, 247, 0.35), 0 2px 8px rgba(109, 40, 217, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* Grok */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-grok {
   --run-bg: linear-gradient(135deg, #131316 0%, #27272a 55%, #3f3f46 100%);
   --run-border: rgba(212, 212, 216, 0.5);
   --run-ink: #f4f4f5;
@@ -5618,7 +5621,7 @@ html[data-skin="og"] .welcome-primary:hover {
   --run-shadow-hover: 0 0 12px rgba(212, 212, 216, 0.28), 0 2px 8px rgba(63, 63, 70, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 /* DeepSeek */
-.btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+.cm-btn--bar:is(.btn-run, .btn-run-gear).mode-deepseek {
   --run-bg: linear-gradient(135deg, #101a4d 0%, #2740c4 55%, #4d6bfe 100%);
   --run-border: rgba(124, 147, 255, 0.55);
   --run-ink: #eef2ff;
@@ -5778,7 +5781,7 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Phone-only Enter button (see index.html). Hidden by default at every width;
    mobile.css turns it on inside @media (max-width: 599px), where it takes over
    the slot the Shell button occupies on wider screens. */
-.btn-toolbar.btn-enter {
+.cm-btn--bar.btn-enter {
   display: none;
 }
 
@@ -5855,7 +5858,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Shell Button - Special styling */
-.btn-toolbar.btn-shell {
+.cm-btn--bar.btn-shell {
   background: linear-gradient(135deg, #1a2e1a 0%, #1e3a1e 50%, #234023 100%);
   border-color: rgba(45, 90, 45, 0.6);
   color: #8fbc8f;
@@ -5864,7 +5867,7 @@ html[data-skin="og"] .welcome-primary:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.btn-toolbar.btn-shell:hover {
+.cm-btn--bar.btn-shell:hover {
   background: linear-gradient(135deg, #234023 0%, #2d5a2d 50%, #357035 100%);
   border-color: rgba(61, 122, 61, 0.7);
   box-shadow: 0 0 12px rgba(34, 139, 34, 0.3), 0 2px 8px rgba(34, 139, 34, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -5874,7 +5877,7 @@ html[data-skin="og"] .welcome-primary:hover {
 /* btn-opencode standalone removed — now part of run-btn-group mode system */
 
 /* Stop button - hidden on desktop, shown on mobile */
-.btn-toolbar.btn-stop {
+.cm-btn--bar.btn-stop {
   display: none;
   background: linear-gradient(135deg, #4a1515 0%, #5a1a1a 50%, #7f1d1d 100%);
   border-color: rgba(220, 38, 38, 0.5);
@@ -5883,20 +5886,20 @@ html[data-skin="og"] .welcome-primary:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.btn-toolbar.btn-stop:hover {
+.cm-btn--bar.btn-stop:hover {
   background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%);
   border-color: rgba(239, 68, 68, 0.6);
   box-shadow: 0 0 12px rgba(220, 38, 38, 0.35), 0 2px 8px rgba(220, 38, 38, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
-.btn-toolbar.btn-stop svg {
+.cm-btn--bar.btn-stop svg {
   flex-shrink: 0;
   width: 12px;
   height: 12px;
 }
 
-.btn-toolbar.btn-stop.confirming {
+.cm-btn--bar.btn-stop.confirming {
   background: linear-gradient(135deg, #6b4f00 0%, #856200 100%);
   border-color: #b8860b;
   color: #ffd54f;
@@ -5905,7 +5908,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Touch devices (iPad, tablets): show stop button — no physical Ctrl+C */
-.touch-device .btn-toolbar.btn-stop {
+.touch-device .cm-btn--bar.btn-stop {
   display: flex;
 }
 
@@ -5971,36 +5974,36 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Button icon styling */
-.btn-toolbar .btn-icon {
+.cm-btn--bar .btn-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 /* Voice Input Button — desktop only (mobile uses .btn-voice-mobile) */
-.btn-toolbar.btn-voice {
+.cm-btn--bar.btn-voice {
   padding: 0.3rem 0.5rem;
 }
 
 @media (max-width: 1023px) {
-  .toolbar-center .btn-toolbar.btn-voice {
+  .toolbar-center .cm-btn--bar.btn-voice {
     display: none !important;
   }
 }
 
-.btn-toolbar.btn-voice:hover {
+.cm-btn--bar.btn-voice:hover {
   color: var(--text);
   border-color: rgba(59, 130, 246, 0.4);
 }
 
-.btn-toolbar.btn-voice.recording {
+.cm-btn--bar.btn-voice.recording {
   background: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.6);
   color: #ef4444;
   animation: voice-pulse 1.2s ease-in-out infinite;
 }
 
-.btn-toolbar.btn-voice.recording:hover {
+.cm-btn--bar.btn-voice.recording:hover {
   background: rgba(239, 68, 68, 0.3);
   border-color: rgba(239, 68, 68, 0.8);
   color: #f87171;
@@ -6018,7 +6021,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-toolbar.btn-voice.recording,
+  .cm-btn--bar.btn-voice.recording,
   .btn-voice-mobile.recording {
     animation: none;
   }
@@ -7015,7 +7018,7 @@ html[data-skin="og"] .welcome-primary:hover {
    rest of the app instead of a browser chrome dialog. Shares the context-window-too-small
    modal's fixes below since both can appear mid-launch, in the same spot, for the same
    reason — including this rule itself: there is no bare `.cm-dialog__foot` base style
-   anywhere in this file, and `.btn-toolbar` is `display: flex` (a block-level flex
+   anywhere in this file, and `.cm-btn--bar` is `display: flex` (a block-level flex
    container with no explicit `inline-flex`), so with no row layout of its own each
    button took its own full-width line and the two stacked instead of sitting side by
    side. Centred rather than flex-end per feedback — a two-button Cancel/confirm footer
@@ -7588,7 +7591,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Git worktrees dialog (session-ui.js openWorktreeModal). Its own small button
-   set: the skin block greys `.btn-toolbar.btn-primary` on non-OG skins, and this
+   set: the skin block greys `.cm-btn--bar.btn-primary` on non-OG skins, and this
    dialog needs a primary action that reads as one on every skin. */
 .cm-dialog.worktree-modal {
   max-width: 640px;
@@ -13014,8 +13017,8 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 
 /* "Cron" footer-toolbar button — opt-in, hidden by default (enable under App
    Settings → Display → Header Displays). Toolbar button, not a header icon, so
-   only the hide marker is needed; out-specify any base .btn-toolbar display. */
-.btn-toolbar.btn-cron--hidden {
+   only the hide marker is needed; out-specify any base .cm-btn--bar display. */
+.cm-btn--bar.btn-cron--hidden {
   display: none !important;
 }
 
@@ -20183,7 +20186,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 
 /* ── Git status: bottom-bar indicator + panel (git-status-ui.js) ─────────────── */
 
-/* .btn-toolbar sets display:flex, which beats the [hidden] attribute's UA display:none. */
+/* .cm-btn--bar sets display:flex, which beats the [hidden] attribute's UA display:none. */
 .btn-git-status[hidden] {
   display: none;
 }
@@ -20200,7 +20203,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
   letter-spacing: 0.02em;
 }
 
-/* The skin block in styles.css nests every .btn-toolbar rule under html:not([data-skin="og"]), which
+/* The skin block in styles.css nests every .cm-btn--bar rule under html:not([data-skin="og"]), which
    out-ranks a bare .btn-git-status.<tone> rule, so the tones carry the same `html .toolbar` prefix
    (specificity (0,3,1) against the skin's (0,2,1)). Without it the amber never shows. */
 html .toolbar .btn-git-status.git-status--clean {
@@ -21507,7 +21510,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
 
 /* ---- Bottom toolbar + neutral buttons ---- */
 .toolbar { box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.22), 0 -4px 14px rgba(0, 0, 0, 0.14); }
-/* .btn-toolbar catch-all, Run/gear, Shell and Stop: in the weighted block below. */
+/* .cm-btn--bar catch-all, Run/gear, Shell and Stop: in the weighted block below. */
 
 /* ---- Case selector + add ---- */
 .toolbar-select {
@@ -21555,7 +21558,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
    accent; OpenCode and Codex take accent-derived fills; the rest keep their own
    colours. On hover only the glow is added (Claude, Shell and the other accent CLIs also
    swap to the accent hover fill), the same as when the skin rules held weight. */
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):not(.mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-omp, .mode-copilot, .mode-pi, .mode-grok, .mode-deepseek) {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear):not(.mode-opencode, .mode-codex, .mode-gemini, .mode-antigravity, .mode-omp, .mode-copilot, .mode-pi, .mode-grok, .mode-deepseek) {
   --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
   --run-border: var(--accent);
   --run-ink: var(--accent-ink);
@@ -21564,7 +21567,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-bg-hover: linear-gradient(135deg, var(--run-hover-a), var(--run-hover-b));
   --run-shadow-hover: 0 0 14px -2px rgba(var(--accent-rgb), 0.5);
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-opencode {
   --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
   --run-border: var(--accent);
   --run-ink: var(--accent-ink);
@@ -21573,7 +21576,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: var(--accent);
   --run-ink-hover: var(--accent-ink);
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-codex {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-codex {
   --run-bg: linear-gradient(135deg, var(--accent-grad-b), #5cc6e8);
   --run-border: var(--accent-grad-b);
   --run-ink: #061c20;
@@ -21582,7 +21585,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: var(--accent-grad-b);
   --run-ink-hover: #061c20;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-gemini {
   --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
   --run-border: #123a7a;
   --run-ink: #dbeafe;
@@ -21591,7 +21594,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #123a7a;
   --run-ink-hover: #dbeafe;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-antigravity {
   --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
   --run-border: #0b5566;
   --run-ink: #cffafe;
@@ -21600,7 +21603,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #0b5566;
   --run-ink-hover: #cffafe;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-omp {
   --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
   --run-border: #3730a3;
   --run-ink: #e0e7ff;
@@ -21609,7 +21612,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #3730a3;
   --run-ink-hover: #e0e7ff;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-copilot {
   --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
   --run-border: #5b21b6;
   --run-ink: #ede9fe;
@@ -21618,7 +21621,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #5b21b6;
   --run-ink-hover: #ede9fe;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-pi {
   --run-bg: linear-gradient(135deg, #be185d, #f472b6);
   --run-border: #be185d;
   --run-ink: #fff1f7;
@@ -21627,7 +21630,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #be185d;
   --run-ink-hover: #fff1f7;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-grok {
   --run-bg: linear-gradient(135deg, #27272a, #52525b);
   --run-border: #18181b;
   --run-ink: #fafafa;
@@ -21636,7 +21639,7 @@ body.keyboard-visible .terminal-container .xterm-screen {
   --run-border-hover: #18181b;
   --run-ink-hover: #fafafa;
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-deepseek {
   --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
   --run-border: #1b2a8f;
   --run-ink: #f8faff;
@@ -21647,19 +21650,19 @@ body.keyboard-visible .terminal-container .xterm-screen {
 }
 
 /* On the non-og skins every mode reads the tokens, Shell included (accent). */
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]) {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear):is([class*="mode-"]) {
   background: var(--run-bg);
   border-color: var(--run-border);
   color: var(--run-ink);
   box-shadow: var(--run-shadow, none);
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):hover {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):hover {
   background: var(--run-bg-hover, var(--run-bg));
   border-color: var(--run-border-hover, var(--run-border));
   color: var(--run-ink-hover, var(--run-ink));
   box-shadow: var(--run-shadow-hover, var(--run-shadow, none));
 }
-:where(html:not([data-skin="og"])) .btn-toolbar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):active {
+:where(html:not([data-skin="og"])) .cm-btn--bar:is(.btn-run, .btn-run-gear):is([class*="mode-"]):active {
   background: var(--run-bg-active, var(--run-bg-hover, var(--run-bg)));
   border-color: var(--run-border-active, var(--run-border-hover, var(--run-border)));
 }
@@ -21671,12 +21674,12 @@ body.keyboard-visible .terminal-container .xterm-screen {
    skips the semantic variants (:where, so it adds no specificity), which keep
    their own accent / red / green, as the proposed dialog design calls for. */
 html:not([data-skin="og"]) {
-.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)) {
+.cm-btn--bar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)) {
   background: var(--control-bg);
   border-color: var(--control-border);
   color: var(--text-dim);
 }
-.btn-toolbar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)):hover {
+.cm-btn--bar:where(:not(.btn-primary, .btn-danger, .btn-success, .btn-run, .btn-run-gear)):hover {
   background: var(--control-bg-hover);
   border-color: var(--control-border-hover);
   color: var(--text);
@@ -21685,38 +21688,38 @@ html:not([data-skin="og"]) {
 
 /* ---- RUN button weight: the colours are --run-* tokens (non-og values in the
    skin component rules above); only the label weight needs to beat mobile.css. */
-.btn-toolbar.btn-run {
+.cm-btn--bar.btn-run {
   font-weight: 700;
   text-shadow: none;
 }
 
 /* ---- Shell button: quiet neutral with a calm green tint ---- */
-.btn-toolbar.btn-shell {
+.cm-btn--bar.btn-shell {
   background: rgba(68, 185, 147, 0.1);
   border: 1px solid rgba(68, 185, 147, 0.28);
   color: var(--green);
   text-shadow: none;
 }
-.btn-toolbar.btn-shell:hover {
+.cm-btn--bar.btn-shell:hover {
   background: rgba(68, 185, 147, 0.16);
   border-color: rgba(68, 185, 147, 0.4);
   box-shadow: none;
 }
 
 /* ---- Stop button: quiet neutral control (no rose glow) ---- */
-.btn-toolbar.btn-stop {
+.cm-btn--bar.btn-stop {
   background: var(--control-bg);
   border: 1px solid var(--control-border);
   color: var(--text-dim);
   text-shadow: none;
 }
-.btn-toolbar.btn-stop:hover {
+.cm-btn--bar.btn-stop:hover {
   background: rgba(224, 99, 99, 0.14);
   border-color: rgba(224, 99, 99, 0.4);
   color: #f0a0a0;
   box-shadow: none;
 }
-.btn-toolbar.btn-stop.confirming {
+.cm-btn--bar.btn-stop.confirming {
   background: linear-gradient(135deg, #5a4a1a, #6b5620);
   border-color: rgba(240, 194, 90, 0.6);
   color: var(--yellow);

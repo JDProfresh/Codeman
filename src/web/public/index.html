@@ -709,11 +709,11 @@
         <!-- Run AI -->
         <div class="toolbar-group">
           <div class="run-btn-group">
-            <button class="btn-toolbar btn-run" id="runBtn" onclick="app.run()" title="Run">
+            <button class="cm-btn cm-btn--bar btn-run" id="runBtn" onclick="app.run()" title="Run">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               <span id="runBtnLabel">Run</span>
             </button>
-            <button class="btn-toolbar btn-run-gear" onclick="app.toggleRunModeMenu(event)" title="Select AI backend">
+            <button class="cm-btn cm-btn--bar btn-run-gear" onclick="app.toggleRunModeMenu(event)" title="Select AI backend">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="cm-menu run-mode-menu" id="runModeMenu">
@@ -762,16 +762,16 @@
             <input type="number" id="tabCount" class="tab-count-input" value="1" min="1" max="20" readonly>
             <button class="tab-count-btn" onclick="app.incrementTabCount()">+</button>
           </div>
-          <button class="btn-toolbar btn-stop" onclick="app.stopClaude()" title="Stop (Ctrl+C)">
+          <button class="cm-btn cm-btn--bar btn-stop" onclick="app.stopClaude()" title="Stop (Ctrl+C)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
           </button>
-          <button class="btn-toolbar btn-shell" onclick="app.runShell()" title="Run Shell">
+          <button class="cm-btn cm-btn--bar btn-shell" onclick="app.runShell()" title="Run Shell">
             Run Shell
           </button>
           <!-- Phone-only: replaces the Shell button under 600px (Shell moves into the Run
                dropdown there). Sends a bare Enter to the active session, the complement
                to the accessory bar's Esc. Hidden everywhere else — see styles.css. -->
-          <button class="btn-toolbar btn-enter" onclick="app.sendEnterKey()" title="Send Enter">
+          <button class="cm-btn cm-btn--bar btn-enter" onclick="app.sendEnterKey()" title="Send Enter">
             Enter
           </button>
           <!-- Run Shell had a second, identical instance-count stepper here. The
@@ -852,7 +852,7 @@
       </div>
 
       <div class="toolbar-center">
-        <button class="btn-toolbar btn-sm btn-voice" id="voiceInputBtn" onclick="VoiceInput.toggle()"
+        <button class="cm-btn cm-btn--bar cm-btn--sm btn-voice" id="voiceInputBtn" onclick="VoiceInput.toggle()"
                 title="Voice input (Ctrl+Shift+V)" aria-label="Start voice input" aria-pressed="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -866,11 +866,11 @@
       <div class="toolbar-right">
         <!-- Orchestrator button hidden until feature is ready -->
         <!-- <button class="cm-btn cm-btn--sm" onclick="app.toggleOrchestratorPanel()" title="Orchestrator Loop">&#x2699; Orchestrator</button> -->
-        <button class="btn-toolbar btn-sm btn-cron btn-cron--hidden" onclick="app.openCron()" title="Cron Jobs">&#x23F0; Cron</button>
+        <button class="cm-btn cm-btn--bar cm-btn--sm btn-cron btn-cron--hidden" onclick="app.openCron()" title="Cron Jobs">&#x23F0; Cron</button>
         <!-- Git status of the active session's repository (git-status-ui.js). Optional and per-device
              (App Settings → Header & Panels → Bottom bar, default OFF), so it is hidden until that
              setting is on AND the session is a local git repository. -->
-        <button type="button" class="btn-toolbar btn-sm btn-git-status" id="gitStatusBtn" hidden aria-expanded="false" aria-controls="gitStatusPanel" onclick="app.toggleGitStatusPanel()">
+        <button type="button" class="cm-btn cm-btn--bar cm-btn--sm btn-git-status" id="gitStatusBtn" hidden aria-expanded="false" aria-controls="gitStatusPanel" onclick="app.toggleGitStatusPanel()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7"/><path d="M18 10.5c0 4-6 3-11 6"/></svg>
           <span class="git-status-label" data-i18n-skip></span>
         </button>
@@ -3813,12 +3813,12 @@
           </div>
         </div>
         <div class="mobile-case-picker-footer">
-          <button class="btn-toolbar btn-case-create-mobile" onclick="app.showCreateCaseFromMobile()">
+          <button class="cm-btn cm-btn--bar btn-case-create-mobile" onclick="app.showCreateCaseFromMobile()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Create New Case
           </button>
           <!-- The selected case's git worktrees (session-ui.js openWorktreeModal). -->
-          <button class="btn-toolbar btn-case-create-mobile btn-case-worktrees-mobile" onclick="app.showWorktreesFromMobile()">
+          <button class="cm-btn cm-btn--bar btn-case-create-mobile btn-case-worktrees-mobile" onclick="app.showWorktreesFromMobile()">
             <span aria-hidden="true">&#x2442;</span>
             Worktrees
           </button>
@@ -4293,9 +4293,8 @@
           <input type="text" id="readMyMindSteer" class="readmymind-steer-input" maxlength="2000" placeholder="Steer the rethink, e.g. 'no, I meant the mobile bug'" aria-label="Steer note for Rethink" onkeydown="if(event.key==='Enter')app.rethinkReadMyMind()">
         </div>
       </div>
-      <!-- btn-toolbar, not bare "btn btn-*": no .btn/.btn-secondary rule exists
-           in this codebase, so the bare classes render as unstyled UA buttons.
-           btn-toolbar is the convention every other modal footer uses. -->
+      <!-- Kit buttons, never bare "btn btn-*": no .btn/.btn-secondary rule exists
+           in this codebase, so the bare classes render as unstyled UA buttons. -->
       <div class="cm-dialog__foot">
         <button class="cm-btn cm-btn--sm" onclick="app.closeReadMyMind()">Dismiss</button>
         <button class="cm-btn cm-btn--sm" id="readMyMindRethink" onclick="app.rethinkReadMyMind()">Rethink</button>

@@ -19,13 +19,13 @@ describe('Run button colours for every stock agent CLI', () => {
 
   // Both halves read one set of --run-* tokens (design-system phase 3), so a CLI
   // needs a token rule AND a place in the property rule's mode list.
-  const propertyRule = styles.match(/\.btn-toolbar:is\(\.btn-run, \.btn-run-gear\):is\(([^)]*)\) \{/);
+  const propertyRule = styles.match(/\.cm-btn--bar:is\(\.btn-run, \.btn-run-gear\):is\(([^)]*)\) \{/);
   const listed = new Set((propertyRule?.[1] ?? '').split(',').map((m) => m.trim().replace(/^\.mode-/, '')));
 
   for (const id of AGENT_IDS) {
     it(`${id} has Run button tokens`, () => {
       expect(styles, `${id} has no --run-* token rule in styles.css`).toMatch(
-        new RegExp(`\\.btn-toolbar:is\\(\\.btn-run, \\.btn-run-gear\\)\\.mode-${id} \\{\\n  --run-bg:`)
+        new RegExp(`\\.cm-btn--bar:is\\(\\.btn-run, \\.btn-run-gear\\)\\.mode-${id} \\{\\n  --run-bg:`)
       );
       expect(listed.has(id), `${id} is missing from the Run property rule's mode list`).toBe(true);
     });

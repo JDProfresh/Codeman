@@ -152,8 +152,8 @@ purpose. Run `npm run css:diff -- --viewports all` for any change there: the ext
 viewports (360, 700, 768) sit on mobile.css's own steps.
 
 The `!important`s left in `mobile.css` are load-bearing: phone toolbar sizes beat
-`.btn-toolbar`'s own `!important` sizing (and every button that carries that class,
-the overview's Run included), toolbar colours beat the weighted skin block, and
+the phone block's own `!important` sizing on `.cm-btn--bar` (and every button that
+carries that class, the overview's Run included), toolbar colours beat the weighted skin block, and
 `display` beats JS inline toggles. Removing them is a toolbar refactor, not a
 cleanup.
 
@@ -192,7 +192,14 @@ layer (`test/menu-kit-migration.test.ts`).
 **Text buttons are on the kit.** Every dialog, settings and panel text button is
 `.cm-btn.cm-btn--sm` plus a variant (`test/button-kit-migration.test.ts`); the bare
 `btn`/`btn-xs`/`btn-secondary` classes, which no CSS styled, are gone with them.
-`.btn-toolbar` now means the bottom toolbar family only.
+The bottom toolbar family (Run and its gear, Stop, Shell, Enter, mic, cron, git
+status, the phone case sheet) is `.cm-btn.cm-btn--bar`. Its compact look stays
+unlayered in `styles.css`/`mobile.css`, so its cascade (the Run `--run-*` tokens,
+Shell, Stop, the skin block, the phone sizes) is exactly the old one: a layered
+copy would lose to every unlayered rule regardless of specificity and reorder it
+(measured: the git-status, cron and mic sizes moved). The kit's `--bar` modifier
+only rolls back, with `revert-layer`, what the kit base would add (font, line
+height, minimum heights, the 16px svg, the disabled fade). `.btn-toolbar` is gone.
 
 **Icon buttons are on the kit.** Every small icon button (panel, preview and
 drawer toolbars) is `.cm-btn.cm-btn--icon.cm-btn--ghost`: 32px with a mouse, the
@@ -210,5 +217,5 @@ board P03 shows (`test/settings-rows-kit.test.ts`). Phones keep a step-smaller
 label and hint so a row stays about 56px. Settings-only modifiers (`set-row-block`,
 `set-row-actions`, `has-field`) stay on top of the kit row.
 
-Next migrations: `.btn-toolbar` onto `.cm-btn`.
+Next: the phone toolbar's `!important` chain on `.cm-btn--bar`.
 Each one ships with a `css:diff` run showing only the intended changes.

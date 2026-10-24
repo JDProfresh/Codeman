@@ -1862,10 +1862,10 @@ Object.assign(CodemanApp.prototype, {
     const gearBtn = runBtn?.nextElementSibling;
     const label = document.getElementById('runBtnLabel');
     if (runBtn) {
-      runBtn.className = `btn-toolbar btn-run mode-${mode}`;
+      runBtn.className = `cm-btn cm-btn--bar btn-run mode-${mode}`;
     }
     if (gearBtn) {
-      gearBtn.className = `btn-toolbar btn-run-gear mode-${mode}`;
+      gearBtn.className = `cm-btn cm-btn--bar btn-run-gear mode-${mode}`;
     }
     if (label) {
       const registryEntry = registryCliById(mode);
@@ -2165,7 +2165,7 @@ Object.assign(CodemanApp.prototype, {
    *  Requires double-tap: first tap turns button amber, second tap within 2s sends Ctrl+C. */
   stopClaude() {
     if (!this.activeSessionId) return;
-    const btn = document.querySelector('.btn-toolbar.btn-stop');
+    const btn = document.querySelector('.cm-btn--bar.btn-stop');
     if (!btn) return;
 
     if (this._stopConfirmTimer) {

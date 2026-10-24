@@ -171,7 +171,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Compact toolbar buttons */
-  .btn-toolbar {
+  .cm-btn--bar {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
     min-height: 40px;
@@ -303,7 +303,7 @@ html.mobile-init .file-browser-panel {
 
   /* Show desktop voice button on tablet (hidden by max-width:1023px in styles.css,
      mobile .btn-voice-mobile only shows at <600px) */
-  .toolbar-center .btn-toolbar.btn-voice {
+  .toolbar-center .cm-btn--bar.btn-voice {
     display: flex !important;
   }
 
@@ -324,7 +324,7 @@ html.mobile-init .file-browser-panel {
     gap: 0.5rem;
   }
 
-  .btn-toolbar {
+  .cm-btn--bar {
     padding: 0.4rem 0.75rem;
     font-size: 0.75rem;
     min-height: unset;
@@ -1007,7 +1007,7 @@ html.mobile-init .file-browser-panel {
     align-items: center;
   }
 
-  .toolbar-center .btn-toolbar.btn-voice {
+  .toolbar-center .cm-btn--bar.btn-voice {
     display: none !important;
   }
 
@@ -1051,7 +1051,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Compact toolbar buttons for mobile - white text on dark */
-  .btn-toolbar {
+  .cm-btn--bar {
     min-height: 26px !important;
     max-height: 26px !important;
     height: 26px !important;
@@ -1073,7 +1073,7 @@ html.mobile-init .file-browser-panel {
     flex: 0 0 auto;
   }
 
-  .btn-toolbar.btn-run {
+  .cm-btn--bar.btn-run {
     flex: 0 0 auto;
     padding: 0 0.6rem !important;
     font-weight: 500;
@@ -1081,13 +1081,13 @@ html.mobile-init .file-browser-panel {
     border-right: none;
   }
 
-  .btn-toolbar.btn-run svg {
+  .cm-btn--bar.btn-run svg {
     width: 10px;
     height: 10px;
     margin-right: 3px;
   }
 
-  .btn-toolbar.btn-run-gear {
+  .cm-btn--bar.btn-run-gear {
     flex: 0 0 auto;
     padding: 0 0.35rem !important;
     min-width: unset;
@@ -1095,14 +1095,14 @@ html.mobile-init .file-browser-panel {
     border-left: 1px solid rgba(255,255,255,0.15);
   }
 
-  .btn-toolbar.btn-run-gear svg {
+  .cm-btn--bar.btn-run-gear svg {
     width: 10px;
     height: 10px;
   }
 
   /* Keep the divider between Run and its gear: the Run tokens set the gear's
      border-color, so the divider needs the tokens' weight ([class*="mode-"]). */
-  .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
+  .cm-btn--bar.btn-run-gear:is([class*="mode-"]) {
     border-left-color: rgba(255, 255, 255, 0.15);
   }
 
@@ -1112,7 +1112,7 @@ html.mobile-init .file-browser-panel {
      (their flat fill and press are og-only); the light skins re-set these tokens again at
      the end of this file, and win there. */
 
-  html[data-skin="og"] .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+  html[data-skin="og"] .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-claude {
     --run-bg: #1e3a5f;
     --run-border: rgba(59, 130, 246, 0.3);
     --run-ink: #93c5fd;
@@ -1120,7 +1120,7 @@ html.mobile-init .file-browser-panel {
     --run-border-active: rgba(59, 130, 246, 0.5);
   }
 
-  html[data-skin="og"] .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+  html[data-skin="og"] .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-opencode {
     --run-bg: #0a2e2a;
     --run-border: rgba(16, 185, 129, 0.3);
     --run-ink: #6ee7b7;
@@ -1128,7 +1128,7 @@ html.mobile-init .file-browser-panel {
     --run-border-active: rgba(16, 185, 129, 0.5);
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-gemini {
     --run-bg: #10243f;
     --run-border: rgba(96, 165, 250, 0.3);
     --run-ink: #dbeafe;
@@ -1139,7 +1139,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #dbeafe;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-antigravity {
     --run-bg: #0b2b33;
     --run-border: rgba(34, 211, 238, 0.3);
     --run-ink: #cffafe;
@@ -1150,7 +1150,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #cffafe;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-pi {
     --run-bg: #33121f;
     --run-border: rgba(244, 114, 182, 0.3);
     --run-ink: #fce7f3;
@@ -1161,7 +1161,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #fce7f3;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-grok {
     --run-bg: #1c1c1f;
     --run-border: rgba(212, 212, 216, 0.3);
     --run-ink: #f4f4f5;
@@ -1172,7 +1172,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #f4f4f5;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-deepseek {
     --run-bg: #16225f;
     --run-border: rgba(124, 147, 255, 0.35);
     --run-ink: #eef2ff;
@@ -1183,7 +1183,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #eef2ff;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-omp {
     --run-bg: #312e81;
     --run-border: rgba(129, 140, 248, 0.3);
     --run-ink: #e0e7ff;
@@ -1194,7 +1194,7 @@ html.mobile-init .file-browser-panel {
     --run-ink-hover: #e0e7ff;
   }
 
-  .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+  .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-copilot {
     --run-bg: #2e1065;
     --run-border: rgba(163, 113, 247, 0.3);
     --run-ink: #ede9fe;
@@ -1237,7 +1237,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Stop button - visible on mobile, icon-only */
-  .btn-toolbar.btn-stop {
+  .cm-btn--bar.btn-stop {
     display: flex !important;
     flex: 0 0 auto;
     padding: 0 8px !important;
@@ -1245,7 +1245,7 @@ html.mobile-init .file-browser-panel {
     order: 3; /* Left of Run Shell */
   }
 
-  .btn-toolbar.btn-stop svg {
+  .cm-btn--bar.btn-stop svg {
     width: 10px;
     height: 10px;
     margin-right: 0;
@@ -1255,14 +1255,14 @@ html.mobile-init .file-browser-panel {
      (Terminal / Shell), freeing this slot for Enter. Starting a shell is a rare,
      deliberate act; sending Enter is a constant one, so the scarce phone real
      estate goes to Enter. */
-  .btn-toolbar.btn-shell {
+  .cm-btn--bar.btn-shell {
     display: none !important;
   }
 
   /* Secondary action - Enter - right side, in the slot the Shell button used to
      hold. Since P07 moved the case picker into the More sheet, Enter takes the
      toolbar's free width (a wider target for the key pressed most). */
-  .btn-toolbar.btn-enter {
+  .cm-btn--bar.btn-enter {
     display: flex !important;
     flex: 1 1 0;
     align-items: center;
@@ -1275,7 +1275,7 @@ html.mobile-init .file-browser-panel {
     font-weight: 600;
     letter-spacing: 0.01em;
     /* !important is REQUIRED here, not defensive habit: styles.css nests its skin
-       overrides inside `html:not([data-skin="og"]) { … }`, so a plain `.btn-toolbar`
+       overrides inside `html:not([data-skin="og"]) { … }`, so a plain `.cm-btn--bar`
        in that block resolves to (0,2,1) and outranks this (0,2,0) rule. Without
        !important the button silently renders in generic toolbar grey. */
     background: rgba(30, 58, 95, 0.85) !important;
@@ -1284,8 +1284,8 @@ html.mobile-init .file-browser-panel {
     order: 4; /* Right position — same slot Shell used to occupy */
   }
 
-  .btn-toolbar.btn-enter:hover,
-  .btn-toolbar.btn-enter:active {
+  .cm-btn--bar.btn-enter:hover,
+  .cm-btn--bar.btn-enter:active {
     background: rgba(37, 74, 122, 0.95) !important;
     border-color: rgba(59, 130, 246, 0.7) !important;
     color: #fff !important;
@@ -2412,7 +2412,7 @@ html.mobile-init .file-browser-panel {
   }
 
   /* Split Run button. Colors come from the toolbar's own
-     `.btn-toolbar.btn-run.mode-<backend>` rules in styles.css (the element
+     `.cm-btn--bar.btn-run.mode-<backend>` rules in styles.css (the element
      carries those classes), so this button and the one in the toolbar are the
      same control in two places. Only size/shape is set here, and NOTHING that
      would override the mode gradient. */
@@ -2431,8 +2431,8 @@ html.mobile-init .file-browser-panel {
   /* Sized well past the 44px touch minimum: this is the primary action on the
      home screen, and the caret is a separate target right next to it.
      ⚠️ The !important is required, not decorative: the phone block clamps every
-     .btn-toolbar to `height/min-height/max-height: 26px !important`, and this
-     button deliberately carries .btn-toolbar to inherit the run-mode gradient.
+     .cm-btn--bar to `height/min-height/max-height: 26px !important`, and this
+     button deliberately carries .cm-btn--bar to inherit the run-mode gradient.
      Without matching !important (max-height included) it renders 26px tall. */
   .mobile-overview-run-group .mobile-overview-run {
     display: inline-flex;
@@ -3027,18 +3027,18 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
 /* `.accessory-btn:not(.armed, .accessory-btn-compose)` on purpose (Compose keeps its
    accent tint the same way): this selector is (0,3,1) — `:is()`
-   takes the specificity of its most specific argument, and `.btn-toolbar
+   takes the specificity of its most specific argument, and `.cm-btn--bar
    .btn-shell` is two classes — so it OUTRANKS the (0,3,0) armed-Ctrl rules in
    both stylesheets and repainted the armed modifier back to a resting button on
    all four light skins. Excluding the state here fixes phone and tablet at once;
    adding a class to the armed rules would only have moved the tie. */
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-settings-mobile, .btn-toolbar.btn-shell, .accessory-btn:not(.armed, .accessory-btn-compose)) {
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile, .btn-settings-mobile, .cm-btn--bar.btn-shell, .accessory-btn:not(.armed, .accessory-btn-compose)) {
   background: var(--control-bg);
   border-color: var(--control-border);
   color: var(--text-dim);
 }
 
-html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-settings-mobile:active, .btn-toolbar.btn-shell:hover, .btn-toolbar.btn-shell:active, .accessory-btn:active) {
+html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.btn-voice-mobile:active, .btn-settings-mobile:active, .cm-btn--bar.btn-shell:hover, .cm-btn--bar.btn-shell:active, .accessory-btn:active) {
   background: var(--control-bg-hover);
   border-color: var(--control-border-hover);
   color: var(--text);
@@ -3046,19 +3046,19 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
 /* Run split button on the light skins (phone and tablet): --run-* tokens, placed
    after the phone colours above so they win on a light skin. */
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-claude {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-claude {
   --run-bg: linear-gradient(135deg, var(--accent-grad-a), var(--accent-grad-b));
   --run-border: var(--accent);
   --run-ink: var(--accent-ink);
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-opencode {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-opencode {
   --run-bg: linear-gradient(135deg, var(--accent-d), var(--accent-grad-b));
   --run-border: var(--accent);
   --run-ink: var(--accent-ink);
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-gemini {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-gemini {
   --run-bg: linear-gradient(135deg, #174ea6, #4f46e5);
   --run-border: #315fc3;
   --run-ink: #ffffff;
@@ -3067,7 +3067,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-antigravity {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-antigravity {
   --run-bg: linear-gradient(135deg, #0e7490, #0891b2);
   --run-border: #155e75;
   --run-ink: #ffffff;
@@ -3076,7 +3076,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-pi {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-pi {
   --run-bg: linear-gradient(135deg, #be185d, #db2777);
   --run-border: #9d174d;
   --run-ink: #ffffff;
@@ -3085,7 +3085,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-omp {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-omp {
   --run-bg: linear-gradient(135deg, #4f46e5, #6366f1);
   --run-border: #4338ca;
   --run-ink: #ffffff;
@@ -3094,7 +3094,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-copilot {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-copilot {
   --run-bg: linear-gradient(135deg, #6d28d9, #8b5cf6);
   --run-border: #5b21b6;
   --run-ink: #ffffff;
@@ -3103,7 +3103,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-grok {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-grok {
   --run-bg: linear-gradient(135deg, #27272a, #52525b);
   --run-border: #18181b;
   --run-ink: #ffffff;
@@ -3112,7 +3112,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
   --run-ink-hover: #ffffff;
 }
 
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar:is(.btn-run, .btn-run-gear).mode-deepseek {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-deepseek {
   --run-bg: linear-gradient(135deg, #2740c4, #4d6bfe);
   --run-border: #1b2a8f;
   --run-ink: #ffffff;
@@ -3123,7 +3123,7 @@ html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="cat
 
 /* The divider between Run and its gear. The [class*="mode-"] matches the token
    rules' weight, so this needs no !important. */
-:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .btn-toolbar.btn-run-gear:is([class*="mode-"]) {
+:where(html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"])) .cm-btn--bar.btn-run-gear:is([class*="mode-"]) {
   border-left-color: var(--control-border-hover);
 }
 
@@ -3732,7 +3732,7 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
   }
 
   /* Simplify button hover states */
-  .btn-toolbar:hover {
+  .cm-btn--bar:hover {
     transform: none;
   }
 
@@ -3745,9 +3745,9 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
      specificity 0,2,1) and the per-run-mode colors own the background and its
      hover rules own box-shadow, so a background or shadow :active lost to them
      on every non-og skin. Nothing on these buttons sets transform or filter
-     (the base .btn-toolbar:active nudge sits at lower specificity), so one rule
+     (the base .cm-btn--bar:active nudge sits at lower specificity), so one rule
      reads the same on all of them. 80ms so a quick tap shows the press at all. */
-  .toolbar .btn-toolbar,
+  .toolbar .cm-btn--bar,
   .btn-voice-mobile,
   .btn-settings-mobile,
   .btn-case-settings-mobile,
@@ -3756,7 +3756,7 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
     transition: all 80ms ease;
   }
 
-  .toolbar .btn-toolbar:active,
+  .toolbar .cm-btn--bar:active,
   .btn-voice-mobile:active,
   .btn-settings-mobile:active,
   .btn-case-settings-mobile:active,
@@ -3766,13 +3766,13 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab .tab-close {
   }
 
   /* Light skins darken on press instead of brightening (white on white reads as nothing). */
-  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .btn-toolbar:active, .btn-voice-mobile:active, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
+  html:is([data-skin="paper-gray"], [data-skin="solarized-light"], [data-skin="catppuccin-latte"], [data-skin="rose-pine-dawn"]) :is(.toolbar .cm-btn--bar:active, .btn-voice-mobile:active, .btn-settings-mobile:active, .btn-case-settings-mobile:active, .accessory-btn:active) {
     filter: brightness(0.9);
   }
 }
 
 @media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
-  .toolbar .btn-toolbar:active,
+  .toolbar .cm-btn--bar:active,
   .btn-voice-mobile:active,
   .btn-settings-mobile:active,
   .btn-case-settings-mobile:active,

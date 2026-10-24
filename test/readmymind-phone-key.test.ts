@@ -99,7 +99,7 @@ describe('read my mind phone key + alternates (static guards)', () => {
     expect(modal).not.toMatch(/class="btn /);
     expect(modal.match(/class="cm-btn cm-btn--sm/g)?.length).toBe(4);
     // Send is the kit's primary button: its accent comes from the kit, which
-    // the skin block no longer reaches (it styles .btn-toolbar only).
+    // the skin block no longer reaches (it styles the toolbar's .cm-btn--bar only).
     expect(modal).toMatch(/class="cm-btn cm-btn--sm cm-btn--primary"[^>]*sendReadMyMind\(true\)/);
     // Without the desktop footer row rule the four buttons would stack.
     expect(styles).toMatch(/\.readmymind-modal \.cm-dialog__foot \{[^}]*display: flex/);

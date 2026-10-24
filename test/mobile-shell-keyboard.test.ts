@@ -552,7 +552,7 @@ describe('armed styling survives the light-skin overrides', () => {
 
   it('excludes .armed from the light-skin .accessory-btn repaint', () => {
     // That selector is (0,3,1): `:is()` takes the specificity of its most
-    // specific argument and the list holds `.btn-toolbar.btn-shell`. It
+    // specific argument and the list holds `.cm-btn--bar.btn-shell`. It
     // therefore OUTRANKS the (0,3,0) armed rules in both stylesheets, and a
     // bare `.accessory-btn` there paints the armed modifier back to a resting
     // button on all four light skins (measured across every skin at 390px).
