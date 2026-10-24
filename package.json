@@ -39,6 +39,7 @@
     "check:public-assets": "node scripts/check-public-assets.mjs",
     "check:css": "node scripts/css-metrics.mjs --check",
     "css:diff": "node scripts/css-style-diff.mjs",
+    "css:layer-plan": "node scripts/css-layer-plan.mjs",
     "capture:subagents": "node scripts/capture-subagent-screenshots.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version && node scripts/generate-whats-new.mjs && prettier --write src/web/public/whats-new.json && node scripts/sync-plugin.mjs && npm install --package-lock-only && node scripts/check-lockfile-sync.mjs",

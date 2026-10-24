@@ -142,6 +142,8 @@ interface PaddingDecl {
   prop: 'padding' | `padding-${Side}`;
   value: string;
   fold: boolean;
+  /** Inside `@layer features`: loses to every unlayered rule, whatever its weight. */
+  layered: boolean;
 }
 
 /** `.a.b` -> ['a', 'b']; anything that is not a pure class compound -> null. */
@@ -161,9 +163,11 @@ const PADDING_DECLS: PaddingDecl[] = [];
     root.walkRules((rule) => {
       const media: string[] = [];
       let nested = false;
+      let layered = false;
       for (let p = rule.parent; p && p.type !== 'root'; p = p.parent) {
         if (p.type === 'rule') nested = true;
         else if (p.type === 'atrule' && p.name === 'media') media.push(p.params);
+        else if (p.type === 'atrule' && p.name === 'layer' && p.params === 'features') layered = true;
         else if (p.type === 'atrule' && p.name !== 'supports') nested = true;
       }
       if (nested) return;
@@ -182,6 +186,7 @@ const PADDING_DECLS: PaddingDecl[] = [];
             prop: node.prop as PaddingDecl['prop'],
             value: node.value,
             fold: isFoldValue(node.value),
+            layered,
           });
         });
       }
@@ -244,7 +249,7 @@ function cascadedPadding(classes: string[], side: Side, width: number, withFold:
       d.classes.every((c) => have.has(c)) &&
       (d.prop === 'padding' || d.prop === `padding-${side}`)
   );
-  winners.sort((a, b) => a.specificity - b.specificity || a.order - b.order);
+  winners.sort((a, b) => Number(b.layered) - Number(a.layered) || a.specificity - b.specificity || a.order - b.order);
   const last = winners.at(-1);
   if (!last) return null;
   return last.prop === 'padding' ? shorthandSideOf(last.value, side) : last.value;

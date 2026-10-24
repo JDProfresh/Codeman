@@ -22,11 +22,42 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | reserved                     | for code moved out of the unlayered sheets                             |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (first tranche: 65 blocks, about 920 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
 never change a pixel of the existing UI on their own.
+
+**Moving feature rules into `features`.** A rule in a `@layer features` block
+still beats the kit, the shell and the resets, but it now loses to EVERY unlayered
+rule, whatever its specificity: the rest of `styles.css`, the skin overrides at
+its end, and all of `mobile.css` (which stays unlayered: it is the override
+sheet). So an override no longer has to out-weigh the feature it adjusts. It is
+also why a block can move only when nothing unlayered that it beats today can
+reach its elements, and when it still beats every rule already in the layer that
+it beats today. `npm run css:layer-plan -- --url <candidate server>`
+(`scripts/css-layer-plan.mjs`) checks that per declaration and property family,
+using the live DOM in several states to decide which selectors can meet. For
+JS-built UI the samples cannot show, it falls back to the source: classes listed
+together in one class string meet, and a class JS adds at runtime meets the
+element it is added to (a BEM `X--y` sits on `.X`; the others are mapped by hand
+in `RUNTIME_ON`, read off the code that adds them). An unmapped runtime class is
+assumed to meet anything. It then keeps only
+runs of at least 8 consecutive rules, so the file gets readable blocks rather
+than one wrapper per rule. `--reasons` lists what blocks the rest, and `--write`
+wraps the runs. `css:diff -- --viewports all` is still the proof. ⚠️ Never put
+`!important` inside a layer: for important declarations the order flips, so a
+layered `!important` would beat every unlayered one (`test/features-layer.test.ts`).
+
+The first tranche moved 65 blocks (about 920 rules, 3,700 declarations): the
+history list, worktrees, Away Digest, the path picker, the orchestrator panel,
+the home rail, git status, Ralph, the monitor, subagent windows, the file tree and
+preview, the plan wizard, the approvals drawer and more. The rest is interleaved
+with rules something unlayered still competes with. The biggest blockers are
+element-wide rules that belong in `@layer base` (`input:focus-visible`,
+`:focus:not(:focus-visible)`, `body`), `.tunnel-panel-header h3`, the animation
+lab's `button`/`em` rules, the settings section rules and the session tab's own
+cascade. Each needs its competitor moved or scoped first.
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in

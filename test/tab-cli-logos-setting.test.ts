@@ -390,7 +390,12 @@ describe('the CSS', () => {
       decls.push(`${d.prop}: ${d.value}${d.important ? ' !important' : ''}`);
     });
     expect(decls).toEqual(['display: none']);
-    expect(rules[0].parent?.type).toBe('root');
+    // Never inside a media query: at the root, or in a top-level @layer features block.
+    const parent = rules[0].parent;
+    expect(parent?.type === 'root' || (parent?.type === 'atrule' && (parent as postcss.AtRule).name === 'layer')).toBe(
+      true
+    );
+    expect(parent?.parent?.type ?? 'root').toBe('root');
   });
 
   it('leaves the tile headers, the Run menus and the welcome launchers their logos', () => {

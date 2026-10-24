@@ -866,6 +866,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus-item[aria-current='tr
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
+@layer features {
 .tab-focus-name {
   flex: 1 1 auto;
   min-width: 0;
@@ -897,6 +898,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus-item[aria-current='tr
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drag-active {
   cursor: grabbing;
 }
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-dragging {
   opacity: 0.45;
@@ -1286,6 +1288,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   color: #fff;
 }
 
+@layer features {
 .anim-lab-scroll {
   flex: 1;
   min-height: 0;
@@ -1329,6 +1332,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   background: rgba(34, 197, 94, 0.14);
   color: #fff;
 }
+} /* @layer features */
 
 .anim-lab-style strong { font-size: 0.73rem; font-weight: 600; }
 .anim-lab-style em { font-style: normal; font-size: 0.64rem; opacity: 0.7; }
@@ -2158,6 +2162,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 }
 
 /* Header Right */
+@layer features {
 .header-right {
   display: flex;
   align-items: center;
@@ -2208,6 +2213,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: var(--green);
   animation: connection-pulse 0.8s ease-in-out infinite;
 }
+} /* @layer features */
 
 @keyframes connection-pulse {
   0%, 100% { opacity: 1; }
@@ -2291,6 +2297,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   gap: 8px;
 }
 
+@layer features {
 .tunnel-panel-status {
   font-size: 11px;
   font-weight: 400;
@@ -2409,6 +2416,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   text-align: center;
   transition: all 0.15s;
 }
+} /* @layer features */
 
 .tunnel-panel-btn.btn-start {
   background: rgba(34, 197, 94, 0.1);
@@ -2451,6 +2459,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: rgba(239, 68, 68, 0.2);
 }
 
+@layer features {
 .header-tokens {
   font-size: 0.75rem;
   font-weight: 500;
@@ -2509,6 +2518,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 .stat-bar-mem {
   background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
 }
+} /* @layer features */
 
 .stat-bar-mem.medium {
   background: linear-gradient(90deg, var(--accent) 0%, var(--yellow) 100%);
@@ -3043,6 +3053,7 @@ body.solo-mode .btn-lifecycle-log {
    with flex `gap`, which skips a display:none item, so no empty slot is left.
    Tile headers (.tile-harness) and the Run menus
    keep their logos: only these two classes are named here. */
+@layer features {
 html[data-tab-logos='off'] .session-tab .tab-harness,
 html[data-tab-logos='off'] .home-sessions-harness {
   display: none;
@@ -3160,6 +3171,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 .respawn-countdown-timer .timer-name {
   color: var(--text-dim);
 }
+} /* @layer features */
 
 .respawn-countdown-timer .timer-value {
   color: var(--green);
@@ -3266,6 +3278,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 
 /* Respawn spacer removed - using flex layout */
 
+@layer features {
 .respawn-cycles {
   color: var(--text-muted);
   font-family: 'SF Mono', Monaco, monospace;
@@ -3356,6 +3369,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   color: var(--purple, #a78bfa);
   font-weight: 500;
 }
+} /* @layer features */
 
 @keyframes pulse-hook {
   0%, 100% { opacity: 1; }
@@ -3382,6 +3396,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 
 /* Mini Progress Ring (in summary) */
+@layer features {
 .ralph-ring-mini {
   position: relative;
   width: 32px;
@@ -3483,6 +3498,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 .ralph-status-badge.tracking .ralph-status-dot {
   background: var(--yellow);
 }
+} /* @layer features */
 
 @keyframes ralph-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -3592,6 +3608,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   gap: 0.25rem;
 }
 
+@layer features {
 .ralph-status-block-recommendation {
   margin-top: 0.4rem;
   padding-top: 0.4rem;
@@ -3694,6 +3711,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   color: var(--text-muted);
   text-align: right;
 }
+} /* @layer features */
 
 .ralph-info-unified code {
   font-size: 0.7rem;
@@ -3713,6 +3731,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   color: var(--text);
 }
 
+@layer features {
 .ralph-info-unified .ralph-tasks-count {
   font-size: 0.7rem;
   font-weight: 500;
@@ -3800,6 +3819,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   transition: border-color 0.2s, background 0.2s;
   position: relative;
 }
+} /* @layer features */
 
 .ralph-task-card.task-pending {
   border-left-color: var(--text-muted);
@@ -4048,6 +4068,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 
 /* Main - Terminal Area */
+@layer features {
 .main {
   flex: 1;
   display: flex;
@@ -4160,6 +4181,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   height: 100%;
   padding: 0;
 }
+} /* @layer features */
 
 .terminal-container .xterm-viewport {
   background: transparent !important;
@@ -4232,6 +4254,7 @@ body.touch-device .terminal-container .xterm .xterm-helper-textarea {
    would need a restart to appear). z-index 900 sits above terminal content and
    the local-echo overlay (7) and deliberately BELOW floating agent windows
    (1000), so it can never cover their controls. */
+@layer features {
 .term-select-bar {
   position: absolute;
   z-index: 900;
@@ -4407,6 +4430,7 @@ html[data-skin="og"] .welcome-primary {
 html[data-skin="og"] .welcome-primary:hover {
   background: linear-gradient(135deg, #2454a8 0%, #2d6cf0 100%);
 }
+} /* @layer features */
 
 /* The global accent outline would vanish against the accent fill; the offset
    puts a ring of page background between the two. */
@@ -4990,6 +5014,7 @@ html[data-skin="og"] .welcome-primary:hover {
   max-width: 7.5rem;
 }
 
+@layer features {
 .history-empty {
   padding: 0.75rem 0.5rem;
   font-size: 0.75rem;
@@ -5195,6 +5220,7 @@ html[data-skin="og"] .welcome-primary:hover {
   letter-spacing: 0.04em;
   padding-top: 0.1rem;
 }
+} /* @layer features */
 
 .history-detail-value {
   color: var(--text);
@@ -5696,6 +5722,7 @@ html[data-skin="og"] .welcome-primary:hover {
   flex-direction: column;
   gap: 2px;
 }
+@layer features {
 .run-mode-option {
   white-space: nowrap;
 }
@@ -5768,6 +5795,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .run-mode-dot.copilot { --run-mode-logo: url("data:image/svg+xml,%3Csvg fill-rule='evenodd' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 3C7 3 3 6.5 3 11v4a3 3 0 003 3h12a3 3 0 003-3v-4c0-4.5-4-8-9-8zM8.5 11.5a1.5 2 0 110 4 1.5 2 0 010-4zm7 0a1.5 2 0 110 4 1.5 2 0 010-4z'/%3E%3C/svg%3E"); }
 .run-mode-dot.shell { --run-mode-logo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2.5' y='3.5' width='19' height='17' rx='3'/%3E%3Cpath d='M7 9.5l3 2.5-3 2.5M12.5 15h4.5'/%3E%3C/svg%3E"); }
 .run-mode-dot.web { --run-mode-logo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20'/%3E%3C/svg%3E"); }
+} /* @layer features */
 
 /* Phone-only Enter button (see index.html). Hidden by default at every width;
    mobile.css turns it on inside @media (max-width: 599px), where it takes over
@@ -6091,6 +6119,7 @@ html[data-skin="og"] .welcome-primary:hover {
   50% { opacity: 0.3; }
 }
 
+@layer features {
 .voice-level-bars {
   display: inline-flex;
   align-items: flex-end;
@@ -6123,6 +6152,7 @@ html[data-skin="og"] .welcome-primary:hover {
   font-variant-numeric: tabular-nums;
   min-width: 2.5em;
 }
+} /* @layer features */
 
 /* Enhanced recording state on voice preview */
 .voice-preview:has(.voice-recording-indicator) {
@@ -6260,6 +6290,7 @@ html[data-skin="og"] .welcome-primary:hover {
   z-index: 1000;
 }
 
+@layer features {
 .case-combobox-list.hidden {
   display: none;
 }
@@ -6381,6 +6412,7 @@ html[data-skin="og"] .welcome-primary:hover {
   opacity: 0;
   pointer-events: none;
 }
+} /* @layer features */
 
 .toolbar-select:hover {
   border-color: rgba(255, 255, 255, 0.12);
@@ -6419,6 +6451,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Case Management List (Manage tab) */
+@layer features {
 .case-manage-list {
   display: flex;
   flex-direction: column;
@@ -6529,6 +6562,7 @@ html[data-skin="og"] .welcome-primary:hover {
   opacity: 0.25;
   cursor: not-allowed;
 }
+} /* @layer features */
 
 .case-manage-btn-delete:hover:not(:disabled) {
   background: rgba(239, 68, 68, 0.15);
@@ -7166,6 +7200,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: #22c55e;
 }
 
+@layer features {
 .mobile-case-item-icon {
   width: 20px;
   height: 20px;
@@ -7228,6 +7263,7 @@ html[data-skin="og"] .welcome-primary:hover {
   display: flex;
   gap: 8px;
 }
+} /* @layer features */
 
 .btn-case-create-mobile {
   width: 100%;
@@ -7413,6 +7449,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-left-color: var(--accent);
 }
 
+@layer features {
 .event-icon {
   font-size: 0.9rem;
   flex-shrink: 0;
@@ -7465,6 +7502,7 @@ html[data-skin="og"] .welcome-primary:hover {
   gap: 0.5rem;
   flex-wrap: wrap;
 }
+} /* @layer features */
 
 .run-summary-actions .cm-btn {
   font-size: 0.7rem;
@@ -7487,6 +7525,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Empty message for timeline */
+@layer features {
 .run-summary-timeline .empty-message {
   color: var(--text-muted);
   font-size: 0.75rem;
@@ -7580,6 +7619,7 @@ html[data-skin="og"] .welcome-primary:hover {
   padding: 0 0.25rem;
   cursor: pointer;
 }
+} /* @layer features */
 .close-option-worktree-branch input {
   margin-top: 0.1rem;
 }
@@ -7607,6 +7647,7 @@ html[data-skin="og"] .welcome-primary:hover {
   font-size: 0.72rem;
   line-height: 1.45;
 }
+@layer features {
 .worktree-status {
   font-size: 0.78rem;
   color: var(--text-dim);
@@ -7745,6 +7786,7 @@ html[data-skin="og"] .welcome-primary:hover {
   margin: 0;
   min-width: 0;
 }
+} /* @layer features */
 .worktree-new > legend {
   font-size: 0.72rem;
   font-weight: 600;
@@ -8103,6 +8145,7 @@ kbd {
   border-color: rgba(59, 130, 246, 0.28);
 }
 
+@layer features {
 .command-palette-icon {
   display: inline-flex;
   align-items: center;
@@ -8160,6 +8203,7 @@ kbd {
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
 
 .session-manager-modal .cm-dialog__body {
   display: flex;
@@ -8259,6 +8303,7 @@ kbd {
   max-width: 560px;
 }
 
+@layer features {
 .shortcut-overlay-group {
   margin-bottom: 1rem;
 }
@@ -8324,6 +8369,7 @@ kbd {
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+} /* @layer features */
 
 .away-digest-custom-range.active {
   display: grid;
@@ -8348,6 +8394,7 @@ kbd {
   color: var(--text);
 }
 
+@layer features {
 .away-digest-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -8430,6 +8477,7 @@ kbd {
   background: rgba(255, 255, 255, 0.03);
   border-bottom: 1px solid var(--border);
 }
+} /* @layer features */
 
 .away-digest-section-title h4 {
   margin: 0;
@@ -8539,6 +8587,7 @@ kbd {
   padding: 1rem;
 }
 
+@layer features {
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -8598,6 +8647,7 @@ kbd {
   height: 80px;
   padding: 0 4px;
 }
+} /* @layer features */
 
 .stats-chart .bar {
   flex: 1;
@@ -8681,6 +8731,7 @@ kbd {
   border-bottom: none;
 }
 
+@layer features {
 .stats-table-row .cell {
   font-family: 'SF Mono', Monaco, monospace;
 }
@@ -8803,6 +8854,7 @@ kbd {
     opacity 0.2s ease,
     transform 0.2s ease;
 }
+} /* @layer features */
 
 .center-status-banner.show {
   opacity: 1;
@@ -8976,6 +9028,7 @@ kbd {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
+@layer features {
 .security-notice-main {
   display: flex;
   flex-direction: column;
@@ -9041,6 +9094,7 @@ kbd {
   gap: 0.4rem;
   color: var(--notice-ink);
 }
+} /* @layer features */
 
 .security-notice-section-head svg {
   flex-shrink: 0;
@@ -9066,6 +9120,7 @@ kbd {
   flex: 1 1 auto;
 }
 
+@layer features {
 .security-notice-primary,
 .security-notice-secondary,
 .security-notice-quiet {
@@ -9135,6 +9190,7 @@ kbd {
   background: var(--control-bg-hover);
   color: var(--text);
 }
+} /* @layer features */
 
 .security-notice button:focus-visible {
   outline: 2px solid var(--accent);
@@ -9177,6 +9233,7 @@ kbd {
 }
 
 /* Notification list (the Inbox drawer's Notifications tab, approvals-ui.js) */
+@layer features {
 .notif-drawer-actions {
   display: flex;
   gap: 4px;
@@ -9267,6 +9324,7 @@ kbd {
   font-size: 0.65rem;
   color: var(--text-dim);
 }
+} /* @layer features */
 
 @keyframes notif-slide-in {
   from { transform: translateX(20px); opacity: 0; }
@@ -9496,6 +9554,7 @@ kbd {
   padding-left: 0;
 }
 
+@layer features {
 .task-item {
   display: flex;
   align-items: flex-start;
@@ -9565,6 +9624,7 @@ kbd {
   background: var(--border);
   border-radius: 4px;
 }
+} /* @layer features */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
 }
@@ -9735,6 +9795,7 @@ kbd {
   min-height: 250px;
 }
 
+@layer features {
 .monitor-panel.detached .monitor-panel-header {
   cursor: move;
   background: linear-gradient(180deg, var(--bg-hover) 0%, var(--bg-card) 100%);
@@ -9818,6 +9879,7 @@ kbd {
   background: var(--bg-card);
   border-radius: 8px;
 }
+} /* @layer features */
 
 /* Responsive */
 @media (max-width: 600px) {
@@ -9943,6 +10005,7 @@ kbd {
 }
 
 /* Subagent container (list + detail) */
+@layer features {
 .subagent-container {
   display: flex;
   gap: 0.5rem;
@@ -10140,6 +10203,7 @@ kbd {
 .subagent-activity .icon {
   flex: 0 0 20px;
 }
+} /* @layer features */
 
 .subagent-activity .name {
   color: var(--accent);
@@ -10420,6 +10484,7 @@ kbd {
   text-overflow: ellipsis;
 }
 
+@layer features {
 .subagent-window-body .message-line {
   padding: 0.3rem 0;
   color: #c8c8c8;
@@ -10500,6 +10565,7 @@ kbd {
           drop-shadow(0 0 6px rgba(59, 130, 246, 1))
           drop-shadow(0 0 12px rgba(59, 130, 246, 0.7));
 }
+} /* @layer features */
 
 /* Wizard connection lines - different color to show plan generation link */
 .connection-line.wizard-connection {
@@ -10663,6 +10729,7 @@ kbd {
 
 /* ========== Project Insights Panel (Bash File Viewers) ========== */
 
+@layer features {
 .project-insights-panel {
   position: fixed;
   right: 20px;
@@ -10753,6 +10820,7 @@ kbd {
   font-size: 0.8rem;
   color: var(--text);
 }
+} /* @layer features */
 
 .project-insight-command .icon {
   font-size: 1rem;
@@ -10898,6 +10966,7 @@ kbd {
   background: var(--border-light);
 }
 
+@layer features {
 .file-browser-status {
   padding: 0.25rem 0.5rem;
   font-size: 0.65rem;
@@ -11120,6 +11189,7 @@ kbd {
   text-align: left;
   min-width: 0;
 }
+} /* @layer features */
 
 .folder-grid-tile:hover,
 .folder-grid-tile.current {
@@ -11340,6 +11410,7 @@ kbd {
   tab-size: 4;
 }
 
+@layer features {
 .file-preview-editbar {
   display: flex;
   align-items: center;
@@ -11431,6 +11502,7 @@ kbd {
   gap: 0.4rem;
   flex: 1;
 }
+} /* @layer features */
 
 .log-viewer-window-title .icon {
   font-size: 1rem;
@@ -11627,6 +11699,7 @@ kbd {
   transition: transform 0.1s ease;
 }
 
+@layer features {
 .image-popup-body img:hover {
   transform: scale(1.02);
 }
@@ -11742,6 +11815,7 @@ kbd {
   transform: none;
   cursor: default;
 }
+} /* @layer features */
 
 .modal-wizard .cm-dialog__body {
   overflow-y: auto;
@@ -11803,6 +11877,7 @@ kbd {
 }
 
 /* Plan Generation Step */
+@layer features {
 .plan-section {
   padding: 1rem;
   text-align: center;
@@ -11899,6 +11974,7 @@ kbd {
   animation: spin 1s linear infinite;
   flex-shrink: 0;
 }
+} /* @layer features */
 
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -11953,6 +12029,7 @@ kbd {
   font-size: 0.8rem;
 }
 
+@layer features {
 .plan-detail-btns {
   display: flex;
   gap: 0.25rem;
@@ -12031,6 +12108,7 @@ kbd {
   cursor: pointer;
   justify-content: center;
 }
+} /* @layer features */
 
 .plan-autostart-label input[type="checkbox"] {
   width: 18px;
@@ -12039,6 +12117,7 @@ kbd {
   cursor: pointer;
 }
 
+@layer features {
 .plan-autostart-text {
   font-size: 0.85rem;
   color: var(--text);
@@ -12137,6 +12216,7 @@ kbd {
   text-align: center;
   margin-top: 0.75rem;
 }
+} /* @layer features */
 
 .plan-skip-hint strong {
   color: var(--text-dim);
@@ -12224,6 +12304,7 @@ kbd {
   animation: spin 1s linear infinite;
 }
 
+@layer features {
 .plan-subagent-status.completed .plan-subagent-status-text {
   color: var(--green);
 }
@@ -12308,6 +12389,7 @@ kbd {
 .textarea-with-assist {
   position: relative;
 }
+} /* @layer features */
 
 .textarea-with-assist textarea {
   width: 100%;
@@ -12674,6 +12756,7 @@ kbd {
   display: inline-flex;
 }
 
+@layer features {
 .approvals-badge {
   position: absolute;
   top: 2px;
@@ -12774,6 +12857,7 @@ html.dock-open .panel-dock-tabs {
 .panel-dock-close:hover {
   color: var(--cm-text);
 }
+} /* @layer features */
 html.dock-open [data-docked] {
   grid-area: panel;
   position: relative;
@@ -12814,6 +12898,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 /* The Inbox (design-system phase 4b): the drawer's header is a tab strip (kit
    .cm-tabs) and each tab owns one panel. The strip's own rule is dropped so the
    header's border is the only line. */
+@layer features {
 .inbox-panel {
   display: flex;
   flex: 1;
@@ -12928,6 +13013,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+} /* @layer features */
 .approval-btn:hover {
   border-color: var(--accent);
 }
@@ -13046,6 +13132,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 
 /* LEFT pane: run rows */
+@layer features {
 .ultracode-run-item {
   padding: 0.45rem 0.5rem;
   border-radius: 6px;
@@ -13150,6 +13237,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   margin-bottom: 0.35rem;
   border-left: 3px solid transparent;
 }
+} /* @layer features */
 /* At-a-glance agent state: yellow while working, green when done. */
 .ultracode-agent-card.uw-state-working {
   border-left-color: var(--yellow);
@@ -13174,6 +13262,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .ultracode-agent-card--clickable.uw-state-done:hover {
   background: color-mix(in srgb, var(--green) 16%, var(--bg-card));
 }
+@layer features {
 .ultracode-agent-top {
   display: flex;
   align-items: center;
@@ -13280,6 +13369,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   flex: 1;
   min-width: 0;
 }
+} /* @layer features */
 .ultracode-window-title .icon {
   font-size: 0.95rem;
   flex-shrink: 0;
@@ -13385,6 +13475,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    hidden via the marker class below because display is PER-DEVICE and the
    server cannot read localStorage; settings-ui.js reveals it on load (desktop
    default ON, handhelds OFF) and on a live toggle. */
+@layer features {
 .header-plan-usage {
   display: inline-flex;
   flex-direction: column;
@@ -13543,6 +13634,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .rv-message:last-child {
   margin-bottom: 6px;
 }
+} /* @layer features */
 
 /* Distinct accent per role so threads are scannable at a glance */
 .rv-message:has(.rv-role-user),
@@ -14392,6 +14484,7 @@ body.touch-device.cjk-input-visible .main {
   min-width: 0;
 }
 
+@layer features {
 .path-input-browse {
   flex: 0 0 auto;
   min-height: 38px;
@@ -14517,6 +14610,7 @@ body.touch-device.cjk-input-visible .main {
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+} /* @layer features */
 
 .path-picker-jump:focus-within {
   border-color: var(--accent);
@@ -14536,6 +14630,7 @@ body.touch-device.cjk-input-visible .main {
   outline: none;
 }
 
+@layer features {
 .path-picker-go {
   flex: 0 0 auto;
   padding: 0 10px;
@@ -14614,6 +14709,7 @@ body.touch-device.cjk-input-visible .main {
   border: 1px solid transparent;
   border-radius: 9px;
 }
+} /* @layer features */
 
 .path-picker-item:hover,
 .path-picker-item.selected {
@@ -14625,6 +14721,7 @@ body.touch-device.cjk-input-visible .main {
   border-color: var(--accent);
 }
 
+@layer features {
 .path-picker-item.not-selectable {
   opacity: 0.62;
 }
@@ -14696,6 +14793,7 @@ body.touch-device.cjk-input-visible .main {
 .path-picker-actions {
   padding: 10px 12px 12px;
 }
+} /* @layer features */
 
 .path-picker-actions button {
   min-height: 40px;
@@ -14723,6 +14821,7 @@ body.touch-device.cjk-input-visible .main {
   cursor: default;
 }
 
+@layer features {
 .path-preview-overlay {
   position: fixed;
   inset: 0;
@@ -14855,6 +14954,7 @@ body.touch-device.cjk-input-visible .main {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+} /* @layer features */
 
 @media (max-width: 600px) {
   .path-picker-overlay {
@@ -14902,6 +15002,7 @@ body.touch-device.cjk-input-visible .main {
    Orchestrator Panel
    ═══════════════════════════════════════════════════════════════ */
 
+@layer features {
 .orchestrator-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(8px);
@@ -15023,6 +15124,7 @@ body.touch-device.cjk-input-visible .main {
   border-radius: 50%;
   animation: orch-spin 0.8s linear infinite;
 }
+} /* @layer features */
 @keyframes orch-spin { to { transform: rotate(360deg); } }
 
 .orch-goal {
@@ -15060,6 +15162,7 @@ body.touch-device.cjk-input-visible .main {
   z-index: 1;
 }
 
+@layer features {
 .orch-phases {
   display: flex;
   flex-direction: column;
@@ -15139,6 +15242,7 @@ body.touch-device.cjk-input-visible .main {
   margin-top: 4px;
   font-size: 0.7rem;
 }
+} /* @layer features */
 
 /* Image drag-and-drop overlay */
 #terminalContainer.drag-active {
@@ -15565,6 +15669,7 @@ body.touch-device.cjk-input-visible .main {
   transition: background var(--transition-smooth), border-color var(--transition-smooth);
 }
 .cron-job-row:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); }
+@layer features {
 .cron-job-main { min-width: 0; flex: 1; }
 .cron-job-name { font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 .cron-job-meta { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.35rem; overflow: hidden; text-overflow: ellipsis; }
@@ -15583,6 +15688,7 @@ body.touch-device.cjk-input-visible .main {
 .cron-form-title {
   font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem;
 }
+} /* @layer features */
 #cronModal .form-row { margin-bottom: 0.85rem; }
 /* datetime-local / time inputs aren't covered by the base .form-row input rule */
 #cronModal .form-row input[type="datetime-local"],
@@ -15630,6 +15736,7 @@ body.touch-device.cjk-input-visible .main {
 /* Footer */
 .cron-form-error { color: var(--danger, #e55); margin-top: 0.4rem; }
 .cron-form-error:empty { display: none; }
+@layer features {
 .cron-form-actions {
   display: flex; gap: 0.5rem; justify-content: flex-end;
   margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border);
@@ -15681,6 +15788,7 @@ body.touch-device.cjk-input-visible .main {
   text-align: center;
 }
 .webview-failure-inner { max-width: 380px; }
+} /* @layer features */
 .webview-failure-inner h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--text); }
 .webview-failure-inner p { margin: 0 0 1rem; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
 .webview-failure-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
@@ -15708,6 +15816,7 @@ body.touch-device.cjk-input-visible .main {
    be changed or removed without first opening it as a tab. The side buttons stay
    permanently visible rather than hover-revealed, because this menu is used on
    touch devices where there is no hover to reveal them with. */
+@layer features {
 .run-mode-row--web {
   display: flex;
   align-items: center;
@@ -15779,6 +15888,7 @@ body.touch-device.cjk-input-visible .main {
   cursor: pointer;
   padding: 0;
 }
+} /* @layer features */
 .webview-icon-choice:hover { border-color: var(--accent, #3ec8ee); }
 .webview-icon-choice.selected {
   border-color: var(--accent, #3ec8ee);
@@ -15800,6 +15910,7 @@ body.touch-device.cjk-input-visible .main {
 .webview-probe-result.bad { color: var(--danger, #ef4444); }
 /* Delete sits apart from Cancel/Save so it is not fat-fingered on the way to Save. */
 .webview-modal-actions { justify-content: space-between; }
+@layer features {
 .webview-modal-actions .cm-btn--danger { margin-right: auto; }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -16002,6 +16113,7 @@ body.touch-device.cjk-input-visible .main {
   text-align: left;
   z-index: 1;
 }
+} /* @layer features */
 
 /* `hidden` has to be re-asserted over the display above, or the module's only
    lever (el.hidden) does nothing. */
@@ -16103,6 +16215,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   background: rgba(34, 197, 94, 0.12);
 }
 
+@layer features {
 .home-sessions-number {
   display: inline-flex;
   align-items: center;
@@ -16189,6 +16302,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--text);
   font-weight: 600;
 }
+} /* @layer features */
 
 /* The name is the only thing that tells one row from another, so it is shown
    WHOLE: the status pill moved down to the stamps line to give the body the
@@ -16200,6 +16314,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   overflow-wrap: anywhere;
 }
 
+@layer features {
 .home-sessions-row-sub {
   font-size: 0.87em;
   color: var(--text-muted);
@@ -16352,6 +16467,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 .home-sessions-row--working {
   border-color: color-mix(in srgb, var(--green) 35%, transparent);
 }
+} /* @layer features */
 
 @keyframes home-sessions-blink-red {
   0%, 100% { border-color: color-mix(in srgb, var(--red) 50%, transparent); }
@@ -16848,6 +16964,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border-color: var(--accent);
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-select {
   min-width: 190px;
   max-width: 260px;
@@ -16892,6 +17009,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   cursor: pointer;
   word-break: break-all;
 }
+} /* @layer features */
 
 /* The cards and the segmented control are the visible UI; the underlying
    <select> stays in the DOM as the single source of truth that
@@ -17013,6 +17131,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
    chips on every change (settings-ui.js: _syncLayoutPreview). Everything here
    is decoration around cloned chip icons, so it carries no icon of its own.
    ─────────────────────────────────────────────────────────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview {
   margin: 0 0 14px;
 }
@@ -17111,6 +17230,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--text-muted);
   background: transparent;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-chip {
   font-size: 0.55rem;
@@ -18251,6 +18371,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-cluster.tab-filtered-out {
 }
 
 /* The native WebKit clear glyph would sit under ours. */
+@layer features {
 .tab-rail-search .session-sidebar-filter-input::-webkit-search-cancel-button {
   appearance: none;
 }
@@ -18373,6 +18494,7 @@ html.tab-rail-tight[data-tab-orientation='vertical'][data-tab-rail-detail='rich'
 html.tab-rail-tight[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .tab-meta-sep {
   display: none;
 }
+} /* @layer features */
 
 /* On a rail narrower than the detailed default, the state duration is the last
    thing that should go: it is the number the row is sorted by, and the pill
@@ -18961,6 +19083,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 /* Tile header: `● [logo] name · model ..... ⋯ ⤢ ×`. FIXED height (#464): the body below
    holds the xterm, so a header that grew (a wrapped name, the rename input)
    would shrink the body with nothing refitting the xterm or its PTY. */
+@layer features {
 .tile-header {
   /* Just tall enough for the 26px buttons below (and its 1px border). */
   flex: 0 0 28px;
@@ -19062,6 +19185,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   opacity: 1;
   background: color-mix(in srgb, var(--text-muted, #888) 18%, transparent);
 }
+} /* @layer features */
 
 /* Sized to sit inside the fixed header (see .tile-header). */
 .tile-rename-input {
@@ -20101,6 +20225,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
   background: var(--bg-secondary);
 }
 
+@layer features {
 .spreadsheet-preview-notice {
   flex: 0 0 auto;
   /* A long warning list scrolls inside the bar instead of pushing the grid out of view. */
@@ -20192,6 +20317,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 .spreadsheet-preview-message.error {
   color: var(--danger, #ef4444);
 }
+} /* @layer features */
 
 /* ── Git status: bottom-bar indicator + panel (git-status-ui.js) ─────────────── */
 
@@ -20238,6 +20364,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
 }
 
 /* Same look as the Files window. Default spot is just left of it so both can be open. */
+@layer features {
 .git-status-panel {
   position: fixed;
   top: calc(var(--header-height) + 10px);
@@ -20384,6 +20511,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
 .git-status-file--clickable {
   cursor: pointer;
 }
+} /* @layer features */
 
 .git-status-file--clickable:hover,
 .git-status-file--clickable:focus-visible {
@@ -20391,6 +20519,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
   outline: none;
 }
 
+@layer features {
 .git-status-badge {
   flex: 0 0 1.1rem;
   text-align: center;
@@ -20553,6 +20682,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
 .git-diff-line--meta {
   color: var(--text-muted);
 }
+} /* @layer features */
 
 /* Git status panel: files grouped under collapsible folders */
 .git-tree-dir > .git-tree-summary {
