@@ -326,6 +326,7 @@ html[data-skin="rose-pine-dawn"] {
 /* ========== Accessibility: Focus Styles ========== */
 
 /* Skip link for keyboard users */
+@layer features {
 .skip-link {
   position: absolute;
   top: -50px;
@@ -348,6 +349,39 @@ html[data-skin="rose-pine-dawn"] {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+.xterm-helpers .codeman-ime-preview {
+  position: absolute;
+  left: var(--xterm-helper-left, 0px);
+  top: var(--xterm-helper-top, 0px);
+  z-index: 6;
+  pointer-events: none;
+  white-space: pre;
+  color: var(--terminal-foreground, var(--text, #fff));
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.2;
+  height: 1.2em;
+}
+
+.xterm-helpers .codeman-ime-preview[data-phase='provisional'] {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.touch-device .xterm-helpers.codeman-ime-preview-owned .composition-view.active {
+  display: none;
+}
+
+/* Session tab focus */
+.session-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  z-index: 1;
+}
+} /* @layer features */
 
 /* Remove default outline for mouse users */
 :focus:not(:focus-visible) {
@@ -391,38 +425,6 @@ textarea:focus-visible {
   height: 1px !important;
   z-index: 0 !important;
   font-size: 16px !important; /* prevent iOS auto-zoom on focus */
-}
-
-.xterm-helpers .codeman-ime-preview {
-  position: absolute;
-  left: var(--xterm-helper-left, 0px);
-  top: var(--xterm-helper-top, 0px);
-  z-index: 6;
-  pointer-events: none;
-  white-space: pre;
-  color: var(--terminal-foreground, var(--text, #fff));
-  font-family: var(--font-mono, monospace);
-  font-size: 14px;
-  font-weight: 400;
-  font-style: normal;
-  line-height: 1.2;
-  height: 1.2em;
-}
-
-.xterm-helpers .codeman-ime-preview[data-phase='provisional'] {
-  text-decoration: underline;
-  text-decoration-style: dotted;
-}
-
-.touch-device .xterm-helpers.codeman-ime-preview-owned .composition-view.active {
-  display: none;
-}
-
-/* Session tab focus */
-.session-tab:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-  z-index: 1;
 }
 
 /* Modal close button focus */
@@ -664,6 +666,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header.tab-lay
   }
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle {
   cursor: pointer;
   user-select: none;
@@ -672,11 +675,6 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle:hover {
   color: var(--text);
   background: var(--bg-hover);
-}
-
-html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
 }
 
 .tab-layout-group-name {
@@ -702,6 +700,12 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle:focus-v
    leaf with no aria-expanded at all, and its chevron must still show its state. */
 .tab-layout-group--collapsed > .tab-layout-group-toggle .tab-layout-group-chevron::before {
   content: '\25B8';
+}
+} /* @layer features */
+
+html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 /* Group editing: the header's menu glyph, the inline rename editor, and the
@@ -767,19 +771,9 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tabs--grouped .tab-layo
 /* Its own element above #sessionTabs in the rail, so it shows above the flat
    rail and the grouped one alike and never takes part in the list's order,
    tree or Alt+N numbering. Capped so a long Focus never starves the list. */
+@layer features {
 .tab-focus {
   display: none;
-}
-
-html[data-tab-orientation='vertical'] .tab-rail .tab-focus:not([hidden]) {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  gap: 2px;
-  max-height: 40%;
-  min-height: 0;
-  padding: 0.35rem 0.35rem 0.3rem calc(0.35rem + 24px);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 }
 
 html[data-tab-orientation='vertical'] .tab-rail .tab-focus-toggle {
@@ -806,11 +800,6 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus-toggle:hover {
   background: var(--bg-hover);
 }
 
-html[data-tab-orientation='vertical'] .tab-rail :is(.tab-focus-toggle, .tab-focus-item):focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
 .tab-focus-title {
   flex: 1 1 auto;
   min-width: 0;
@@ -824,21 +813,6 @@ html[data-tab-orientation='vertical'] .tab-rail :is(.tab-focus-toggle, .tab-focu
 
 .tab-focus--collapsed .tab-layout-group-chevron::before {
   content: '\25B8';
-}
-
-html[data-tab-orientation='vertical'] .tab-rail .tab-focus-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  list-style: none;
-}
-
-html[data-tab-orientation='vertical'] .tab-rail .tab-focus-list[hidden] {
-  display: none;
 }
 
 html[data-tab-orientation='vertical'] .tab-rail .tab-focus-item {
@@ -868,6 +842,38 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus-item[aria-current='tr
   color: var(--text);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+} /* @layer features */
+
+html[data-tab-orientation='vertical'] .tab-rail .tab-focus:not([hidden]) {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 40%;
+  min-height: 0;
+  padding: 0.35rem 0.35rem 0.3rem calc(0.35rem + 24px);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+html[data-tab-orientation='vertical'] .tab-rail :is(.tab-focus-toggle, .tab-focus-item):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+html[data-tab-orientation='vertical'] .tab-rail .tab-focus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+html[data-tab-orientation='vertical'] .tab-rail .tab-focus-list[hidden] {
+  display: none;
 }
 
 @layer features {
@@ -921,6 +927,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drop-into {
   outline-offset: -2px;
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .header-right {
   margin-left: auto;
 }
@@ -937,13 +944,6 @@ html[data-tab-orientation='vertical'] .header-right {
   transition: background-color 0.15s ease;
 }
 
-.tab-rail-resize-handle:hover,
-.tab-rail-resize-handle:focus-visible {
-  background: color-mix(in srgb, var(--accent) 24%, transparent);
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
 html:not([data-tab-orientation='vertical']) .tab-rail-resize-handle {
   display: none;
 }
@@ -954,6 +954,14 @@ html:not([data-tab-orientation='vertical']) .tab-rail-resize-handle {
   inset: 0;
   z-index: 10000;
   cursor: ew-resize;
+}
+} /* @layer features */
+
+.tab-rail-resize-handle:hover,
+.tab-rail-resize-handle:focus-visible {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 body.tab-rail-resizing,
@@ -1566,13 +1574,10 @@ html[data-win-anim="blur"] .ultracode-window.win-enter {
 /* A tile's screen (.tile-body, tile-grid.js) plays the same style when its
    first capture lands: the same rules, so a tile combines its frame's own
    entrance with the pane style. Its xterm's opacity fade stands aside for it. */
+@layer features {
 .terminal-container.term-enter,
 .tile-body.term-enter {
   animation-fill-mode: both;
-}
-
-.tile-body.term-enter .xterm {
-  transition: none;
 }
 
 .terminal-container.term-enter::before,
@@ -1612,6 +1617,11 @@ html[data-term-anim="crt"] .tile-body.term-enter::before {
   animation-name: term-enter-crt-flash;
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
+}
+} /* @layer features */
+
+.tile-body.term-enter .xterm {
+  transition: none;
 }
 
 @keyframes term-enter-crt {
@@ -1955,9 +1965,47 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name {
   line-height: 1.25;
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name-prefix {
   display: inline;
 }
+
+/* Tab folder path — hidden by default, shown via .tabs-show-folder on container */
+.session-tab .tab-folder {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  display: none;
+}
+
+.tabs-show-folder .session-tab .tab-folder {
+  display: block;
+}
+
+.session-tab .tab-close {
+  opacity: 0;
+  width: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--text-muted);
+  overflow: hidden;
+  /* A control, like its gear/detach siblings: the pointer must not read as
+     "nothing here" over the one button that closes the session. */
+  cursor: pointer;
+  border-radius: 3px;
+  /* Performance: use transform for GPU acceleration */
+  transition: opacity 0.05s ease-out, width 0.05s ease-out, padding 0.05s ease-out;
+}
+
+.session-tab .tab-close:hover {
+  color: var(--red);
+  background: rgba(255, 255, 255, 0.1);
+}
+} /* @layer features */
 
 :is(
   html[data-tab-orientation='vertical'] .tab-rail,
@@ -2017,37 +2065,6 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   display: none;
 }
 
-/* Tab folder path — hidden by default, shown via .tabs-show-folder on container */
-.session-tab .tab-folder {
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.2;
-  display: none;
-}
-
-.tabs-show-folder .session-tab .tab-folder {
-  display: block;
-}
-
-.session-tab .tab-close {
-  opacity: 0;
-  width: 0;
-  padding: 0;
-  font-size: 0.9rem;
-  line-height: 1;
-  color: var(--text-muted);
-  overflow: hidden;
-  /* A control, like its gear/detach siblings: the pointer must not read as
-     "nothing here" over the one button that closes the session. */
-  cursor: pointer;
-  border-radius: 3px;
-  /* Performance: use transform for GPU acceleration */
-  transition: opacity 0.05s ease-out, width 0.05s ease-out, padding 0.05s ease-out;
-}
-
 /* Icons expand on the ACTIVE tab only (in flow): selection is a deliberate
    click, so the width change never happens while aiming at a tab, background
    tabs keep their full title on hover, and a stray click can only switch.
@@ -2056,11 +2073,6 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   opacity: 1;
   width: auto;
   padding: 0.15rem 0.35rem;
-}
-
-.session-tab .tab-close:hover {
-  color: var(--red);
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .session-tab.new-tab {
@@ -2734,6 +2746,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   font-weight: 600;
 }
 
+@layer features {
 .header-font-controls {
   display: flex;
   align-items: center;
@@ -2765,20 +2778,22 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   transition: opacity 0.15s, width 0.15s, padding 0.15s, transform 0.2s;
 }
 
+.session-tab .tab-gear:hover {
+  color: var(--accent-hover);
+  transform: rotate(45deg);
+}
+} /* @layer features */
+
 .session-tab.active .tab-gear {
   opacity: 1;
   width: auto;
   padding: 0 0.3rem;
 }
 
-.session-tab .tab-gear:hover {
-  color: var(--accent-hover);
-  transform: rotate(45deg);
-}
-
 /* ===== Session detach / undock (beta/session-detach) ===================== */
 
 /* Pop-out (detach) icon on each tab — mirrors .tab-gear reveal-on-hover. */
+@layer features {
 .session-tab .tab-detach {
   opacity: 0;
   width: 0;
@@ -2799,11 +2814,6 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   color: var(--accent-hover);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
-}
-
-/* A tab whose session is popped out into its own window. */
-.session-tab.detached {
-  opacity: 0.72;
 }
 .session-tab.detached .tab-detach {
   /* Keep the pop-out icon visible while detached as a re-focus affordance. */
@@ -2846,6 +2856,12 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   white-space: nowrap;
   background: rgba(248, 113, 113, 0.16);
   color: var(--danger);
+}
+} /* @layer features */
+
+/* A tab whose session is popped out into its own window. */
+.session-tab.detached {
+  opacity: 0.72;
 }
 
 /* An exited agent quiets the status dot, which otherwise reports `status` and
@@ -3255,6 +3271,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   margin-right: 0.3rem;
 }
 
+@layer features {
 .respawn-action-entry .action-detail {
   color: var(--text-dim);
 }
@@ -3262,11 +3279,6 @@ html[data-tab-logos='off'] .home-sessions-harness {
 /* Command entries are highlighted */
 .respawn-action-entry.action-command {
   color: var(--accent);
-}
-
-.respawn-action-entry.action-command .action-type {
-  color: var(--accent);
-  font-weight: 600;
 }
 
 .respawn-action-entry.action-command .action-detail {
@@ -3287,6 +3299,12 @@ html[data-tab-logos='off'] .home-sessions-harness {
   padding: 0.1rem 0.4rem;
   border-radius: 3px;
   font-size: 0.7rem;
+}
+} /* @layer features */
+
+.respawn-action-entry.action-command .action-type {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .respawn-state.respawn-blocked {
@@ -5485,6 +5503,7 @@ html[data-skin="og"] .welcome-primary:hover {
   }
 }
 
+@layer features {
 .version-display {
   font-family: 'SF Mono', Monaco, monospace;
   font-size: 0.6rem;
@@ -5523,6 +5542,13 @@ html[data-skin="og"] .welcome-primary:hover {
   white-space: nowrap;
 }
 
+/* Run Button Group — split button with dropdown */
+.run-btn-group {
+  display: flex;
+  position: relative;
+}
+} /* @layer features */
+
 .cm-btn--bar:hover {
   background: rgba(255, 255, 255, 0.09);
   color: var(--text);
@@ -5538,12 +5564,6 @@ html[data-skin="og"] .welcome-primary:hover {
 .cm-btn--bar.cm-btn--sm {
   padding: var(--cm-space-1) var(--cm-space-2);
   font-size: var(--cm-text-2xs);
-}
-
-/* Run Button Group — split button with dropdown */
-.run-btn-group {
-  display: flex;
-  position: relative;
 }
 
 .cm-btn--bar.btn-run {
@@ -7104,6 +7124,7 @@ html[data-skin="og"] .welcome-primary:hover {
    html[data-skin] block redefines), and nothing about the modal's layout or
    z-index. The row is a flex container, so the pills sit after the name
    with the row's own gap and the trailing whitespace collapses. */
+@layer features {
 #customModelPickModal .set-scope {
   font-size: 0.52rem;
   letter-spacing: 0.06em;
@@ -7133,16 +7154,6 @@ html[data-skin="og"] .welcome-primary:hover {
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-top: 1px solid var(--border-color);
-}
-
-/* Both dialogs can appear while the centred llama-swap status banner (10001, see
-   .center-status-banner) is still on screen — right after "Claude started — switching
-   to llama-swap…" — and .modal's own z-index (1000) sat well under it, so the dialog
-   rendered fully hidden behind the banner (confirmed live, reported against the
-   context-window one but structurally identical for the swap-confirm modal too). */
-#customModelSwapConfirmModal,
-#customModelContextWarningModal {
-  z-index: 10010;
 }
 
 /* Both messages ARE the modal's whole explanatory content, not a one-line caption under
@@ -7179,13 +7190,6 @@ html[data-skin="og"] .welcome-primary:hover {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.mobile-case-picker-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-}
-
 .mobile-case-picker-search {
   display: flex;
   align-items: center;
@@ -7200,6 +7204,24 @@ html[data-skin="og"] .welcome-primary:hover {
 
 .mobile-case-picker-search:focus-within {
   border-color: var(--accent, #22c55e);
+}
+} /* @layer features */
+
+/* Both dialogs can appear while the centred llama-swap status banner (10001, see
+   .center-status-banner) is still on screen — right after "Claude started — switching
+   to llama-swap…" — and .modal's own z-index (1000) sat well under it, so the dialog
+   rendered fully hidden behind the banner (confirmed live, reported against the
+   context-window one but structurally identical for the swap-confirm modal too). */
+#customModelSwapConfirmModal,
+#customModelContextWarningModal {
+  z-index: 10010;
+}
+
+.mobile-case-picker-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .mobile-case-picker-search input {
@@ -7704,18 +7726,9 @@ html[data-skin="og"] .welcome-primary:hover {
   cursor: pointer;
 }
 } /* @layer features */
+@layer features {
 .close-option-worktree-branch input {
   margin-top: 0.1rem;
-}
-
-/* Git worktrees dialog (session-ui.js openWorktreeModal). Its own small button
-   set: the skin block greys `.cm-btn--bar.btn-primary` on non-OG skins, and this
-   dialog needs a primary action that reads as one on every skin. */
-.cm-dialog.worktree-modal {
-  max-width: 640px;
-  max-height: 88vh;
-  display: flex;
-  flex-direction: column;
 }
 .worktree-modal > .cm-dialog__body {
   overflow-y: auto;
@@ -7730,6 +7743,17 @@ html[data-skin="og"] .welcome-primary:hover {
   margin: 0 0 0.6rem;
   font-size: 0.72rem;
   line-height: 1.45;
+}
+} /* @layer features */
+
+/* Git worktrees dialog (session-ui.js openWorktreeModal). Its own small button
+   set: the skin block greys `.cm-btn--bar.btn-primary` on non-OG skins, and this
+   dialog needs a primary action that reads as one on every skin. */
+.cm-dialog.worktree-modal {
+  max-width: 640px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
 }
 @layer features {
 .worktree-status {
@@ -8990,6 +9014,7 @@ kbd {
   }
 }
 
+@layer features {
 .center-status-text {
   flex: 1;
   pointer-events: auto;
@@ -9018,10 +9043,6 @@ kbd {
   cursor: pointer;
 }
 
-.center-status-close:hover {
-  opacity: 1;
-}
-
 /* The Cancel button on an 'info' banner (e.g. the model-loading banner) — a real button
    rather than the bare "×" close glyph above, since "Cancel" is an action with a
    consequence (the caller's onCancel closes a session), not a plain dismiss. */
@@ -9037,6 +9058,11 @@ kbd {
   font-weight: 500;
   padding: 0.25rem 0.6rem;
   cursor: pointer;
+}
+} /* @layer features */
+
+.center-status-close:hover {
+  opacity: 1;
 }
 
 .center-status-cancel:hover {
@@ -9997,6 +10023,7 @@ kbd {
 
 /* Responsive */
 @media (max-width: 600px) {
+  @layer features {
   .header-brand {
     padding-right: 0.4rem;
     margin-right: 0.3rem;
@@ -10010,14 +10037,15 @@ kbd {
     display: none;
   }
 
-  .toolbar-left .toolbar-group:not(:first-child) {
-    display: none;
-  }
-
   .monitor-panel {
     width: 100%;
     max-width: 100%;
     border-radius: 8px 8px 0 0;
+  }
+  } /* @layer features */
+
+  .toolbar-left .toolbar-group:not(:first-child) {
+    display: none;
   }
 }
 
@@ -10757,6 +10785,7 @@ kbd {
    Opacity lives on the family GROUP (`.lineage-family`), not on the paths: a
    parent's routes overlap exactly along the trunk, and translucent paths would
    stack there into a brighter line than the branches. */
+@layer features {
 .lineage-family {
   opacity: 0.75;
 }
@@ -10764,6 +10793,24 @@ kbd {
 .lineage-family--focus {
   opacity: 1;
 }
+
+/* The radius rides a variable so the pulse below can breathe from whichever size
+   the dot rests at; the `r` attribute session-lineage.js sets is only a fallback. */
+.lineage-line-dot {
+  --lineage-dot-r: 2.5px;
+  r: var(--lineage-dot-r);
+  fill: var(--lineage-color, var(--session-blue, #2b8fd9));
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+}
+
+.lineage-family--focus .lineage-line-dot {
+  --lineage-dot-r: 3.5px;
+}
+
+.lineage-line-dot.lineage-line-dot--proxied {
+  opacity: 0.5;
+}
+} /* @layer features */
 
 .connection-line.lineage-line {
   stroke: var(--lineage-color, var(--session-blue, #2b8fd9));
@@ -10788,19 +10835,6 @@ kbd {
   stroke-dasharray: 4 3;
 }
 
-/* The radius rides a variable so the pulse below can breathe from whichever size
-   the dot rests at; the `r` attribute session-lineage.js sets is only a fallback. */
-.lineage-line-dot {
-  --lineage-dot-r: 2.5px;
-  r: var(--lineage-dot-r);
-  fill: var(--lineage-color, var(--session-blue, #2b8fd9));
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
-}
-
-.lineage-family--focus .lineage-line-dot {
-  --lineage-dot-r: 3.5px;
-}
-
 /* A line re-anchored to a collapsed group's header (its row is hidden): quieter
    and dotted, so it reads as "somewhere in there" rather than a real row. */
 .connection-line.lineage-line--proxied {
@@ -10810,10 +10844,6 @@ kbd {
 
 .connection-line.lineage-line--proxied.lineage-line--working {
   opacity: 0.65;
-}
-
-.lineage-line-dot.lineage-line-dot--proxied {
-  opacity: 0.5;
 }
 
 /* The working route marches from parent to child, so the line itself carries
@@ -11005,6 +11035,7 @@ kbd {
 
 /* ========== File Browser Panel ========== */
 
+@layer features {
 .file-browser-panel {
   position: fixed;
   top: calc(var(--header-height) + 10px);
@@ -11052,6 +11083,7 @@ kbd {
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
+} /* @layer features */
 
 .file-browser-search input {
   width: 100%;
@@ -11476,6 +11508,7 @@ kbd {
    Viewer delegate opens them here; keep them reading as prose, not as paths.
    Three-class selector on purpose: `.rv-text a.rv-path` (the monospace path
    style) is declared later in this file and ties on specificity otherwise. */
+@layer features {
 .file-preview-body .file-preview-md a.rv-path {
   font: inherit;
   word-break: normal;
@@ -11498,6 +11531,15 @@ kbd {
   margin: 2rem auto;
 }
 
+.file-preview-footer {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+} /* @layer features */
+
 .file-preview-body .binary-message {
   padding: 2rem;
   text-align: center;
@@ -11506,14 +11548,6 @@ kbd {
 
 .file-preview-body .binary-message a {
   color: var(--accent, #4ea1ff);
-}
-
-.file-preview-footer {
-  padding: 0.35rem 0.75rem;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
 }
 
 /* ---- File Viewer edit mode (issue #212) ---- */
@@ -11774,6 +11808,7 @@ kbd {
   text-overflow: ellipsis;
 }
 
+@layer features {
 .image-popup-title .session-badge {
   font-size: 0.6rem;
   padding: 0.1rem 0.4rem;
@@ -11798,19 +11833,6 @@ kbd {
   flex-shrink: 0;
 }
 
-.image-popup-actions button {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.9rem;
-}
-
-.image-popup-actions button:hover {
-  color: var(--text);
-}
-
 .image-popup-body {
   flex: 1;
   display: flex;
@@ -11827,6 +11849,20 @@ kbd {
   object-fit: contain;
   cursor: pointer;
   transition: transform 0.1s ease;
+}
+} /* @layer features */
+
+.image-popup-actions button {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9rem;
+}
+
+.image-popup-actions button:hover {
+  color: var(--text);
 }
 
 @layer features {
@@ -12703,14 +12739,9 @@ kbd {
    Response Viewer — native-scroll overlay for reading Claude responses
    ═══════════════════════════════════════════════════════════════ */
 
+@layer features {
 .btn-response-viewer-header {
   display: inline-flex;
-}
-
-/* "Response Viewer" header toggle (App Settings → Display) — must out-specify
-   the inline-flex !important above */
-.btn-response-viewer-header.btn-response-viewer-header--hidden {
-  display: none;
 }
 
 /* "Approvals" header bell: appears ONLY while prompts are pending (JS toggles
@@ -12722,9 +12753,6 @@ kbd {
   display: inline-flex;
   position: relative;
 }
-.btn-approvals.btn-approvals--hidden {
-  display: none;
-}
 
 /* Read My Mind 🧠 header button: opt-in (`readMyMindEnabled`, synced, default
    OFF), revealed by applyHeaderVisibilitySettings(). Same marker pattern as the
@@ -12732,23 +12760,33 @@ kbd {
 .btn-readmymind {
   display: inline-flex;
 }
-.btn-readmymind.btn-readmymind--hidden {
-  display: none;
-}
 .btn-readmymind .readmymind-icon {
   font-size: 13px;
   line-height: 1;
+}
+.readmymind-loading {
+  padding: 14px 4px;
+  color: var(--text-dim);
+  animation: readmymind-pulse 1.4s ease-in-out infinite;
+}
+} /* @layer features */
+
+/* "Response Viewer" header toggle (App Settings → Display) — must out-specify
+   the inline-flex !important above */
+.btn-response-viewer-header.btn-response-viewer-header--hidden {
+  display: none;
+}
+.btn-approvals.btn-approvals--hidden {
+  display: none;
+}
+.btn-readmymind.btn-readmymind--hidden {
+  display: none;
 }
 
 /* Read My Mind modal: top suggestion in an editable single-line field with the
    kind badge beside it and the rationale below. */
 .cm-dialog.readmymind-modal {
   max-width: 560px;
-}
-.readmymind-loading {
-  padding: 14px 4px;
-  color: var(--text-dim);
-  animation: readmymind-pulse 1.4s ease-in-out infinite;
 }
 @keyframes readmymind-pulse {
   0%, 100% { opacity: 0.45; }
@@ -12862,6 +12900,7 @@ kbd {
   border-color: var(--accent);
   background: var(--bg-dark);
 }
+@layer features {
 .readmymind-steer-input::placeholder {
   color: var(--text-dim);
 }
@@ -12901,6 +12940,7 @@ kbd {
 .keyboard-accessory-bar.codex-enabled .accessory-btn-codex {
   display: inline-flex;
 }
+} /* @layer features */
 
 @layer features {
 .approvals-badge {
@@ -13209,11 +13249,9 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 /* "Attachments" header button — opt-in (App Settings → Display), hidden by
    default. Same pattern as the response viewer: a base inline-flex !important so
    an inline style can't override it, and a more-specific marker rule to hide. */
+@layer features {
 .btn-attachments-history {
   display: inline-flex;
-}
-.btn-attachments-history.btn-attachments-history--hidden {
-  display: none;
 }
 
 /* "Session Manager" + "Away Digest" header buttons — opt-in (App Settings →
@@ -13224,14 +13262,8 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .btn-session-manager {
   display: inline-flex;
 }
-.btn-session-manager.btn-session-manager--hidden {
-  display: none;
-}
 .btn-away-digest {
   display: inline-flex;
-}
-.btn-away-digest.btn-away-digest--hidden {
-  display: none;
 }
 
 /* "File Viewer" header button — opt-in (App Settings → Header Displays), hidden
@@ -13240,6 +13272,24 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    hide. */
 .btn-file-viewer {
   display: inline-flex;
+}
+
+/* "Ultracode Agents" header launcher — opt-in (App Settings → Display), hidden by
+   default everywhere (so the mobile-header-buttons-policy guard auto-excludes it).
+   Base inline-flex !important + a more-specific marker rule to hide. */
+.btn-ultracode-agents {
+  display: inline-flex;
+}
+} /* @layer features */
+
+.btn-attachments-history.btn-attachments-history--hidden {
+  display: none;
+}
+.btn-session-manager.btn-session-manager--hidden {
+  display: none;
+}
+.btn-away-digest.btn-away-digest--hidden {
+  display: none;
 }
 .btn-file-viewer.btn-file-viewer--hidden {
   display: none;
@@ -13250,13 +13300,6 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
    only the hide marker is needed; out-specify any base .cm-btn--bar display. */
 .cm-btn--bar.btn-cron--hidden {
   display: none;
-}
-
-/* "Ultracode Agents" header launcher — opt-in (App Settings → Display), hidden by
-   default everywhere (so the mobile-header-buttons-policy guard auto-excludes it).
-   Base inline-flex !important + a more-specific marker rule to hide. */
-.btn-ultracode-agents {
-  display: inline-flex;
 }
 .btn-ultracode-agents.btn-ultracode-agents--hidden {
   display: none;
@@ -13841,6 +13884,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   padding-top: 12px;
 }
 
+@layer features {
 .rv-message:has(+ .rv-msg-cont) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -13860,6 +13904,12 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   margin-top: 12px;
 }
 
+.rv-text p,
+.response-viewer-body > p {
+  margin: 0 0 0.85em;
+}
+} /* @layer features */
+
 /* Markdown rendered content inside response viewer.
    Prose uses a proportional font for readability; code keeps monospace. */
 .rv-text,
@@ -13867,11 +13917,6 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   word-break: normal;
   overflow-wrap: anywhere;
   line-height: 1.7;
-}
-
-.rv-text p,
-.response-viewer-body > p {
-  margin: 0 0 0.85em;
 }
 
 .rv-text p:last-child,
@@ -14118,29 +14163,13 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   padding-left: 1.5em;
 }
 
+@layer features {
 .rv-text li,
 .response-viewer-body > ul > li, .response-viewer-body > ol > li {
   margin-bottom: 0.3em;
 }
 
 .rv-text li > p { margin: 0.2em 0; }
-
-.rv-text blockquote,
-.response-viewer-body > blockquote {
-  border-left: 3px solid var(--accent);
-  background: rgba(var(--accent-rgb), 0.06);
-  margin: 0.8em 0;
-  padding: 0.5em 14px;
-  color: var(--text-dim);
-  border-radius: 0 6px 6px 0;
-}
-
-.rv-text strong,
-.response-viewer-body > p strong,
-.response-viewer-body > li strong {
-  color: var(--text);
-  font-weight: 700;
-}
 
 .rv-text em,
 .response-viewer-body em {
@@ -14152,11 +14181,6 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid rgba(var(--accent-rgb), 0.35);
-}
-
-.rv-text a:hover,
-.response-viewer-body a:hover {
-  border-bottom-color: var(--accent);
 }
 
 /* File paths linkified out of the message text. Monospace so a path still reads
@@ -14177,6 +14201,41 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg-card);
+}
+
+.rv-text tbody tr:nth-child(even) td,
+.response-viewer-body > table tbody tr:nth-child(even) td,
+.rv-table-wrap tbody tr:nth-child(even) td {
+  background: var(--control-bg);
+}
+
+.rv-text tbody tr:hover td,
+.response-viewer-body > table tbody tr:hover td,
+.rv-table-wrap tbody tr:hover td {
+  background: rgba(var(--accent-rgb), 0.06);
+}
+} /* @layer features */
+
+.rv-text blockquote,
+.response-viewer-body > blockquote {
+  border-left: 3px solid var(--accent);
+  background: rgba(var(--accent-rgb), 0.06);
+  margin: 0.8em 0;
+  padding: 0.5em 14px;
+  color: var(--text-dim);
+  border-radius: 0 6px 6px 0;
+}
+
+.rv-text strong,
+.response-viewer-body > p strong,
+.response-viewer-body > li strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.rv-text a:hover,
+.response-viewer-body a:hover {
+  border-bottom-color: var(--accent);
 }
 
 .rv-text table,
@@ -14222,18 +14281,6 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   font-weight: 600;
   border-bottom: 2px solid var(--border-light);
   white-space: nowrap;
-}
-
-.rv-text tbody tr:nth-child(even) td,
-.response-viewer-body > table tbody tr:nth-child(even) td,
-.rv-table-wrap tbody tr:nth-child(even) td {
-  background: var(--control-bg);
-}
-
-.rv-text tbody tr:hover td,
-.response-viewer-body > table tbody tr:hover td,
-.rv-table-wrap tbody tr:hover td {
-  background: rgba(var(--accent-rgb), 0.06);
 }
 
 .rv-text hr,
@@ -14358,6 +14405,7 @@ body.touch-device.cjk-input-visible .main {
    remain in mobile.css @media (max-width: 599px).
    ═══════════════════════════════════════════════════════════════ */
 
+@layer features {
 .keyboard-accessory-bar {
   display: none;
   height: 44px;
@@ -14372,23 +14420,8 @@ body.touch-device.cjk-input-visible .main {
   z-index: 51;
 }
 
-.keyboard-accessory-bar.visible {
-  display: flex;
-}
-
 .keyboard-accessory-bar::-webkit-scrollbar {
   display: none;
-}
-
-/* Touch devices: fixed positioning to float above keyboard.
-   Phone CSS (mobile.css) adds bottom + safe-area padding;
-   iPad JS sets bottom dynamically via updateLayoutForKeyboard(). */
-.touch-device .keyboard-accessory-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  transition: transform 0.15s ease-out;
-  will-change: transform;
 }
 
 .accessory-btn {
@@ -14406,6 +14439,48 @@ body.touch-device.cjk-input-visible .main {
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
+}
+
+.accessory-btn-compose.has-draft::after {
+  width: 6px;
+  height: 6px;
+  background: var(--yellow);
+  border-radius: 50%;
+  content: '';
+}
+
+.accessory-btn-arrow {
+  padding: 6px 10px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.accessory-btn-dismiss {
+  margin-left: auto;
+  flex: 1 1 0;
+  max-width: 100px;
+  padding: 10px 8px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+} /* @layer features */
+
+.keyboard-accessory-bar.visible {
+  display: flex;
+}
+
+/* Touch devices: fixed positioning to float above keyboard.
+   Phone CSS (mobile.css) adds bottom + safe-area padding;
+   iPad JS sets bottom dynamically via updateLayoutForKeyboard(). */
+.touch-device .keyboard-accessory-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
 }
 
 .accessory-btn.confirming {
@@ -14444,39 +14519,13 @@ body.touch-device.cjk-input-visible .main {
   background: color-mix(in srgb, var(--accent) 30%, var(--control-bg));
 }
 
-.accessory-btn-compose.has-draft::after {
-  width: 6px;
-  height: 6px;
-  background: var(--yellow);
-  border-radius: 50%;
-  content: '';
-}
-
 .accessory-btn svg {
   width: 14px;
   height: 14px;
 }
 
-.accessory-btn-arrow {
-  padding: 6px 10px;
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-
 .accessory-btn-arrow:active {
   background: var(--accent-hover);
-}
-
-.accessory-btn-dismiss {
-  margin-left: auto;
-  flex: 1 1 0;
-  max-width: 100px;
-  padding: 10px 8px;
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-  font-weight: 600;
 }
 
 .accessory-btn-dismiss svg {
@@ -15964,6 +16013,7 @@ body.touch-device.cjk-input-visible .main {
 .webview-failure-inner { max-width: 380px; }
 } /* @layer features */
 .webview-failure-inner h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--text); }
+@layer features {
 .webview-failure-inner p { margin: 0 0 1rem; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
 .webview-failure-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
 
@@ -15976,9 +16026,11 @@ body.touch-device.cjk-input-visible .main {
   flex-shrink: 0;
 }
 .session-tab--web.active .tab-web-icon { color: var(--accent, #3ec8ee); }
-.session-tab--web.active { border-bottom-color: var(--accent, #3ec8ee); }
 
 .run-mode-webviews { max-height: 180px; overflow-y: auto; }
+} /* @layer features */
+
+.session-tab--web.active { border-bottom-color: var(--accent, #3ec8ee); }
 /* Custom Model Endpoint Profiles' generated entries: `.run-mode-menu.active`'s
    own `gap: 2px` only spaces its DIRECT children, and this container (like
    `.run-mode-webviews` above) is one such child holding several buttons of
@@ -16063,11 +16115,18 @@ body.touch-device.cjk-input-visible .main {
   padding: 0;
 }
 } /* @layer features */
+@layer features {
 .webview-icon-choice:hover { border-color: var(--accent, #3ec8ee); }
 .webview-icon-choice.selected {
   border-color: var(--accent, #3ec8ee);
   box-shadow: 0 0 0 1px var(--accent, #3ec8ee) inset;
 }
+
+.webview-probe-result.ok { color: var(--success, #10b981); }
+.webview-probe-result.bad { color: var(--danger, #ef4444); }
+/* Delete sits apart from Cancel/Save so it is not fat-fingered on the way to Save. */
+.webview-modal-actions { justify-content: space-between; }
+} /* @layer features */
 
 /* Saved-URL rows in the Run dropdown show their chosen icon in the dot's slot. */
 .run-mode-menu-icon {
@@ -16079,11 +16138,6 @@ body.touch-device.cjk-input-visible .main {
   font-size: 0.95em;
   flex-shrink: 0;
 }
-
-.webview-probe-result.ok { color: var(--success, #10b981); }
-.webview-probe-result.bad { color: var(--danger, #ef4444); }
-/* Delete sits apart from Cancel/Save so it is not fat-fingered on the way to Save. */
-.webview-modal-actions { justify-content: space-between; }
 @layer features {
 .webview-modal-actions .cm-btn--danger { margin-right: auto; }
 
@@ -16701,6 +16755,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   max-height: 86vh;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-shell-head {
   flex-shrink: 0;
 }
@@ -16738,18 +16793,23 @@ html[data-tab-orientation='vertical'] .home-sessions {
     transform 0.1s ease;
 }
 
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-save.set-head-apply {
-  background: transparent;
-  color: var(--text);
-  box-shadow: inset 0 0 0 1px var(--border);
-}
-
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-save:hover {
   filter: brightness(1.08);
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-save:active {
   transform: scale(0.97);
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-actions .modal-close:active {
+  transform: scale(0.94);
+}
+} /* @layer features */
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-save.set-head-apply {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
 
 /* `.modal-close` ships as a bare 1.5rem glyph with no box — fine in a plain
@@ -16774,10 +16834,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-actions .modal-close:hover {
   background: var(--bg-hover);
   color: var(--text);
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-actions .modal-close:active {
-  transform: scale(0.94);
 }
 
 /* The shared rule offsets the ring OUTWARD, which inside the tray draws it on
@@ -16973,20 +17029,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
   margin-top: 11px;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-head {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 6px;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-head h4 {
-  margin: 0;
-  font-size: 0.63rem;
-  font-weight: 640;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-head::after {
@@ -17010,14 +17058,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 2px 8px;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-adv svg {
-  transition: transform 0.18s;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced.open .set-adv svg {
-  transform: rotate(180deg);
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced:not(.open) .cm-group,
@@ -17048,6 +17088,24 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border-radius: 8px;
   background: var(--control-bg);
 }
+} /* @layer features */
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-head h4 {
+  margin: 0;
+  font-size: 0.63rem;
+  font-weight: 640;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-adv svg {
+  transition: transform 0.18s;
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-group-advanced.open .set-adv svg {
+  transform: rotate(180deg);
+}
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-inline-form h5 {
   margin: 0 0 4px;
@@ -17056,6 +17114,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 /* ── rows ─────────────────────────────────────────────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-block {
   flex-direction: column;
   align-items: stretch;
@@ -17077,15 +17136,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-row__hint {
   max-width: 78ch;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) {
-  padding: var(--cm-space-3);
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) + *,
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > * + :not(.cm-row) {
-  border-top: 1px solid color-mix(in srgb, var(--cm-border) 70%, transparent);
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-row-actions {
@@ -17121,6 +17171,16 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--yellow);
   background: rgba(240, 194, 90, 0.12);
   border-color: rgba(240, 194, 90, 0.28);
+}
+} /* @layer features */
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) {
+  padding: var(--cm-space-3);
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > :not(.cm-row) + *,
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .cm-group > * + :not(.cm-row) {
+  border-top: 1px solid color-mix(in srgb, var(--cm-border) 70%, transparent);
 }
 
 /* ── controls ─────────────────────────────────────────────────────────── */
@@ -17258,6 +17318,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 /* The chip carries the icon of the button it switches on, so the list reads as
    the header rather than as a list of names. It is also the ONLY copy of that
    icon: the live preview clones it (settings-ui.js: _syncLayoutPreview). */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip-ico {
   flex-shrink: 0;
   opacity: 0.75;
@@ -17268,11 +17329,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
   line-height: 1;
 }
 
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip.is-on .set-chip-ico,
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:has(input:checked) .set-chip-ico {
-  opacity: 1;
-}
-
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip::before {
   content: '\2713';
   font-size: 0.8em;
@@ -17281,6 +17337,18 @@ html[data-tab-orientation='vertical'] .home-sessions {
   overflow: hidden;
   opacity: 0;
   transition: width 0.15s, opacity 0.15s;
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip.is-on::before,
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:has(input:checked)::before {
+  width: 0.85em;
+  opacity: 1;
+}
+} /* @layer features */
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip.is-on .set-chip-ico,
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:has(input:checked) .set-chip-ico {
+  opacity: 1;
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:hover {
@@ -17295,12 +17363,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--accent);
   border-color: rgba(var(--accent-rgb), 0.45);
   background: rgba(var(--accent-rgb), 0.12);
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip.is-on::before,
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:has(input:checked)::before {
-  width: 0.85em;
-  opacity: 1;
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip:focus-within {
@@ -17696,9 +17758,34 @@ html[data-tab-orientation='vertical'] .home-sessions {
    `.hidden`), so a long Respawn tab, the Summary timeline and six case forms
    never stack on top of each other.
    ─────────────────────────────────────────────────────────────────────────── */
+@layer features {
 :is(#sessionOptionsModal, #createCaseModal) .set-section.hidden {
   display: none;
 }
+
+/* Token thresholds are six digits; the default 62px field clips them. */
+#sessionOptionsModal .set-num-wide {
+  width: 86px;
+}
+
+/* Plain checkboxes in a row card: used where the options are steps of one
+   sequence rather than independent tags (chips read as the latter). */
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.73rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+} /* @layer features */
 
 /* Only ever one section visible, so the separator App Settings draws between
    consecutive sections renders as a stray line above whichever one is shown.
@@ -17706,11 +17793,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 :is(#sessionOptionsModal, #createCaseModal) .set-section + .set-section {
   border-top: 0;
   margin-top: 0;
-}
-
-/* Token thresholds are six digits; the default 62px field clips them. */
-#sessionOptionsModal .set-num-wide {
-  width: 86px;
 }
 
 /* Full-width controls inside a stacked row (duration presets, color swatches,
@@ -17744,24 +17826,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-textarea:focus {
   border-color: var(--accent);
-}
-
-/* Plain checkboxes in a row card: used where the options are steps of one
-   sequence rather than independent tags (chips read as the latter). */
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-checks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.73rem;
-  color: var(--text-dim);
-  cursor: pointer;
-  user-select: none;
 }
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-check input {
@@ -18353,56 +18417,15 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 /* Header host — wraps #sessionTabs so the strip can be hidden without
    touching the element that gets re-parented. */
+@layer features {
 .session-tabs-host {
   display: flex;
   flex: 1;
   min-width: 0;
 }
 
-html[data-session-list="sidebar"] .session-tabs-host {
-  display: none;
-}
-
-/* The header only needs flex-start to support the two-row strip; with the
-   strip gone the remaining header chrome should sit centered. */
-html[data-session-list="sidebar"] .header {
-  align-items: center;
-}
-
 .session-sidebar {
   display: none;
-}
-
-html[data-session-list="sidebar"] .session-sidebar {
-  display: flex;
-  flex-direction: column;
-  flex: 0 0 var(--sidebar-width);
-  width: var(--sidebar-width);
-  min-width: 0;
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
-  /* Own stacking context ABOVE .welcome-overlay (z-index 10, which is what a
-     user with no open session sees) but BELOW .toolbar (20) — raising it to or
-     past 20 makes the Run menu unclickable again. */
-  position: relative;
-  z-index: 11;
-  transition: flex-basis var(--sidebar-transition), width var(--sidebar-transition);
-  /* Deliberately NO contain:paint — .header has it, which is exactly why app.js
-     re-parents .subagent-dropdown to <body>. Leaving it off keeps per-row
-     dropdowns and the inline rename input paintable in place. */
-}
-
-/* Rich rows carry a stamps line the simple rows do not, and at 260px
-   "created 3d ago · working 12m" ellipsizes before it is finished. Overridden
-   by the collapsed rule below, which is more specific and comes after. */
-html[data-session-list="sidebar"][data-sidebar-detail="rich"] .session-sidebar {
-  flex-basis: var(--sidebar-width-rich);
-  width: var(--sidebar-width-rich);
-}
-
-html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar {
-  flex-basis: var(--sidebar-width-collapsed);
-  width: var(--sidebar-width-collapsed);
 }
 
 .session-sidebar-head {
@@ -18447,16 +18470,59 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar {
   color: var(--text-muted);
 }
 
-.session-sidebar-filter-input:focus-visible {
-  border-color: var(--accent);
-}
-
 /* Host for the relocated #sessionTabs. */
 .session-sidebar-list {
   display: flex;
   flex: 1;
   min-height: 0;
   overflow: hidden;
+}
+} /* @layer features */
+
+html[data-session-list="sidebar"] .session-tabs-host {
+  display: none;
+}
+
+/* The header only needs flex-start to support the two-row strip; with the
+   strip gone the remaining header chrome should sit centered. */
+html[data-session-list="sidebar"] .header {
+  align-items: center;
+}
+
+html[data-session-list="sidebar"] .session-sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 var(--sidebar-width);
+  width: var(--sidebar-width);
+  min-width: 0;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  /* Own stacking context ABOVE .welcome-overlay (z-index 10, which is what a
+     user with no open session sees) but BELOW .toolbar (20) — raising it to or
+     past 20 makes the Run menu unclickable again. */
+  position: relative;
+  z-index: 11;
+  transition: flex-basis var(--sidebar-transition), width var(--sidebar-transition);
+  /* Deliberately NO contain:paint — .header has it, which is exactly why app.js
+     re-parents .subagent-dropdown to <body>. Leaving it off keeps per-row
+     dropdowns and the inline rename input paintable in place. */
+}
+
+/* Rich rows carry a stamps line the simple rows do not, and at 260px
+   "created 3d ago · working 12m" ellipsizes before it is finished. Overridden
+   by the collapsed rule below, which is more specific and comes after. */
+html[data-session-list="sidebar"][data-sidebar-detail="rich"] .session-sidebar {
+  flex-basis: var(--sidebar-width-rich);
+  width: var(--sidebar-width-rich);
+}
+
+html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar {
+  flex-basis: var(--sidebar-width-collapsed);
+  width: var(--sidebar-width-collapsed);
+}
+
+.session-sidebar-filter-input:focus-visible {
+  border-color: var(--accent);
 }
 
 /* --- The relocated strip, now vertical --------------------------------- */
@@ -21554,6 +21620,7 @@ html[data-header-stats='tiles'] .header-system-stats > .connection-indicator {
 }
 } /* @layer features */
 
+@layer features {
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .connection-dot,
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .connection-text {
   display: none;
@@ -21572,6 +21639,7 @@ html[data-header-stats='tiles'] .connection-tile-value.draining {
 html[data-header-stats='tiles'] .connection-tile-value.offline {
   color: var(--red);
 }
+} /* @layer features */
 
 /* The bar is the third row, full tile width. The WS tile has no bar, and its
    empty third row keeps it the same height as its neighbours. */

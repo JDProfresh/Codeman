@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (three tranches: 176 blocks, about 1,650 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (four tranches: 209 blocks, about 1,830 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -89,11 +89,19 @@ scoped element rules such as `.form-row input[type="password"]` against
 (`.session-tab:hover`, the rail's `.session-tab > *`), the toolbar's `.cm-btn--bar`
 rules, `.btn-icon-header`, the docked-panel rules and the response viewer's
 `> *` rules. Each needs its competitor moved, scoped or made exclusive first.
-With no source edits the planner finds nothing more in runs of 4+, so the next
-step is per pair: for example, skip the phone `:where(.header) .session-tab`
-rule on `:hover`, or scope `.duration-custom-input input` so it cannot meet
-`.form-row input[type="password"]`. Each is a selector change, checked with
-`css:diff` like any other.
+The fourth tranche tried per-pair selector edits first and dropped them: freeing
+`.session-tab:hover` took a `:where(:not(:hover))` on the phone tab chip, then
+another on the skin's `.tab-glow`, and the chain still ran on to the phone
+`.session-tab` border, all for one rule, since a rule only moves once its whole
+run frees. What moved it instead is `--hoist`. A layered rule's cascade does not
+depend on where it sits, so the unlayered rules interleaved in a run can be moved
+to just after the block: they cross only rules that became layered (which they
+beat wherever they sit), so no unlayered rule changes order against another. A
+run still ends at any at-rule and, with `--hoist`, at a section banner comment
+(`/* ===== … */`, `/* ── … ── */`), so a block stays inside its topic. That moved
+33 blocks (about 180 rules, 680 declarations), the file's lines unchanged as a
+multiset (only wrappers added and rules repositioned). The layer now holds about
+1,830 rules; about 1,220 stay outside.
 `#cronModal .hidden` came back out of the layer in this pass (no visible change:
 the rows JS hides are plain `.form-row`s, but the next one might not be).
 

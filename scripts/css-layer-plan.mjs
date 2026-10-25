@@ -43,8 +43,12 @@
  *   node scripts/css-layer-plan.mjs --url http://127.0.0.1:3173 [--min-run 8] [--reasons] [--runtime-only] [--write]
  *   node scripts/css-layer-plan.mjs --url ... --why '<selector text>'   follow one blocker chain
  *   node scripts/css-layer-plan.mjs --url ... --audit | --fix-audit       re-check what is layered
+ *   node scripts/css-layer-plan.mjs --url ... --hoist --write           see below
  * --reasons tallies what blocks the rest; --runtime-only lists the unmapped
- * runtime classes doing it (each wants a RUNTIME_ON entry). --fix-audit takes a
+ * runtime classes doing it (each wants a RUNTIME_ON entry). --hoist lets a run
+ * continue past an unmovable rule and moves that rule to just after the block
+ * (it crosses only rules that become layered, so no unlayered rule changes order
+ * against another); a run still ends at any at-rule and at a section banner. --fix-audit takes a
  * failing layered rule back out (splitting its block); run it until the audit
  * reports 0, since a rule leaving the layer can now beat others in it.
  */
@@ -305,13 +309,21 @@ function identities(sel) {
   return out.length ? out : unknown ? null : out;
 }
 
-const FV = /:focus-visible/, NOT_FV = /:not\(:focus-visible\)/;
+const EXCL_STATES = ['focus-visible', 'focus-within', 'focus', 'hover', 'active', 'checked', 'disabled'];
+function exclusiveStates(x, y) {
+  for (const st of EXCL_STATES) {
+    const neg = new RegExp(`:not\\(:${st}\\)`);
+    const pos = new RegExp(`:${st}(?![\\w-])`);
+    if (neg.test(x) && pos.test(y.replace(new RegExp(neg.source, 'g'), ''))) return true;
+    if (neg.test(y) && pos.test(x.replace(new RegExp(neg.source, 'g'), ''))) return true;
+  }
+  return false;
+}
 function reach(a, b) {
   if (a.pseudoEl !== b.pseudoEl) return false;
   if (a.tag && b.tag && a.tag !== b.tag) return false; // two different elements
-  // :focus-visible and :not(:focus-visible) never hold at once on one element
-  const sa0 = subjectText(a), sb0 = subjectText(b);
-  if ((NOT_FV.test(sa0) && FV.test(sb0.replace(NOT_FV, ''))) || (NOT_FV.test(sb0) && FV.test(sa0.replace(NOT_FV, '')))) return false;
+  // :X and :not(:X) never hold at once on one element (X a state: hover, focus...)
+  if (exclusiveStates(subjectText(a), subjectText(b))) return false;
   const sa = sample.get(a.text), sb = sample.get(b.text);
   if (sa && sb) {
     for (const e of sa) if (sb.has(e)) return true;
@@ -414,13 +426,21 @@ function conflict(x) {
     }
   return null;
 }
+// --hoist: an unmovable rule no longer ends a run. It is moved to just after the
+// block instead, so it crosses only rules that became layered (which it beats
+// wherever it sits), and no unlayered rule changes order against another. Any
+// at-rule (@media, @keyframes...) still ends a run: nothing crosses one.
+const HOIST = args.includes('--hoist');
+const BANNER = /={3,}|─{3,}|-{4,}|═{3,}/;
 function runs() {
   const out = [];
   for (const parent of new Set([...moved].map((x) => x.r.parent))) {
     let run = [];
     for (const n of parent.nodes) {
-      if (n.type === 'comment') continue;
+      // with --hoist a section banner ends a run, so a block stays in its topic
+      if (n.type === 'comment' && !(HOIST && BANNER.test(n.text))) continue;
       if (n.type === 'rule' && moved.has(ruleOf.get(n))) run.push(ruleOf.get(n));
+      else if (HOIST && n.type === 'rule') continue;
       else {
         if (run.length) out.push(run);
         run = [];
@@ -551,7 +571,44 @@ if (args.includes('--write')) {
     if (trail?.type === 'comment' && !trail.raws.before.includes('\n')) to++;
     const span = nodes.slice(from, to + 1);
     first.before(layer);
-    for (const n of span) layer.append(n);
+    if (!HOIST) {
+      for (const n of span) layer.append(n);
+      continue;
+    }
+    // Comments go with the rule they lead into; a same-line trailing comment
+    // stays with the rule before it.
+    const groups = [];
+    let pending = [];
+    for (const n of span) {
+      if (n.type === 'comment') {
+        if (!n.raws.before.includes('\n') && groups.length && !pending.length) groups[groups.length - 1].nodes.push(n);
+        else pending.push(n);
+        continue;
+      }
+      groups.push({ moved: moved.has(ruleOf.get(n)), nodes: [...pending, n] });
+      pending = [];
+    }
+    // postcss resets a moved node's leading whitespace: keep each one's own
+    const before = new Map(span.map((n) => [n, n.raws.before]));
+    for (const g of groups) if (g.moved) for (const n of g.nodes) layer.append(n);
+    let anchor = layer;
+    for (const g of groups)
+      if (!g.moved)
+        for (const n of g.nodes) {
+          anchor.after(n);
+          anchor = n;
+        }
+    for (const n of pending) {
+      anchor.after(n);
+      anchor = n;
+    }
+    for (const [n, b] of before) n.raws.before = b;
+    // the first node in the block and the first after it start their own paragraph
+    const indent = (n) => (n.raws.before || '').match(/[ \t]*$/)[0];
+    const firstIn = layer.first;
+    if (firstIn) firstIn.raws.before = '\n' + indent(firstIn);
+    const firstAfter = layer.next();
+    if (firstAfter && firstAfter !== layer) firstAfter.raws.before = '\n\n' + indent(firstAfter);
   }
   // A block that fills its @media whole reads better outside it:
   // @layer features { @media (...) { ... } } is the same cascade.
@@ -577,5 +634,9 @@ function labelClosers(text) {
     if (a.params === 'features' && a.nodes && !(a.next()?.type === 'comment' && a.next().text === '@layer features'))
       a.after(postcss.comment({ text: '@layer features', raws: { before: ' ' } }));
   });
-  return root.toString().replace(/\n\}\s*\/\* @layer features \*\//g, '\n} /* @layer features */');
+  // a block nested in an @media closes at its opener's indent
+  root.walkAtRules('layer', (a) => {
+    if (a.params === 'features' && a.parent?.type !== 'root') a.raws.after = '\n  ';
+  });
+  return root.toString().replace(/\n( *)\}\s*\/\* @layer features \*\//g, '\n$1} /* @layer features */');
 }
