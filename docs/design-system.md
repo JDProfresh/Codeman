@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (two tranches: 120 blocks, about 1,370 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (three tranches: 176 blocks, about 1,650 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -54,8 +54,8 @@ selectors that name that ancestor. Without it nothing scoped could move (every
 miss a generic rule inside the scope. That is why a bare hide utility
 (`#cronModal .hidden`, `[hidden]`) never moves: it has to beat whatever display
 rule its element carries, and a layered rule never does. It then keeps only
-runs of at least `--min-run` consecutive rules (8 for the first tranche, 6 for the
-second), so the file gets readable blocks rather than one wrapper per rule.
+runs of at least `--min-run` consecutive rules (8, 6 and 4 for the three
+tranches), so the file gets readable blocks rather than one wrapper per rule.
 `--reasons` lists what blocks the rest, `--why <selector>` follows one chain to
 its root, `--write` wraps the runs (a block that fills an `@media` goes outside
 it), `--audit` re-checks every rule already in the layer, and `--fix-audit`
@@ -78,13 +78,22 @@ same pass fixed a specificity bug in the planner (everything after a
 `:where`/`:is`/`:not` went uncounted); the audit of the first tranche under the
 corrected weights is clean.
 
-The second tranche moved 54 more blocks (about 450 rules, 1,870 declarations).
-What is left (about 1,340 rules) is interleaved with rules that compete for real:
+The second tranche moved 54 more blocks (about 450 rules, 1,870 declarations),
+and the third 56 blocks of 4+ (about 280 rules, 1,130 declarations), after the
+planner stopped calling a child `*` (`.run-mode-menu > *`) global. That puts
+about 1,650 of the file's rules in the layer and leaves about 1,400 outside:
+the skin overrides at the end (unlayered on purpose), the `!important` groups,
+the globals, and rules interleaved with ones that compete for real:
 scoped element rules such as `.form-row input[type="password"]` against
 `mobile.css`'s `.duration-custom-input input`, the session tab's own cascade
 (`.session-tab:hover`, the rail's `.session-tab > *`), the toolbar's `.cm-btn--bar`
 rules, `.btn-icon-header`, the docked-panel rules and the response viewer's
 `> *` rules. Each needs its competitor moved, scoped or made exclusive first.
+With no source edits the planner finds nothing more in runs of 4+, so the next
+step is per pair: for example, skip the phone `:where(.header) .session-tab`
+rule on `:hover`, or scope `.duration-custom-input input` so it cannot meet
+`.form-row input[type="password"]`. Each is a selector change, checked with
+`css:diff` like any other.
 `#cronModal .hidden` came back out of the layer in this pass (no visible change:
 the rows JS hides are plain `.form-row`s, but the next one might not be).
 

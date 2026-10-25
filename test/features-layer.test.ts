@@ -31,11 +31,11 @@ styles.walkAtRules('layer', (a) => {
 });
 
 describe('@layer features', () => {
-  it('holds two tranches of feature rules', () => {
+  it('holds three tranches of feature rules', () => {
     let rules = 0;
     for (const b of blocks) b.walkRules(() => void rules++);
-    expect(blocks.length).toBeGreaterThanOrEqual(110);
-    expect(rules).toBeGreaterThanOrEqual(1350);
+    expect(blocks.length).toBeGreaterThanOrEqual(170);
+    expect(rules).toBeGreaterThanOrEqual(1600);
   });
 
   it('a modifier never sits in the layer while its unlayered base sets the same property', () => {

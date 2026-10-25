@@ -349,7 +349,9 @@ function tagMayBe(x, tag) {
 
 // ---- plan -------------------------------------------------------------------------
 const skinStart = stylesRoot.toString().indexOf('Skin component rules (design-system phase 2)');
-const isGlobal = (x) => x.sels.some((s) => /^(:root|html|body|\*)([.:[]|$)/.test(subjectText(s)));
+// Global = the selector IS the root/body/everything (`html[data-x]`, `*`); a
+// `*` or `body` under a parent (`.menu > *`) is just a child selector.
+const isGlobal = (x) => x.sels.some((s) => subjectText(s) === s.text.trim() && /^(:root|html|body|\*)([.:[]|$)/.test(s.text.trim()));
 // A hide utility has to beat whatever component rule its element carries, so it
 // stays unlayered.
 // Only a bare one: `#cronModal .hidden` lands on any element in its scope; a

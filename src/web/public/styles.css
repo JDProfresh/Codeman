@@ -1340,6 +1340,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 }
 } /* @layer features */
 
+@layer features {
 .anim-lab-style strong { font-size: 0.73rem; font-weight: 600; }
 .anim-lab-style em { font-style: normal; font-size: 0.64rem; opacity: 0.7; }
 
@@ -1364,6 +1365,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   color: var(--text-dim);
   font-size: 0.66rem;
 }
+} /* @layer features */
 
 .anim-lab-select select {
   background: var(--bg-dark, #111);
@@ -1395,6 +1397,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 
 .anim-lab-demo button:hover { background: rgba(34, 197, 94, 0.16); border-color: rgba(0, 255, 102, 0.5); }
 
+@layer features {
 .anim-lab-hint { margin: 8px 0 0; font-size: 0.64rem; opacity: 0.55; }
 
 /* ── Window entrance animations ────────────────────────────────────────────
@@ -1436,6 +1439,7 @@ html[data-win-anim="crt"] .ultracode-window.win-enter::before {
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes win-enter-crt {
   0%   { opacity: 0; transform: scale3d(0.55, 0.008, 1); }
@@ -1916,6 +1920,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
   color: #00FF66;
 }
 
+@layer features {
 .session-tab .tab-info {
   display: flex;
   flex-direction: column;
@@ -1937,6 +1942,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
 .session-tab .tab-name-prefix {
   display: none;
 }
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name {
   display: -webkit-box;
@@ -2229,6 +2235,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 }
 
 /* Tunnel Indicator */
+@layer features {
 .tunnel-indicator {
   display: flex;
   align-items: center;
@@ -2262,6 +2269,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   box-shadow: 0 0 6px #f59e0b, 0 0 12px rgba(245, 158, 11, 0.4);
   animation: tunnel-glow-amber 1s ease-in-out infinite;
 }
+} /* @layer features */
 
 @keyframes tunnel-glow {
   0%, 100% { box-shadow: 0 0 6px #22c55e, 0 0 12px rgba(34, 197, 94, 0.4); }
@@ -2536,6 +2544,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: linear-gradient(90deg, var(--yellow) 0%, var(--red) 100%);
 }
 
+@layer features {
 .stat-value {
   min-width: 32px;
   text-align: right;
@@ -2566,6 +2575,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: rgba(255, 255, 255, 0.07);
   color: var(--text);
 }
+} /* @layer features */
 
 /* Hover motion moves the icon, never the button: turning the whole button used
    to swing its hover background into a diamond on every header icon. Now only the
@@ -2637,6 +2647,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 /* Admin Panel header button: only shown to admins in multi-user mode (marker
    class removed by admin-ui.js after identity boot). Deliberately BIG and
    prominent: it is the entry point to user/permission management. */
+@layer features {
 .btn-admin-panel {
   display: inline-flex;
   align-items: center;
@@ -2697,6 +2708,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: var(--accent);
   color: var(--accent-ink);
 }
+} /* @layer features */
 
 /* Tile grid hard desktop gate, independent of the showTileGridButton setting:
    tiles need the room, their dividers have no touch handlers, and mobile.css
@@ -2996,6 +3008,7 @@ body.solo-mode #rebootRestoreBanner,
 body.solo-mode .btn-lifecycle-log {
   display: none;
 }
+@layer features {
 .solo-session-title {
   flex: 1;
   min-width: 0;
@@ -3047,6 +3060,7 @@ body.solo-mode .btn-lifecycle-log {
   background: rgba(234, 179, 8, 0.2);
   color: var(--yellow);
 }
+} /* @layer features */
 
 /* Every agent CLI (claude included) shows its logo instead, in a
    `.tab-harness.run-mode-dot <id>` slot that the run-mode-dot rules draw: brand
@@ -4040,6 +4054,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   flex-direction: column;
 }
 
+@layer features {
 .ralph-panel.detached .ralph-summary {
   cursor: move;
   background: linear-gradient(180deg, var(--bg-hover) 0%, var(--bg-card) 100%);
@@ -4068,6 +4083,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   flex: 1;
   overflow: auto;
 }
+} /* @layer features */
 
 .ralph-panel.detached .ralph-info-unified {
   flex-direction: column;
@@ -4462,6 +4478,7 @@ html[data-skin="og"] .welcome-primary:hover {
    skins alike. Monochrome marks are masks over currentColor, so the disc sets
    a dark ink; --text-dim is redeclared because the plain fallback dot of an id
    with no logo paints with it. */
+@layer features {
 .welcome-primary-logo {
   display: inline-flex;
   align-items: center;
@@ -4514,6 +4531,7 @@ html[data-skin="og"] .welcome-primary:hover {
   cursor: pointer;
   transition: background var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
 }
+} /* @layer features */
 
 .welcome-chip:hover {
   background: var(--control-bg-hover);
@@ -4665,6 +4683,7 @@ html[data-skin="og"] .welcome-primary:hover {
   padding: 16px;
 }
 
+@layer features {
 .welcome-qr-url {
   margin-top: 8px;
   font-family: monospace;
@@ -4709,6 +4728,7 @@ html[data-skin="og"] .welcome-primary:hover {
   display: flex;
   align-items: center;
 }
+} /* @layer features */
 
 .search-input {
   flex: 1;
@@ -4959,6 +4979,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 @media (max-width: 640px) {
   .search-filter-secondary {
     margin-left: 0;
@@ -4979,9 +5000,11 @@ html[data-skin="og"] .welcome-primary:hover {
     width: auto;
   }
 }
+} /* @layer features */
 
 /* Title row for the past-session list: label + count on the left, filter and
    sort on the right (issue #260, 35 conversations in a 4-row box). */
+@layer features {
 .history-header {
   display: flex;
   align-items: center;
@@ -5011,6 +5034,7 @@ html[data-skin="og"] .welcome-primary:hover {
   gap: 0.35rem;
   margin-left: auto;
 }
+} /* @layer features */
 
 .history-filter {
   width: 8.5rem;
@@ -5381,6 +5405,7 @@ html[data-skin="og"] .welcome-primary:hover {
    which collapses to two rows. Buying ~80px back from the vertical rhythm keeps
    the list usable without touching how the screen looks on a tall display.
    Phones are covered by mobile.css, which loads later and compacts harder. */
+@layer features {
 @media (max-height: 900px) {
   .welcome-content {
     padding: 1.25rem 2rem;
@@ -5400,6 +5425,7 @@ html[data-skin="og"] .welcome-primary:hover {
     margin-top: 1rem;
   }
 }
+} /* @layer features */
 
 /* Bottom Toolbar */
 .toolbar {
@@ -5962,6 +5988,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Mobile app settings gear - hidden on desktop, shown on mobile */
+@layer features {
 .btn-settings-mobile {
   display: none;
 }
@@ -5982,6 +6009,7 @@ html[data-skin="og"] .welcome-primary:hover {
   min-height: var(--cm-control-touch);
   font-size: var(--cm-text-base);
 }
+} /* @layer features */
 /* Attach's file input lies over the whole row (see index.html), so the wrapper is the row. */
 .mobile-more-sheet .mobile-more-attach {
   display: flex;
@@ -6251,6 +6279,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-color: var(--accent);
 }
 
+@layer features {
 .btn-icon-only {
   display: flex;
   align-items: center;
@@ -6282,6 +6311,7 @@ html[data-skin="og"] .welcome-primary:hover {
   position: relative;
   width: clamp(170px, 18vw, 280px);
 }
+} /* @layer features */
 
 .case-combobox-input {
   width: 100%;
@@ -6690,6 +6720,7 @@ html[data-skin="og"] .welcome-primary:hover {
   }
 }
 
+@layer features {
 .tab-count-btn {
   display: flex;
   align-items: center;
@@ -6735,6 +6766,7 @@ html[data-skin="og"] .welcome-primary:hover {
   -webkit-appearance: none;
   margin: 0;
 }
+} /* @layer features */
 
 .tab-count-input:focus {
   outline: none;
@@ -6753,6 +6785,7 @@ html[data-skin="og"] .welcome-primary:hover {
   outline: none;
 }
 
+@layer features {
 .toolbar-input.hidden {
   display: none;
 }
@@ -6792,6 +6825,7 @@ html[data-skin="og"] .welcome-primary:hover {
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+} /* @layer features */
 
 .form-row input[type="text"],
 .form-row input[type="number"],
@@ -6996,6 +7030,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-color: var(--accent);
 }
 
+@layer features {
 .swatch-inner {
   display: block;
   width: 100%;
@@ -7036,6 +7071,7 @@ html[data-skin="og"] .welcome-primary:hover {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
+} /* @layer features */
 
 /* Custom Model Endpoint Profiles' "which model" picker: same bounded-height +
    scrollable-body shape as the large dialogs, scoped by id rather than added to
@@ -7338,6 +7374,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Fix Plan Modal */
+@layer features {
 .fix-plan-modal {
   max-width: 600px;
   width: 95%;
@@ -7392,6 +7429,7 @@ html[data-skin="og"] .welcome-primary:hover {
 #summary-tab .run-summary-filters {
   flex-shrink: 0;
 }
+} /* @layer features */
 
 #summary-tab .run-summary-timeline {
   flex: 1;
@@ -7403,6 +7441,7 @@ html[data-skin="og"] .welcome-primary:hover {
   flex-shrink: 0;
 }
 
+@layer features {
 .run-summary-filters {
   display: flex;
   gap: 0.375rem;
@@ -7432,6 +7471,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-color: var(--accent);
   color: var(--bg);
 }
+} /* @layer features */
 
 .run-summary-timeline {
   max-height: 400px;
@@ -8094,6 +8134,7 @@ kbd {
 }
 
 /* Command palette (COD-153) */
+@layer features {
 .command-palette-modal {
   align-items: flex-start;
   padding-top: min(16vh, 120px);
@@ -8126,6 +8167,7 @@ kbd {
   font-size: 1rem;
   text-align: center;
 }
+} /* @layer features */
 
 .command-palette-search {
   min-width: 0;
@@ -8155,6 +8197,7 @@ kbd {
   font-size: 0.68rem;
 }
 
+@layer features {
 .command-palette-label {
   padding: 0.55rem 0.8rem 0.25rem;
   color: var(--text-muted);
@@ -8194,6 +8237,7 @@ kbd {
   background: rgba(59, 130, 246, 0.14);
   border-color: rgba(59, 130, 246, 0.28);
 }
+} /* @layer features */
 
 @layer features {
 .command-palette-icon {
@@ -8322,6 +8366,7 @@ kbd {
   outline: none;
 }
 
+@layer features {
 .shortcut-capture-btn,
 .shortcut-reset-btn {
   padding: 0.3rem 0.6rem;
@@ -8349,6 +8394,7 @@ kbd {
   accent-color: var(--accent);
   cursor: pointer;
 }
+} /* @layer features */
 
 /* Shortcut overlay modal (registry-driven; opened with Ctrl+? / Alt+?) */
 .shortcut-overlay-modal .cm-dialog {
@@ -8712,6 +8758,7 @@ kbd {
   position: relative;
 }
 
+@layer features {
 .stats-chart .bar:hover {
   opacity: 0.8;
 }
@@ -8744,6 +8791,7 @@ kbd {
   padding: 0 4px;
   margin-top: 0.35rem;
 }
+} /* @layer features */
 
 .stats-chart-days span {
   flex: 1;
@@ -8752,6 +8800,7 @@ kbd {
   color: var(--text-muted);
 }
 
+@layer features {
 .stats-table-container {
   max-height: 200px;
   overflow-y: auto;
@@ -8784,6 +8833,7 @@ kbd {
 .stats-table-row:last-child {
   border-bottom: none;
 }
+} /* @layer features */
 
 @layer features {
 .stats-table-row .cell {
@@ -8994,6 +9044,7 @@ kbd {
   border-color: var(--text-muted, var(--border));
 }
 
+@layer features {
 .toast-success { border-color: rgba(34, 197, 94, 0.4); }
 .toast-error { border-color: rgba(239, 68, 68, 0.4); }
 .toast-warning { border-color: rgba(234, 179, 8, 0.4); }
@@ -9042,6 +9093,7 @@ kbd {
   transform: translateY(-6px) scale(0.985);
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+} /* @layer features */
 
 .security-notice.show {
   opacity: 1;
@@ -9544,6 +9596,7 @@ kbd {
 }
 
 /* Status dot instead of text label */
+@layer features {
 .subagent-dropdown-status {
   width: 6px;
   height: 6px;
@@ -9573,6 +9626,7 @@ kbd {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+} /* @layer features */
 
 .subagent-dropdown-close {
   font-size: 0.9rem;
@@ -9583,6 +9637,7 @@ kbd {
   transition: opacity 0.1s, color 0.1s;
 }
 
+@layer features {
 .task-empty {
   padding: 1rem;
   text-align: center;
@@ -9607,6 +9662,7 @@ kbd {
   margin-left: 0;
   padding-left: 0;
 }
+} /* @layer features */
 
 @layer features {
 .task-item {
@@ -10016,6 +10072,7 @@ kbd {
   min-height: 300px;
 }
 
+@layer features {
 .subagents-panel.detached .subagents-panel-header {
   cursor: move;
   background: linear-gradient(180deg, var(--bg-hover) 0%, var(--bg-card) 100%);
@@ -10050,6 +10107,7 @@ kbd {
   border-right: 2px solid var(--text-muted);
   border-bottom: 2px solid var(--text-muted);
 }
+} /* @layer features */
 
 /* Responsive: full width on small screens */
 @media (max-width: 600px) {
@@ -10289,6 +10347,7 @@ kbd {
 }
 
 /* Model badges */
+@layer features {
 .subagent-model-badge {
   font-size: 0.55rem;
   padding: 0.1rem 0.35rem;
@@ -10312,6 +10371,7 @@ kbd {
   background: #c084fc;
   color: #3b0764;
 }
+} /* @layer features */
 
 /* Hook events */
 .subagent-activity.progress.hook .icon {
@@ -10339,6 +10399,7 @@ kbd {
   color: var(--red);
 }
 
+@layer features {
 .activity-line.result-line .tool-detail {
   color: var(--text-dim);
   font-style: italic;
@@ -10430,6 +10491,7 @@ kbd {
   gap: 0.4rem;
   flex: 1;
 }
+} /* @layer features */
 
 .subagent-window-title .icon {
   font-size: 1rem;
@@ -11006,6 +11068,7 @@ kbd {
   border-color: var(--accent);
 }
 
+@layer features {
 .file-browser-body {
   overflow-x: hidden;
   padding: 0.25rem 0;
@@ -11027,6 +11090,7 @@ kbd {
 .file-browser-body::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
 }
+} /* @layer features */
 
 @layer features {
 .file-browser-status {
@@ -11889,6 +11953,7 @@ kbd {
   min-height: 0;
 }
 
+@layer features {
 .modal-wizard .wizard-footer {
   flex-shrink: 0;
 }
@@ -11941,6 +12006,7 @@ kbd {
   font-size: 0.75rem;
   min-width: 36px;
 }
+} /* @layer features */
 
 /* Plan Generation Step */
 @layer features {
@@ -12688,6 +12754,7 @@ kbd {
   0%, 100% { opacity: 0.45; }
   50% { opacity: 1; }
 }
+@layer features {
 .readmymind-suggestion-row {
   display: flex;
   align-items: center;
@@ -12720,6 +12787,7 @@ kbd {
   border: 1px solid var(--control-border);
   border-radius: 8px;
 }
+} /* @layer features */
 .readmymind-prompt-input:focus {
   outline: none;
   border-color: var(--accent);
@@ -13483,6 +13551,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .ultracode-window-actions button:hover {
   color: var(--text);
 }
+@layer features {
 .ultracode-window-body {
   flex: 1;
   overflow-y: auto;
@@ -13504,6 +13573,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   font-family: var(--font-mono);
   margin-bottom: 0.4rem;
 }
+} /* @layer features */
 
 /* Ultracode connector line — the session-tab accent blue (dashed to stay distinct
    from the solid subagent lines, per the same-blue-as-the-tab request). */
@@ -13932,6 +14002,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 
 /* Toggle button — pinned to the wrapper's top-right, NOT affected by <pre>'s
    horizontal scroll since it lives outside that scrolling container. */
+@layer features {
 .rv-wrap-toggle {
   position: absolute;
   top: 6px;
@@ -13969,6 +14040,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .rv-diagram-wrap.rv-wrap-nowrap .rv-wrap-toggle::before {
   content: '⤢';
 }
+} /* @layer features */
 
 /* ── Code block one-click copy ──────────────────────────────────────────────
    Every fenced code block is wrapped in .rv-code-wrap with an action toolbar
@@ -14171,6 +14243,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   margin: 1.5em 0;
 }
 
+@layer features {
 .response-viewer-body {
   flex: 1;
   overflow-y: auto;
@@ -14217,6 +14290,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .response-viewer-backdrop.visible {
   display: block;
 }
+} /* @layer features */
 
 /* ═══════════════════════════════════════════════════════════════
    CJK IME Input
@@ -14542,6 +14616,7 @@ body.touch-device.cjk-input-visible .main {
   min-height: var(--touch-target-min);
 }
 
+@layer features {
 .prompt-composer-terminal {
   flex: 1 0 100%;
   padding: 8px 12px;
@@ -14569,6 +14644,7 @@ body.touch-device.cjk-input-visible .main {
   flex: 1 1 auto;
   min-width: 0;
 }
+} /* @layer features */
 
 @layer features {
 .path-input-browse {
@@ -15809,6 +15885,7 @@ body.touch-device.cjk-input-visible .main {
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--btn-radius);
 }
+@layer features {
 .cron-switch-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
 .cron-switch-label { font-size: 0.75rem; color: var(--text); text-transform: none; letter-spacing: 0; margin: 0; }
 .cron-switch-desc { font-size: 0.62rem; color: var(--text-muted); line-height: 1.35; }
@@ -15825,6 +15902,7 @@ body.touch-device.cjk-input-visible .main {
   border-radius: 999px;
   transition: background var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
 }
+} /* @layer features */
 .cron-weekdays label:hover { border-color: var(--accent); color: var(--text); }
 .cron-weekdays label input { position: absolute; opacity: 0; width: 0; height: 0; }
 .cron-weekdays label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -16709,6 +16787,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   outline-offset: -2px;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-body {
   display: grid;
   grid-template-columns: 176px minmax(0, 1fr);
@@ -16739,6 +16818,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   margin-bottom: 10px;
   flex-shrink: 0;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-search svg {
   position: absolute;
@@ -16810,6 +16890,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--accent);
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-rail-item.active::before {
   content: '';
   position: absolute;
@@ -16842,6 +16923,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section {
   padding-top: 13px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section + .set-section {
   border-top: 1px solid var(--border);
@@ -17117,6 +17199,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   display: none !important;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-note,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-notes,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-progress {
@@ -17162,6 +17245,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   user-select: none;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-chip input {
   position: absolute;
@@ -17345,6 +17429,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   flex-shrink: 0;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) span.set-preview-ico {
   font-size: 9px;
   line-height: 1;
@@ -17380,6 +17465,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   align-items: flex-end;
   gap: 4px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-panel,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-float,
@@ -17409,6 +17495,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   color: var(--text-muted);
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-tray {
   display: flex;
   align-items: center;
@@ -17445,6 +17532,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 5px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-modelcard {
   display: flex;
@@ -17553,6 +17641,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 /* ── task-routing 2x2 ─────────────────────────────────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-minigrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -17579,6 +17668,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   min-width: 0;
   width: 128px;
 }
+} /* @layer features */
 
 /* Search hides non-matching units; everything stays mounted underneath.
    A hide utility on arbitrary rows, chips and sections whose own display rules
@@ -17726,6 +17816,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
    and `details.advanced-options` has its own display. */
 /* Run-menu notice: why a container case is offering no agent modes. Lives at the
    top of the menu so the reason is where the missing entries would have been. */
+@layer features {
 .run-mode-notice {
   padding: 8px 12px;
   margin: 0 0 4px;
@@ -17754,6 +17845,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   cursor: pointer;
   text-decoration: underline;
 }
+} /* @layer features */
 
 #createCaseModal .set-doc .form-row {
   margin: 0 0 3px;
@@ -17939,6 +18031,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   height: 19px;
 }
 
+@layer features {
 #createCaseModal .set-rail-item.active::before {
   top: 9px;
   bottom: 9px;
@@ -17957,6 +18050,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 #createCaseModal .set-section {
   padding-top: 18px;
 }
+} /* @layer features */
 
 #createCaseModal .set-section-head svg {
   padding: 6px;
@@ -18061,6 +18155,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   height: 19px;
 }
 
+@layer features {
 #sessionOptionsModal .set-rail-item.active::before {
   top: 9px;
   bottom: 9px;
@@ -18091,6 +18186,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 #sessionOptionsModal .set-section {
   padding-top: 18px;
 }
+} /* @layer features */
 
 #sessionOptionsModal .set-section-head svg {
   padding: 6px;
@@ -18175,6 +18271,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.19), rgba(var(--accent-rgb), 0.08));
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-callout-ico {
   display: grid;
   place-items: center;
@@ -18210,6 +18307,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-callout-switch {
   margin-top: 3px;
 }
+} /* @layer features */
 
 /* Armed: the pause is scheduled, so the card states the time it will resume. */
 #sessionOptionsModal .set-callout .auto-resume-status {
@@ -19545,6 +19643,7 @@ body.tile-grid-resizing--row * {
 
 /* The shape: the grid's own layout for that count, as outlined cells; the
    checked count's cells are filled with the accent. */
+@layer features {
 .tile-count-glyph {
   flex: 0 0 auto;
   width: 30px;
@@ -19597,6 +19696,7 @@ body.tile-grid-resizing--row * {
   transform-origin: top right;
   animation: tile-hint-in 120ms ease-out both;
 }
+} /* @layer features */
 
 .tile-hint[hidden],
 .tile-hint [hidden] {
@@ -19610,6 +19710,7 @@ body.tile-grid-resizing--row * {
   }
 }
 
+@layer features {
 .tile-hint-title {
   font-weight: 600;
   margin-bottom: 2px;
@@ -19642,6 +19743,7 @@ body.tile-grid-resizing--row * {
   fill: var(--accent, #4a9eff);
   stroke: none;
 }
+} /* @layer features */
 
 @media (hover: none) {
   .tile-hint {
@@ -20292,6 +20394,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 
 /* XLSX preview in the file-preview overlay (spreadsheet-preview.js). Read-only; cells are
    absolutely positioned inside a virtualized grid, so only the visible tile is in the DOM. */
+@layer features {
 .spreadsheet-preview-shell {
   display: flex;
   flex-direction: column;
@@ -20330,6 +20433,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
   border-color: var(--border);
   background: var(--bg-secondary);
 }
+} /* @layer features */
 
 @layer features {
 .spreadsheet-preview-notice {
@@ -21006,6 +21110,7 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
    the case's colour from the session palette. Tabs inside keep their own
    markup; only the `-<case>` part of a generated name (.tab-name-case) is
    hidden, and only here. */
+@layer features {
 .session-tabs.tabs-clusters .tab-name-case {
   display: none;
 }
@@ -21040,6 +21145,7 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
   border-radius: 2px;
   background: var(--cluster-color, var(--text-muted));
 }
+} /* @layer features */
 
 /* Header strip: each cluster is an inline box that wraps inside itself when a
    case has more tabs than fit on a line. Both row gaps open up to
@@ -21269,6 +21375,7 @@ html[data-header-stats='compact'] .header-system-stats {
   gap: 13px;
 }
 
+@layer features {
 html[data-header-stats='compact'] .header-system-stats > .connection-indicator {
   font-size: inherit;
   color: var(--text);
@@ -21310,6 +21417,7 @@ html[data-header-stats='compact'] .header-plan-usage .pu-val {
 html[data-header-stats='compact'] .header-system-stats .stat-value:not(.high) {
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 html[data-header-stats='compact'] .header-plan-usage {
@@ -21402,6 +21510,7 @@ html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .
 /* The tile label and value: the stat items already carry a label and a value,
    the connection indicator gets its own pair (its text line keeps the classic
    wording, queued bytes included, and stays the accessible name via title). */
+@layer features {
 html[data-header-stats='tiles'] .header-system-stats .stat-label,
 html[data-header-stats='tiles'] .connection-tile-label,
 html[data-header-stats='tiles'] .header-plan-usage .pu-label {
@@ -21443,6 +21552,7 @@ html[data-header-stats='tiles'] .connection-tile-value {
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator {
   padding: 0;
 }
+} /* @layer features */
 
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .connection-dot,
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .connection-text {
@@ -21494,6 +21604,7 @@ html[data-header-stats='tiles'] .header-plan-usage {
   border: 0;
 }
 
+@layer features {
 html[data-header-stats='tiles'] .header-plan-usage .pu-row {
   align-items: center;
   gap: 6px;
@@ -21535,6 +21646,7 @@ html[data-header-stats='compact'] .header-right > .btn-icon-header {
   border: 1px solid var(--control-border);
   color: var(--text-dim);
 }
+} /* @layer features */
 
 html[data-header-stats='tiles'] .header-right > .btn-icon-header {
   width: 36px;
