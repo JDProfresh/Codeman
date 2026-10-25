@@ -276,8 +276,10 @@ describe('what colour the status dot ends up', () => {
       if (!rule.selector.includes('.tab-status')) return;
       const parents: string[] = [];
       let insideAtRule = false;
+      let layered = false;
       for (let p = rule.parent; p && p.type !== 'root'; p = p.parent) {
         if (p.type === 'rule') parents.unshift(p.selector);
+        else if (p.type === 'atrule' && (p as postcss.AtRule).name === 'layer') layered = true;
         else insideAtRule = true;
       }
       if (insideAtRule && !flattenMedia) return;
@@ -286,7 +288,11 @@ describe('what colour the status dot ends up', () => {
         if (node.type === 'decl') decls.push(`${node.prop}: ${node.value}${node.important ? ' !important' : ''};`);
       });
       if (decls.length === 0) return;
-      const selectors = rule.selectors.map((sel) => (parents.length ? `${parents.join(' ')} ${sel}` : sel));
+      // JSDOM has no cascade layers. A layered rule loses to every unlayered one,
+      // so give each unlayered selector the same id-weight boost: it then beats
+      // every layered rule, and order and weight inside each group stay as they are.
+      const boost = layered ? '' : ':not(#__unlayered__)';
+      const selectors = rule.selectors.map((sel) => (parents.length ? `${parents.join(' ')} ${sel}` : sel) + boost);
       out.push(`${selectors.join(',')} { ${decls.join(' ')} }`);
     });
     return out;

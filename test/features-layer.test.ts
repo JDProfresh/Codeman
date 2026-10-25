@@ -31,10 +31,49 @@ styles.walkAtRules('layer', (a) => {
 });
 
 describe('@layer features', () => {
-  it('holds the first tranche of feature rules', () => {
-    const rules = blocks.reduce((n, b) => n + b.nodes!.filter((x) => x.type === 'rule').length, 0);
-    expect(blocks.length).toBeGreaterThanOrEqual(60);
-    expect(rules).toBeGreaterThanOrEqual(900);
+  it('holds two tranches of feature rules', () => {
+    let rules = 0;
+    for (const b of blocks) b.walkRules(() => void rules++);
+    expect(blocks.length).toBeGreaterThanOrEqual(110);
+    expect(rules).toBeGreaterThanOrEqual(1350);
+  });
+
+  it('a modifier never sits in the layer while its unlayered base sets the same property', () => {
+    // The first tranche layered .home-sessions-row--working (and its siblings) while
+    // the base .home-sessions-row stayed unlayered and set border-color too, so a
+    // working row lost its green border. A BEM modifier's base rule always reaches
+    // the modifier's element: check every pair.
+    const layered = new Map<string, Set<string>>();
+    const unlayered = new Map<string, Set<string>>();
+    const note = (map: Map<string, Set<string>>, cls: string, prop: string) => {
+      if (!map.has(cls)) map.set(cls, new Set());
+      map.get(cls)!.add(prop);
+    };
+    styles.walkRules((r) => {
+      let inLayer = false;
+      let media = false;
+      for (let p = r.parent; p && p.type !== 'root'; p = p.parent) {
+        if (p.type === 'atrule' && (p as postcss.AtRule).name === 'layer') inLayer = true;
+        if (p.type === 'atrule' && (p as postcss.AtRule).name === 'media') media = true;
+      }
+      if (media) return;
+      for (const sel of r.selectors) {
+        const m = /^\.([\w-]+)$/.exec(sel.trim());
+        if (!m) continue;
+        r.walkDecls((d) => note(inLayer ? layered : unlayered, m[1], d.prop));
+      }
+    });
+    const bad: string[] = [];
+    for (const [cls, props] of layered) {
+      if (!cls.includes('--')) continue;
+      const base = unlayered.get(cls.split('--')[0]);
+      // compare property families: `border` on the base covers `border-color` on the modifier
+      const fam = (p: string) => p.split('-')[0];
+      for (const p of props)
+        if ([...(base ?? [])].some((q) => fam(q) === fam(p)))
+          bad.push(`.${cls} { ${p} } is layered, .${cls.split('--')[0]} is not`);
+    }
+    expect(bad).toEqual([]);
   });
 
   it('never carries !important, keyframes or global selectors', () => {
@@ -51,6 +90,24 @@ describe('@layer features', () => {
       });
     }
     expect(bad).toEqual([]);
+  });
+
+  it('keeps bare hide utilities out of the layer', () => {
+    // `#cronModal .hidden` lands on whatever element JS hides, and must beat that
+    // element's own display rule, which a layered rule never does.
+    const bare: string[] = [];
+    for (const b of blocks)
+      b.walkRules((r) => {
+        for (const sel of r.selectors) {
+          const subject =
+            sel
+              .trim()
+              .split(/\s*[ >+~]\s*/)
+              .pop() ?? '';
+          if (/^(\.hidden|\[hidden\])$/.test(subject)) bare.push(sel);
+        }
+      });
+    expect(bare).toEqual([]);
   });
 
   it('sits in the declared layer order, and mobile.css stays unlayered', () => {

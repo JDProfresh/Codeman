@@ -444,6 +444,7 @@ body {
 /* App layout: the .app element is the .cm-shell grid (css/layout.css). */
 
 /* Compact Header */
+@layer features {
 .header {
   display: flex;
   align-items: flex-start;
@@ -504,6 +505,7 @@ body {
   /* Performance: isolate layout recalculations */
   contain: layout;
 }
+} /* @layer features */
 
 /* A wrapped strip GROWS the header instead of scrolling inside it. The old
    fixed caps (120px tall-tabs / 96px auto-wrap) were row counts in disguise:
@@ -547,6 +549,7 @@ body {
   padding-left: var(--lineage-spine-channel);
 }
 
+@layer features {
 .session-tabs::-webkit-scrollbar {
   width: 4px;
   height: 0;
@@ -581,6 +584,7 @@ html[data-tab-orientation='vertical'] .tab-rail {
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail .session-tabs {
   --lineage-vertical-gutter: 24px;
@@ -1224,6 +1228,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 
 /* ── Entrance lab (?animlab=1) ───────────────────────────────────────────── */
 
+@layer features {
 .anim-lab {
   position: fixed;
   right: 14px;
@@ -1279,6 +1284,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   font-size: 0.66rem;
   cursor: pointer;
 }
+} /* @layer features */
 
 .anim-lab-themes button:hover { background: rgba(34, 197, 94, 0.16); color: var(--text); }
 
@@ -1839,6 +1845,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
   }
 }
 
+@layer features {
 .session-tab .tab-status {
   width: 6px;
   height: 6px;
@@ -1875,6 +1882,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
 
 .session-tab .tab-status.error { background: var(--red); }
 .session-tab .tab-status.ended { background: var(--text-muted); opacity: 0.5; }
+} /* @layer features */
 
 /* Session color coding - left border indicator (the active tab keeps its own border) */
 .session-tab:where(:not(.active))[data-color="red"] { border-left: 3px solid var(--session-red); }
@@ -3180,6 +3188,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   text-align: right;
 }
 
+@layer features {
 .respawn-timer-bar {
   width: 30px;
   height: 2px;
@@ -3225,6 +3234,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   color: var(--text-muted);
   margin-right: 0.3rem;
 }
+} /* @layer features */
 
 .respawn-action-entry .action-type {
   color: var(--green);
@@ -3506,6 +3516,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 
 /* Circuit Breaker Badge */
+@layer features {
 .ralph-circuit-breaker {
   display: flex;
   align-items: center;
@@ -3549,6 +3560,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+} /* @layer features */
 
 @keyframes circuit-breaker-pulse {
   0%, 100% { opacity: 1; }
@@ -3556,6 +3568,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 
 /* RALPH_STATUS Block Display */
+@layer features {
 .ralph-status-block {
   background: var(--bg-input);
   border-radius: 4px;
@@ -3607,6 +3620,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   align-items: center;
   gap: 0.25rem;
 }
+} /* @layer features */
 
 @layer features {
 .ralph-status-block-recommendation {
@@ -3821,6 +3835,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 } /* @layer features */
 
+@layer features {
 .ralph-task-card.task-pending {
   border-left-color: var(--text-muted);
 }
@@ -3858,12 +3873,14 @@ html[data-tab-logos='off'] .home-sessions-harness {
 .ralph-task-card.task-completed .ralph-task-icon {
   color: var(--green);
 }
+} /* @layer features */
 
 @keyframes ralph-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
+@layer features {
 .ralph-task-content {
   flex: 1;
   font-size: 0.7rem;
@@ -3969,6 +3986,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   z-index: 1000;
   padding: 4px;
 }
+} /* @layer features */
 
 .ralph-dropdown.show {
   display: block;
@@ -4711,6 +4729,7 @@ html[data-skin="og"] .welcome-primary:hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
+@layer features {
 .search-input::placeholder {
   color: var(--text-dim);
 }
@@ -4788,12 +4807,14 @@ html[data-skin="og"] .welcome-primary:hover {
   cursor: pointer;
   max-width: 9rem;
 }
+} /* @layer features */
 
 .search-select:focus {
   outline: none;
   border-color: rgba(59, 130, 246, 0.5);
 }
 
+@layer features {
 .search-results {
   display: flex;
   flex-direction: column;
@@ -4846,6 +4867,7 @@ html[data-skin="og"] .welcome-primary:hover {
   cursor: pointer;
   transition: all var(--transition-smooth);
 }
+} /* @layer features */
 
 .search-result-card:hover,
 .search-result-card:focus-visible {
@@ -4854,6 +4876,7 @@ html[data-skin="og"] .welcome-primary:hover {
   outline: none;
 }
 
+@layer features {
 .search-result-top {
   display: flex;
   align-items: center;
@@ -4934,6 +4957,7 @@ html[data-skin="og"] .welcome-primary:hover {
   margin-top: 0.3rem;
   color: var(--text-muted);
 }
+} /* @layer features */
 
 @media (max-width: 640px) {
   .search-filter-secondary {
@@ -5250,6 +5274,7 @@ html[data-skin="og"] .welcome-primary:hover {
   }
 }
 
+@layer features {
 .history-show-more {
   width: 100%;
   padding: 0.5rem;
@@ -5322,6 +5347,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text-muted);
   font-size: 0.8rem;
 }
+} /* @layer features */
 
 .welcome-hint kbd {
   display: inline-block;
@@ -5539,6 +5565,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Claude (default) */
+@layer features {
 .cm-btn--bar:is(.btn-run, .btn-run-gear).mode-claude {
   --run-bg: linear-gradient(135deg, #1a3358 0%, #1e4fb8 50%, #2563eb 100%);
   --run-border: rgba(59, 130, 246, 0.5);
@@ -5689,6 +5716,7 @@ html[data-skin="og"] .welcome-primary:hover {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 }
+} /* @layer features */
 /* Children of a scrolling flex column must keep their natural height. Without this the ones
    that have their own `overflow` (the history list, the saved-URL list, whose min-height is 0)
    are squashed to nothing as the menu fills, instead of the menu scrolling. */
@@ -5812,6 +5840,7 @@ html[data-skin="og"] .welcome-primary:hover {
    container and lets a row size itself to its own content. A long path therefore
    scrolled sideways instead of ellipsizing, and before the menu was narrowed it
    simply pinned the menu at its max-width. */
+@layer features {
 .run-mode-history .run-mode-option {
   max-width: 100%;
   /* `.run-mode-history` is a block scroller, not a flex container, so these
@@ -5875,6 +5904,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text-muted);
   font-style: italic;
 }
+} /* @layer features */
 
 /* Shell Button - Special styling */
 .cm-btn--bar.btn-shell {
@@ -5958,6 +5988,7 @@ html[data-skin="og"] .welcome-primary:hover {
   width: 100%;
   border-radius: var(--cm-radius-md);
 }
+@layer features {
 .mobile-more-attach:active .cm-menu__item {
   background: color-mix(in srgb, var(--cm-accent) 16%, transparent);
 }
@@ -5987,6 +6018,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .case-settings-popover-mobile {
   display: none;
 }
+} /* @layer features */
 
 .case-settings-popover-mobile.hidden {
   display: none;
@@ -6047,6 +6079,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Voice preview overlay — shows interim transcription */
+@layer features {
 .voice-preview {
   position: fixed;
   bottom: 48px;
@@ -6113,6 +6146,7 @@ html[data-skin="og"] .welcome-primary:hover {
   background: #ef4444;
   animation: voice-rec-blink 1s ease-in-out infinite;
 }
+} /* @layer features */
 
 @keyframes voice-rec-blink {
   0%, 100% { opacity: 1; }
@@ -6564,6 +6598,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .case-manage-btn-delete:hover:not(:disabled) {
   background: rgba(239, 68, 68, 0.15);
   border-color: rgba(239, 68, 68, 0.3);
@@ -6642,6 +6677,7 @@ html[data-skin="og"] .welcome-primary:hover {
   overflow: hidden;
   margin: 0 0.25rem;
 }
+} /* @layer features */
 
 /* Run Shell used to be followed by a second instance stepper whose 0.25rem
    margins were the only space before the case picker (the desktop
@@ -6808,6 +6844,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-right: none;
 }
 
+@layer features {
 .input-suffix span {
   padding: 0.5rem 0.5rem;
   background: var(--bg-hover);
@@ -6851,6 +6888,7 @@ html[data-skin="og"] .welcome-primary:hover {
   padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border);
 }
+} /* @layer features */
 
 .form-section-header:first-child {
   margin-top: 0;
@@ -6876,6 +6914,7 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Toggles are the kit's .cm-switch (--sm in settings rows), css/components.css. */
 
 /* Status badge in settings */
+@layer features {
 .settings-status {
   font-size: 0.6rem;
   padding: 2px 6px;
@@ -6922,6 +6961,7 @@ html[data-skin="og"] .welcome-primary:hover {
   font-size: 0.75rem;
   color: var(--text);
 }
+} /* @layer features */
 
 .event-type-grid input[type="checkbox"] {
   justify-self: center;
@@ -7145,6 +7185,7 @@ html[data-skin="og"] .welcome-primary:hover {
   box-shadow: none;
 }
 
+@layer features {
 .mobile-case-empty {
   padding: 20px;
   text-align: center;
@@ -7194,6 +7235,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .mobile-case-item:active {
   background: rgba(255, 255, 255, 0.1);
 }
+} /* @layer features */
 
 .mobile-case-item.selected {
   background: rgba(34, 197, 94, 0.15);
@@ -7399,6 +7441,7 @@ html[data-skin="og"] .welcome-primary:hover {
   scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
+@layer features {
 .run-summary-timeline::-webkit-scrollbar {
   width: 4px;
 }
@@ -7448,6 +7491,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .timeline-event.event-info {
   border-left-color: var(--accent);
 }
+} /* @layer features */
 
 @layer features {
 .event-icon {
@@ -7804,6 +7848,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text-dim);
   margin-bottom: 0.5rem;
 }
+@layer features {
 .wt-btn {
   font: inherit;
   font-size: 0.8rem;
@@ -7895,6 +7940,7 @@ html[data-skin="og"] .welcome-primary:hover {
   font-size: 0.8rem;
   color: var(--text-dim);
 }
+} /* @layer features */
 
 .checkbox-inline input[type="checkbox"] {
   accent-color: var(--accent);
@@ -7915,6 +7961,7 @@ html[data-skin="og"] .welcome-primary:hover {
   font-size: 0.75rem;
 }
 
+@layer features {
 .input-suffix-sm span {
   padding: 0.35rem 0.4rem;
   font-size: 0.7rem;
@@ -7955,6 +8002,7 @@ html[data-skin="og"] .welcome-primary:hover {
   align-items: center;
   gap: 0.35rem;
 }
+} /* @layer features */
 
 .duration-custom-input {
   display: none;
@@ -7968,6 +8016,7 @@ html[data-skin="og"] .welcome-primary:hover {
   width: 60px;
 }
 
+@layer features {
 .auto-resume-status {
   display: none;
   font-size: 0.7rem;
@@ -8037,6 +8086,7 @@ kbd {
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
 
 .away-digest-modal .cm-dialog__body {
   overflow-y: auto;
@@ -8217,6 +8267,7 @@ kbd {
   flex: 0 0 auto;
 }
 
+@layer features {
 .session-manager-list {
   display: flex;
   flex-direction: column;
@@ -8263,6 +8314,7 @@ kbd {
   font-size: 0.72rem;
   cursor: default;
 }
+} /* @layer features */
 
 .shortcut-binding-input:focus {
   border-color: var(--accent);
@@ -8488,6 +8540,7 @@ kbd {
   letter-spacing: 0.5px;
 }
 
+@layer features {
 .away-digest-section-title span {
   color: var(--text-muted);
   font-family: 'SF Mono', Monaco, monospace;
@@ -8581,6 +8634,7 @@ kbd {
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
 
 .token-stats-modal .cm-dialog__body {
   overflow-y: auto;
@@ -9625,6 +9679,7 @@ kbd {
   border-radius: 4px;
 }
 } /* @layer features */
+@layer features {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
 }
@@ -9728,12 +9783,14 @@ kbd {
   background: rgba(239, 68, 68, 0.2);
   color: var(--red, #ef4444);
 }
+} /* @layer features */
 @keyframes pulse-working {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
 
 /* Monitor model badges */
+@layer features {
 .monitor-model-badge {
   font-size: 0.55rem;
   padding: 1px 4px;
@@ -9775,6 +9832,7 @@ kbd {
 .monitor-panel.open {
   transform: translateY(0);
 }
+} /* @layer features */
 
 /* Detached floating state */
 .monitor-panel.detached {
@@ -10422,6 +10480,7 @@ kbd {
   color: var(--text);
 }
 
+@layer features {
 .subagent-window-body {
   flex: 1;
   overflow-y: auto;
@@ -10476,6 +10535,7 @@ kbd {
   flex: 0 0 auto;
   white-space: nowrap;
 }
+} /* @layer features */
 
 .subagent-window-body .activity-line .tool-detail {
   color: #d0d0d0;
@@ -10826,6 +10886,7 @@ kbd {
   font-size: 1rem;
 }
 
+@layer features {
 .project-insight-command .cmd {
   flex: 1;
   white-space: nowrap;
@@ -10868,6 +10929,7 @@ kbd {
   border-radius: 3px;
   margin-left: 0.3rem;
 }
+} /* @layer features */
 
 .project-insight-status.running {
   background: var(--success);
@@ -11191,6 +11253,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .folder-grid-tile:hover,
 .folder-grid-tile.current {
   border-color: var(--accent, #4ea1ff);
@@ -11272,6 +11335,7 @@ kbd {
   /* The title yields on a phone, not the buttons. */
   flex-shrink: 0;
 }
+} /* @layer features */
 
 .file-preview-actions .file-preview-pill {
   font-size: 0.7rem;
@@ -11563,6 +11627,7 @@ kbd {
   color: var(--text);
 }
 
+@layer features {
 .log-viewer-window-body {
   flex: 1;
   overflow-y: auto;
@@ -11629,6 +11694,7 @@ kbd {
   flex: 1;
   min-width: 0;
 }
+} /* @layer features */
 
 .image-popup-title .icon {
   font-size: 1rem;
@@ -11980,6 +12046,7 @@ kbd {
   to { transform: rotate(360deg); }
 }
 
+@layer features {
 .plan-loading-text {
   display: flex;
   flex-direction: column;
@@ -12019,6 +12086,7 @@ kbd {
   font-size: 0.8rem;
   color: var(--text-dim);
 }
+} /* @layer features */
 
 .plan-option-group select {
   padding: 0.3rem 0.5rem;
@@ -12182,11 +12250,13 @@ kbd {
   gap: 0.5rem;
   justify-content: center;
 }
+} /* @layer features */
 
 .plan-cancel-btn {
   color: var(--red);
 }
 
+@layer features {
 /* Plan Stopped State */
 .plan-stopped-indicator {
   display: flex;
@@ -12245,6 +12315,7 @@ kbd {
   }
 }
 
+@layer features {
 .plan-subagent-header {
   display: flex;
   align-items: center;
@@ -12303,6 +12374,7 @@ kbd {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+} /* @layer features */
 
 @layer features {
 .plan-subagent-status.completed .plan-subagent-status-text {
@@ -12410,6 +12482,7 @@ kbd {
 }
 
 /* Iteration Presets */
+@layer features {
 .iteration-presets {
   display: flex;
   gap: 0.35rem;
@@ -12454,6 +12527,7 @@ kbd {
 .ralph-preview-section {
   margin-bottom: 1rem;
 }
+} /* @layer features */
 
 .ralph-preview-section > label {
   display: block;
@@ -12464,6 +12538,7 @@ kbd {
   letter-spacing: 0.03em;
 }
 
+@layer features {
 .ralph-prompt-preview {
   background: var(--bg-dark);
   border: 1px solid var(--border);
@@ -12530,6 +12605,7 @@ kbd {
 .advanced-options summary:hover {
   color: var(--text);
 }
+} /* @layer features */
 
 .advanced-options[open] summary {
   margin-bottom: 0.75rem;
@@ -12648,6 +12724,7 @@ kbd {
   outline: none;
   border-color: var(--accent);
 }
+@layer features {
 .readmymind-why {
   margin-top: 8px;
   font-size: 12px;
@@ -12710,6 +12787,7 @@ kbd {
   border: 1px dashed var(--control-border);
   border-radius: 8px;
 }
+} /* @layer features */
 .readmymind-steer-input:focus {
   outline: none;
   border-style: solid;
@@ -13014,6 +13092,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   white-space: nowrap;
 }
 } /* @layer features */
+@layer features {
 .approval-btn:hover {
   border-color: var(--accent);
 }
@@ -13057,6 +13136,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .approval-link:hover {
   color: var(--text);
 }
+} /* @layer features */
 
 /* "Attachments" header button — opt-in (App Settings → Display), hidden by
    default. Same pattern as the response viewer: a base inline-flex !important so
@@ -13637,6 +13717,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 } /* @layer features */
 
 /* Distinct accent per role so threads are scannable at a glance */
+@layer features {
 .rv-message:has(.rv-role-user),
 .rv-message.rv-msg-user {
   border-left-color: var(--accent);
@@ -13683,6 +13764,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   border-top-right-radius: 0;
   padding-top: 0;
 }
+} /* @layer features */
 
 .rv-message.rv-msg-cont > .rv-text {
   border-top: 1px solid var(--border);
@@ -13927,6 +14009,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   right: auto;
 }
 
+@layer features {
 .rv-copy-btn {
   width: 28px;
   height: 24px;
@@ -13955,6 +14038,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .rv-copy-btn.rv-copied::before { content: '\2713'; }  /* ✓ */
 .rv-copy-btn.rv-copy-failed { color: var(--red); border-color: var(--red); }
 .rv-copy-btn.rv-copy-failed::before { content: '\2715'; } /* ✕ */
+} /* @layer features */
 
 .rv-text ul, .rv-text ol,
 .response-viewer-body > ul, .response-viewer-body > ol {
@@ -14375,6 +14459,7 @@ body.touch-device.cjk-input-visible .main {
   border-color: var(--accent);
 }
 
+@layer features {
 .paste-actions {
   display: flex;
   justify-content: flex-end;
@@ -14413,6 +14498,7 @@ body.touch-device.cjk-input-visible .main {
   color: #fff;
   font-weight: 600;
 }
+} /* @layer features */
 
 .prompt-composer-overlay {
   overflow-y: auto;
@@ -14956,6 +15042,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 @media (max-width: 600px) {
   .path-picker-overlay {
     align-items: flex-end;
@@ -14997,6 +15084,7 @@ body.touch-device.cjk-input-visible .main {
     padding: 8px;
   }
 }
+} /* @layer features */
 
 /* ═══════════════════════════════════════════════════════════════
    Orchestrator Panel
@@ -15250,6 +15338,7 @@ body.touch-device.cjk-input-visible .main {
   outline-offset: -2px;
   position: relative;
 }
+@layer features {
 #terminalContainer.drag-active::after {
   content: 'Drop image here';
   position: absolute;
@@ -15391,6 +15480,7 @@ body.touch-device.cjk-input-visible .main {
   gap: 6px;
   margin-top: 7px;
 }
+} /* @layer features */
 
 .attachment-actions button,
 .attachment-actions a {
@@ -15435,6 +15525,7 @@ body.touch-device.cjk-input-visible .main {
 
 /* Positioning context so the absolutely-positioned badge anchors to the icon,
    not the header bar (mirrors .btn-notifications). */
+@layer features {
 .btn-attachments-history {
   position: relative;
 }
@@ -15532,6 +15623,7 @@ body.touch-device.cjk-input-visible .main {
   font-size: 0.9rem;
   font-weight: 600;
 }
+} /* @layer features */
 
 .attachment-history-empty code {
   max-width: 100%;
@@ -15544,6 +15636,7 @@ body.touch-device.cjk-input-visible .main {
   font-size: 0.76rem;
 }
 
+@layer features {
 .attachment-history-item {
   display: grid;
   grid-template-columns: 112px minmax(0, 1fr);
@@ -15623,6 +15716,7 @@ body.touch-device.cjk-input-visible .main {
   gap: 5px;
   margin-top: 7px;
 }
+} /* @layer features */
 
 .attachment-history-actions button {
   padding: 3px 7px;
@@ -15651,6 +15745,7 @@ body.touch-device.cjk-input-visible .main {
    `.hidden`-toggled create form + conditional schedule/prompt rows never
    actually collapsed (all fields showed at once). Scope one here. */
 #cronModal .hidden { display: none; }
+@layer features {
 .cron-modal-hint { margin-bottom: 1rem; }
 .cron-toolbar {
   display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
@@ -15669,6 +15764,7 @@ body.touch-device.cjk-input-visible .main {
   transition: background var(--transition-smooth), border-color var(--transition-smooth);
 }
 .cron-job-row:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); }
+} /* @layer features */
 @layer features {
 .cron-job-main { min-width: 0; flex: 1; }
 .cron-job-name { font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
@@ -16133,6 +16229,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   }
 }
 
+@layer features {
 .home-sessions-header {
   display: flex;
   align-items: center;
@@ -16204,6 +16301,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   cursor: pointer;
   transition: background var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
 }
+} /* @layer features */
 
 .home-sessions-row:hover {
   background: var(--bg-hover);
@@ -16449,6 +16547,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   color: var(--accent);
 }
+} /* @layer features */
 
 /* Row accents: same language as the session tabs and the phone overview — red
    means a question is pending, yellow means it wants input, green means work is
@@ -16467,7 +16566,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
 .home-sessions-row--working {
   border-color: color-mix(in srgb, var(--green) 35%, transparent);
 }
-} /* @layer features */
 
 @keyframes home-sessions-blink-red {
   0%, 100% { border-color: color-mix(in srgb, var(--red) 50%, transparent); }
@@ -19016,6 +19114,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
    section is a SIBLING of .terminal-wrap; .main.tiles-active swaps one for the
    other (the main terminal is parked while the grid is open). Columns and rows
    are set inline by _applyTileLayout() from the tile count. */
+@layer features {
 .tile-grid {
   display: none;
 }
@@ -19072,6 +19171,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   width: 100%;
   height: 100%;
 }
+} /* @layer features */
 
 /* As .terminal-container's: xterm paints its viewport black, and the rows
    rarely fill the tile exactly, so without this every tile had a black band
@@ -19204,6 +19304,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 
 /* Column and row dividers: their own grid tracks, dragged to trade size
    between neighbours. The line only shows on hover or while dragging. */
+@layer features {
 .tile-divider {
   position: relative;
   z-index: 1;
@@ -19238,6 +19339,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 .tile-divider.dragging::after {
   background: var(--accent, #4a9eff);
 }
+} /* @layer features */
 
 /* While a divider drags: the resize cursor everywhere and no text selection. */
 body.tile-grid-resizing,
@@ -19256,6 +19358,7 @@ body.tile-grid-resizing--row * {
 }
 
 /* An empty cell of a grid that is not full: a drop target for a tab. */
+@layer features {
 .tile-slot {
   display: flex;
   align-items: center;
@@ -19331,6 +19434,7 @@ body.tile-grid-resizing--row * {
   opacity: 0;
   animation: tile-needs-pulse 1.6s ease-in-out infinite;
 }
+} /* @layer features */
 
 @keyframes tile-needs-pulse {
   0%,
@@ -19379,6 +19483,7 @@ body.tile-grid-resizing--row * {
   display: none;
 }
 
+@layer features {
 .tile-attach-hint {
   max-width: 80%;
   font-size: 12px;
@@ -19429,6 +19534,7 @@ body.tile-grid-resizing--row * {
   transform-origin: top right;
   animation: tile-count-menu-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+} /* @layer features */
 
 @keyframes tile-count-menu-in {
   from {
@@ -20695,6 +20801,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
   min-width: 0;
 }
 
+@layer features {
 .git-tree-dir > .git-tree-summary:hover {
   background: var(--bg-hover);
 }
@@ -20785,6 +20892,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
 .tab-triage-break {
   display: none;
 }
+} /* @layer features */
 
 /* Counts describe the whole group, so they step aside while the sidebar
    filter narrows the rows under them. */
@@ -21203,6 +21311,7 @@ html[data-header-stats='compact'] .header-system-stats .stat-value:not(.high) {
   color: var(--text);
 }
 
+@layer features {
 html[data-header-stats='compact'] .header-plan-usage {
   flex-direction: row;
   gap: 13px;
@@ -21231,6 +21340,7 @@ html[data-header-stats='compact'] .header-plan-usage .pu-win {
   align-items: center;
   gap: 5px;
 }
+} /* @layer features */
 
 /* A ring: a conic fill masked down to a 2px stroke. Its colour is currentColor,
    so a plan ring takes the pu-green/-yellow/-red class it shares with its

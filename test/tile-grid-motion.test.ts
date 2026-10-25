@@ -45,7 +45,8 @@ const css = readFileSync(resolve(import.meta.dirname, '../src/web/public/styles.
 
 const tiles = () => section.children.filter((c) => c.classList.contains('tile'));
 const ghosts = () => main.children.filter((c) => c.classList.contains('tile-grid-ghosts'));
-const end = (el: FakeEl, animationName: string, target: FakeEl = el) => el.dispatch('animationend', { target, animationName });
+const end = (el: FakeEl, animationName: string, target: FakeEl = el) =>
+  el.dispatch('animationend', { target, animationName });
 function reducedMotion(on: boolean) {
   windowStub.matchMedia = (q: string) => ({ matches: on && q.includes('reduce'), addEventListener: vi.fn() });
 }
@@ -138,7 +139,11 @@ describe('opening', () => {
       app.openTileGrid(IDS);
       flushFrames();
       vi.advanceTimersByTime(1000);
-      return FakeTile.all.map((t) => [t.connect.mock.calls.length, t.fit.mock.calls.length, t.localFit.mock.calls.length]);
+      return FakeTile.all.map((t) => [
+        t.connect.mock.calls.length,
+        t.fit.mock.calls.length,
+        t.localFit.mock.calls.length,
+      ]);
     };
     const withMotion = counts(true);
     const without = counts(false);
@@ -293,7 +298,10 @@ describe('the CSS', () => {
       expect(body, name).not.toBe('');
       const props = [...body.matchAll(/^\s*([a-z-]+):/gm)].map((m) => m[1]);
       expect(props.length, name).toBeGreaterThan(0);
-      expect(props.filter((p) => p !== 'opacity' && p !== 'transform'), name).toEqual([]);
+      expect(
+        props.filter((p) => p !== 'opacity' && p !== 'transform'),
+        name
+      ).toEqual([]);
     }
   });
 
@@ -303,7 +311,9 @@ describe('the CSS', () => {
   });
 
   it('stays within about 150 to 300 ms: 180 ms per tile, 24 ms apart, the last of six done at 300', () => {
-    expect(css).toMatch(/\.tile\.tile--entering \{\s*animation: tile-enter 180ms [^;]+;\s*animation-delay: calc\(var\(--tile-enter-index, 0\) \* 24ms\);/);
+    expect(css).toMatch(
+      /\.tile\.tile--entering \{\s*animation: tile-enter 180ms [^;]+;\s*animation-delay: calc\(var\(--tile-enter-index, 0\) \* 24ms\);/
+    );
   });
 
   it('nothing moves under prefers-reduced-motion, and a web tab hides the copy', () => {
@@ -334,7 +344,13 @@ describe('the CSS', () => {
       rule.walkDecls((d) => {
         decls[d.prop] = d.value;
       });
-      const media = rule.parent?.type === 'atrule' ? (rule.parent as AtRule).params : '';
+      // the nearest @media (a @layer features block around the rule is not a query)
+      let media = '';
+      for (let p = rule.parent; p && p.type !== 'root'; p = p.parent)
+        if (p.type === 'atrule' && (p as AtRule).name === 'media') {
+          media = (p as AtRule).params;
+          break;
+        }
       for (const selector of rule.selectors) rules.push({ selector, media, decls });
     });
     const find = (selector: string, media = '') => rules.filter((r) => r.selector === selector && r.media === media);

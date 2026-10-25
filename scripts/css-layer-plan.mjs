@@ -33,10 +33,20 @@
  * The analysis picks candidates; `npm run css:diff -- --viewports all` (plus a
  * look at JS-built UI the samples cannot show) is still the proof.
  *
+ *  - A BEM modifier `X--y` always carries its base `.X`; two different tags never
+ *    meet; `:focus-visible` and `:not(:focus-visible)` never hold at once; a
+ *    conflict that only matters in a state X needs (:focus-visible, :hover...) is
+ *    masked when an unmoved unlayered rule written as Y plus that state outweighs X
+ *    and sets every property Y sets.
+ *
  * Usage (a server running this tree on --url, e.g. CODEMAN_INSTANCE=diffcand on 3173):
  *   node scripts/css-layer-plan.mjs --url http://127.0.0.1:3173 [--min-run 8] [--reasons] [--runtime-only] [--write]
+ *   node scripts/css-layer-plan.mjs --url ... --why '<selector text>'   follow one blocker chain
+ *   node scripts/css-layer-plan.mjs --url ... --audit | --fix-audit       re-check what is layered
  * --reasons tallies what blocks the rest; --runtime-only lists the unmapped
- * runtime classes doing it (each wants a RUNTIME_ON entry).
+ * runtime classes doing it (each wants a RUNTIME_ON entry). --fix-audit takes a
+ * failing layered rule back out (splitting its block); run it until the audit
+ * reports 0, since a rule leaving the layer can now beat others in it.
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
@@ -73,18 +83,23 @@ function fam(p) {
 }
 
 // ---- selectors ------------------------------------------------------------------
+// the last compound of a selector, as text
+const subjectText = (x) => x.text.split(/\s*[ >+~]\s*(?![^(]*\))/).pop();
 const cmp = (x, y) => x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
 function analyse(sel) {
   const out = [];
   sp((root) =>
     root.each((s) => {
       let a = 0, b = 0, c = 0;
-      s.walk((n) => {
+      // Top-level nodes only: a pseudo function's arguments are counted by recursion.
+      // (Never s.walk with `return false`: that stops the WHOLE walk, so everything
+      // after a :where/:is/:not went uncounted.)
+      s.nodes.forEach((n) => {
         if (n.type === 'id') a++;
         else if (n.type === 'class' || n.type === 'attribute') b++;
         else if (n.type === 'tag') c++;
         else if (n.type === 'pseudo') {
-          if (n.value === ':where') return false;
+          if (n.value === ':where') return;
           if ([':not', ':is', ':has'].includes(n.value)) {
             let best = [0, 0, 0];
             n.nodes.forEach((arg) => {
@@ -92,7 +107,7 @@ function analyse(sel) {
               if (r && cmp(r.spec, best) > 0) best = r.spec;
             });
             a += best[0]; b += best[1]; c += best[2];
-            return false;
+            return;
           }
           if (n.value.startsWith('::') || [':before', ':after', ':first-line', ':first-letter'].includes(n.value)) c++;
           else b++;
@@ -129,6 +144,12 @@ const atContext = (node) => {
   for (let p = node.parent; p && p.type !== 'root'; p = p.parent) if (p.type === 'atrule') m.push(`${p.name} ${p.params}`);
   return m;
 };
+// A nested rule's real selector: `&` stands for the parent, else it is a descendant.
+function resolvedSelector(r) {
+  if (r.parent?.type !== 'rule') return r.selector;
+  const parent = resolvedSelector(r.parent);
+  return r.selectors.map((c) => (c.includes('&') ? c.replace(/&/g, `:is(${parent})`) : `:is(${parent}) ${c}`)).join(', ');
+}
 function leafRules(root, file, offset) {
   const rules = [];
   let order = offset;
@@ -136,7 +157,7 @@ function leafRules(root, file, offset) {
     const c = atContext(r);
     if (c.some((x) => /^(keyframes|-webkit-keyframes|font-face)/.test(x))) return;
     const layers = c.filter((x) => x.startsWith('layer')).map((x) => x.slice(6));
-    rules.push({ r, file, order: order++, layer: layers[0] || null, sels: analyse(r.selector),
+    rules.push({ r, file, order: order++, layer: layers[0] || null, sels: analyse(resolvedSelector(r)),
       decls: r.nodes.filter((n) => n.type === 'decl'), media: c });
   });
   return rules;
@@ -217,6 +238,19 @@ function existsPw() {
 const SRC = fs.readdirSync(PUB).filter((f) => /\.(js|html)$/.test(f)).map((f) => fs.readFileSync(PUB + f, 'utf8')).join('\n');
 const CLASSED_TAGS = new Set([...SRC.matchAll(/<([a-zA-Z][\w-]*)\b[^>]*\bclass\s*=/g)].map((m) => m[1].toLowerCase()));
 for (const m of SRC.matchAll(/createElement(?:NS)?\(\s*(?:[^,)]*,\s*)?['"]([\w-]+)['"]/g)) CLASSED_TAGS.add(m[1].toLowerCase());
+// class -> tags it is given in the source: <tag class="a b"> in markup and templates,
+// and `x = document.createElement('tag')` followed by `x.className = 'a b'`.
+const SRC_TAGS = new Map();
+const addTag = (cls, tag) => {
+  for (const c of cls.split(/\s+/)) {
+    if (!/^[a-zA-Z][\w-]*$/.test(c)) continue;
+    if (!SRC_TAGS.has('.' + c)) SRC_TAGS.set('.' + c, new Set());
+    SRC_TAGS.get('.' + c).add(tag.toLowerCase());
+  }
+};
+for (const m of SRC.matchAll(/<([a-zA-Z][\w-]*)\b[^>]*?\bclass\s*=\s*["']([^"'$<>]*)/g)) addTag(m[2], m[1]);
+for (const m of SRC.matchAll(/(?:const|let|var)?\s*([\w$.]+)\s*=\s*document\.createElement(?:NS)?\(\s*(?:[^,)]*,\s*)?['"]([\w-]+)['"]\s*\)[;\s]*\n(?:[^\n]*\n){0,3}?\s*\1\.className\s*=\s*['"`]([^'"`$]*)/g))
+  addTag(m[3], m[2]);
 
 // Which classes can sit on one element, from the source: every string literal that
 // lists two or more classes (a `${...}` suffix makes its prefix a wildcard), plus
@@ -263,7 +297,7 @@ function identities(sel) {
   const out = [];
   let unknown = false;
   for (const t of sel.toks) {
-    if (!ADDED.has(t)) out.push(t);
+    if (!ADDED.has(t)) out.push(t, ...(t.includes('--') ? [t.split('--')[0]] : []));
     else if (RUNTIME_ON[t]) out.push(t, ...RUNTIME_ON[t]);
     else if (t.includes('--')) out.push(t, t.split('--')[0]);
     else unknown = true;
@@ -271,8 +305,13 @@ function identities(sel) {
   return out.length ? out : unknown ? null : out;
 }
 
+const FV = /:focus-visible/, NOT_FV = /:not\(:focus-visible\)/;
 function reach(a, b) {
   if (a.pseudoEl !== b.pseudoEl) return false;
+  if (a.tag && b.tag && a.tag !== b.tag) return false; // two different elements
+  // :focus-visible and :not(:focus-visible) never hold at once on one element
+  const sa0 = subjectText(a), sb0 = subjectText(b);
+  if ((NOT_FV.test(sa0) && FV.test(sb0.replace(NOT_FV, ''))) || (NOT_FV.test(sb0) && FV.test(sa0.replace(NOT_FV, '')))) return false;
   const sa = sample.get(a.text), sb = sample.get(b.text);
   if (sa && sb) {
     for (const e of sa) if (sb.has(e)) return true;
@@ -284,24 +323,40 @@ function reach(a, b) {
     // a runtime-only subject with no known element: judge it by its ancestors or tag
     const [g, x] = ia ? [b, a] : [a, b];
     if (!ia && !ib) return true;
+    // ⚠️ Assumption, not proof: a rule scoped by an ancestor reaches only selectors
+    // that name it. Without it nothing scoped could ever move (every `.x span`
+    // would meet every span on the page); with it, a scoped rule on a runtime class
+    // can miss a generic rule inside that scope, which is why hide utilities never
+    // move (HIDE_UTILITY) and the probes stay the backstop.
     if (g.ctxToks.size) return [...g.ctxToks].some((t) => x.text.includes(t));
-    if (g.tag) return x.tag ? x.tag === g.tag : true;
+    if (g.tag) return tagMayBe(x, g.tag);
     return true;
   }
   if (a.generic && b.generic) return true;
   const [g, x] = a.generic ? [a, b] : [b, a];
-  if (g.ctxToks.size) return [...g.ctxToks].some((t) => x.text.includes(t));
+  if (g.ctxToks.size) return [...g.ctxToks].some((t) => x.text.includes(t)); // see the assumption above
   if (!g.tag) return true;
-  if (x.tag) return x.tag === g.tag;
-  const seen = [...x.toks].map((t) => TAGS.get(t)).filter(Boolean);
-  if (seen.length) return seen.some((set) => set.has(g.tag));
-  return !['body', 'html'].includes(g.tag) && CLASSED_TAGS.has(g.tag);
+  return tagMayBe(x, g.tag);
+}
+// Can an element x's selector matches be a <tag>? From x's own tag, else the tags its
+// classes are seen on (samples, then source), else any tag the markup gives a class.
+function tagMayBe(x, tag) {
+  if (x.tag) return x.tag === tag;
+  const seen = [...new Set([...x.toks, ...(identities(x) || [])])].map((t) => TAGS.get(t) || SRC_TAGS.get(t)).filter(Boolean);
+  if (seen.length) return seen.some((set) => set.has(tag));
+  return !['body', 'html'].includes(tag) && CLASSED_TAGS.has(tag);
 }
 
 // ---- plan -------------------------------------------------------------------------
 const skinStart = stylesRoot.toString().indexOf('Skin component rules (design-system phase 2)');
-const isGlobal = (x) => x.sels.some((s) => /^(:root|html|body|\*)$/.test(s.text) || (/^(html|body|:root)(\[|\.|:|$)/.test(s.text) && !s.toks.size));
-const cand = S.filter((x) => !x.layer && x.r.source.start.offset < skinStart && x.decls.length &&
+const isGlobal = (x) => x.sels.some((s) => /^(:root|html|body|\*)([.:[]|$)/.test(subjectText(s)));
+// A hide utility has to beat whatever component rule its element carries, so it
+// stays unlayered.
+// Only a bare one: `#cronModal .hidden` lands on any element in its scope; a
+// `.x[hidden]` or `.x.hidden` is tied to its element and is checked like any rule.
+const HIDE_UTILITY = (x) =>
+  x.sels.some((t) => /^(\.hidden|\[hidden\])$/.test(subjectText(t))) && x.decls.some((d) => d.prop === 'display');
+const cand = S.filter((x) => !x.layer && !HIDE_UTILITY(x) && x.r.source.start.offset < skinStart && x.decls.length &&
   !x.decls.some((d) => d.important) && !isGlobal(x) && !x.media.some((m) => m.startsWith('supports')));
 const byFam = new Map();
 for (const x of [...S, ...M].filter((y) => !y.layer || y.layer === 'features'))
@@ -315,6 +370,29 @@ const ruleOf = new Map(cand.map((x) => [x.r, x]));
 const moved = new Set(cand);
 const reasons = new Map();
 const blockers = new Map();
+// X only applies in a state (:focus-visible, :hover...) that Y does not name. If an
+// unmoved unlayered rule Z is exactly Y plus that state, outweighs X and sets every
+// property Y sets in the family, Z wins that state before and after the move, so the
+// X-vs-Y contest never decides anything.
+const STATE = /:(focus-visible|focus|hover|active)\b/;
+function masked(x, f, sx, y, sy) {
+  const px = subjectText(sx).match(STATE);
+  if (!px || STATE.test(subjectText(sy))) return false;
+  const want = px[1] === 'focus-visible' ? ['focus', 'focus-visible'] : [px[1]];
+  const yProps = new Set(y.decls.filter((d) => fam(d.prop) === f).map((d) => d.prop));
+  for (const z of byFam.get(f) || []) {
+    if (z.layer || moved.has(z)) continue;
+    const zProps = new Set(z.decls.filter((d) => fam(d.prop) === f).map((d) => d.prop));
+    if (![...yProps].every((p) => zProps.has(p))) continue;
+    for (const sz of z.sels) {
+      const m = subjectText(sz).match(STATE);
+      if (!m || !want.includes(m[1]) || sz.text.replace(STATE, '') !== sy.text) continue;
+      const c = cmp(sz.spec, sx.spec);
+      if (c > 0 || (c === 0 && z.order > x.order)) return true;
+    }
+  }
+  return false;
+}
 function conflict(x) {
   for (const d of x.decls)
     for (const y of byFam.get(fam(d.prop)) || []) {
@@ -326,7 +404,7 @@ function conflict(x) {
           const xWinsInside = c > 0 || (c === 0 && x.order > y.order);
           // unlayered y: x beats it today (by weight) and would lose after the move.
           // y already in features: x beats it today (unlayered) and must still win inside the layer.
-          if (y.layer === 'features' ? !xWinsInside : xWinsInside) {
+          if (y.layer === 'features' ? !xWinsInside : xWinsInside && !masked(x, fam(d.prop), sx, y, sy)) {
             blockers.set(x, sy);
             return `${d.prop} vs ${y.file}:${y.r.source.start.line} ${sy.text.slice(0, 70)}`;
           }
@@ -369,6 +447,48 @@ for (let pass = 0; pass < 50; pass++) {
 }
 const count = (arr) => arr.reduce((n, x) => n + x.decls.length, 0);
 console.log(`candidates ${cand.length} rules (${count(cand)} decls); movable in runs of >= ${MIN_RUN}: ${moved.size} rules (${count([...moved])} decls), ${runs().length} blocks`);
+const auditBad = new Set();
+if (args.includes('--audit') || args.includes('--fix-audit')) {
+  // Every rule already in @layer features: does an unlayered rule now win over a
+  // declaration it would lose to if the two were in the same cascade?
+  let bad = 0;
+  for (const x of S.filter((r) => r.layer === 'features' && HIDE_UTILITY(r))) {
+    bad++;
+    auditBad.add(x);
+    console.log(`AUDIT ${x.file}:${x.r.source.start.line} ${x.r.selector.slice(0, 70)} is a hide utility; it must stay unlayered`);
+  }
+  for (const x of S.filter((r) => r.layer === 'features'))
+    for (const d of x.decls)
+      for (const y of byFam.get(fam(d.prop)) || []) {
+        if (y.layer) continue;
+        for (const sx of x.sels)
+          for (const sy of y.sels) {
+            if (!reach(sx, sy)) continue;
+            const c = cmp(sx.spec, sy.spec);
+            if ((c > 0 || (c === 0 && x.order > y.order)) && !masked(x, fam(d.prop), sx, y, sy)) {
+              bad++;
+              auditBad.add(x);
+              console.log(`AUDIT ${x.file}:${x.r.source.start.line} ${sx.text.slice(0, 70)} { ${d.prop} } now loses to ${y.file}:${y.r.source.start.line} ${sy.text.slice(0, 70)}`);
+            }
+          }
+      }
+  console.log(`audit: ${bad} conflict(s)`);
+}
+const WHY = opt('why', null);
+if (WHY) {
+  // Follow the chain: why can this rule not move, and why can its blocker not move?
+  const seen = new Set();
+  let cur = S.find((x) => x.sels.some((t) => t.text.includes(WHY)));
+  while (cur && !seen.has(cur)) {
+    seen.add(cur);
+    const isCand = cand.includes(cur);
+    const why = !isCand ? 'not a candidate (layered, skin section, !important, global, @supports or mobile.css)' : moved.has(cur) ? 'MOVABLE' : reasons.get(cur) || 'short run (its neighbours cannot move)';
+    console.log(`${cur.file}:${cur.r.source.start.line} ${cur.r.selector.replace(/\s+/g, ' ').slice(0, 80)}\n    -> ${why}`);
+    const b = blockers.get(cur);
+    if (!b || moved.has(cur)) break;
+    cur = [...S, ...M].find((x) => x.sels.includes(b));
+  }
+}
 if (args.includes('--runtime-only')) {
   // runtime-only subjects that block a move, with how many rules each blocks
   const tally = new Map();
@@ -384,16 +504,66 @@ if (args.includes('--reasons')) {
   }
   for (const [k, n] of [...tally].sort((p, q) => q[1] - p[1]).slice(0, 40)) console.log(String(n).padStart(5), k);
 }
+if (args.includes('--fix-audit') && auditBad.size) {
+  // Take each conflicting rule back out of its block (splitting the block around it);
+  // run again until the audit is clean, since an unlayered rule can now beat others.
+  for (const x of auditBad) {
+    const block = x.r.parent;
+    const nodes = block.nodes;
+    let i = nodes.indexOf(x.r);
+    const after = nodes.slice(i + 1);
+    // comments right before the rule describe it: they leave the block with it
+    const lead = [];
+    while (i > 0 && nodes[i - 1].type === 'comment') lead.unshift(nodes[--i]);
+    if (after.some((n) => n.type === 'rule')) {
+      const tail = postcss.atRule({ name: 'layer', params: 'features', raws: { afterName: ' ', between: ' ', after: '\n' } });
+      block.after(tail);
+      for (const n of after) tail.append(n);
+    } else for (const n of after) block.after(n);
+    block.after(x.r);
+    for (const c of lead) x.r.before(c);
+    if (!block.nodes.some((n) => n.type === 'rule')) {
+      for (const n of [...block.nodes].reverse()) block.after(n);
+      block.remove();
+    }
+  }
+  stripLabels(stylesRoot);
+  fs.writeFileSync(PUB + 'styles.css', labelClosers(stylesRoot.toString().replace(/@layer features \{\n\n/g, '@layer features {\n')));
+  console.log(`took ${auditBad.size} rule(s) out of the layer; run --audit again`);
+  process.exit(0);
+}
+function stripLabels(root) {
+  root.walkComments((c) => {
+    if (c.text === '@layer features') c.remove();
+  });
+}
 if (args.includes('--write')) {
   for (const run of runs()) {
     const layer = postcss.atRule({ name: 'layer', params: 'features', raws: { afterName: ' ', between: ' ', after: '\n' } });
     const first = run[0].r;
     const nodes = first.parent.nodes;
-    const from = nodes.indexOf(first), to = nodes.indexOf(run[run.length - 1].r);
+    const from = nodes.indexOf(first);
+    let to = nodes.indexOf(run[run.length - 1].r);
+    // a comment on the same line as the last rule's closing brace belongs to it
+    const trail = nodes[to + 1];
+    if (trail?.type === 'comment' && !trail.raws.before.includes('\n')) to++;
     const span = nodes.slice(from, to + 1);
     first.before(layer);
     for (const n of span) layer.append(n);
   }
+  // A block that fills its @media whole reads better outside it:
+  // @layer features { @media (...) { ... } } is the same cascade.
+  stylesRoot.walkAtRules('layer', (layer) => {
+    const media = layer.parent;
+    if (layer.params !== 'features' || media?.type !== 'atrule' || media.name !== 'media' || media.parent?.type !== 'root') return;
+    if (media.nodes.some((n) => n !== layer && n.type !== 'comment')) return;
+    for (const n of [...layer.nodes]) layer.before(n);
+    layer.remove();
+    const outer = postcss.atRule({ name: 'layer', params: 'features', raws: { afterName: ' ', between: ' ', after: '\n' } });
+    media.before(outer);
+    outer.append(media);
+  });
+  stripLabels(stylesRoot);
   const text = stylesRoot.toString().replace(/@layer features \{\n\n/g, '@layer features {\n');
   fs.writeFileSync(PUB + 'styles.css', labelClosers(text));
   console.log('written');

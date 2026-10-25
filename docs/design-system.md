@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (first tranche: 65 blocks, about 920 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (two tranches: 120 blocks, about 1,370 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -42,22 +42,51 @@ JS-built UI the samples cannot show, it falls back to the source: classes listed
 together in one class string meet, and a class JS adds at runtime meets the
 element it is added to (a BEM `X--y` sits on `.X`; the others are mapped by hand
 in `RUNTIME_ON`, read off the code that adds them). An unmapped runtime class is
-assumed to meet anything. It then keeps only
-runs of at least 8 consecutive rules, so the file gets readable blocks rather
-than one wrapper per rule. `--reasons` lists what blocks the rest, and `--write`
-wraps the runs. `css:diff -- --viewports all` is still the proof. ⚠️ Never put
+assumed to meet anything. A BEM modifier's base class always meets it, and
+element tags come from the samples and from the source (`<tag class=…>`, and a
+`createElement` followed by `.className =`). Two different tags never meet, and
+neither do `:focus-visible` and `:not(:focus-visible)`. A conflict that only
+matters in a state (`:hover`, `:focus-visible`…) is ignored when an unlayered
+rule written as the competitor plus that state outweighs both. ⚠️ One assumption
+is not proof: a rule scoped by an ancestor (`.x span`) is taken to reach only
+selectors that name that ancestor. Without it nothing scoped could move (every
+`.x span` would meet every span); with it, a scoped rule on a class JS toggles can
+miss a generic rule inside the scope. That is why a bare hide utility
+(`#cronModal .hidden`, `[hidden]`) never moves: it has to beat whatever display
+rule its element carries, and a layered rule never does. It then keeps only
+runs of at least `--min-run` consecutive rules (8 for the first tranche, 6 for the
+second), so the file gets readable blocks rather than one wrapper per rule.
+`--reasons` lists what blocks the rest, `--why <selector>` follows one chain to
+its root, `--write` wraps the runs (a block that fills an `@media` goes outside
+it), `--audit` re-checks every rule already in the layer, and `--fix-audit`
+takes a failing one back out (run it until the audit is clean). `css:diff -- --viewports all` is still the proof. ⚠️ Never put
 `!important` inside a layer: for important declarations the order flips, so a
 layered `!important` would beat every unlayered one (`test/features-layer.test.ts`).
 
-The first tranche moved 65 blocks (about 920 rules, 3,700 declarations): the
-history list, worktrees, Away Digest, the path picker, the orchestrator panel,
-the home rail, git status, Ralph, the monitor, subagent windows, the file tree and
-preview, the plan wizard, the approvals drawer and more. The rest is interleaved
-with rules something unlayered still competes with. The biggest blockers are
-element-wide rules that belong in `@layer base` (`input:focus-visible`,
-`:focus:not(:focus-visible)`, `body`), `.tunnel-panel-header h3`, the animation
-lab's `button`/`em` rules, the settings section rules and the session tab's own
-cascade. Each needs its competitor moved or scoped first.
+The first tranche moved 65 blocks (about 920 rules): the history list, worktrees,
+Away Digest, the path picker, the orchestrator panel, the home rail, git status,
+Ralph, the monitor, subagent windows, the file tree and preview, the plan wizard,
+the approvals drawer and more. ⚠️ It shipped one regression the probes missed
+(their sample sessions were all idle): the home rail's state accents
+(`.home-sessions-row--working` and siblings) went into the layer while the base
+`.home-sessions-row` stayed unlayered and set `border` too, so a working row lost
+its green border (needs and waiting kept theirs through their blink animations).
+The planner then treated a BEM modifier as its own element; it now maps it to its
+base, the audit took those rules back out, and `test/features-layer.test.ts` fails
+on any layered `X--y` whose unlayered `.X` sets the same property family. The
+same pass fixed a specificity bug in the planner (everything after a
+`:where`/`:is`/`:not` went uncounted); the audit of the first tranche under the
+corrected weights is clean.
+
+The second tranche moved 54 more blocks (about 450 rules, 1,870 declarations).
+What is left (about 1,340 rules) is interleaved with rules that compete for real:
+scoped element rules such as `.form-row input[type="password"]` against
+`mobile.css`'s `.duration-custom-input input`, the session tab's own cascade
+(`.session-tab:hover`, the rail's `.session-tab > *`), the toolbar's `.cm-btn--bar`
+rules, `.btn-icon-header`, the docked-panel rules and the response viewer's
+`> *` rules. Each needs its competitor moved, scoped or made exclusive first.
+`#cronModal .hidden` came back out of the layer in this pass (no visible change:
+the rows JS hides are plain `.form-row`s, but the next one might not be).
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in
