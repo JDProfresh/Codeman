@@ -43,7 +43,10 @@ function phoneDeclarations(selector: string): Record<string, string> {
   ROOT.walkAtRules('media', (atRule) => {
     if (atRule.params !== PHONE_QUERY) return;
     atRule.walkRules((rule: Rule) => {
-      if (!rule.selectors.map((s) => s.trim()).includes(selector)) return;
+      // A `:where(:not(:hover))` suffix (written by css-layer-plan --apply-chains so
+      // the moved hover rule still wins) adds no specificity: read through it.
+      const bare = (s: string) => s.trim().replace(/:where\(:not\(:(hover|active|focus|focus-visible)\)\)/g, '');
+      if (!rule.selectors.map(bare).includes(selector)) return;
       rule.walkDecls((decl: Declaration) => {
         found[decl.prop] = decl.value.trim();
       });

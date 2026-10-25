@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (four tranches: 209 blocks, about 1,830 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (five tranches: 218 blocks, about 1,875 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -100,10 +100,23 @@ beat wherever they sit), so no unlayered rule changes order against another. A
 run still ends at any at-rule and, with `--hoist`, at a section banner comment
 (`/* ===== … */`, `/* ── … ── */`), so a block stays inside its topic. That moved
 33 blocks (about 180 rules, 680 declarations), the file's lines unchanged as a
-multiset (only wrappers added and rules repositioned). The layer now holds about
-1,830 rules; about 1,220 stay outside.
+multiset (only wrappers added and rules repositioned).
 `#cronModal .hidden` came back out of the layer in this pass (no visible change:
 the rows JS hides are plain `.form-row`s, but the next one might not be).
+The fifth tranche planned the selector chains whole, up front: `--chains` lists
+every `:where(:not(:<state>))` a competitor needs so that a `:hover`/`:focus`/
+`:active` rule can move, and `--apply-chains` writes them (only the declarations
+the state rule actually sets leave the state, in a split-off rule, so the
+selector keeps its specificity). Two things made that safe. Conflicts are now
+judged by exact property overlap, not family (`border-color` against `border` or
+`border-top-color`, never against `border-radius`): the "phone `.session-tab`
+border" above was a `border-radius`, never a conflict, and the coarse check had
+cost moves everywhere. And a chain edit is written only when the two subjects
+name the same element (a shared class or id, a BEM base, a mapped runtime class,
+or the same tag): `reach()` errs toward "may meet", which is safe for blocking a
+move and wrong for taking a declaration off an element. That left four edits
+(the phone header tab chip, `.tab-glow`, the ultracode card states) and moved 9
+blocks (45 rules, 148 declarations); `--audit` uses the same overlap rule.
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in

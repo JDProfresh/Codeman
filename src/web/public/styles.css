@@ -977,6 +977,7 @@ body.tab-rail-resizing * {
   }
 }
 
+@layer features {
 .session-tab {
   display: flex;
   align-items: center;
@@ -1006,14 +1007,6 @@ body.tab-rail-resizing * {
   border-color: rgba(34, 197, 94, 0.3);
 }
 
-.session-tab.active {
-  background: rgba(34, 197, 94, 0.15);
-  border: 2px solid #00FF66;
-  color: #fff;
-  box-shadow: none;
-  outline: none;
-}
-
 .session-tab.tab-loading::after {
   content: "";
   position: absolute;
@@ -1035,6 +1028,15 @@ body.tab-rail-resizing * {
   border-radius: 50%;
   flex: 0 0 10px;
   animation: tab-load-spin 0.7s linear infinite;
+}
+} /* @layer features */
+
+.session-tab.active {
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid #00FF66;
+  color: #fff;
+  box-shadow: none;
+  outline: none;
 }
 
 @keyframes tab-load-spin {
@@ -4551,15 +4553,10 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .welcome-chip:hover {
   background: var(--control-bg-hover);
   border-color: var(--control-border-hover);
-  color: var(--text);
-}
-
-.welcome-chip:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
   color: var(--text);
 }
 
@@ -4591,6 +4588,18 @@ html[data-skin="og"] .welcome-primary:hover {
   flex-shrink: 0;
 }
 
+.welcome-tunnel-link:hover {
+  background: var(--control-bg);
+  color: var(--text);
+}
+} /* @layer features */
+
+.welcome-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  color: var(--text);
+}
+
 .welcome-tunnel-link .tunnel-spinner {
   width: 11px;
   height: 11px;
@@ -4599,11 +4608,6 @@ html[data-skin="og"] .welcome-primary:hover {
      light skins; draw it from the link's own text colour instead. */
   border-color: color-mix(in srgb, currentColor 25%, transparent);
   border-top-color: currentColor;
-}
-
-.welcome-tunnel-link:hover {
-  background: var(--control-bg);
-  color: var(--text);
 }
 
 .welcome-tunnel-link:focus-visible {
@@ -4667,6 +4671,7 @@ html[data-skin="og"] .welcome-primary:hover {
 
 
 
+@layer features {
 .welcome-qr {
   display: none;
   flex-direction: column;
@@ -4700,6 +4705,7 @@ html[data-skin="og"] .welcome-primary:hover {
   height: 280px;
   padding: 16px;
 }
+} /* @layer features */
 
 @layer features {
 .welcome-qr-url {
@@ -7025,6 +7031,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Session Color Picker */
+@layer features {
 .color-picker {
   display: flex;
   gap: 6px;
@@ -7049,6 +7056,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .color-swatch.selected {
   border-color: var(--accent);
 }
+} /* @layer features */
 
 @layer features {
 .swatch-inner {
@@ -13432,10 +13440,12 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 /* At-a-glance agent state: yellow while working, green when done. */
 .ultracode-agent-card.uw-state-working {
   border-left-color: var(--yellow);
+}
+@layer features {
+.ultracode-agent-card.uw-state-working:where(:not(:hover)) {
   background: color-mix(in srgb, var(--yellow) 9%, var(--bg-input));
 }
-.ultracode-agent-card.uw-state-done {
-  border-left-color: var(--green);
+.ultracode-agent-card.uw-state-done:where(:not(:hover)) {
   background: color-mix(in srgb, var(--green) 9%, var(--bg-input));
 }
 .ultracode-agent-card--clickable {
@@ -13452,6 +13462,11 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 .ultracode-agent-card--clickable.uw-state-done:hover {
   background: color-mix(in srgb, var(--green) 16%, var(--bg-card));
+}
+} /* @layer features */
+
+.ultracode-agent-card.uw-state-done {
+  border-left-color: var(--green);
 }
 @layer features {
 .ultracode-agent-top {
@@ -17985,21 +18000,9 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 /* `<details>` blocks read as a collapsed group, matching the Advanced group in
    App Settings rather than a bare underlined line of text. */
+@layer features {
 #createCaseModal .set-doc .advanced-options {
   margin-top: 11px;
-}
-
-#createCaseModal .set-doc .advanced-options > summary {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 2px;
-  border-top: 0;
-  font-size: 0.63rem;
-  font-weight: 640;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 #createCaseModal .set-doc .advanced-options > summary::after {
@@ -18018,6 +18021,20 @@ html[data-tab-orientation='vertical'] .home-sessions {
 
 #createCaseModal .set-doc .advanced-options > summary::-webkit-details-marker {
   display: none;
+}
+} /* @layer features */
+
+#createCaseModal .set-doc .advanced-options > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 2px;
+  border-top: 0;
+  font-size: 0.63rem;
+  font-weight: 640;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 #createCaseModal .set-doc .advanced-options > summary .set-adv-chev {
@@ -18549,15 +18566,10 @@ html[data-session-list="sidebar"] .session-sidebar .session-tab {
 
 /* .tab-info is already column/overflow-hidden/min-width:0 — it only has to
    claim the free width now that rows are full-width. */
+@layer features {
 html[data-session-list="sidebar"] .session-sidebar .tab-info {
   flex: 1;
   min-width: 0;
-}
-
-html[data-session-list="sidebar"] .session-sidebar .tab-name-row,
-html[data-session-list="sidebar"] .session-sidebar .tab-name {
-  min-width: 0;
-  max-width: none;
 }
 
 html[data-session-list='sidebar'] .session-sidebar .tab-name {
@@ -18568,6 +18580,38 @@ html[data-session-list='sidebar'] .session-sidebar .tab-name {
 
 html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name {
   font-size: var(--session-sidebar-name-font-size, 12px);
+}
+
+/* Sidebar filter box (applySidebarFilter toggles this class post-render).
+   Scoped to the sidebar layout on purpose: applySidebarFilter() already strips
+   the class whenever the filter box is off screen, and this prefix is the
+   second lock — a leaked class must never be able to hide tabs from the header
+   strip, which has no filter control to clear it with. The shared filter
+   (_applyTabListFilter) also marks a case box (tabArrangement 'case') the
+   filter emptied, which hides with its label and count rather than staying
+   on screen reading 0. */
+html[data-session-list="sidebar"] .session-tab.tab-filtered-out,
+html[data-session-list="sidebar"] .tab-cluster.tab-filtered-out {
+  display: none;
+}
+
+/* The box reuses .session-sidebar-filter / -input; this only adds the clear
+   button over its right edge and the "No sessions match" line. */
+.tab-rail-search {
+  position: relative;
+  /* Clear of the 16px resize handle on the rail's right edge. */
+  padding-right: calc(0.25rem + 16px);
+}
+
+.tab-rail-search .session-sidebar-filter-input {
+  padding-right: 1.6rem;
+}
+} /* @layer features */
+
+html[data-session-list="sidebar"] .session-sidebar .tab-name-row,
+html[data-session-list="sidebar"] .session-sidebar .tab-name {
+  min-width: 0;
+  max-width: none;
 }
 
 html[data-session-list='sidebar'] .session-sidebar .tab-actions,
@@ -18598,19 +18642,6 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab.drag-over-right:whe
   box-shadow: 0 2px 0 0 var(--accent);
 }
 
-/* Sidebar filter box (applySidebarFilter toggles this class post-render).
-   Scoped to the sidebar layout on purpose: applySidebarFilter() already strips
-   the class whenever the filter box is off screen, and this prefix is the
-   second lock — a leaked class must never be able to hide tabs from the header
-   strip, which has no filter control to clear it with. The shared filter
-   (_applyTabListFilter) also marks a case box (tabArrangement 'case') the
-   filter emptied, which hides with its label and count rather than staying
-   on screen reading 0. */
-html[data-session-list="sidebar"] .session-tab.tab-filtered-out,
-html[data-session-list="sidebar"] .tab-cluster.tab-filtered-out {
-  display: none;
-}
-
 /* The vertical rail's session search (app.js _applyTabListFilter) uses the same
    class, and also hides a group or case box the search emptied. Rail-scoped for
    the same reason as the sidebar rule above: the header strip has no box. */
@@ -18618,18 +18649,6 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab.tab-filtered-out,
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group.tab-filtered-out,
 html[data-tab-orientation='vertical'] .tab-rail .tab-cluster.tab-filtered-out {
   display: none;
-}
-
-/* The box reuses .session-sidebar-filter / -input; this only adds the clear
-   button over its right edge and the "No sessions match" line. */
-.tab-rail-search {
-  position: relative;
-  /* Clear of the 16px resize handle on the rail's right edge. */
-  padding-right: calc(0.25rem + 16px);
-}
-
-.tab-rail-search .session-sidebar-filter-input {
-  padding-right: 1.6rem;
 }
 
 /* The native WebKit clear glyph would sit under ours. */
@@ -21082,12 +21101,46 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
    is pushed past the brand by --tab-triage-brand, and every later row starts
    at the edge, under "Codeman", instead of leaving that corner empty. The
    rows under the first one line up with each other in the label column. */
+@layer features {
 .header:has(> .session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows)) > .header-brand {
   position: absolute;
   top: 0.35rem;
   left: 0.75rem;
   z-index: 1;
 }
+
+.session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head {
+  justify-content: flex-start;
+  width: var(--tab-triage-gutter, 92px);
+  margin-left: calc(-1 * var(--tab-triage-gutter, 92px));
+  padding: 0 8px 0 0;
+}
+
+/* The first row starts beside the brand and lines up with nothing else, so its
+   label takes its own width and its tabs follow it directly. */
+.session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head--lead {
+  width: auto;
+  margin-left: calc(var(--tab-triage-brand, 100px) - var(--tab-triage-gutter, 92px));
+}
+
+.session-tabs-host > .session-tabs.tabs-triage.lineage-tree:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head {
+  margin-left: calc(-1 * (var(--tab-triage-gutter, 92px) + var(--lineage-spine-channel)));
+  margin-right: var(--lineage-spine-channel);
+}
+
+.session-tabs-host > .session-tabs.tabs-triage.lineage-tree:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head--lead {
+  margin-left: calc(var(--tab-triage-brand, 100px) - var(--tab-triage-gutter, 92px) - var(--lineage-spine-channel));
+  margin-right: 0;
+}
+
+/* Side rail and sidebar: each heading is a section row above its rows. */
+html[data-tab-orientation='vertical'] .tab-rail .session-tabs.tabs-triage > .tab-triage-head,
+html[data-session-list='sidebar'] .session-sidebar .session-tabs.tabs-triage > .tab-triage-head {
+  align-self: auto;
+  width: 100%;
+  padding: 8px 6px 3px;
+}
+} /* @layer features */
 
 /* ⚠ The rows are spaced by a bottom margin on every item, not by row-gap.
    Each .tab-triage-break is a zero-height flex line of its own, so with a
@@ -21109,20 +21162,6 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
   margin-bottom: var(--lineage-row-gap, 4px);
 }
 
-.session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head {
-  justify-content: flex-start;
-  width: var(--tab-triage-gutter, 92px);
-  margin-left: calc(-1 * var(--tab-triage-gutter, 92px));
-  padding: 0 8px 0 0;
-}
-
-/* The first row starts beside the brand and lines up with nothing else, so its
-   label takes its own width and its tabs follow it directly. */
-.session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head--lead {
-  width: auto;
-  margin-left: calc(var(--tab-triage-brand, 100px) - var(--tab-triage-gutter, 92px));
-}
-
 .session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-break {
   display: block;
   flex: 0 0 100%;
@@ -21142,24 +21181,6 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
   padding-left: calc(var(--tab-triage-gutter, 92px) + var(--lineage-spine-channel));
   /* The last row's margin is part of the bottom routing room. */
   padding-bottom: calc(var(--lineage-bottom-room) - var(--lineage-row-gap));
-}
-
-.session-tabs-host > .session-tabs.tabs-triage.lineage-tree:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head {
-  margin-left: calc(-1 * (var(--tab-triage-gutter, 92px) + var(--lineage-spine-channel)));
-  margin-right: var(--lineage-spine-channel);
-}
-
-.session-tabs-host > .session-tabs.tabs-triage.lineage-tree:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-head--lead {
-  margin-left: calc(var(--tab-triage-brand, 100px) - var(--tab-triage-gutter, 92px) - var(--lineage-spine-channel));
-  margin-right: 0;
-}
-
-/* Side rail and sidebar: each heading is a section row above its rows. */
-html[data-tab-orientation='vertical'] .tab-rail .session-tabs.tabs-triage > .tab-triage-head,
-html[data-session-list='sidebar'] .session-sidebar .session-tabs.tabs-triage > .tab-triage-head {
-  align-self: auto;
-  width: 100%;
-  padding: 8px 6px 3px;
 }
 
 /* The collapsed sidebar is a 44px icon rail with no room for a label. */
@@ -21220,6 +21241,7 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
   gap: var(--lineage-row-gap, 6px) 6px;
 }
 
+@layer features {
 .session-tabs-host > .session-tabs.tabs-clusters > .tab-cluster {
   display: inline-flex;
   align-items: center;
@@ -21254,6 +21276,7 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
 .session-tabs-host > .session-tabs.tabs-clusters > .tab-cluster--web {
   padding-left: 3px;
 }
+} /* @layer features */
 
 /* Desktop: a cluster keeps its width, so clusters that do not fit on one line
    overflow the strip and updateTabOverflowMode() wraps it box by box. Allowed
@@ -21910,7 +21933,9 @@ body.keyboard-visible .terminal-container .xterm-screen {
 .session-tab .tab-status.busy {
   box-shadow: none;
 }
-.tab-glow { animation: none; box-shadow: none; }
+.tab-glow { animation: none; }
+
+.tab-glow:where(:not(:active)):where(:not(:hover)) { box-shadow: none; }
 
 /* ---- Timer banner: emerald-teal, flat ---- */
 .timer-banner {

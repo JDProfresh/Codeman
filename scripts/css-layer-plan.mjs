@@ -44,6 +44,7 @@
  *   node scripts/css-layer-plan.mjs --url ... --why '<selector text>'   follow one blocker chain
  *   node scripts/css-layer-plan.mjs --url ... --audit | --fix-audit       re-check what is layered
  *   node scripts/css-layer-plan.mjs --url ... --hoist --write           see below
+ *   node scripts/css-layer-plan.mjs --url ... --hoist --chains | --apply-chains
  * --reasons tallies what blocks the rest; --runtime-only lists the unmapped
  * runtime classes doing it (each wants a RUNTIME_ON entry). --hoist lets a run
  * continue past an unmovable rule and moves that rule to just after the block
@@ -51,6 +52,12 @@
  * against another); a run still ends at any at-rule and at a section banner. --fix-audit takes a
  * failing layered rule back out (splitting its block); run it until the audit
  * reports 0, since a rule leaving the layer can now beat others in it.
+ * --chains lists the `:where(:not(:<state>))` edits that would free a state rule
+ * (`:hover`, `:focus`, `:focus-visible`, `:active`) blocked only by unlayered
+ * competitors naming the SAME element; --apply-chains writes them, moving just the
+ * declarations the state rule overrides into a split-off rule, then exits:
+ * re-run with --write to place what they freed. Conflicts (and the audit) compare
+ * exact properties via overlap(), so `border-radius` never meets `border-color`.
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
@@ -84,6 +91,26 @@ function fam(p) {
   if (/^(column-count|column-width)$/.test(p)) return 'columns';
   if (/^(align|justify)-(items|content|self)$/.test(p)) return 'place';
   return SHORT.find((s) => p === s || p.startsWith(s + '-')) || p;
+}
+
+// Do two properties set any of the same longhands? A family groups candidates;
+// this decides. `border` covers border-color/-width/-style/-top..., never
+// border-radius; `font` covers line-height; `inset` the four sides.
+function overlap(p, q) {
+  if (p === q) return true;
+  const [a, b] = p.length < q.length ? [p, q] : [q, p];
+  if (a === 'border' && b.startsWith('border-radius')) return false;
+  if (b.startsWith(a + '-')) return true;
+  if (a === 'font' && b === 'line-height') return true;
+  if (a === 'inset' && ['top', 'right', 'bottom', 'left'].includes(b)) return true;
+  if ((a === 'gap' && /^(row|column)-gap$/.test(b)) || (a === 'place-items' && /^(align|justify)-items$/.test(b))) return true;
+  if (/^(border|outline|margin|padding|background|flex|grid|overflow|transition|animation|text-decoration|list-style|columns|mask)$/.test(a) && b.startsWith(a)) return true;
+  // border-color vs border-top-color, border-width vs border-left-width ...
+  const m = /^border-(color|width|style)$/.exec(a);
+  if (m && new RegExp(`^border-(top|right|bottom|left)-${m[1]}$`).test(b)) return true;
+  const n = /^border-(top|right|bottom|left)$/.exec(a);
+  if (n && b.startsWith(a + '-')) return true;
+  return false;
 }
 
 // ---- selectors ------------------------------------------------------------------
@@ -288,6 +315,7 @@ const coOccur = (x, y) => {
 // (state modifiers like .active) say nothing about WHICH element, unless we know
 // it: a BEM modifier X--y sits on .X, and these were read off the code that adds them.
 const RUNTIME_ON = {
+  '.tab-glow': ['.session-tab'], // app.js / tile-grid.js flash on the active tab
   '.worktree-status-error': ['.worktree-status'], // session-ui.js _setWorktreeStatus
   '.voice-send-active': ['.btn-settings', '.btn-settings-mobile', '.btn-icon-header'], // voice-input.js
   '.tile-hint-note': ['.tile-hint-line'], // tile-grid.js tile hint rows
@@ -407,10 +435,42 @@ function masked(x, f, sx, y, sy) {
   }
   return false;
 }
-function conflict(x) {
+// --chains: a conflict that only exists in a state X needs (X `.a:hover` beats a
+// stateless unlayered Y `.a`) is fixable without a visual change: Y's conflicting
+// properties skip that state (`:where(:not(:hover))`, no specificity), and X
+// already wins there today. Such conflicts no longer block; the edits they need
+// are collected by stateFix() and applied with --apply-chains.
+const CHAINS = args.includes('--chains') || args.includes('--apply-chains');
+const FIX_STATE = /:(hover|focus-visible|focus|active)(?![\w-])/;
+function stateFix(x, sx, y, sy) {
+  if (!CHAINS || y.layer || y.decls.some((d) => d.important)) return null;
+  const m = subjectText(sx).match(FIX_STATE);
+  if (!m || STATE.test(subjectText(sy)) || sy.pseudoEl) return null;
+  // The edit takes Y off the element while X's state holds, so X must really be
+  // styling Y's element then: reach() errs toward "may meet", which is safe for
+  // blocking a move and wrong here. Require the two subjects to name the same
+  // element: a shared class or id (a BEM modifier or runtime class counts as its
+  // base), or the same tag.
+  const toks = (t) => {
+    const own = t.replace(/:(not|where|is|has)\((?:[^()]|\([^()]*\))*\)/g, '');
+    const out = new Set(own.match(/[.#][\w-]+/g) || []);
+    for (const c of [...out]) {
+      if (c.includes('--')) out.add(c.split('--')[0]);
+      for (const b of RUNTIME_ON[c] || []) out.add(b);
+    }
+    const tag = /^[a-z][\w-]*/.exec(own);
+    if (tag) out.add(tag[0]);
+    return out;
+  };
+  const tx = toks(subjectText(sx));
+  if (![...toks(subjectText(sy))].some((t) => tx.has(t))) return null;
+  return m[1];
+}
+function conflict(x, fixes) {
   for (const d of x.decls)
     for (const y of byFam.get(fam(d.prop)) || []) {
       if (y === x || moved.has(y)) continue;
+      if (!y.decls.some((q) => !q.important && overlap(d.prop, q.prop))) continue;
       for (const sx of x.sels)
         for (const sy of y.sels) {
           if (!reach(sx, sy)) continue;
@@ -419,6 +479,11 @@ function conflict(x) {
           // unlayered y: x beats it today (by weight) and would lose after the move.
           // y already in features: x beats it today (unlayered) and must still win inside the layer.
           if (y.layer === 'features' ? !xWinsInside : xWinsInside && !masked(x, fam(d.prop), sx, y, sy)) {
+            const st = y.layer ? null : stateFix(x, sx, y, sy);
+            if (st) {
+              fixes?.push({ y, sel: y.sels.indexOf(sy), state: st, prop: d.prop });
+              continue;
+            }
             blockers.set(x, sy);
             return `${d.prop} vs ${y.file}:${y.r.source.start.line} ${sy.text.slice(0, 70)}`;
           }
@@ -467,6 +532,8 @@ for (let pass = 0; pass < 50; pass++) {
   if (!short.length) break;
   for (const r of short) for (const x of r) moved.delete(x);
 }
+const FIXES = [];
+if (CHAINS) for (const x of moved) conflict(x, FIXES);
 const count = (arr) => arr.reduce((n, x) => n + x.decls.length, 0);
 console.log(`candidates ${cand.length} rules (${count(cand)} decls); movable in runs of >= ${MIN_RUN}: ${moved.size} rules (${count([...moved])} decls), ${runs().length} blocks`);
 const auditBad = new Set();
@@ -483,6 +550,7 @@ if (args.includes('--audit') || args.includes('--fix-audit')) {
     for (const d of x.decls)
       for (const y of byFam.get(fam(d.prop)) || []) {
         if (y.layer) continue;
+        if (!y.decls.some((q) => !q.important && overlap(d.prop, q.prop))) continue;
         for (const sx of x.sels)
           for (const sy of y.sels) {
             if (!reach(sx, sy)) continue;
@@ -525,6 +593,59 @@ if (args.includes('--reasons')) {
     tally.set(k, (tally.get(k) || 0) + 1);
   }
   for (const [k, n] of [...tally].sort((p, q) => q[1] - p[1]).slice(0, 40)) console.log(String(n).padStart(5), k);
+}
+if (CHAINS) {
+  const edits = new Map(); // y -> Map(selector index -> Map(state -> Set(family)))
+  for (const f of FIXES) {
+    if (!edits.has(f.y)) edits.set(f.y, new Map());
+    const bySel = edits.get(f.y);
+    if (!bySel.has(f.sel)) bySel.set(f.sel, new Map());
+    const byState = bySel.get(f.sel);
+    if (!byState.has(f.state)) byState.set(f.state, new Set());
+    byState.get(f.state).add(f.prop);
+  }
+  console.log(`state edits needed: ${[...edits.values()].reduce((n, m) => n + m.size, 0)} selector(s) in ${edits.size} rule(s)`);
+  for (const [y, bySel] of edits)
+    for (const [i, byState] of bySel)
+      console.log(`  ${y.file}:${y.r.source.start.line} ${y.r.selectors[i].replace(/\s+/g, ' ').slice(0, 70)} skips ${[...byState].map(([st, fs]) => `:${st} for ${[...fs].join('/')}`).join(', ')}`);
+  if (args.includes('--apply-chains')) {
+    for (const [y, bySel] of edits) {
+      const r = y.r;
+      const sels = r.selectors;
+      const decls = r.nodes.filter((n) => n.type === 'decl');
+      const out = [];
+      const rest = sels.filter((_, i) => !bySel.has(i));
+      if (rest.length) out.push({ sels: rest, decls });
+      for (const [i, byState] of bySel) {
+        // group this selector's declarations by the states they must skip
+        const groups = new Map();
+        for (const d of decls) {
+          const states = [...byState].filter(([, ps]) => [...ps].some((p) => overlap(p, d.prop))).map(([st]) => st).sort();
+          const key = states.join(',');
+          if (!groups.has(key)) groups.set(key, { states, decls: [] });
+          groups.get(key).decls.push(d);
+        }
+        for (const { states, decls: ds } of groups.values())
+          out.push({ sels: [sels[i] + states.map((st) => `:where(:not(:${st}))`).join('')], decls: ds });
+      }
+      let anchor = r;
+      out.forEach((o, k) => {
+        const rule = k === 0 ? r : r.clone({ nodes: [] });
+        if (k === 0) r.removeAll();
+        rule.selector = o.sels.join(',\n');
+        for (const d of o.decls) rule.append(d.clone());
+        if (k > 0) {
+          rule.raws.before = '\n\n' + (r.raws.before || '').match(/[ \t]*$/)[0];
+          anchor.after(rule);
+        }
+        anchor = rule;
+      });
+    }
+    fs.writeFileSync(PUB + 'styles.css', stylesRoot.toString());
+    fs.writeFileSync(PUB + 'mobile.css', mobileRoot.toString());
+    console.log('applied; re-run the planner (it re-samples) to place the freed rules');
+    process.exit(0);
+  }
 }
 if (args.includes('--fix-audit') && auditBad.size) {
   // Take each conflicting rule back out of its block (splitting the block around it);
