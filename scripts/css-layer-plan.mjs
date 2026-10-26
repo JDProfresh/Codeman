@@ -38,6 +38,16 @@
  *    conflict that only matters in a state X needs (:focus-visible, :hover...) is
  *    masked when an unmoved unlayered rule written as Y plus that state outweighs X
  *    and sets every property Y sets.
+ *  - A compound subject's element carries all the classes chained on it (never the
+ *    alternatives of an `:is()`), so two subjects meet only if every pair of those
+ *    (non-runtime) classes can share an element;
+ *    a context class matches only whole (`.session-tab` is not `.session-tabs`).
+ *  - Two different `[type="…"]` values never meet, and a typed subject never meets
+ *    a sampled input of another type when no script builds more of those inputs or
+ *    rewrites their type. An attribute JS writes on known elements only (ATTR_ON,
+ *    e.g. `[data-docked]`) stands for those elements, and an id meets every class
+ *    its sampled element carries. `.active` and
+ *    `:not(.active)` never meet.
  *
  * Usage (a server running this tree on --url, e.g. CODEMAN_INSTANCE=diffcand on 3173):
  *   node scripts/css-layer-plan.mjs --url http://127.0.0.1:3173 [--min-run 8] [--reasons] [--runtime-only] [--write]
@@ -53,11 +63,12 @@
  * failing layered rule back out (splitting its block); run it until the audit
  * reports 0, since a rule leaving the layer can now beat others in it.
  * --chains lists the `:where(:not(:<state>))` edits that would free a state rule
- * (`:hover`, `:focus`, `:focus-visible`, `:active`) blocked only by unlayered
+ * (`:hover`, `:focus`, `:focus-visible`, `:active`, or the `.active` class, which
+ * gets `:where(:not(.active))`) blocked only by unlayered
  * competitors naming the SAME element; --apply-chains writes them, moving just the
  * declarations the state rule overrides into a split-off rule, then exits:
  * re-run with --write to place what they freed. Conflicts (and the audit) compare
- * exact properties via overlap(), so `border-radius` never meets `border-color`.
+ * longhands via overlap(): `border-left` meets `border-color`, `border-radius` never does.
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
@@ -94,26 +105,50 @@ function fam(p) {
 }
 
 // Do two properties set any of the same longhands? A family groups candidates;
-// this decides. `border` covers border-color/-width/-style/-top..., never
-// border-radius; `font` covers line-height; `inset` the four sides.
+// this decides, by expanding both to longhands: `border-left` and `border-color`
+// share border-left-color, `border` never touches border-radius, `font` covers
+// line-height. Logical sides (block/inline) count as both of their physical ones.
+const SIDES = { top: ['top'], right: ['right'], bottom: ['bottom'], left: ['left'],
+  block: ['top', 'bottom'], inline: ['left', 'right'], 'block-start': ['top', 'bottom'], 'block-end': ['top', 'bottom'],
+  'inline-start': ['left', 'right'], 'inline-end': ['left', 'right'] };
+const ALL4 = ['top', 'right', 'bottom', 'left'];
+function longhands(prop) {
+  const p = prop.replace(/^-webkit-(?!user)/, '');
+  let m;
+  if (p === 'border') return ALL4.flatMap((sd) => ['color', 'width', 'style'].map((k) => `border-${sd}-${k}`));
+  if ((m = /^border-(color|width|style)$/.exec(p))) return ALL4.map((sd) => `border-${sd}-${m[1]}`);
+  if ((m = /^border-(top|right|bottom|left|block|inline|block-start|block-end|inline-start|inline-end)$/.exec(p)))
+    return SIDES[m[1]].flatMap((sd) => ['color', 'width', 'style'].map((k) => `border-${sd}-${k}`));
+  if ((m = /^border-(top|right|bottom|left|block|inline|block-start|block-end|inline-start|inline-end)-(color|width|style)$/.exec(p)))
+    return SIDES[m[1]].map((sd) => `border-${sd}-${m[2]}`);
+  if (p === 'border-radius') return ['top-left', 'top-right', 'bottom-right', 'bottom-left'].map((c) => `border-${c}-radius`);
+  if ((m = /^(margin|padding|scroll-margin|scroll-padding)$/.exec(p))) return ALL4.map((sd) => `${m[1]}-${sd}`);
+  if ((m = /^(margin|padding|scroll-margin|scroll-padding)-(block|inline|block-start|block-end|inline-start|inline-end)$/.exec(p)))
+    return SIDES[m[2]].map((sd) => `${m[1]}-${sd}`);
+  if (p === 'inset') return ALL4;
+  if ((m = /^inset-(block|inline|block-start|block-end|inline-start|inline-end)$/.exec(p))) return SIDES[m[1]];
+  if (p === 'outline') return ['outline-color', 'outline-width', 'outline-style'];
+  if (p === 'gap' || p === 'grid-gap') return ['row-gap', 'column-gap'];
+  if ((m = /^place-(items|content|self)$/.exec(p))) return [`align-${m[1]}`, `justify-${m[1]}`];
+  if (p === 'flex') return ['flex-grow', 'flex-shrink', 'flex-basis'];
+  if (p === 'flex-flow') return ['flex-direction', 'flex-wrap'];
+  if (p === 'font') return ['font-*', 'line-height'];
+  if (/^(background|transition|animation|grid|grid-template|overflow|text-decoration|list-style|columns|mask|text-emphasis)$/.test(p)) return [`${p}-*`, p];
+  return [p];
+}
 function overlap(p, q) {
   if (p === q) return true;
-  const [a, b] = p.length < q.length ? [p, q] : [q, p];
-  if (a === 'border' && b.startsWith('border-radius')) return false;
-  if (b.startsWith(a + '-')) return true;
-  if (a === 'font' && b === 'line-height') return true;
-  if (a === 'inset' && ['top', 'right', 'bottom', 'left'].includes(b)) return true;
-  if ((a === 'gap' && /^(row|column)-gap$/.test(b)) || (a === 'place-items' && /^(align|justify)-items$/.test(b))) return true;
-  if (/^(border|outline|margin|padding|background|flex|grid|overflow|transition|animation|text-decoration|list-style|columns|mask)$/.test(a) && b.startsWith(a)) return true;
-  // border-color vs border-top-color, border-width vs border-left-width ...
-  const m = /^border-(color|width|style)$/.exec(a);
-  if (m && new RegExp(`^border-(top|right|bottom|left)-${m[1]}$`).test(b)) return true;
-  const n = /^border-(top|right|bottom|left)$/.exec(a);
-  if (n && b.startsWith(a + '-')) return true;
-  return false;
+  const a = longhands(p), b = longhands(q);
+  const hit = (x, y) => x === y || (x.endsWith('-*') && (y.startsWith(x.slice(0, -1)) || y === x.slice(0, -2))) ;
+  return a.some((x) => b.some((y) => hit(x, y) || hit(y, x)));
 }
 
 // ---- selectors ------------------------------------------------------------------
+// Attributes JS writes on known elements only: a subject carrying one is that
+// element (read off the code that writes it).
+const ATTR_ON = {
+  'data-docked': ['#fileBrowserPanel', '#approvalsDrawer', '#subagentsPanel', '#monitorPanel'], // panel-dock.js DOCK_PANELS
+};
 // the last compound of a selector, as text
 const subjectText = (x) => x.text.split(/\s*[ >+~]\s*(?![^(]*\))/).pop();
 const cmp = (x, y) => x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
@@ -146,16 +181,18 @@ function analyse(sel) {
       });
       const subject = [];
       for (let i = s.nodes.length - 1; i >= 0 && s.nodes[i].type !== 'combinator'; i--) subject.unshift(s.nodes[i]);
-      const toks = new Set(), all = new Set();
-      let tag = '', pseudoEl = '';
+      const toks = new Set(), all = new Set(), conj = new Set(); // conj: classes chained on the subject itself (not :is alternatives)
+      let tag = '', pseudoEl = '', typeVal = '';
       s.walk((m) => {
         if (m.type === 'class') all.add('.' + m.value);
         if (m.type === 'id') all.add('#' + m.value);
       });
       for (const n of subject) {
         if (n.type === 'tag') tag = n.value.toLowerCase();
-        if (n.type === 'class') toks.add('.' + n.value);
+        if (n.type === 'class') toks.add('.' + n.value), conj.add('.' + n.value);
         if (n.type === 'id') toks.add('#' + n.value);
+        if (n.type === 'attribute' && ATTR_ON[n.attribute]) for (const t of ATTR_ON[n.attribute]) toks.add(t);
+        if (n.type === 'attribute' && n.attribute === 'type' && n.operator === '=') typeVal = n.value.replace(/^['"]|['"]$/g, '');
         if (n.type === 'pseudo' && (n.value.startsWith('::') || [':before', ':after'].includes(n.value)))
           pseudoEl = n.value.replace(/^::?/, '');
         if (n.type === 'pseudo' && n.value === ':is')
@@ -165,7 +202,7 @@ function analyse(sel) {
           });
       }
       const ctxToks = new Set([...all].filter((t) => !toks.has(t)));
-      out.push({ spec: [a, b, c], toks, tag, ctxToks, pseudoEl, generic: toks.size === 0, text: s.toString().trim() });
+      out.push({ spec: [a, b, c], toks, conj, tag, ctxToks, pseudoEl, typeVal, generic: toks.size === 0, text: s.toString().trim() });
     })
   ).processSync(sel);
   return out;
@@ -217,6 +254,8 @@ const STATES = {
 const allSels = [...new Set([...S, ...M].flatMap((x) => x.sels.map((s) => s.text)))];
 const sample = new Map();
 const TAGS = new Map();
+const TYPE_OF = new Map(); // sampled <input> -> [type, id]
+const ID_CLASSES = []; // [#id, .class] pairs seen on one sampled element
 const browser = await chromium.launch(existsPw() ? {} : { executablePath: '/opt/pw-browsers/chromium' });
 for (const [name, [w, code]] of Object.entries(STATES)) {
   const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, hasTouch: w < 800, isMobile: w < 800 });
@@ -234,6 +273,10 @@ for (const [name, [w, code]] of Object.entries(STATES)) {
         for (const c of e.classList) (tags['.' + c] ||= {})[t] = 1;
         if (e.id) (tags['#' + e.id] ||= {})[t] = 1;
       }
+      const types = {};
+      for (const e of all) if (e.tagName === 'INPUT') types[idx.get(e)] = [(e.getAttribute('type') || 'text').toLowerCase(), e.id];
+      const ids = {};
+      for (const e of all) if (e.id) for (const c of e.classList) (ids['#' + e.id] ||= {})['.' + c] = 1;
       const hits = {};
       for (const [orig, s] of list) {
         try {
@@ -243,7 +286,7 @@ for (const [name, [w, code]] of Object.entries(STATES)) {
           // a selector the browser cannot query: no sample, static fallback
         }
       }
-      return { hits, tags };
+      return { hits, tags, types, ids };
     },
     [code, allSels.map((s) => [s, strip(s)])]
   );
@@ -251,6 +294,8 @@ for (const [name, [w, code]] of Object.entries(STATES)) {
     if (!sample.has(s)) sample.set(s, new Set());
     for (const i of m) sample.get(s).add(`${name}:${i}`);
   }
+  for (const [i, t] of Object.entries(res.types)) TYPE_OF.set(`${name}:${i}`, t);
+  for (const [id, cls] of Object.entries(res.ids)) for (const c of Object.keys(cls)) ID_CLASSES.push([id, c]);
   for (const [t, set] of Object.entries(res.tags)) {
     if (!TAGS.has(t)) TAGS.set(t, new Set());
     for (const tag of Object.keys(set)) TAGS.get(t).add(tag);
@@ -293,6 +338,11 @@ const note = (a, b) => {
   if (!CO.has(a)) CO.set(a, new Set());
   CO.get(a).add(b);
 };
+// An id and the classes its element carries meet (`#subagentsPanel` is `.subagents-panel`).
+for (const [id, c] of ID_CLASSES) {
+  note(id, c);
+  note(c, id);
+}
 for (const m of SRC.matchAll(/(["'`])((?:(?!\1)[^\n\\])*)\1/g)) {
   const body = m[2].replace(/\$\{[^}]*\}/g, '*');
   const parts = body.split(/\s+/).filter((t) => /^[a-zA-Z][\w-]*\*?$/.test(t) || /^[a-zA-Z][\w-]*-\*$/.test(t));
@@ -339,6 +389,9 @@ function identities(sel) {
 
 const EXCL_STATES = ['focus-visible', 'focus-within', 'focus', 'hover', 'active', 'checked', 'disabled'];
 function exclusiveStates(x, y) {
+  // `.active` and `:not(.active)` (the selected-tab convention) never meet either.
+  const neg = /:not\(\.active\)/, negAll = /:not\(\.active\)/g, pos = /\.active(?![\w-])/;
+  if ((neg.test(x) && pos.test(y.replace(negAll, ''))) || (neg.test(y) && pos.test(x.replace(negAll, '')))) return true;
   for (const st of EXCL_STATES) {
     const neg = new RegExp(`:not\\(:${st}\\)`);
     const pos = new RegExp(`:${st}(?![\\w-])`);
@@ -347,18 +400,27 @@ function exclusiveStates(x, y) {
   }
   return false;
 }
+// Does selector text name token t (a whole class or id, not a prefix of a longer one)?
+const hasTok = (text, t) => new RegExp(`${t.replace(/[.#]/, '\\$&')}(?![\\w-])`).test(text);
 function reach(a, b) {
   if (a.pseudoEl !== b.pseudoEl) return false;
   if (a.tag && b.tag && a.tag !== b.tag) return false; // two different elements
   // :X and :not(:X) never hold at once on one element (X a state: hover, focus...)
   if (exclusiveStates(subjectText(a), subjectText(b))) return false;
   const sa = sample.get(a.text), sb = sample.get(b.text);
+  if (a.typeVal && b.typeVal && a.typeVal !== b.typeVal) return false; // one element, one type at a time
+  if (typeMismatch(a, sb, b) || typeMismatch(b, sa, a)) return false;
   if (sa && sb) {
     for (const e of sa) if (sb.has(e)) return true;
     if (a.generic || b.generic) return false; // a sampled element-wide rule: its sample is the answer
   }
   if (!a.generic && !b.generic) {
     const ia = identities(a), ib = identities(b);
+    // A compound subject's element carries ALL its markup classes, so every pair
+    // across the two subjects must be able to share one element.
+    const own = (x) => [...x.conj].filter((t) => !ADDED.has(t));
+    const pairOk = (t, u) => t === u || t.split('--')[0] === u.split('--')[0] || coOccur(t, u);
+    if (own(a).some((t) => own(b).some((u) => !pairOk(t, u)))) return false;
     if (ia && ib) return ia.some((t) => ib.includes(t)) || ia.some((t) => ib.some((u) => coOccur(t, u)));
     // a runtime-only subject with no known element: judge it by its ancestors or tag
     const [g, x] = ia ? [b, a] : [a, b];
@@ -368,15 +430,37 @@ function reach(a, b) {
     // would meet every span on the page); with it, a scoped rule on a runtime class
     // can miss a generic rule inside that scope, which is why hide utilities never
     // move (HIDE_UTILITY) and the probes stay the backstop.
-    if (g.ctxToks.size) return [...g.ctxToks].some((t) => x.text.includes(t));
+    if (g.ctxToks.size) return [...g.ctxToks].some((t) => hasTok(x.text, t));
     if (g.tag) return tagMayBe(x, g.tag);
     return true;
   }
   if (a.generic && b.generic) return true;
   const [g, x] = a.generic ? [a, b] : [b, a];
-  if (g.ctxToks.size) return [...g.ctxToks].some((t) => x.text.includes(t)); // see the assumption above
+  if (g.ctxToks.size) return [...g.ctxToks].some((t) => hasTok(x.text, t)); // see the assumption above
   if (!g.tag) return true;
   return tagMayBe(x, g.tag);
+}
+// `input[type="password"]` never meets a static input of another type: true when
+// x names a type, y's sample is complete (y's classes appear in no JS markup, so
+// nothing creates more of its elements), and every input y matched has another
+// type that no script rewrites.
+const JS_SRC = fs.readdirSync(PUB).filter((f) => f.endsWith('.js')).map((f) => fs.readFileSync(PUB + f, 'utf8')).join('\n');
+const JS_MARKUP_CLASSES = new Set(
+  [...JS_SRC.matchAll(/class(?:Name)?\s*[=:]\s*\\?['"`]([^'"`]*)/g)].flatMap((m) => m[1].split(/\s+/).filter(Boolean).map((c) => '.' + c))
+);
+const TYPE_REWRITTEN = new Set(
+  [...JS_SRC.matchAll(/(\w+)\.type\s*=\s*['"](?!button)/g)].flatMap((m) =>
+    [...JS_SRC.matchAll(new RegExp(`\\b${m[1]}\\s*=\\s*document\\.getElementById\\(['"]([\\w-]+)`, 'g'))].map((n) => n[1])
+  )
+);
+function typeMismatch(x, sy, y) {
+  if (!x.typeVal || !sy || x.typeVal === y.typeVal) return false;
+  if ([...y.toks, ...y.ctxToks].some((t) => ADDED.has(t) || JS_MARKUP_CLASSES.has(t))) return false;
+  for (const e of sy) {
+    const t = TYPE_OF.get(e);
+    if (!t || t[0] === x.typeVal || TYPE_REWRITTEN.has(t[1])) return false;
+  }
+  return true;
 }
 // Can an element x's selector matches be a <tag>? From x's own tag, else the tags its
 // classes are seen on (samples, then source), else any tag the markup gives a class.
@@ -444,8 +528,12 @@ const CHAINS = args.includes('--chains') || args.includes('--apply-chains');
 const FIX_STATE = /:(hover|focus-visible|focus|active)(?![\w-])/;
 function stateFix(x, sx, y, sy) {
   if (!CHAINS || y.layer || y.decls.some((d) => d.important)) return null;
-  const m = subjectText(sx).match(FIX_STATE);
-  if (!m || STATE.test(subjectText(sy)) || sy.pseudoEl) return null;
+  // A pseudo state, or `.active`: the selected-item class competitors of the active
+  // tab already skip with `:where(:not(.active))`.
+  const own = (t) => t.replace(/:(not|where|is|has)\((?:[^()]|\([^()]*\))*\)/g, '');
+  const m = subjectText(sx).match(FIX_STATE) || (/\.active(?![\w-])/.test(own(subjectText(sx))) ? [0, '.active'] : null);
+  if (!m || STATE.test(own(subjectText(sy))) || sy.pseudoEl) return null;
+  if (m[1] === '.active' && /\.active(?![\w-])/.test(subjectText(sy))) return null;
   // The edit takes Y off the element while X's state holds, so X must really be
   // styling Y's element then: reach() errs toward "may meet", which is safe for
   // blocking a move and wrong here. Require the two subjects to name the same
@@ -626,7 +714,7 @@ if (CHAINS) {
           groups.get(key).decls.push(d);
         }
         for (const { states, decls: ds } of groups.values())
-          out.push({ sels: [sels[i] + states.map((st) => `:where(:not(:${st}))`).join('')], decls: ds });
+          out.push({ sels: [sels[i] + states.map((st) => `:where(:not(${st.startsWith('.') ? st : ':' + st}))`).join('')], decls: ds });
       }
       let anchor = r;
       out.forEach((o, k) => {

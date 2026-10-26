@@ -629,6 +629,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-refs {
   min-width: 0;
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group + .tab-layout-group {
   margin-top: 4px;
 }
@@ -659,6 +660,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header.tab-lay
   background: color-mix(in srgb, var(--accent) 22%, transparent);
   transition: background-color 0.6s ease-out, color 0.6s ease-out;
 }
+} /* @layer features */
 
 @media (prefers-reduced-motion: reduce) {
   html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header.tab-layout-group-arrived {
@@ -732,6 +734,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header:focus-v
   }
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-menu:hover {
   color: var(--text);
   background: var(--bg-tertiary, var(--bg-hover));
@@ -744,6 +747,12 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-name--renaming
   overflow: visible;
   text-overflow: clip;
 }
+
+html[data-tab-orientation='vertical'] .tab-rail .session-tabs--grouped .session-tab,
+html[data-tab-orientation='vertical'] .tab-rail .session-tabs--grouped .tab-layout-group-header {
+  user-select: none;
+}
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-rename-input {
   flex: 1 1 0;
@@ -760,11 +769,6 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-rename-input {
   font-weight: 600;
   letter-spacing: normal;
   user-select: text;
-}
-
-html[data-tab-orientation='vertical'] .tab-rail .session-tabs--grouped .session-tab,
-html[data-tab-orientation='vertical'] .tab-rail .session-tabs--grouped .tab-layout-group-header {
-  user-select: none;
 }
 
 /* --- Focus section (pinned shortcuts, app.js _renderTabFocus) ---------- */
@@ -1908,7 +1912,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
 .session-tab:where(:not(.active))[data-color="blue"] { border-left: 3px solid var(--session-blue); }
 .session-tab:where(:not(.active))[data-color="purple"] { border-left: 3px solid var(--session-purple); }
 .session-tab:where(:not(.active))[data-color="pink"] { border-left: 3px solid var(--session-pink); }
-
+@layer features {
 /* Tab number indicator (Alt+N shortcut hint) */
 .session-tab .tab-number {
   display: inline-flex;
@@ -1925,6 +1929,7 @@ html[data-line-anim="blur"] .connection-line.line-enter {
   flex-shrink: 0;
   font-family: monospace;
 }
+} /* @layer features */
 
 .session-tab.active .tab-number {
   background: rgba(0, 255, 102, 0.2);
@@ -2066,17 +2071,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   ) {
   display: none;
 }
-
-/* Icons expand on the ACTIVE tab only (in flow): selection is a deliberate
-   click, so the width change never happens while aiming at a tab, background
-   tabs keep their full title on hover, and a stray click can only switch.
-   Middle-click closes any tab (_setupTabMiddleClickClose in app.js). */
-.session-tab.active .tab-close {
-  opacity: 1;
-  width: auto;
-  padding: 0.15rem 0.35rem;
-}
-
+@layer features {
 .session-tab.new-tab {
   padding: 0.35rem 0.5rem;
   color: var(--text-muted);
@@ -2086,6 +2081,17 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 
 .session-tab.new-tab:hover {
   color: var(--green);
+}
+} /* @layer features */
+
+/* Icons expand on the ACTIVE tab only (in flow): selection is a deliberate
+   click, so the width change never happens while aiming at a tab, background
+   tabs keep their full title on hover, and a stray click can only switch.
+   Middle-click closes any tab (_setupTabMiddleClickClose in app.js). */
+.session-tab.active .tab-close {
+  opacity: 1;
+  width: auto;
+  padding: 0.15rem 0.35rem;
 }
 
 /* Tab alerts: a STEADY red/yellow base with a pulse breathing on top.
@@ -2296,6 +2302,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 }
 
 /* Tunnel Panel Dropdown */
+@layer features {
 .tunnel-panel {
   position: fixed;
   top: 36px;
@@ -2326,6 +2333,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   align-items: center;
   gap: 8px;
 }
+} /* @layer features */
 
 @layer features {
 .tunnel-panel-status {
@@ -2448,6 +2456,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 }
 } /* @layer features */
 
+@layer features {
 .tunnel-panel-btn.btn-start {
   background: rgba(34, 197, 94, 0.1);
   border-color: rgba(34, 197, 94, 0.3);
@@ -2472,12 +2481,14 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: var(--bg-input);
   color: var(--text-dim);
 }
+} /* @layer features */
 
 .tunnel-panel-btn.btn-qr:hover {
   background: var(--bg-hover);
   color: var(--text);
 }
 
+@layer features {
 .tunnel-panel-btn.btn-revoke {
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
@@ -2488,6 +2499,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 .tunnel-panel-btn.btn-revoke:hover {
   background: rgba(239, 68, 68, 0.2);
 }
+} /* @layer features */
 
 @layer features {
 .header-tokens {
@@ -2596,6 +2608,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    gear turns, the folder opens and the Tiles squares spread apart; every other
    icon just takes the hover colour. Pointer devices only (a tap must not leave an
    icon stuck mid-motion), and no motion at all under reduced motion. */
+@layer features {
 .btn-icon-header.btn-settings svg,
 .btn-icon-header.btn-tile-grid svg rect,
 .btn-icon-header.btn-file-viewer svg .icon-folder-closed,
@@ -2612,11 +2625,23 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   opacity: 0;
   transform: translateY(1px);
 }
+} /* @layer features */
 
 @media (hover: hover) {
+  @layer features {
   .btn-icon-header.btn-settings:hover svg {
     transform: rotate(45deg);
   }
+
+  .btn-icon-header.btn-file-viewer:hover svg .icon-folder-closed {
+    opacity: 0;
+  }
+
+  .btn-icon-header.btn-file-viewer:hover svg .icon-folder-open {
+    opacity: 1;
+    transform: none;
+  }
+  } /* @layer features */
 
   .btn-icon-header.btn-tile-grid:hover svg rect:nth-of-type(1) {
     transform: translate(-1.5px, -1.5px);
@@ -2632,15 +2657,6 @@ html[data-tab-orientation='vertical'].tab-rail-compact
 
   .btn-icon-header.btn-tile-grid:hover svg rect:nth-of-type(4) {
     transform: translate(1.5px, 1.5px);
-  }
-
-  .btn-icon-header.btn-file-viewer:hover svg .icon-folder-closed {
-    opacity: 0;
-  }
-
-  .btn-icon-header.btn-file-viewer:hover svg .icon-folder-open {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -2902,6 +2918,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    layout in mobile.css follows the same active-only pattern with its own
    sizing; the tablet touch fallback there keeps icons always visible. */
 
+@layer features {
 .session-tab .tab-actions {
   display: flex;
   align-items: center;
@@ -2929,6 +2946,11 @@ html[data-tab-orientation='vertical']:not(.tab-rail-compact) .tab-rail .tab-name
 html[data-tab-orientation='vertical'].tab-rail-compact .session-tab.active > .tab-actions > .tab-more {
   display: inline-flex;
 }
+} /* @layer features */
+
+html[data-tab-orientation='vertical'].tab-rail-compact .session-tab .tab-actions > :is(.tab-gear, .tab-detach, .tab-close) {
+  display: none;
+}
 
 .session-tab:hover > .tab-actions > .tab-more,
 .session-tab:focus-within > .tab-actions > .tab-more,
@@ -2945,10 +2967,6 @@ html[data-tab-orientation='vertical']:not(.tab-rail-compact) .tab-rail
   > .tab-more {
   visibility: visible;
   pointer-events: auto;
-}
-
-html[data-tab-orientation='vertical'].tab-rail-compact .session-tab .tab-actions > :is(.tab-gear, .tab-detach, .tab-close) {
-  display: none;
 }
 
 @media (pointer: coarse) {
@@ -5060,6 +5078,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .history-filter {
   width: 8.5rem;
   box-sizing: border-box;
@@ -5073,17 +5092,18 @@ html[data-skin="og"] .welcome-primary:hover {
   transition: border-color var(--transition-smooth), background var(--transition-smooth);
 }
 
-.history-filter:focus {
-  border-color: rgba(59, 130, 246, 0.5);
-  background: rgba(255, 255, 255, 0.06);
-}
-
 .history-filter::placeholder {
   color: var(--text-dim);
 }
 
 .history-sort {
   max-width: 7.5rem;
+}
+} /* @layer features */
+
+.history-filter:focus {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 @layer features {
@@ -5294,6 +5314,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .history-detail-value {
   color: var(--text);
   flex: 1;
@@ -5311,6 +5332,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text-dim);
   font-size: 0.68rem;
 }
+} /* @layer features */
 
 @media (max-width: 640px) {
   .history-item-meta {
@@ -5452,6 +5474,7 @@ html[data-skin="og"] .welcome-primary:hover {
 } /* @layer features */
 
 /* Bottom Toolbar */
+@layer features {
 .toolbar {
   display: flex;
   align-items: center;
@@ -5476,15 +5499,6 @@ html[data-skin="og"] .welcome-primary:hover {
   z-index: 20;
 }
 
-/* backdrop-filter creates a stacking context, trapping the popover's
-   z-index inside the toolbar. When the popover is open, raise the toolbar
-   above the CJK input (z-index 52) so the popover is interactable. */
-.toolbar:has(.case-settings-popover:not(.hidden)),
-.toolbar:has(.case-combobox-list:not(.hidden)),
-.toolbar:has(.run-mode-menu.active) {
-  z-index: 100;
-}
-
 .toolbar-left,
 .toolbar-right {
   display: flex;
@@ -5496,6 +5510,16 @@ html[data-skin="og"] .welcome-primary:hover {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+} /* @layer features */
+
+/* backdrop-filter creates a stacking context, trapping the popover's
+   z-index inside the toolbar. When the popover is open, raise the toolbar
+   above the CJK input (z-index 52) so the popover is interactable. */
+.toolbar:has(.case-settings-popover:not(.hidden)),
+.toolbar:has(.case-combobox-list:not(.hidden)),
+.toolbar:has(.run-mode-menu.active) {
+  z-index: 100;
 }
 
 /* Below ~1500px the absolutely-centered group can land on top of the case
@@ -6515,6 +6539,7 @@ html[data-skin="og"] .welcome-primary:hover {
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
 }
 
+@layer features {
 .case-settings-popover {
   position: absolute;
   bottom: 100%;
@@ -6539,6 +6564,7 @@ html[data-skin="og"] .welcome-primary:hover {
   margin-top: 0.2rem;
   font-size: 0.6rem;
 }
+} /* @layer features */
 
 /* Case Management List (Manage tab) */
 @layer features {
@@ -7163,7 +7189,7 @@ html[data-skin="og"] .welcome-primary:hover {
   padding: 0.75rem 1rem;
   border-top: 1px solid var(--border-color);
 }
-
+} /* @layer features */
 /* Both messages ARE the modal's whole explanatory content, not a one-line caption under
    a form field, so .form-hint's 0.65rem caption size (right for what it was designed for)
    read as illegibly small here, worst on the multi-sentence context-window explanation. */
@@ -7173,8 +7199,7 @@ html[data-skin="og"] .welcome-primary:hover {
   line-height: 1.5;
   color: var(--text);
 }
-
-
+@layer features {
 /* Mobile Case Picker - Base Styles */
 .mobile-case-picker-sheet {
   position: fixed;
@@ -7903,6 +7928,7 @@ html[data-skin="og"] .welcome-primary:hover {
   min-width: 0;
 }
 } /* @layer features */
+@layer features {
 .worktree-new > legend {
   font-size: 0.72rem;
   font-weight: 600;
@@ -7920,6 +7946,8 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text-dim);
   margin-bottom: 0.5rem;
 }
+} /* @layer features */
+
 @layer features {
 .wt-btn {
   font: inherit;
@@ -8992,6 +9020,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .center-status-banner.show {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -9015,6 +9044,7 @@ kbd {
   border-top-color: var(--accent, var(--text));
   animation: center-status-spin 0.8s linear infinite;
 }
+} /* @layer features */
 
 @keyframes center-status-spin {
   to {
@@ -9472,6 +9502,7 @@ kbd {
 }
 
 /* Task Badge on Session Tab */
+@layer features {
 .session-tab .tab-badge {
   display: flex;
   align-items: center;
@@ -9509,6 +9540,7 @@ kbd {
   margin-left: 4px;
   transition: transform 0.1s, background 0.15s;
 }
+} /* @layer features */
 
 @media (hover: hover) {
   .session-tab .tab-subagent-badge:hover {
@@ -9555,6 +9587,7 @@ kbd {
   letter-spacing: 0.03em;
 }
 /* Per-item type glyph in the ULTRA dropdown (🧬 run vs 📄 transcript). */
+@layer features {
 .subagent-dropdown-item .ultracode-dd-icon {
   font-size: 0.7rem;
   line-height: 1;
@@ -9581,6 +9614,7 @@ kbd {
   display: block;
   animation: dropdownFadeIn 0.1s ease-out;
 }
+} /* @layer features */
 
 @keyframes dropdownFadeIn {
   from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
@@ -9604,18 +9638,21 @@ kbd {
    On iOS Safari, :hover triggers a "double-tap" requirement — first tap activates
    hover state, second tap fires click. Guarding with @media(hover:hover) avoids this. */
 @media (hover: hover) {
+  @layer features {
   .subagent-dropdown-item:hover {
     background: var(--bg-hover);
   }
   .subagent-dropdown-item:hover .subagent-dropdown-name {
     color: var(--accent-hover);
   }
-  .subagent-dropdown-item:hover .subagent-dropdown-close {
-    opacity: 0.6;
-  }
   .subagent-dropdown-close:hover {
     opacity: 1;
     color: var(--red);
+  }
+  } /* @layer features */
+
+  .subagent-dropdown-item:hover .subagent-dropdown-close {
+    opacity: 0.6;
   }
 }
 
@@ -9624,8 +9661,8 @@ kbd {
   .subagent-dropdown-item:active {
     background: var(--bg-hover);
   }
-  .subagent-dropdown-close {
-    opacity: 0.6; /* Always visible on touch (no hover to reveal) */
+  .subagent-dropdown-close:where(:not(:hover)) {
+    opacity: 0.6;
   }
 }
 
@@ -9664,11 +9701,14 @@ kbd {
 
 .subagent-dropdown-close {
   font-size: 0.9rem;
-  color: var(--text-muted);
   cursor: pointer;
   padding: 0 2px;
-  opacity: 0;
   transition: opacity 0.1s, color 0.1s;
+}
+
+.subagent-dropdown-close:where(:not(:hover)) {
+  color: var(--text-muted);
+  opacity: 0;
 }
 
 @layer features {
@@ -10414,17 +10454,9 @@ kbd {
   color: #f59e0b;
 }
 
+@layer features {
 .activity-line.hook-line .tool-icon {
   color: #f59e0b;
-}
-
-/* Tool result activity */
-.subagent-activity.tool-result .icon {
-  color: var(--success);
-}
-
-.subagent-activity.tool-result.error .icon {
-  color: var(--red);
 }
 
 .activity-line.result-line .tool-icon {
@@ -10432,6 +10464,16 @@ kbd {
 }
 
 .activity-line.result-line.error .tool-icon {
+  color: var(--red);
+}
+} /* @layer features */
+
+/* Tool result activity */
+.subagent-activity.tool-result .icon {
+  color: var(--success);
+}
+
+.subagent-activity.tool-result.error .icon {
   color: var(--red);
 }
 
@@ -10529,6 +10571,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .subagent-window-title .icon {
   font-size: 1rem;
 }
@@ -10538,6 +10581,12 @@ kbd {
   font-size: 0.8rem;
   color: var(--text);
 }
+
+.subagent-window-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+} /* @layer features */
 
 .subagent-window-title .status {
   font-size: 0.6rem;
@@ -10558,11 +10607,6 @@ kbd {
 .subagent-window-title .status.completed {
   background: var(--accent);
   color: white;
-}
-
-.subagent-window-actions {
-  display: flex;
-  gap: 0.3rem;
 }
 
 .subagent-window-actions button {
@@ -10820,6 +10864,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .connection-line.lineage-line {
   stroke: var(--lineage-color, var(--session-blue, #2b8fd9));
   stroke-width: 1.5;
@@ -10853,6 +10898,7 @@ kbd {
 .connection-line.lineage-line--proxied.lineage-line--working {
   opacity: 0.65;
 }
+} /* @layer features */
 
 /* The working route marches from parent to child, so the line itself carries
    the signal. Motion is opt-out-able at the OS level. */
@@ -12717,6 +12763,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .advanced-options[open] summary {
   margin-bottom: 0.75rem;
 }
@@ -12742,6 +12789,7 @@ kbd {
 .docker-quick-settings > summary {
   font-size: 0.85rem;
 }
+} /* @layer features */
 
 /* ═══════════════════════════════════════════════════════════════
    Response Viewer — native-scroll overlay for reading Claude responses
@@ -12781,6 +12829,7 @@ kbd {
 
 /* "Response Viewer" header toggle (App Settings → Display) — must out-specify
    the inline-flex !important above */
+@layer features {
 .btn-response-viewer-header.btn-response-viewer-header--hidden {
   display: none;
 }
@@ -12790,6 +12839,7 @@ kbd {
 .btn-readmymind.btn-readmymind--hidden {
   display: none;
 }
+} /* @layer features */
 
 /* Read My Mind modal: top suggestion in an editable single-line field with the
    kind badge beside it and the rationale below. */
@@ -13078,12 +13128,15 @@ html.dock-open [data-docked='active'] {
 html.dock-open [data-docked='background'] {
   display: none;
 }
+@layer features {
 /* Docked panels are not windows: no move cursor on their title bars. */
 html.dock-open [data-docked] .file-browser-header,
 html.dock-open [data-docked] .monitor-panel-header,
 html.dock-open [data-docked] .subagents-panel-header {
   cursor: default;
 }
+} /* @layer features */
+
 /* A collapsed Subagents bar (header only) sits beside the column, not over it. */
 html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   right: calc(var(--dock-w) + 0.5rem);
@@ -13290,6 +13343,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 
+@layer features {
 .btn-attachments-history.btn-attachments-history--hidden {
   display: none;
 }
@@ -13302,14 +13356,15 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .btn-file-viewer.btn-file-viewer--hidden {
   display: none;
 }
+.btn-ultracode-agents.btn-ultracode-agents--hidden {
+  display: none;
+}
+} /* @layer features */
 
 /* "Cron" footer-toolbar button — opt-in, hidden by default (enable under App
    Settings → Display → Header Displays). Toolbar button, not a header icon, so
    only the hide marker is needed; out-specify any base .cm-btn--bar display. */
 .cm-btn--bar.btn-cron--hidden {
-  display: none;
-}
-.btn-ultracode-agents.btn-ultracode-agents--hidden {
   display: none;
 }
 
@@ -13580,6 +13635,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   font-size: 0.95rem;
   flex-shrink: 0;
 }
+@layer features {
 .ultracode-window-title .uw-name {
   font-size: 0.78rem;
   font-weight: 600;
@@ -13597,6 +13653,8 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   gap: 0.25rem;
   flex-shrink: 0;
 }
+} /* @layer features */
+
 .ultracode-window-actions button {
   background: transparent;
   border: none;
@@ -14557,6 +14615,7 @@ body.touch-device.cjk-input-visible .main {
    Base styles in styles.css so iPad landscape works.
    ═══════════════════════════════════════════════════════════════ */
 
+@layer features {
 .paste-overlay {
   position: fixed;
   inset: 0;
@@ -14591,6 +14650,7 @@ body.touch-device.cjk-input-visible .main {
   resize: none;
   box-sizing: border-box;
 }
+} /* @layer features */
 
 .paste-textarea:focus {
   outline: none;
@@ -14638,6 +14698,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .prompt-composer-overlay {
   overflow-y: auto;
   padding: min(15dvh, 72px) 0 calc(12px + env(safe-area-inset-bottom));
@@ -14661,11 +14722,6 @@ body.touch-device.cjk-input-visible .main {
   color: var(--text);
 }
 
-.prompt-composer-header span {
-  color: var(--text-dim);
-  font-size: 12px;
-}
-
 .prompt-composer-textarea {
   min-height: min(34dvh, 240px);
   max-height: 50dvh;
@@ -14674,6 +14730,12 @@ body.touch-device.cjk-input-visible .main {
 
 .prompt-composer-actions {
   flex-wrap: wrap;
+}
+} /* @layer features */
+
+.prompt-composer-header span {
+  color: var(--text-dim);
+  font-size: 12px;
 }
 
 .prompt-composer-actions button {
@@ -15355,6 +15417,7 @@ body.touch-device.cjk-input-visible .main {
 } /* @layer features */
 @keyframes orch-spin { to { transform: rotate(360deg); } }
 
+@layer features {
 .orch-goal {
   margin-bottom: 6px;
   color: var(--text-secondary);
@@ -15378,6 +15441,8 @@ body.touch-device.cjk-input-visible .main {
   transition: width 0.3s ease;
   border-radius: 4px;
 }
+} /* @layer features */
+
 .orch-progress-bar span {
   position: relative;
   display: flex;
@@ -15967,13 +16032,16 @@ body.touch-device.cjk-input-visible .main {
   transition: background var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
 }
 } /* @layer features */
+@layer features {
 .cron-weekdays label:hover { border-color: var(--accent); color: var(--text); }
-.cron-weekdays label input { position: absolute; opacity: 0; width: 0; height: 0; }
-.cron-weekdays label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* Footer */
 .cron-form-error { color: var(--danger, #e55); margin-top: 0.4rem; }
 .cron-form-error:empty { display: none; }
+} /* @layer features */
+
+.cron-weekdays label input { position: absolute; opacity: 0; width: 0; height: 0; }
+.cron-weekdays label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
 @layer features {
 .cron-form-actions {
   display: flex; gap: 0.5rem; justify-content: flex-end;
@@ -16699,6 +16767,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 /* Row accents: same language as the session tabs and the phone overview — red
    means a question is pending, yellow means it wants input, green means work is
    happening. Nothing else on this screen may reuse these colors. */
+@layer features {
 .home-sessions-row--needs,
 .home-sessions-row--error {
   border-color: color-mix(in srgb, var(--red) 50%, transparent);
@@ -16713,6 +16782,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 .home-sessions-row--working {
   border-color: color-mix(in srgb, var(--green) 35%, transparent);
 }
+} /* @layer features */
 
 @keyframes home-sessions-blink-red {
   0%, 100% { border-color: color-mix(in srgb, var(--red) 50%, transparent); }
@@ -17001,12 +17071,27 @@ html[data-tab-orientation='vertical'] .home-sessions {
   margin-top: 16px;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section-head {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 3px;
 }
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section-blurb {
+  margin: 0 0 9px 32px;
+  font-size: 0.67rem;
+  color: var(--text-muted);
+}
+
+:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-empty {
+  margin: 24px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section-head svg {
   color: var(--accent);
@@ -17024,19 +17109,6 @@ html[data-tab-orientation='vertical'] .home-sessions {
   font-weight: 640;
   letter-spacing: -0.015em;
   color: var(--text);
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section-blurb {
-  margin: 0 0 9px 32px;
-  font-size: 0.67rem;
-  color: var(--text-muted);
-}
-
-:is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-empty {
-  margin: 24px 0 0;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  text-align: center;
 }
 
 /* ── groups ───────────────────────────────────────────────────────────── */
@@ -18311,6 +18383,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border-radius: 9px;
 }
 
+@layer features {
 #sessionOptionsModal .set-num {
   width: 76px;
 }
@@ -18322,6 +18395,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 #sessionOptionsModal .set-check {
   font-size: 0.82rem;
 }
+} /* @layer features */
 
 #sessionOptionsModal .set-check input {
   width: 15px;
@@ -18961,10 +19035,24 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
   line-clamp: unset;
 }
 
+@layer features {
 html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab .tab-folder {
   font-size: 0.66rem;
   margin-top: 0.1rem;
 }
+
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact)
+  .tab-rail
+  .session-tab
+  .tab-status.busy::after {
+  inset: -4px;
+  border-width: 2px;
+}
+
+html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-working:where(:not(.active)) {
+  border-color: color-mix(in srgb, var(--green) 35%, transparent);
+}
+} /* @layer features */
 
 /* The state line gets the full width of the card (`flex: 0 0 100%` wraps it),
    so the stamps stop competing with the gear/close column for the sliver of
@@ -19012,14 +19100,6 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
   box-shadow: 0 0 8px 2px color-mix(in srgb, var(--green) 55%, transparent);
 }
 
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact)
-  .tab-rail
-  .session-tab
-  .tab-status.busy::after {
-  inset: -4px;
-  border-width: 2px;
-}
-
 /* The exited-agent mute, again, for the rich rail (Ark0N/Codeman#446).
    The strip's rule is (0,5,0) and the three state rules above are (0,9,1), so
    on this rail an exited session kept a full green dot and the working halo
@@ -19053,10 +19133,6 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
 html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-waiting:where(:not(.active)) {
   border-color: color-mix(in srgb, var(--yellow) 50%, transparent);
   animation: home-sessions-blink-yellow 3.5s ease-in-out infinite;
-}
-
-html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .session-tab.tab-state-working:where(:not(.active)) {
-  border-color: color-mix(in srgb, var(--green) 35%, transparent);
 }
 
 /* No `.active` rule here on purpose: `.session-tab.active` (and its per-skin
@@ -19249,6 +19325,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   }
 }
 
+@layer features {
 .offline-overlay {
   padding-right: calc(20px + var(--fold-inline-end));
   padding-bottom: calc(20px + var(--safe-area-bottom) + var(--fold-block-end));
@@ -19277,6 +19354,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   padding-right: var(--fold-inline-end);
   padding-bottom: calc(12px + env(safe-area-inset-bottom) + var(--fold-block-end));
 }
+} /* @layer features */
 
 /* The response viewer is a bottom sheet, so a vertical hinge running through it
    is fine, since it is a wide surface like the terminal and inset dialogs are what
@@ -20172,6 +20250,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
   }
 }
 
+@layer features {
 .tile-body .xterm {
   transition: opacity 160ms ease-out;
 }
@@ -20184,6 +20263,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
 .tile.tile--loading .tile-body::after {
   animation: tile-loading-breathe 1.2s ease-in-out infinite alternate;
 }
+} /* @layer features */
 
 @keyframes tile-loading-breathe {
   from {
@@ -21387,13 +21467,11 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
     color: var(--text-muted);
   }
 
+  @layer features {
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab .tab-status {
     display: none;
   }
-
-  .session-tabs-host > .session-tabs.tabs-ledger > .session-tab.tab-alert-idle {
-    --ledger-bar: var(--yellow);
-  }
+  } /* @layer features */
 
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab:is(.tab-alert-action, :has(> .tab-status.error)) {
     --ledger-bar: var(--red);
@@ -21401,6 +21479,10 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
 
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab:is(.tab-agent-exited, .session-tab--web, :has(> .tab-status.stopped)) {
     --ledger-bar: var(--text-muted);
+  }
+
+  .session-tabs-host > .session-tabs.tabs-ledger > .session-tab.tab-alert-idle {
+    --ledger-bar: var(--yellow);
   }
 
   /* A tiled session's cell keeps the tile grid's underline (.in-tiles) beside

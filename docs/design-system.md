@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (five tranches: 218 blocks, about 1,875 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (six tranches: 257 blocks, about 1,990 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -117,6 +117,32 @@ or the same tag): `reach()` errs toward "may meet", which is safe for blocking a
 move and wrong for taking a declaration off an element. That left four edits
 (the phone header tab chip, `.tab-glow`, the ultracode card states) and moved 9
 blocks (45 rules, 148 declarations); `--audit` uses the same overlap rule.
+The sixth tranche came from correcting `reach()`, the planner's "can these two
+selectors style one element" test, which still erred wide in four places: a
+context class matched as a substring (`.session-tab > *` "reached" the
+`.session-tabs` strip), a compound subject met anything one of its classes met
+(`.tunnel-panel-btn.btn-stop` "reached" `.cm-btn--bar` through the toolbar's
+Stop), `[data-docked]` reached any element (only `panel-dock.js` writes it, on
+its four panels), and inputs of different types met (`.form-row
+input[type="password"]` against `[type="text"]`, or against the respawn
+duration's static number input). It also learned `.active`: a competitor of the
+active tab gets `:where(:not(.active))` like the hand-written ones. The plan
+moved 132 rules (414 declarations) at a minimum run of 3, with two chain edits
+(the subagent dropdown's close button). The JS-surface probe then caught the
+docked Subagents and Monitor panels growing a top border: mapped to their ids,
+`[data-docked]` never met the panels' own class rules (`.subagents-panel`),
+because nothing linked an id to the classes on the same element. The samples
+now record that link, the audit flagged the dock rules, and `--fix-audit` took
+those 4 back out. The state probe then caught two more, on phones: the colour
+stripe on inactive tabs (`border-left` against the phone chip's `border-color`,
+which `overlap()` missed because it compared names instead of longhands; both
+now expand to longhands, so `border-left` meets `border-color` on
+border-left-color) and the active tab's gear in the compact rail (the compound
+rule had read `:is(.tab-gear, .tab-detach, .tab-close)` as three classes on one
+element; only classes chained on the subject itself are a conjunction). With
+both fixed, the audit took 12 more rules out. The tranche nets 116 rules, and
+the audit re-checked every earlier tranche under the corrected rules and found
+nothing.
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in
