@@ -317,7 +317,12 @@ describe('the CSS', () => {
   });
 
   it('nothing moves under prefers-reduced-motion, and a web tab hides the copy', () => {
-    const block = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce) {\n  .tile-count-menu,'));
+    // Read through the `@layer features { … }` wrappers (design-system phase 4),
+    // which may sit inside the query and say nothing about what moves.
+    const flat = css
+      .replace(/^[ \t]*@layer features \{\n/gm, '')
+      .replace(/^[ \t]*\} \/\* @layer features \*\/\n/gm, '');
+    const block = flat.slice(flat.indexOf('@media (prefers-reduced-motion: reduce) {\n  .tile-count-menu,'));
     const reduced = block.slice(0, block.indexOf('\n}\n'));
     for (const sel of [
       '.tile-count-menu',

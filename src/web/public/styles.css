@@ -389,6 +389,7 @@ html[data-skin="rose-pine-dawn"] {
 }
 
 /* Button focus styles */
+@layer features {
 button:focus-visible,
 .cm-btn--bar:focus-visible,
 .btn-icon:focus-visible,
@@ -405,6 +406,13 @@ textarea:focus-visible {
   box-shadow: 0 0 0 1px var(--accent);
   outline: none;
 }
+
+/* Modal close button focus */
+.modal-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+} /* @layer features */
 
 /* xterm.js hidden textarea — must never show focus ring or caret.
  * On mobile (touch devices), override xterm.css defaults that position the
@@ -425,12 +433,6 @@ textarea:focus-visible {
   height: 1px !important;
   z-index: 0 !important;
   font-size: 16px !important; /* prevent iOS auto-zoom on focus */
-}
-
-/* Modal close button focus */
-.modal-close:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 body {
@@ -601,6 +603,7 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tabs {
   max-height: none;
 }
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .session-tab {
   width: 100%;
   max-width: none;
@@ -615,11 +618,13 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-info {
   flex: 1 1 auto;
   min-width: 0;
 }
+} /* @layer features */
 
 /* --- Grouped rail (owner tab layout) ---------------------------------- */
 /* Only rendered when the owner has at least one group (tab-layout-browser.js).
    Each group's rows sit in their OWN flex column, so the activity sort's inline
    `order` (and web tabs' `order: 9999`) rank rows within a group, never across. */
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group,
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-refs {
   display: flex;
@@ -628,6 +633,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-refs {
   gap: 2px;
   min-width: 0;
 }
+} /* @layer features */
 
 @layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group + .tab-layout-group {
@@ -662,11 +668,13 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header.tab-lay
 }
 } /* @layer features */
 
+@layer features {
 @media (prefers-reduced-motion: reduce) {
   html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header.tab-layout-group-arrived {
     transition: none;
   }
 }
+} /* @layer features */
 
 @layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle {
@@ -712,6 +720,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-toggle:focus-v
 
 /* Group editing: the header's menu glyph, the inline rename editor, and the
    pointer-drag marks. All of it lives inside the grouped rail only. */
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-menu {
   flex: 0 0 auto;
   padding: 0 4px;
@@ -725,14 +734,17 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header:hover .
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-header:focus-visible .tab-layout-group-menu {
   opacity: 1;
 }
+} /* @layer features */
 
 /* No hover on a touch tablet, and a long press there is not a contextmenu
    event: the glyph is the only way into the group menu, so keep it shown. */
+@layer features {
 @media (hover: none) {
   html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-menu {
     opacity: 1;
   }
 }
+} /* @layer features */
 
 @layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-group-menu:hover {
@@ -849,6 +861,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus-item[aria-current='tr
 }
 } /* @layer features */
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-focus:not([hidden]) {
   display: flex;
   flex: 0 0 auto;
@@ -859,6 +872,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-focus:not([hidden]) {
   padding: 0.35rem 0.35rem 0.3rem calc(0.35rem + 24px);
   border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 }
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail :is(.tab-focus-toggle, .tab-focus-item):focus-visible {
   outline: 2px solid var(--accent);
@@ -916,6 +930,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drag-active {
 }
 } /* @layer features */
 
+@layer features {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-dragging {
   opacity: 0.45;
 }
@@ -927,6 +942,7 @@ html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drop-before {
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drop-after {
   box-shadow: inset 0 -2px 0 var(--accent);
 }
+} /* @layer features */
 
 html[data-tab-orientation='vertical'] .tab-rail .tab-layout-drop-into {
   outline: 2px solid var(--accent);
@@ -1085,6 +1101,7 @@ body.tab-rail-resizing * {
   will-change: transform, opacity;
 }
 
+@layer features {
 .session-tab.tab-enter::before {
   content: "";
   position: absolute;
@@ -1095,6 +1112,7 @@ body.tab-rail-resizing * {
   animation-delay: var(--tab-enter-delay, 0ms);
   animation-fill-mode: both;
 }
+} /* @layer features */
 
 /* Slide, drifts in from the right and settles. */
 html[data-tab-anim="slide"] .session-tab.tab-enter {
@@ -1129,11 +1147,13 @@ html[data-tab-anim="crt"] .session-tab.tab-enter {
   animation-timing-function: cubic-bezier(0.3, 0.9, 0.3, 1);
 }
 
+@layer features {
 html[data-tab-anim="crt"] .session-tab.tab-enter::before {
   animation-name: tab-enter-crt-flash;
   animation-duration: calc(520ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes tab-enter-crt {
   0%   { opacity: 0; transform: scale3d(0.04, 0.09, 1); }
@@ -1171,6 +1191,7 @@ html[data-tab-anim="boot"] .session-tab.tab-enter {
   animation-timing-function: linear;
 }
 
+@layer features {
 html[data-tab-anim="boot"] .session-tab.tab-enter::before {
   background: linear-gradient(
     100deg,
@@ -1185,6 +1206,7 @@ html[data-tab-anim="boot"] .session-tab.tab-enter::before {
   animation-duration: calc(720ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-in-out;
 }
+} /* @layer features */
 
 @keyframes tab-enter-boot {
   0%   { opacity: 0; transform: translate3d(0, 5px, 0); }
@@ -1302,6 +1324,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 }
 } /* @layer features */
 
+@layer features {
 .anim-lab-themes button:hover { background: rgba(34, 197, 94, 0.16); color: var(--text); }
 
 .anim-lab-themes button.selected {
@@ -1309,6 +1332,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   background: rgba(34, 197, 94, 0.2);
   color: #fff;
 }
+} /* @layer features */
 
 @layer features {
 .anim-lab-scroll {
@@ -1383,6 +1407,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 }
 } /* @layer features */
 
+@layer features {
 .anim-lab-select select {
   background: var(--bg-dark, #111);
   color: var(--text);
@@ -1391,6 +1416,8 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
   font-size: 0.66rem;
   padding: 2px 4px;
 }
+} /* @layer features */
+
 @layer features {
 .anim-lab-range input { grid-column: 1 / -1; width: 100%; accent-color: #00ff66; }
 
@@ -1403,6 +1430,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 }
 } /* @layer features */
 
+@layer features {
 .anim-lab-demo button {
   flex: 1;
   padding: 4px 0;
@@ -1414,6 +1442,7 @@ html[data-tab-anim="blur"] .session-tab.tab-enter {
 }
 
 .anim-lab-demo button:hover { background: rgba(34, 197, 94, 0.16); border-color: rgba(0, 255, 102, 0.5); }
+} /* @layer features */
 
 @layer features {
 .anim-lab-hint { margin: 8px 0 0; font-size: 0.64rem; opacity: 0.55; }
@@ -1475,12 +1504,14 @@ html[data-win-anim="crt"] .ultracode-window.win-enter::before {
 }
 
 /* Materialize, resolves out of a blur with a short glitch. */
+@layer features {
 html[data-win-anim="materialize"] .subagent-window.win-enter,
 html[data-win-anim="materialize"] .ultracode-window.win-enter {
   animation-name: win-enter-materialize;
   animation-duration: calc(620ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+} /* @layer features */
 
 @keyframes win-enter-materialize {
   0%   { opacity: 0; transform: scale(0.94); filter: blur(16px) brightness(1.7); }
@@ -1492,6 +1523,7 @@ html[data-win-anim="materialize"] .ultracode-window.win-enter {
 }
 
 /* Unfold, hinges down from the top edge. */
+@layer features {
 html[data-win-anim="unfold"] .subagent-window.win-enter,
 html[data-win-anim="unfold"] .ultracode-window.win-enter {
   animation-name: win-enter-unfold;
@@ -1499,6 +1531,7 @@ html[data-win-anim="unfold"] .ultracode-window.win-enter {
   animation-timing-function: cubic-bezier(0.3, 0.9, 0.3, 1);
   transform-origin: 50% 0%;
 }
+} /* @layer features */
 
 @keyframes win-enter-unfold {
   0%   { opacity: 0; transform: perspective(1600px) rotateX(-88deg); }
@@ -1510,6 +1543,7 @@ html[data-win-anim="unfold"] .ultracode-window.win-enter {
 /* Beam down, holds still (so its connection line can draw toward a stable rect),
    then materializes out of a green wash. NO transform: a transformed window
    reports a transformed rect and the line would aim at the wrong place. */
+@layer features {
 html[data-win-anim="beam"] .subagent-window.win-enter,
 html[data-win-anim="beam"] .ultracode-window.win-enter {
   animation-name: win-enter-beam;
@@ -1523,6 +1557,7 @@ html[data-win-anim="beam"] .ultracode-window.win-enter::before {
   animation-duration: calc(620ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes win-enter-beam {
   0%   { opacity: 0; filter: brightness(2.6) saturate(0.4); }
@@ -1539,12 +1574,14 @@ html[data-win-anim="beam"] .ultracode-window.win-enter::before {
 }
 
 /* Pop, springs open from the centre. */
+@layer features {
 html[data-win-anim="pop"] .subagent-window.win-enter,
 html[data-win-anim="pop"] .ultracode-window.win-enter {
   animation-name: win-enter-pop;
   animation-duration: calc(460ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes win-enter-pop {
   0%   { opacity: 0; transform: scale(0.55); }
@@ -1559,12 +1596,14 @@ html[data-win-anim="pop"] .ultracode-window.win-enter {
    connection line is aimed at getBoundingClientRect(), which reports the
    TRANSFORMED box, so a big scale would swing the line's target while it draws.
    applyWindowEntrance() redraws the lines once the animation ends. */
+@layer features {
 html[data-win-anim="blur"] .subagent-window.win-enter,
 html[data-win-anim="blur"] .ultracode-window.win-enter {
   animation-name: win-enter-blur;
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
+} /* @layer features */
 
 @keyframes win-enter-blur {
   0%   { opacity: 0; filter: blur(18px); transform: scale(0.96); }
@@ -1630,9 +1669,11 @@ html[data-term-anim="crt"] .tile-body.term-enter::before {
 }
 } /* @layer features */
 
+@layer features {
 .tile-body.term-enter .xterm {
   transition: none;
 }
+} /* @layer features */
 
 @keyframes term-enter-crt {
   0%   { opacity: 0; transform: scale3d(0.6, 0.004, 1); }
@@ -1679,12 +1720,14 @@ html[data-term-anim="wipe"] .tile-body.term-enter::before {
 }
 
 /* Slide up, rises into place from below. */
+@layer features {
 html[data-term-anim="slide"] .terminal-container.term-enter,
 html[data-term-anim="slide"] .tile-body.term-enter {
   animation-name: term-enter-slide;
   animation-duration: calc(420ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+} /* @layer features */
 
 @keyframes term-enter-slide {
   0%   { opacity: 0; transform: translate3d(0, 34px, 0); }
@@ -1692,12 +1735,14 @@ html[data-term-anim="slide"] .tile-body.term-enter {
 }
 
 /* Fade, quiet, with a touch of scale. */
+@layer features {
 html[data-term-anim="fade"] .terminal-container.term-enter,
 html[data-term-anim="fade"] .tile-body.term-enter {
   animation-name: term-enter-fade;
   animation-duration: calc(340ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes term-enter-fade {
   0%   { opacity: 0; transform: scale(0.985); }
@@ -1731,12 +1776,14 @@ html[data-term-anim="fade"] .tile-body.term-enter {
    resize() and through to the PTY. `filter` is paint-only (measured live: 178x38
    before, during and after a run), and the property allowlist for every one of
    these keyframes is pinned by test/entrance-animations.test.ts. */
+@layer features {
 html[data-term-anim="blur"] .terminal-container.term-enter,
 html[data-term-anim="blur"] .tile-body.term-enter {
   animation-name: term-enter-blur;
   animation-duration: calc(520ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
+} /* @layer features */
 
 /* Opacity leads the blur - full opacity around 45%, blur still lifting - which
    is what separates the effect from a plain cross-fade. */
@@ -1751,6 +1798,7 @@ html[data-term-anim="blur"] .tile-body.term-enter {
    _applyLineEntrances(); `--line-enter-delay` is negative when an entrance is
    resuming after the SVG was rebuilt underneath it. */
 
+@layer features {
 .connection-line.line-enter {
   animation-delay: var(--line-enter-delay, 0ms);
   animation-fill-mode: both;
@@ -1764,6 +1812,7 @@ html[data-line-anim="draw"] .connection-line.line-enter {
   animation-duration: calc(420ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.32, 0.8, 0.3, 1);
 }
+} /* @layer features */
 
 @keyframes line-enter-draw {
   from { stroke-dashoffset: var(--line-len); opacity: 1; }
@@ -1771,11 +1820,13 @@ html[data-line-anim="draw"] .connection-line.line-enter {
 }
 
 /* Fade, plain opacity ramp, dashes intact. */
+@layer features {
 html[data-line-anim="fade"] .connection-line.line-enter {
   animation-name: line-enter-fade;
   animation-duration: calc(300ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes line-enter-fade {
   from { opacity: 0; }
@@ -1784,6 +1835,7 @@ html[data-line-anim="fade"] .connection-line.line-enter {
 
 /* Packet, the base line fades in and a separate bright dash rides down it. The
    packet is its own cloned path so the base line keeps its dashed look. */
+@layer features {
 html[data-line-anim="packet"] .connection-line.line-enter {
   animation-name: line-enter-fade;
   animation-duration: calc(300ms * var(--anim-enter-scale, 1));
@@ -1804,6 +1856,7 @@ html[data-line-anim="packet"] .connection-line.line-enter {
   animation-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
   animation-fill-mode: both;
 }
+} /* @layer features */
 
 @keyframes line-enter-packet {
   0%   { stroke-dashoffset: 20px; opacity: 0; }
@@ -1822,11 +1875,13 @@ html[data-line-anim="packet"] .connection-line.line-enter {
    translucency), a proxied one at 0.5. Pinning 0.9 here - as `line-enter-fade`
    above still does - lands every lineage line on the wrong opacity and snaps it
    when the class comes off. */
+@layer features {
 html[data-line-anim="blur"] .connection-line.line-enter {
   animation-name: line-enter-blur;
   animation-duration: calc(380ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
+} /* @layer features */
 
 @keyframes line-enter-blur {
   0%   { opacity: 0; filter: blur(5px) var(--line-glow); }
@@ -1868,9 +1923,11 @@ html[data-line-anim="blur"] .connection-line.line-enter {
     animation: none !important;
   }
 
+  @layer features {
   .tile-beam-lines {
     display: none;
   }
+  } /* @layer features */
 }
 
 @layer features {
@@ -2040,6 +2097,7 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name-prefix {
 }
 
 /* The prefix gives way first, down to a stub with an ellipsis. */
+@layer features {
 :is(
   html[data-tab-orientation='vertical'] .tab-rail,
   html[data-session-list='sidebar'] .session-sidebar
@@ -2060,6 +2118,7 @@ html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name-prefix {
   flex: 1 1 0;
   width: auto;
 }
+} /* @layer features */
 
 /* A compact rail row has no room for both the editor and its adornments, so
    they step aside while the name is being edited (the re-render that ends the
@@ -2123,6 +2182,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    The overlay paints above the tab's inline content (positioned vs flow), which
    is fine at these alphas and is exactly what keeps it visible over the active
    tab's opaque-ish background. */
+@layer features {
 .session-tabs .session-tab.tab-alert-action::before,
 .session-tabs .tab-layout-group-header.tab-alert-action::before {
   content: '';
@@ -2142,13 +2202,6 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   animation: tab-blink-red 2.5s ease-in-out infinite;
 }
 
-.session-tab.tab-alert-action .tab-status.idle,
-.session-tab.tab-alert-action .tab-status.busy,
-.session-tab.tab-alert-action .tab-status {
-  background: var(--red);
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
-}
-
 .session-tabs .session-tab.tab-alert-idle::before,
 .session-tabs .tab-layout-group-header.tab-alert-idle::before {
   content: '';
@@ -2161,6 +2214,14 @@ html[data-tab-orientation='vertical'].tab-rail-compact
   background: rgba(234, 179, 8, 0.1);
   box-shadow: 0 0 8px rgba(234, 179, 8, 0.35);
   animation: tab-blink-yellow 3.5s ease-in-out infinite;
+}
+} /* @layer features */
+
+.session-tab.tab-alert-action .tab-status.idle,
+.session-tab.tab-alert-action .tab-status.busy,
+.session-tab.tab-alert-action .tab-status {
+  background: var(--red);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
 }
 
 .session-tab.tab-alert-idle .tab-status.idle,
@@ -2757,11 +2818,13 @@ html[data-tab-orientation='vertical'].tab-rail-compact
    only loads up to 1023px so it cannot cover the 1024-1179px tablet range on
    its own. Same threshold as HOME_SESSIONS_MIN_WIDTH (home-sessions.js) /
    TILE_GRID_MIN_WIDTH (constants.js): keep the three in sync. */
+@layer features {
 @media (max-width: 1179px) {
   .btn-icon-header.btn-tile-grid {
     display: none;
   }
 }
+} /* @layer features */
 
 .btn-icon-header.btn-settings {
   width: 30px;
@@ -2966,6 +3029,7 @@ html[data-tab-orientation='vertical'].tab-rail-compact .session-tab .tab-actions
   display: none;
 }
 
+@layer features {
 .session-tab:hover > .tab-actions > .tab-more,
 .session-tab:focus-within > .tab-actions > .tab-more,
 .session-tab.active > .tab-actions > .tab-more,
@@ -2982,7 +3046,9 @@ html[data-tab-orientation='vertical']:not(.tab-rail-compact) .tab-rail
   visibility: visible;
   pointer-events: auto;
 }
+} /* @layer features */
 
+@layer features {
 @media (pointer: coarse) {
   .session-tab > .tab-actions > .tab-more,
   html[data-session-list='sidebar'][data-sidebar='expanded']
@@ -3001,6 +3067,7 @@ html[data-tab-orientation='vertical']:not(.tab-rail-compact) .tab-rail
     pointer-events: auto;
   }
 }
+} /* @layer features */
 
 /* The rail's ⋯ and group menus are the kit's .cm-menu--popover; only their
    layer is their own. */
@@ -3459,6 +3526,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 
 /* ===== Enhanced Ralph Wiggum Loop Panel ===== */
+@layer features {
 .ralph-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(8px);
@@ -3472,6 +3540,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   /* Performance: isolate paint and layout operations */
   contain: layout style paint;
 }
+} /* @layer features */
 
 /* Mini Progress Ring (in summary) */
 @layer features {
@@ -3795,6 +3864,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 } /* @layer features */
 
+@layer features {
 .ralph-info-unified code {
   font-size: 0.7rem;
   font-weight: 500;
@@ -3812,6 +3882,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   font-weight: 500;
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 .ralph-info-unified .ralph-tasks-count {
@@ -4068,6 +4139,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 } /* @layer features */
 
+@layer features {
 .ralph-dropdown button {
   display: block;
   width: 100%;
@@ -4109,6 +4181,7 @@ html[data-tab-logos='off'] .home-sessions-harness {
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
 
 @layer features {
 .ralph-panel.detached .ralph-summary {
@@ -4154,10 +4227,12 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 } /* @layer features */
 
+@layer features {
 .ralph-panel.detached.collapsed {
   min-height: auto;
   height: auto;
 }
+} /* @layer features */
 
 /* Main - Terminal Area */
 @layer features {
@@ -4298,10 +4373,13 @@ html[data-tab-logos='off'] .home-sessions-harness {
 }
 /* xterm's own element is width:100% above, so the container would see no
    overflow to scroll even though .xterm-screen is wider than both. */
+@layer features {
 .terminal-container.term-overflows-x .xterm {
   width: max-content;
   min-width: 100%;
 }
+} /* @layer features */
+
 /* ⚠️ NO `touch-action: pan-x` here, deliberately. The terminal's own touchmove
    handler pans this container (see `canPanHorizontally` in terminal-ui.js),
    because `touchstart` preventDefault()s every 'content' tap and that cancels
@@ -4526,10 +4604,12 @@ html[data-skin="og"] .welcome-primary:hover {
 
 /* The global accent outline would vanish against the accent fill; the offset
    puts a ring of page background between the two. */
+@layer features {
 .welcome-primary:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+} /* @layer features */
 
 /* The logo sits on a small light disc: a brand mark straight on the accent fill
    turns muddy (Claude's orange on blue), and a disc reads on dark and light
@@ -4632,6 +4712,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .welcome-chip:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -4660,9 +4741,11 @@ html[data-skin="og"] .welcome-primary:hover {
   background: color-mix(in srgb, var(--green) 9%, transparent);
   color: var(--green);
 }
+} /* @layer features */
 
 /* Touch screens get finger-sized chips. Phones too: mobile.css's 599px block
    loads later and wins at equal specificity, so it restates the 40px. */
+@layer features {
 @media (pointer: coarse) {
   .welcome-chip {
     height: 40px;
@@ -4670,11 +4753,14 @@ html[data-skin="og"] .welcome-primary:hover {
     padding: 0 1rem 0 0.85rem;
   }
 }
+} /* @layer features */
 
+@layer features {
 .welcome-tunnel-link.connecting,
 .welcome-tunnel-link:disabled {
   cursor: wait;
 }
+} /* @layer features */
 
 @layer features {
 @media (prefers-reduced-motion: reduce) {
@@ -4796,6 +4882,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .search-input {
   flex: 1;
   width: 100%;
@@ -4814,6 +4901,7 @@ html[data-skin="og"] .welcome-primary:hover {
   border-color: rgba(59, 130, 246, 0.5);
   background: rgba(255, 255, 255, 0.06);
 }
+} /* @layer features */
 
 @layer features {
 .search-input::placeholder {
@@ -5125,10 +5213,12 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .history-filter:focus {
   border-color: rgba(59, 130, 246, 0.5);
   background: rgba(255, 255, 255, 0.06);
 }
+} /* @layer features */
 
 @layer features {
 .history-empty {
@@ -5553,6 +5643,7 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Below ~1500px the absolutely-centered group can land on top of the case
    picker (the left group widens with the case name), so fall back to normal
    flex flow where overlap is impossible */
+@layer features {
 @media (max-width: 1500px) {
   .toolbar-center {
     position: static;
@@ -5560,6 +5651,7 @@ html[data-skin="og"] .welcome-primary:hover {
     margin-left: 0.4rem;
   }
 }
+} /* @layer features */
 
 @layer features {
 .version-display {
@@ -5635,11 +5727,13 @@ html[data-skin="og"] .welcome-primary:hover {
   letter-spacing: 0.01em;
 }
 
+@layer features {
 .cm-btn--bar.btn-run svg {
   flex-shrink: 0;
   width: 12px;
   height: 12px;
 }
+} /* @layer features */
 
 .cm-btn--bar.btn-run-gear {
   border-radius: 0 var(--btn-radius) var(--btn-radius) 0;
@@ -5826,9 +5920,11 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Children of a scrolling flex column must keep their natural height. Without this the ones
    that have their own `overflow` (the history list, the saved-URL list, whose min-height is 0)
    are squashed to nothing as the menu fills, instead of the menu scrolling. */
+@layer features {
 .run-mode-menu > * {
   flex-shrink: 0;
 }
+} /* @layer features */
 
 /* Above phone width the menu becomes a full-width drawer across the bottom of the
    window. The 250px cap above was sized for a `~/<dir>/<repo>` row, which assumed
@@ -5853,11 +5949,14 @@ html[data-skin="og"] .welcome-primary:hover {
   }
 }
 } /* @layer features */
+@layer features {
 .run-mode-menu.active {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+} /* @layer features */
+
 @layer features {
 .run-mode-option {
   white-space: nowrap;
@@ -5940,10 +6039,13 @@ html[data-skin="og"] .welcome-primary:hover {
   display: none;
 }
 
+@layer features {
 .run-mode-history {
   max-height: 200px;
   overflow-y: auto;
 }
+} /* @layer features */
+
 /* `overflow-y: auto` computes overflow-x to auto as well, which makes this a scroll
    container and lets a row size itself to its own content. A long path therefore
    scrolled sideways instead of ellipsizing, and before the menu was narrowed it
@@ -6015,21 +6117,31 @@ html[data-skin="og"] .welcome-primary:hover {
 } /* @layer features */
 
 /* Shell Button - Special styling */
-.cm-btn--bar.btn-shell {
+.cm-btn--bar.btn-shell:where(:not(:hover)) {
   background: linear-gradient(135deg, #1a2e1a 0%, #1e3a1e 50%, #234023 100%);
   border-color: rgba(45, 90, 45, 0.6);
   color: #8fbc8f;
-  font-weight: 600;
-  letter-spacing: 0.01em;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
+.cm-btn--bar.btn-shell {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
 
+@layer features {
 .cm-btn--bar.btn-shell:hover {
   background: linear-gradient(135deg, #234023 0%, #2d5a2d 50%, #357035 100%);
   border-color: rgba(61, 122, 61, 0.7);
   box-shadow: 0 0 12px rgba(34, 139, 34, 0.3), 0 2px 8px rgba(34, 139, 34, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: #a8d8a8;
 }
+
+.cm-btn--bar.btn-stop svg {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+} /* @layer features */
 
 /* btn-opencode standalone removed — now part of run-btn-group mode system */
 
@@ -6048,12 +6160,6 @@ html[data-skin="og"] .welcome-primary:hover {
   border-color: rgba(239, 68, 68, 0.6);
   box-shadow: 0 0 12px rgba(220, 38, 38, 0.35), 0 2px 8px rgba(220, 38, 38, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: #fff;
-}
-
-.cm-btn--bar.btn-stop svg {
-  flex-shrink: 0;
-  width: 12px;
-  height: 12px;
 }
 
 .cm-btn--bar.btn-stop.confirming {
@@ -6135,11 +6241,13 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 
 /* Button icon styling */
+@layer features {
 .cm-btn--bar .btn-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
+} /* @layer features */
 
 /* Voice Input Button — desktop only (mobile uses .btn-voice-mobile) */
 .cm-btn--bar.btn-voice {
@@ -6152,10 +6260,12 @@ html[data-skin="og"] .welcome-primary:hover {
   }
 }
 
+@layer features {
 .cm-btn--bar.btn-voice:hover {
   color: var(--text);
   border-color: rgba(59, 130, 246, 0.4);
 }
+} /* @layer features */
 
 .cm-btn--bar.btn-voice.recording {
   background: rgba(239, 68, 68, 0.2);
@@ -6299,17 +6409,21 @@ html[data-skin="og"] .welcome-primary:hover {
 } /* @layer features */
 
 /* Enhanced recording state on voice preview */
+@layer features {
 .voice-preview:has(.voice-recording-indicator) {
   border-color: rgba(239, 68, 68, 0.3);
   background: rgba(20, 0, 0, 0.92);
 }
+} /* @layer features */
 
+@layer features {
 @media (prefers-reduced-motion: reduce) {
   .voice-rec-dot {
     animation: none;
     opacity: 1;
   }
 }
+} /* @layer features */
 
 /* Voice send button — gear icon transforms into green Enter after voice input */
 /* !important: a transient JS state that repaints the gear wherever it sits,
@@ -6430,6 +6544,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .case-combobox-input:hover,
 .case-combobox-input:focus {
   background-color: rgba(255, 255, 255, 0.07);
@@ -6437,6 +6552,7 @@ html[data-skin="og"] .welcome-primary:hover {
   color: var(--text);
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
 }
+} /* @layer features */
 
 @layer features {
 .case-combobox-list.hidden {
@@ -6562,10 +6678,12 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .toolbar-select:hover {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.07);
 }
+} /* @layer features */
 
 .toolbar-select:focus {
   outline: none;
@@ -6800,11 +6918,13 @@ html[data-skin="og"] .welcome-primary:hover {
    .toolbar-group has gap: 0). That stepper is gone (#428), so the case picker
    keeps the same 4px itself. At 768px and below mobile.css spaces the group
    with a gap instead. */
+@layer features {
 @media (min-width: 769px) {
   .toolbar-group > .case-select-group {
     margin-left: 0.25rem;
   }
 }
+} /* @layer features */
 
 @layer features {
 .tab-count-btn {
@@ -6858,6 +6978,7 @@ html[data-skin="og"] .welcome-primary:hover {
   outline: none;
 }
 
+@layer features {
 #dirDisplay {
   max-width: 250px;
   overflow: hidden;
@@ -6866,6 +6987,7 @@ html[data-skin="og"] .welcome-primary:hover {
   direction: rtl;
   text-align: left;
 }
+} /* @layer features */
 
 .toolbar-input:focus {
   outline: none;
@@ -6913,6 +7035,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .form-row input[type="text"],
 .form-row input[type="number"],
 .form-row textarea,
@@ -6945,14 +7068,6 @@ html[data-skin="og"] .welcome-primary:hover {
   cursor: pointer;
 }
 
-.form-row input:focus,
-.form-row textarea:focus,
-.form-select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-}
-
 .input-suffix {
   display: flex;
   align-items: center;
@@ -6962,6 +7077,15 @@ html[data-skin="og"] .welcome-primary:hover {
   flex: 1;
   border-radius: 4px 0 0 4px;
   border-right: none;
+}
+} /* @layer features */
+
+.form-row input:focus,
+.form-row textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
 @layer features {
@@ -7085,12 +7209,14 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .event-type-grid input[type="checkbox"] {
   justify-self: center;
   width: 14px;
   height: 14px;
   cursor: pointer;
 }
+} /* @layer features */
 
 /* Session Color Picker */
 @layer features {
@@ -7286,6 +7412,7 @@ html[data-skin="og"] .welcome-primary:hover {
   z-index: 10010;
 }
 
+@layer features {
 .mobile-case-picker-header h3 {
   margin: 0;
   font-size: 1.1rem;
@@ -7304,6 +7431,7 @@ html[data-skin="og"] .welcome-primary:hover {
   /* 16px keeps iOS Safari from zooming the page on focus */
   font-size: 16px;
 }
+} /* @layer features */
 
 /* The wrapper draws the focus state; the global input focus ring doubled it */
 #mobileCaseSearch:focus {
@@ -7530,9 +7658,11 @@ html[data-skin="og"] .welcome-primary:hover {
   max-height: none;
 }
 
+@layer features {
 #summary-tab .run-summary-footer {
   flex-shrink: 0;
 }
+} /* @layer features */
 
 @layer features {
 .run-summary-filters {
@@ -7822,12 +7952,15 @@ html[data-skin="og"] .welcome-primary:hover {
 /* Git worktrees dialog (session-ui.js openWorktreeModal). Its own small button
    set: the skin block greys `.cm-btn--bar.btn-primary` on non-OG skins, and this
    dialog needs a primary action that reads as one on every skin. */
+@layer features {
 .cm-dialog.worktree-modal {
   max-width: 640px;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
 }
+} /* @layer features */
+
 @layer features {
 .worktree-status {
   font-size: 0.78rem;
@@ -8098,10 +8231,12 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .input-suffix-sm {
   display: flex;
   align-items: center;
 }
+} /* @layer features */
 
 @layer features {
 .input-suffix-sm span {
@@ -8146,6 +8281,7 @@ html[data-skin="og"] .welcome-primary:hover {
 }
 } /* @layer features */
 
+@layer features {
 .duration-custom-input {
   display: none;
 }
@@ -8157,6 +8293,7 @@ html[data-skin="og"] .welcome-primary:hover {
 .duration-custom-input input {
   width: 60px;
 }
+} /* @layer features */
 
 @layer features {
 .auto-resume-status {
@@ -8230,10 +8367,12 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .away-digest-modal .cm-dialog__body {
   overflow-y: auto;
   padding: 1rem;
 }
+} /* @layer features */
 
 /* Command palette (COD-153) */
 @layer features {
@@ -8297,9 +8436,11 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .command-palette-search:focus-visible {
   box-shadow: none;
 }
+} /* @layer features */
 
 @layer features {
 .command-palette-label {
@@ -8403,6 +8544,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .session-manager-modal .cm-dialog__body {
   display: flex;
   flex-direction: column;
@@ -8414,6 +8556,7 @@ kbd {
 #sessionManagerSearch {
   flex: 0 0 auto;
 }
+} /* @layer features */
 
 @layer features {
 .session-manager-list {
@@ -8589,6 +8732,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .away-digest-custom-range input {
   min-height: 34px;
   padding: 0.35rem 0.5rem;
@@ -8597,6 +8741,7 @@ kbd {
   border-radius: 6px;
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 .away-digest-summary {
@@ -8683,6 +8828,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .away-digest-section-title h4 {
   margin: 0;
   color: var(--text-dim);
@@ -8691,6 +8837,7 @@ kbd {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+} /* @layer features */
 
 @layer features {
 .away-digest-section-title span {
@@ -8788,10 +8935,12 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .token-stats-modal .cm-dialog__body {
   overflow-y: auto;
   padding: 1rem;
 }
+} /* @layer features */
 
 @layer features {
 .stats-summary {
@@ -8899,12 +9048,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .stats-chart-days span {
   flex: 1;
   text-align: center;
   font-size: 0.6rem;
   color: var(--text-muted);
 }
+} /* @layer features */
 
 @layer features {
 .stats-table-container {
@@ -9207,6 +9358,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .security-notice.show {
   opacity: 1;
   transform: none;
@@ -9221,6 +9373,7 @@ kbd {
     var(--bg-card);
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
 }
+} /* @layer features */
 
 @layer features {
 .security-notice-icon {
@@ -9242,11 +9395,13 @@ kbd {
 } /* @layer features */
 
 /* The update toast carrying a notice leads with the release, in the accent colour. */
+@layer features {
 .security-notice-icon.update-notice-icon {
   color: var(--accent);
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
 }
+} /* @layer features */
 
 @layer features {
 .security-notice-main {
@@ -9316,11 +9471,13 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .security-notice-section-head svg {
   flex-shrink: 0;
   width: 0.95rem;
   height: 0.95rem;
 }
+} /* @layer features */
 
 @layer features {
 .security-notice-actions {
@@ -9338,9 +9495,11 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .update-notice .security-notice-actions > button {
   flex: 1 1 auto;
 }
+} /* @layer features */
 
 @layer features {
 .security-notice-primary,
@@ -9414,15 +9573,18 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .security-notice button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+} /* @layer features */
 
 /* Phones: the full width minus the stack's 0.5rem gutters, and every button grows to fill
    its row (so one that wraps fills its own instead of sitting stray at the left). On a touch
    pointer, below, buttons are at least --touch-target-min tall and the × gets a touch-sized
    box, its negative margin keeping the glyph where it sits on a desktop. */
+@layer features {
 @media (max-width: 599px) {
   .security-notice {
     width: calc(100vw - 1rem);
@@ -9432,6 +9594,7 @@ kbd {
     flex: 1 1 auto;
   }
 }
+} /* @layer features */
 
 /* Touch sizing follows the pointer, not the width: a phone turned to landscape is wider
    than 599px and still needs fingertip-sized targets. */
@@ -9449,12 +9612,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 @media (prefers-reduced-motion: reduce) {
   .security-notice {
     transform: none;
     transition: none;
   }
 }
+} /* @layer features */
 
 /* Notification list (the Inbox drawer's Notifications tab, approvals-ui.js) */
 @layer features {
@@ -9596,12 +9761,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 @media (hover: hover) {
   .session-tab .tab-subagent-badge:hover {
     background: var(--accent-hover);
     transform: scale(1.05);
   }
 }
+} /* @layer features */
 
 @layer features {
 .session-tab .tab-subagent-badge .subagent-label {
@@ -9632,17 +9799,22 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 @media (hover: hover) {
   .session-tab .tab-ultracode-badge:hover {
     background: #9333ea;
     transform: scale(1.05);
   }
 }
+} /* @layer features */
+@layer features {
 .session-tab .tab-ultracode-badge .subagent-label {
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
+} /* @layer features */
+
 /* Per-item type glyph in the ULTRA dropdown (🧬 run vs 📄 transcript). */
 @layer features {
 .subagent-dropdown-item .ultracode-dd-icon {
@@ -9710,9 +9882,11 @@ kbd {
   }
   } /* @layer features */
 
+  @layer features {
   .subagent-dropdown-item:hover .subagent-dropdown-close {
     opacity: 0.6;
   }
+  } /* @layer features */
 }
 
 /* Touch devices: show active state on tap instead of hover */
@@ -10251,6 +10425,7 @@ kbd {
 } /* @layer features */
 
 /* Responsive: full width on small screens */
+@layer features {
 @media (max-width: 600px) {
   .subagents-panel {
     width: 100%;
@@ -10260,6 +10435,7 @@ kbd {
     border-radius: 8px 8px 0 0;
   }
 }
+} /* @layer features */
 
 /* Subagent container (list + detail) */
 @layer features {
@@ -10467,6 +10643,7 @@ kbd {
   flex: 0 0 80px;
 }
 
+@layer features {
 .subagent-activity .detail {
   color: var(--text-dim);
   flex: 1;
@@ -10474,6 +10651,7 @@ kbd {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+} /* @layer features */
 
 .subagent-activity.tool .icon {
   color: var(--accent);
@@ -10674,6 +10852,7 @@ kbd {
   color: white;
 }
 
+@layer features {
 .subagent-window-actions button {
   background: transparent;
   border: none;
@@ -10686,6 +10865,7 @@ kbd {
 .subagent-window-actions button:hover {
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 .subagent-window-body {
@@ -10744,12 +10924,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .subagent-window-body .activity-line .tool-detail {
   color: #d0d0d0;
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+} /* @layer features */
 
 @layer features {
 .subagent-window-body .message-line {
@@ -10835,6 +11017,7 @@ kbd {
 } /* @layer features */
 
 /* Wizard connection lines - different color to show plan generation link */
+@layer features {
 .connection-line.wizard-connection {
   stroke: #60a5fa;
   stroke-width: 3;
@@ -10845,6 +11028,7 @@ kbd {
   stroke-dasharray: 8 4;
   animation: wizard-pulse 1.5s ease-in-out infinite;
 }
+} /* @layer features */
 
 @keyframes wizard-pulse {
   0%, 100% { opacity: 0.75; }
@@ -10852,6 +11036,7 @@ kbd {
 }
 
 /* Plan subagent to regular subagent connection lines (Opus → Haiku) */
+@layer features {
 .connection-line.plan-to-subagent-line {
   stroke: #3b82f6;
   stroke-width: 3;
@@ -10869,6 +11054,7 @@ kbd {
           drop-shadow(0 0 6px rgba(59, 130, 246, 1))
           drop-shadow(0 0 12px rgba(59, 130, 246, 0.7));
 }
+} /* @layer features */
 
 @keyframes plan-subagent-pulse {
   0%, 100% { opacity: 0.8; }
@@ -11095,9 +11281,11 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .project-insight-command .icon {
   font-size: 1rem;
 }
+} /* @layer features */
 
 @layer features {
 .project-insight-command .cmd {
@@ -11208,6 +11396,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .file-browser-search input {
   width: 100%;
   padding: 0.3rem 0.5rem;
@@ -11217,6 +11406,7 @@ kbd {
   border-radius: 4px;
   color: var(--text);
 }
+} /* @layer features */
 
 .file-browser-search input:focus {
   outline: none;
@@ -11624,12 +11814,14 @@ kbd {
    Styling comes from the Response Viewer's .rv-text rules; .rv-text itself
    carries no padding or base font (the chat card supplies those). */
 
+@layer features {
 .file-preview-body > .file-preview-md {
   padding: 1rem 1.25rem 2rem;
   font-size: 15px;
   line-height: 1.55;
   max-width: 960px;
 }
+} /* @layer features */
 
 /* Relative links in the document are rebased onto a.rv-path so the Response
    Viewer delegate opens them here; keep them reading as prose, not as paths.
@@ -11667,6 +11859,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .file-preview-body .binary-message {
   padding: 2rem;
   text-align: center;
@@ -11676,6 +11869,7 @@ kbd {
 .file-preview-body .binary-message a {
   color: var(--accent, #4ea1ff);
 }
+} /* @layer features */
 
 /* ---- File Viewer edit mode (issue #212) ---- */
 
@@ -11793,6 +11987,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .log-viewer-window-title .icon {
   font-size: 1rem;
 }
@@ -11805,6 +12000,7 @@ kbd {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+} /* @layer features */
 
 .log-viewer-window-title .status {
   font-size: 0.6rem;
@@ -11834,6 +12030,7 @@ kbd {
   50% { opacity: 0.6; }
 }
 
+@layer features {
 .log-viewer-window-actions {
   display: flex;
   gap: 0.3rem;
@@ -11851,6 +12048,7 @@ kbd {
 .log-viewer-window-actions button:hover {
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 .log-viewer-window-body {
@@ -11921,6 +12119,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .image-popup-title .icon {
   font-size: 1rem;
   flex-shrink: 0;
@@ -11934,6 +12133,7 @@ kbd {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+} /* @layer features */
 
 @layer features {
 .image-popup-title .session-badge {
@@ -11979,6 +12179,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .image-popup-actions button {
   background: transparent;
   border: none;
@@ -11991,6 +12192,7 @@ kbd {
 .image-popup-actions button:hover {
   color: var(--text);
 }
+} /* @layer features */
 
 @layer features {
 .image-popup-body img:hover {
@@ -12110,11 +12312,13 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .modal-wizard .cm-dialog__body {
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 }
+} /* @layer features */
 
 @layer features {
 .modal-wizard .wizard-footer {
@@ -12317,6 +12521,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .plan-option-group select {
   padding: 0.3rem 0.5rem;
   background: var(--bg-input);
@@ -12325,6 +12530,7 @@ kbd {
   color: var(--text);
   font-size: 0.8rem;
 }
+} /* @layer features */
 
 @layer features {
 .plan-detail-btns {
@@ -12407,12 +12613,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .plan-autostart-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
   cursor: pointer;
 }
+} /* @layer features */
 
 @layer features {
 .plan-autostart-text {
@@ -12481,9 +12689,11 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .plan-cancel-btn {
   color: var(--red);
 }
+} /* @layer features */
 
 @layer features {
 /* Plan Stopped State */
@@ -12517,11 +12727,14 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .plan-skip-hint strong {
   color: var(--text-dim);
 }
+} /* @layer features */
 
 /* ========== Plan Subagent Windows (Visible Opus Agents) ========== */
+@layer features {
 .plan-subagent-window {
   position: fixed;
   width: 280px;
@@ -12532,6 +12745,7 @@ kbd {
   overflow: hidden;
   animation: planSubagentSpawn 0.3s ease-out;
 }
+} /* @layer features */
 
 @keyframes planSubagentSpawn {
   from {
@@ -12692,6 +12906,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .textarea-with-assist textarea {
   width: 100%;
   padding: 0.6rem;
@@ -12704,6 +12919,7 @@ kbd {
   resize: vertical;
   min-height: 80px;
 }
+} /* @layer features */
 
 .textarea-with-assist textarea:focus {
   outline: none;
@@ -12758,6 +12974,7 @@ kbd {
 }
 } /* @layer features */
 
+@layer features {
 .ralph-preview-section > label {
   display: block;
   font-size: 0.7rem;
@@ -12766,6 +12983,7 @@ kbd {
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+} /* @layer features */
 
 @layer features {
 .ralph-prompt-preview {
@@ -13447,11 +13665,15 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 /* ===== Ultracode / Workflow agents master-detail panel ===== */
 /* Reuses .subagents-panel dock behavior but anchors LEFT so it never overlaps the
    bottom-right subagents panel when both are open. */
+@layer features {
 .ultracode-agents-panel {
   right: auto;
   left: 0.5rem;
   width: 640px;
 }
+} /* @layer features */
+
+@layer features {
 @media (max-width: 700px) {
   .ultracode-agents-panel {
     left: 0;
@@ -13460,6 +13682,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
     max-width: 100%;
   }
 }
+} /* @layer features */
 
 /* LEFT pane: run rows */
 @layer features {
@@ -13569,9 +13792,12 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 /* At-a-glance agent state: yellow while working, green when done. */
+@layer features {
 .ultracode-agent-card.uw-state-working {
   border-left-color: var(--yellow);
 }
+} /* @layer features */
+
 @layer features {
 .ultracode-agent-card.uw-state-working:where(:not(:hover)) {
   background: color-mix(in srgb, var(--yellow) 9%, var(--bg-input));
@@ -13596,9 +13822,12 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 
+@layer features {
 .ultracode-agent-card.uw-state-done {
   border-left-color: var(--green);
 }
+} /* @layer features */
+
 @layer features {
 .ultracode-agent-top {
   display: flex;
@@ -13707,10 +13936,13 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   min-width: 0;
 }
 } /* @layer features */
+@layer features {
 .ultracode-window-title .icon {
   font-size: 0.95rem;
   flex-shrink: 0;
 }
+} /* @layer features */
+
 @layer features {
 .ultracode-window-title .uw-name {
   font-size: 0.78rem;
@@ -13731,6 +13963,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 
+@layer features {
 .ultracode-window-actions button {
   background: transparent;
   border: none;
@@ -13743,6 +13976,8 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .ultracode-window-actions button:hover {
   color: var(--text);
 }
+} /* @layer features */
+
 @layer features {
 .ultracode-window-body {
   flex: 1;
@@ -13769,6 +14004,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 
 /* Ultracode connector line — the session-tab accent blue (dashed to stay distinct
    from the solid subagent lines, per the same-blue-as-the-tab request). */
+@layer features {
 .connection-line.ultracode-connection {
   stroke: var(--accent);
   stroke-width: 3;
@@ -13781,6 +14017,8 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .connection-line.ultracode-connection:hover {
   stroke-width: 3.5;
 }
+} /* @layer features */
+
 @keyframes ultracode-conn-pulse {
   0%, 100% { opacity: 0.8; }
   50% { opacity: 1; }
@@ -13809,11 +14047,13 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 
 /* Distinguish the parent→agent line from the tab→run line: solid cyan, no dashes.
    Must follow .ultracode-connection (equal specificity → source order wins). */
+@layer features {
 .connection-line.ultracode-agent-connection {
   stroke: #38bdf8;
   stroke-dasharray: none;
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 5px rgba(56, 189, 248, 0.85));
 }
+} /* @layer features */
 
 /* Plan-usage chip (App Settings → Display → "Plan Usage Limits"). Shows the
    live Claude and Codex plan limits in provider rows. Ships
@@ -14076,6 +14316,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   margin-bottom: 0;
 }
 
+@layer features {
 .rv-text h1, .rv-text h2, .rv-text h3, .rv-text h4,
 .response-viewer-body > h1, .response-viewer-body > h2,
 .response-viewer-body > h3, .response-viewer-body > h4 {
@@ -14085,6 +14326,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   font-weight: 700;
   letter-spacing: -0.01em;
 }
+} /* @layer features */
 
 .rv-text h1:first-child, .rv-text h2:first-child,
 .response-viewer-body > h1:first-child, .response-viewer-body > h2:first-child {
@@ -14121,6 +14363,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 
+@layer features {
 .rv-text h2, .response-viewer-body > h2 {
   font-size: 1.3em;
   color: var(--yellow);
@@ -14135,6 +14378,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+} /* @layer features */
 
 .rv-text code,
 .response-viewer-body > :not(pre) code {
@@ -14314,11 +14558,13 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .rv-copy-btn.rv-copy-failed::before { content: '\2715'; } /* ✕ */
 } /* @layer features */
 
+@layer features {
 .rv-text ul, .rv-text ol,
 .response-viewer-body > ul, .response-viewer-body > ol {
   margin: 0.6em 0;
   padding-left: 1.5em;
 }
+} /* @layer features */
 
 @layer features {
 .rv-text li,
@@ -14402,6 +14648,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 }
 } /* @layer features */
 
+@layer features {
 .rv-text strong,
 .response-viewer-body > p strong,
 .response-viewer-body > li strong {
@@ -14413,6 +14660,7 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
 .response-viewer-body a:hover {
   border-bottom-color: var(--accent);
 }
+} /* @layer features */
 
 .rv-text th, .rv-text td,
 .response-viewer-body > table th,
@@ -14524,10 +14772,12 @@ html.dock-open .subagents-panel:not([data-docked], .detached, .hidden) {
   background: var(--bg-card);
 }
 
+@layer features {
 #cjkInput::placeholder {
   color: var(--text-muted);
   font-size: 12px;
 }
+} /* @layer features */
 
 .touch-device #cjkInput.cjk-input-visible {
   position: fixed;
@@ -14642,40 +14892,13 @@ body.touch-device.cjk-input-visible .main {
   will-change: transform;
 }
 
-.accessory-btn.confirming {
+@layer features {
+.accessory-btn.confirming:where(:not(:active)) {
   background: color-mix(in srgb, var(--yellow) 18%, var(--bg-input));
-  border-color: var(--yellow);
-  color: var(--yellow);
-}
-
-/* Armed one-shot Ctrl (shell bar, issue #262). Three classes on purpose, to beat
-   the plain .accessory-btn rules. It still cannot outrank the light-skin
-   compatibility rule in mobile.css, which repaints every .accessory-btn at
-   (0,3,1) — `:is()` inherits its most specific argument — so that rule excludes
-   `.armed` by hand. Without the exclusion the modifier looks unarmed on the four
-   light skins, which is worse than having no armed style at all. */
-.accessory-btn.accessory-btn-ctrl.armed {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-  font-weight: 700;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .accessory-btn:active {
   background: var(--control-bg-hover);
-}
-
-/* Compose leads the agent bar (design-system P07) in the accent tint. The light-skin
-   repaint in mobile.css excludes it by hand, like .armed above. */
-.accessory-btn.accessory-btn-compose {
-  background: color-mix(in srgb, var(--accent) 18%, var(--control-bg));
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--text);
-  font-weight: 600;
-}
-.accessory-btn.accessory-btn-compose:active {
-  background: color-mix(in srgb, var(--accent) 30%, var(--control-bg));
 }
 
 .accessory-btn svg {
@@ -14694,6 +14917,38 @@ body.touch-device.cjk-input-visible .main {
 
 .accessory-btn-dismiss:active {
   background: var(--accent-hover);
+}
+} /* @layer features */
+
+.accessory-btn.confirming {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+/* Armed one-shot Ctrl (shell bar, issue #262). Three classes on purpose, to beat
+   the plain .accessory-btn rules. It still cannot outrank the light-skin
+   compatibility rule in mobile.css, which repaints every .accessory-btn at
+   (0,3,1) — `:is()` inherits its most specific argument — so that rule excludes
+   `.armed` by hand. Without the exclusion the modifier looks unarmed on the four
+   light skins, which is worse than having no armed style at all. */
+.accessory-btn.accessory-btn-ctrl.armed {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+/* Compose leads the agent bar (design-system P07) in the accent tint. The light-skin
+   repaint in mobile.css excludes it by hand, like .armed above. */
+.accessory-btn.accessory-btn-compose {
+  background: color-mix(in srgb, var(--accent) 18%, var(--control-bg));
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--text);
+  font-weight: 600;
+}
+.accessory-btn.accessory-btn-compose:active {
+  background: color-mix(in srgb, var(--accent) 30%, var(--control-bg));
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -14819,6 +15074,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .prompt-composer-header span {
   color: var(--text-dim);
   font-size: 12px;
@@ -14827,6 +15083,7 @@ body.touch-device.cjk-input-visible .main {
 .prompt-composer-actions button {
   min-height: var(--touch-target-min);
 }
+} /* @layer features */
 
 @layer features {
 .prompt-composer-terminal {
@@ -15173,6 +15430,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .path-picker-actions button {
   min-height: 40px;
   padding: 8px 13px;
@@ -15198,6 +15456,7 @@ body.touch-device.cjk-input-visible .main {
   opacity: 0.4;
   cursor: default;
 }
+} /* @layer features */
 
 @layer features {
 .path-preview-overlay {
@@ -15533,6 +15792,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .orch-progress-bar span {
   position: relative;
   display: flex;
@@ -15544,6 +15804,7 @@ body.touch-device.cjk-input-visible .main {
   font-weight: 600;
   z-index: 1;
 }
+} /* @layer features */
 
 @layer features {
 .orch-phases {
@@ -15777,6 +16038,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .attachment-actions button,
 .attachment-actions a {
   padding: 3px 8px;
@@ -15794,6 +16056,7 @@ body.touch-device.cjk-input-visible .main {
   border-color: var(--accent);
   color: var(--accent-hover);
 }
+} /* @layer features */
 
 @layer features {
 .attachment-close-btn {
@@ -16015,6 +16278,7 @@ body.touch-device.cjk-input-visible .main {
 }
 } /* @layer features */
 
+@layer features {
 .attachment-history-actions button {
   padding: 3px 7px;
   border: 1px solid var(--border-light);
@@ -16034,7 +16298,7 @@ body.touch-device.cjk-input-visible .main {
   opacity: 0.45;
   cursor: default;
 }
-
+} /* @layer features */
 
 /* ── Cron Jobs ───────────────────────────────── */
 /* There is no global `.hidden{display:none}` utility in this stylesheet — each
@@ -16190,7 +16454,10 @@ body.touch-device.cjk-input-visible .main {
 }
 .webview-failure-inner { max-width: 380px; }
 } /* @layer features */
+@layer features {
 .webview-failure-inner h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--text); }
+} /* @layer features */
+
 @layer features {
 .webview-failure-inner p { margin: 0 0 1rem; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
 .webview-failure-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
@@ -16214,7 +16481,9 @@ body.touch-device.cjk-input-visible .main {
    `.run-mode-webviews` above) is one such child holding several buttons of
    its own, so it needs the same gap repeated one level down or its rows sit
    flush against each other. */
+@layer features {
 .run-mode-custom-models { display: flex; flex-direction: column; gap: 2px; }
+} /* @layer features */
 
 /* A saved URL is a ROW: open on the left, edit + delete on the right, so a URL can
    be changed or removed without first opening it as a tab. The side buttons stay
@@ -16307,6 +16576,7 @@ body.touch-device.cjk-input-visible .main {
 } /* @layer features */
 
 /* Saved-URL rows in the Run dropdown show their chosen icon in the dot's slot. */
+@layer features {
 .run-mode-menu-icon {
   display: inline-flex;
   align-items: center;
@@ -16316,6 +16586,8 @@ body.touch-device.cjk-input-visible .main {
   font-size: 0.95em;
   flex-shrink: 0;
 }
+} /* @layer features */
+
 @layer features {
 .webview-modal-actions .cm-btn--danger { margin-right: auto; }
 
@@ -16523,6 +16795,7 @@ body.touch-device.cjk-input-visible .main {
 
 /* `hidden` has to be re-asserted over the display above, or the module's only
    lever (el.hidden) does nothing. */
+@layer features {
 .home-sessions[hidden] {
   display: none;
 }
@@ -16530,14 +16803,17 @@ body.touch-device.cjk-input-visible .main {
 html[data-tab-orientation='vertical'] .home-sessions {
   display: none;
 }
+} /* @layer features */
 
 /* Belt and braces with shouldShowHomeSessions(): a resize that outruns the
    matchMedia listener must never leave the column overlapping the content. */
+@layer features {
 @media (max-width: 1179px) {
   .home-sessions {
     display: none;
   }
 }
+} /* @layer features */
 
 @layer features {
 .home-sessions-header {
@@ -17021,9 +17297,11 @@ html[data-tab-orientation='vertical'] .home-sessions {
 /* The shared rule offsets the ring OUTWARD, which inside the tray draws it on
    top of the tray border. Inset it so the focused button is ringed, not the
    cluster. */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-head-actions .modal-close:focus-visible {
   outline-offset: -2px;
 }
+} /* @layer features */
 
 @layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-body {
@@ -17730,6 +18008,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   white-space: nowrap;
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-floats {
   position: absolute;
   left: 12px;
@@ -17737,6 +18016,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   display: flex;
   gap: 5px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-preview-float {
   border-style: dashed;
@@ -17807,11 +18087,13 @@ html[data-tab-orientation='vertical'] .home-sessions {
   box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.2);
 }
 
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-mc-top {
   display: flex;
   align-items: center;
   gap: 6px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-mc-name {
   font-size: 0.72rem;
@@ -17855,6 +18137,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 /* ── segmented control (thinking effort) ──────────────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-segment {
   display: flex;
   gap: 3px;
@@ -17863,6 +18146,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border: 1px solid var(--border);
   border-radius: 9px;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-segment button {
   flex: 1;
@@ -17926,11 +18210,13 @@ html[data-tab-orientation='vertical'] .home-sessions {
 }
 
 /* ── phone jump control: desktop hides it entirely ────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-jump,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-jump-menu,
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-jump-veil {
   display: none;
 }
+} /* @layer features */
 
 /* ── injected sections (admin Users panel) ────────────────────────────── */
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-section .form-hint {
@@ -18033,10 +18319,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
   font-size: 0.66rem;
 }
 
+@layer features {
 #sessionOptionsModal .cm-row__text > .session-respawn-status {
   align-self: flex-start;
   margin-top: 3px;
 }
+} /* @layer features */
 
 #sessionOptionsModal .run-summary-filters {
   margin-bottom: 0;
@@ -18314,10 +18602,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
   font-size: 1.08rem;
 }
 
+@layer features {
 #createCaseModal .set-section-blurb {
   margin: 0 0 13px 40px;
   font-size: 0.75rem;
 }
+} /* @layer features */
 
 #createCaseModal .set-doc .form-row {
   margin: 0 0 7px;
@@ -18452,10 +18742,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
   font-size: 1.08rem;
 }
 
+@layer features {
 #sessionOptionsModal .set-section-blurb {
   margin: 0 0 13px 40px;
   font-size: 0.75rem;
 }
+} /* @layer features */
 
 @media (min-width: 1200px) {
   #sessionOptionsModal .cm-dialog {
@@ -18513,6 +18805,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
    complaint about the flat list was that auto-resume no longer looked like
    something you were meant to turn on.
    ─────────────────────────────────────────────────────────────────────────── */
+@layer features {
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-callout {
   display: flex;
   align-items: flex-start;
@@ -18525,6 +18818,7 @@ html[data-tab-orientation='vertical'] .home-sessions {
   border: 1px solid rgba(var(--accent-rgb), 0.42);
   transition: border-color 0.15s, background 0.15s;
 }
+} /* @layer features */
 
 :is(#appSettingsModal, #sessionOptionsModal, #createCaseModal) .set-callout:hover {
   border-color: rgba(var(--accent-rgb), 0.68);
@@ -18593,10 +18887,12 @@ html[data-tab-orientation='vertical'] .home-sessions {
   padding: 8px 20px;
 }
 
+@layer features {
 #sessionOptionsModal .session-respawn-status {
   font-size: 0.8rem;
   padding: 4px 9px;
 }
+} /* @layer features */
 
 /* ============================================================
    === Collapsible session sidebar (opt-in layout) ===
@@ -18717,9 +19013,11 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar {
   width: var(--sidebar-width-collapsed);
 }
 
+@layer features {
 .session-sidebar-filter-input:focus-visible {
   border-color: var(--accent);
 }
+} /* @layer features */
 
 /* --- The relocated strip, now vertical --------------------------------- */
 html[data-session-list="sidebar"] .session-sidebar .session-tabs {
@@ -18793,10 +19091,12 @@ html[data-session-list="sidebar"] .session-sidebar .tab-name {
   max-width: none;
 }
 
+@layer features {
 html[data-session-list='sidebar'] .session-sidebar .tab-actions,
 html[data-tab-orientation='vertical'] .tab-rail .session-tab .tab-name-row > .tab-actions {
   flex-shrink: 0;
 }
+} /* @layer features */
 
 /* Reveal-on-hover reads badly on a 40px-tall full-width row, so keep the row
    actions permanently visible on the active session — no layout jitter when
@@ -18959,9 +19259,11 @@ html.tab-rail-tight[data-tab-orientation='vertical'][data-tab-rail-detail='rich'
 /* On a rail narrower than the detailed default, the state duration is the last
    thing that should go: it is the number the row is sorted by, and the pill
    next to it is only a word. The created stamp ellipsizes instead. */
+@layer features {
 html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .tab-meta-since {
   flex-shrink: 0;
 }
+} /* @layer features */
 
 /* While a session is actually doing something, how long it has been doing it is
    what the eye should land on — same emphasis the home rail gives it. */
@@ -18986,6 +19288,7 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
 
 /* Pushed hard right and never shrinking, so the stamps ellipsize before the
    status word does. */
+@layer features {
 html[data-sidebar-detail="rich"] .session-sidebar .tab-pill,
 html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .tab-pill {
   flex-shrink: 0;
@@ -19053,6 +19356,7 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   color: var(--accent);
 }
+} /* @layer features */
 
 /* Three lines of content per row instead of two, so give them room to breathe
    and stop the row actions crowding the pill.
@@ -19164,12 +19468,14 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
 /* The state line gets the full width of the card (`flex: 0 0 100%` wraps it),
    so the stamps stop competing with the gear/close column for the sliver of
    room left beside the name. */
+@layer features {
 html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail-compact) .tab-rail .tab-meta {
   flex: 0 0 100%;
   margin-top: 0;
   font-size: 0.64rem;
   opacity: 0.75;
 }
+} /* @layer features */
 
 /* Bigger than the strip's 6px pip, because a card row has the room and the dot
    is the one thing on it readable at a glance. */
@@ -19265,9 +19571,11 @@ html[data-tab-orientation='vertical'][data-tab-rail-detail='rich']:not(.tab-rail
    the list, so they are pinned past every session card rather than being given
    an inline order of their own — `renderWebviewTabs()` emits the same markup for
    every layout and must stay that way. */
+@layer features {
 html[data-tab-orientation='vertical'][data-tab-rail-sort='activity'] .tab-rail .session-tab[data-webview-id] {
   order: 9999;
 }
+} /* @layer features */
 
 /* --- Collapsed rail ---------------------------------------------------- */
 /* Collapsed is a 44px icon rail, not "hidden": the ambient signal (status dot,
@@ -19278,10 +19586,12 @@ html[data-tab-orientation='vertical'][data-tab-rail-sort='activity'] .tab-rail .
    the chip is rendered inside .tab-info (app.js row template), which the rail
    hides. Moving it out of .tab-info just to keep it would change the shared row
    markup for both layouts; agent type stays a hover/expand affordance. */
+@layer features {
 html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar-head,
 html[data-session-list="sidebar"][data-sidebar="collapsed"] .session-sidebar-filter {
   display: none;
 }
+} /* @layer features */
 
 /* 44px rail minus the list's 0.25rem padding either side minus the row's 1px
    borders leaves ~34px of content box. Number (16) + gap (5.6) + dot (6) + gap
@@ -19324,11 +19634,13 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 }
 } /* @layer features */
 
+@layer features {
 @media (prefers-reduced-motion: reduce) {
   .session-sidebar {
     transition: none;
   }
 }
+} /* @layer features */
 
 /* ============================================================
    === Folding devices: keep dialogs off the hinge ===
@@ -19384,12 +19696,14 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 }
 
 /* No gutter of their own. */
+@layer features {
 .modal,
 .file-preview-overlay,
 .folder-grid-overlay {
   padding-right: var(--fold-inline-end);
   padding-bottom: var(--fold-block-end);
 }
+} /* @layer features */
 
 /* The palette is a .modal, so the generic rule above covers it everywhere
    EXCEPT the 600-768px band, where mobile.css (loaded after this file) pads
@@ -19477,11 +19791,13 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
    `max-height: 92dvh` at the same specificity and loads later, so this copy
    alone loses on a phone-width foldable. test/foldable-layout.test.ts pins
    the two values equal. */
+@layer features {
 @media (vertical-viewport-segments: 2) {
   .response-viewer {
     max-height: min(88vh, env(viewport-segment-height 0 1, 88vh));
   }
 }
+} /* @layer features */
 
 /* ── Tile grid (tile-grid.js, docs/tile-grid-plan.md) ──────────────────────
    1 to TILE_GRID_MAX (6) sessions side by side, each a TerminalTile. The
@@ -19662,6 +19978,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
 } /* @layer features */
 
 /* Sized to sit inside the fixed header (see .tile-header). */
+@layer features {
 .tile-rename-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -19675,6 +19992,7 @@ html[data-session-list="sidebar"][data-sidebar="collapsed"] .btn-sidebar-toggle 
   border-radius: 3px;
   outline: none;
 }
+} /* @layer features */
 
 /* Column and row dividers: their own grid tracks, dragged to trade size
    between neighbours. The line only shows on hover or while dragging. */
@@ -19840,6 +20158,7 @@ body.tile-grid-resizing--row * {
 /* The Attach overlay: a tile whose session has no PTY attached, or whose
    agent exited. Absolute over the body, so the body and its xterm keep their
    size. */
+@layer features {
 .tile-attach {
   position: absolute;
   inset: 0;
@@ -19853,6 +20172,7 @@ body.tile-grid-resizing--row * {
   font-size: 13px;
   color: var(--text-muted);
 }
+} /* @layer features */
 
 .tile-attach[hidden],
 .tile-attach [hidden] {
@@ -20023,17 +20343,21 @@ body.tile-grid-resizing--row * {
 }
 } /* @layer features */
 
+@layer features {
 @media (hover: none) {
   .tile-hint {
     display: none;
   }
 }
+} /* @layer features */
 
+@layer features {
 @media (prefers-reduced-motion: reduce) {
   .tile-hint {
     animation: none;
   }
 }
+} /* @layer features */
 
 /* ── Tile grid motion (the grid's own default, not an entrance theme) ──────
    Opening the grid, each tile fades and settles in, staggered in reading
@@ -20045,10 +20369,12 @@ body.tile-grid-resizing--row * {
    FitAddon reads the untransformed layout box, so each tile still fits once
    at its final size and sends one PTY resize (#464). Nothing moves under
    prefers-reduced-motion. */
+@layer features {
 .tile.tile--entering {
   animation: tile-enter 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: calc(var(--tile-enter-index, 0) * 24ms);
 }
+} /* @layer features */
 
 @keyframes tile-enter {
   from {
@@ -20070,6 +20396,7 @@ body.tile-grid-resizing--row * {
    (a blur belongs to the screen beat, one tile at a time). Colour goes on a
    ::before wash. Each style also has its own way out on the closing grid's
    still copy (tile-leave-*, below). */
+@layer features {
 html[data-tile-anim="settle"] .tile.tile--entering {
   animation-name: tile-enter;
 }
@@ -20096,11 +20423,6 @@ html[data-tile-anim="settle"] .tile.tile--entering {
   opacity: 0;
 }
 
-.tile.tile--enter-hold,
-.tile.tile--enter-hold::before {
-  animation: none !important;
-}
-
 /* Fly from tab: grows out of its session tab (FLIP onto the tab's own box),
    overshoots a hair and lands. */
 html[data-tile-anim="fly"] .tile.tile--entering.tile--enter-themed {
@@ -20113,6 +20435,12 @@ html[data-tile-anim="fly"] .tile.tile--entering.tile--enter-themed::before {
   animation-name: tile-wash-launch;
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
+}
+} /* @layer features */
+
+.tile.tile--enter-hold,
+.tile.tile--enter-hold::before {
+  animation: none !important;
 }
 
 @keyframes tile-enter-fly {
@@ -20152,11 +20480,13 @@ html[data-tile-anim="fly"] .tile.tile--entering.tile--enter-themed::before {
 
 /* Deal: dealt out of the Tiles button like cards, each turned a little, then
    squared up in its cell. */
+@layer features {
 html[data-tile-anim="deal"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-deal;
   animation-duration: calc(600ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.22, 0.85, 0.3, 1);
 }
+} /* @layer features */
 
 @keyframes tile-enter-deal {
   0% {
@@ -20180,6 +20510,7 @@ html[data-tile-anim="deal"] .tile.tile--entering.tile--enter-themed {
 }
 
 /* CRT: powers on as a hot line, then unfolds, under the agent windows' flash. */
+@layer features {
 html[data-tile-anim="crt"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-crt;
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
@@ -20191,6 +20522,7 @@ html[data-tile-anim="crt"] .tile.tile--entering.tile--enter-themed::before {
   animation-duration: calc(560ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes tile-enter-crt {
   0% {
@@ -20218,6 +20550,7 @@ html[data-tile-anim="crt"] .tile.tile--entering.tile--enter-themed::before {
 /* Beam down: holds still while a beam draws down from its tab (the entrance
    module's own overlay, .tile-beam-line), then materializes out of the agent
    windows' green wash. No transform, so the beam lands where the tile is. */
+@layer features {
 html[data-tile-anim="beam"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-beam;
   animation-duration: calc(620ms * var(--anim-enter-scale, 1));
@@ -20229,6 +20562,7 @@ html[data-tile-anim="beam"] .tile.tile--entering.tile--enter-themed::before {
   animation-duration: calc(620ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes tile-enter-beam {
   0% {
@@ -20249,12 +20583,14 @@ html[data-tile-anim="beam"] .tile.tile--entering.tile--enter-themed::before {
 }
 
 /* Cascade: swings down from its top edge, a diagonal at a time. */
+@layer features {
 html[data-tile-anim="cascade"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-cascade;
   animation-duration: calc(600ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.3, 0.9, 0.3, 1);
   transform-origin: 50% 0%;
 }
+} /* @layer features */
 
 @keyframes tile-enter-cascade {
   0% {
@@ -20275,11 +20611,13 @@ html[data-tile-anim="cascade"] .tile.tile--entering.tile--enter-themed {
 }
 
 /* Pop: springs open from its centre, rippling out from the focused tile. */
+@layer features {
 html[data-tile-anim="pop"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-pop;
   animation-duration: calc(480ms * var(--anim-enter-scale, 1));
   animation-timing-function: ease-out;
 }
+} /* @layer features */
 
 @keyframes tile-enter-pop {
   0% {
@@ -20301,11 +20639,13 @@ html[data-tile-anim="pop"] .tile.tile--entering.tile--enter-themed {
 
 /* Soft: a slow drift up into place; with the Soft focus theme each screen
    then focus-pulls in (the pane's `blur` style on .tile-body). */
+@layer features {
 html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
   animation-name: tile-enter-soft;
   animation-duration: calc(620ms * var(--anim-enter-scale, 1));
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+} /* @layer features */
 
 @keyframes tile-enter-soft {
   0% {
@@ -20319,6 +20659,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
 }
 
 /* The tab a tile flies (or beams) out of glows as it goes. */
+@layer features {
 .session-tab.tab-launch:not(.tab-loading)::after {
   content: '';
   position: absolute;
@@ -20327,6 +20668,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
   pointer-events: none;
   animation: tab-launch-flash calc(520ms * var(--anim-enter-scale, 1)) ease-out var(--tab-launch-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tab-launch-flash {
   0% {
@@ -20347,6 +20689,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
 /* `beam`'s lines: the connection-line look, drawn from the tab down to the
    tile, held while the tile materializes, then faded. Their own overlay
    (#tileBeamLines), removed by the entrance module once they are done. */
+@layer features {
 .connection-line.tile-beam-line {
   stroke-dasharray: var(--line-len);
   animation:
@@ -20355,6 +20698,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
     tile-beam-out calc(420ms * var(--anim-enter-scale, 1)) ease-in
       calc(var(--line-enter-delay, 0ms) + 640ms * var(--anim-enter-scale, 1)) forwards;
 }
+} /* @layer features */
 
 @keyframes tile-beam-out {
   from {
@@ -20406,6 +20750,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
 }
 } /* @layer features */
 
+@layer features {
 .tile-grid-ghosts .tile.tile--leaving {
   animation: tile-ghost-dim 150ms ease-out both;
 }
@@ -20417,6 +20762,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
 .tile-grid-ghosts.tile-grid-ghosts--now.tile-grid-ghosts--release .tile.tile--leaving {
   animation: tile-leave-now 170ms cubic-bezier(0.4, 0, 1, 1) both;
 }
+} /* @layer features */
 
 @keyframes tile-ghost-dim {
   to {
@@ -20448,6 +20794,7 @@ html[data-tile-anim="soft"] .tile.tile--entering.tile--enter-themed {
    copy (--now) covers tiles that stay, so it keeps the plain fade above.
    Copies leave in reading order (--tile-exit-delay), so the last one ends
    last and takes the layer with it. */
+@layer features {
 .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving::before {
   content: '';
   position: absolute;
@@ -20466,6 +20813,7 @@ html[data-tile-anim="fly"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile
 html[data-tile-anim="fly"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving::before {
   animation: tile-wash-return calc(460ms * var(--anim-enter-scale, 1)) ease-in var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-fly {
   0% {
@@ -20493,10 +20841,12 @@ html[data-tile-anim="fly"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile
   }
 }
 
+@layer features {
 html[data-tile-anim="deal"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-deal calc(520ms * var(--anim-enter-scale, 1)) cubic-bezier(0.5, 0, 0.75, 0.25)
     var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-deal {
   0% {
@@ -20517,6 +20867,7 @@ html[data-tile-anim="deal"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 }
 
 /* CRT: the classic switch-off, down to a line, then a dot, then dark. */
+@layer features {
 html[data-tile-anim="crt"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-crt calc(520ms * var(--anim-enter-scale, 1)) cubic-bezier(0.4, 0, 0.6, 1)
     var(--tile-exit-delay, 0ms) both;
@@ -20525,6 +20876,7 @@ html[data-tile-anim="crt"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile
 html[data-tile-anim="crt"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving::before {
   animation: tile-wash-crt-off calc(520ms * var(--anim-enter-scale, 1)) ease-in var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-crt {
   0% {
@@ -20561,6 +20913,7 @@ html[data-tile-anim="crt"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile
 }
 
 /* Beam down: beamed back up, flickering out under a rising wash. */
+@layer features {
 html[data-tile-anim="beam"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-beam calc(480ms * var(--anim-enter-scale, 1)) ease-in var(--tile-exit-delay, 0ms) both;
 }
@@ -20568,6 +20921,7 @@ html[data-tile-anim="beam"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 html[data-tile-anim="beam"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving::before {
   animation: tile-wash-beam-up calc(480ms * var(--anim-enter-scale, 1)) ease-in var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-beam {
   0% {
@@ -20599,11 +20953,13 @@ html[data-tile-anim="beam"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 }
 
 /* Cascade: folds back up on its top edge. */
+@layer features {
 html[data-tile-anim="cascade"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-cascade calc(480ms * var(--anim-enter-scale, 1)) cubic-bezier(0.5, 0, 0.75, 0.2)
     var(--tile-exit-delay, 0ms) both;
   transform-origin: 50% 0%;
 }
+} /* @layer features */
 
 @keyframes tile-leave-cascade {
   0% {
@@ -20617,9 +20973,11 @@ html[data-tile-anim="cascade"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.
 }
 
 /* Pop: a last swell, then it pops away. */
+@layer features {
 html[data-tile-anim="pop"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-pop calc(380ms * var(--anim-enter-scale, 1)) ease-in var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-pop {
   0% {
@@ -20637,10 +20995,12 @@ html[data-tile-anim="pop"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile
 }
 
 /* Soft: sinks away slowly. */
+@layer features {
 html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.tile-grid-ghosts--now) .tile.tile--leaving {
   animation: tile-leave-soft calc(520ms * var(--anim-enter-scale, 1)) cubic-bezier(0.4, 0, 0.7, 0.4)
     var(--tile-exit-delay, 0ms) both;
 }
+} /* @layer features */
 
 @keyframes tile-leave-soft {
   0% {
@@ -20654,6 +21014,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
 }
 
 @media (prefers-reduced-motion: reduce) {
+  @layer features {
   .tile-count-menu,
   .tile.tile--entering,
   .tile.tile--entering::before,
@@ -20664,6 +21025,7 @@ html[data-tile-anim="soft"] .tile-grid-ghosts.tile-grid-ghosts--release:not(.til
   .tile-grid-ghosts.tile-grid-ghosts--now.tile-grid-ghosts--release .tile.tile--leaving {
     animation: none;
   }
+  } /* @layer features */
 
   @layer features {
   .tile-grid-ghosts {
@@ -21181,6 +21543,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
 } /* @layer features */
 
 /* Git status panel: files grouped under collapsible folders */
+@layer features {
 .git-tree-dir > .git-tree-summary {
   display: flex;
   align-items: baseline;
@@ -21190,6 +21553,7 @@ html .toolbar .btn-git-status[aria-expanded='true'] {
   cursor: pointer;
   min-width: 0;
 }
+} /* @layer features */
 
 @layer features {
 .git-tree-dir > .git-tree-summary:hover {
@@ -21363,11 +21727,13 @@ html[data-session-list='sidebar'] .session-sidebar .session-tabs.tabs-triage > .
   margin-bottom: var(--lineage-row-gap, 4px);
 }
 
+@layer features {
 .session-tabs-host > .session-tabs.tabs-triage:is(.tabs-auto-wrap, .tabs-two-rows) > .tab-triage-break {
   display: block;
   flex: 0 0 100%;
   height: 0;
 }
+} /* @layer features */
 
 /* Lineage lines (session-lineage.js): the spine channel (the 20px the lineage
    rule reserves on the left of a wrapped strip) opens BETWEEN the label column
@@ -21490,11 +21856,13 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
    their scrolling strip: mobile.css dissolves the boxes into its chip row on
    phones (599px block) and on tablets (600 to 767px block), since a box
    allowed to shrink there wrapped its tabs out of the one-row strip. */
+@layer features {
 @media (min-width: 768px) {
   .session-tabs-host > .session-tabs.tabs-clusters > .tab-cluster {
     flex-shrink: 0;
   }
 }
+} /* @layer features */
 
 /* Side rail and sidebar: every case is a section with its label on top
    (vertical space is cheap there, so a one-tab case is labelled too). The
@@ -21568,10 +21936,12 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
     border: 1px solid var(--control-border);
   }
 
+  @layer features {
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab .tab-info {
     flex: 1 1 auto;
     min-width: 0;
   }
+  } /* @layer features */
 
   .session-tabs-host > .session-tabs.tabs-ledger > .session-tab .tab-number {
     width: auto;
@@ -21638,12 +22008,14 @@ html[data-session-list='sidebar'][data-sidebar='collapsed'] .session-sidebar .ta
    it, so the cluster is contiguous. */
 
 /* Parts only the two new styles draw. */
+@layer features {
 .stat-ring,
 .connection-tile,
 .header-plan-usage .pu-ring,
 .header-plan-usage .pu-meter {
   display: none;
 }
+} /* @layer features */
 
 /* --- Compact: two pills, a ring beside every value ------------------------ */
 /* One system pill (WS, CPU, MEM) and one plan pill (5h, 7d). Every reading is
@@ -21747,6 +22119,7 @@ html[data-header-stats='compact'] .header-plan-usage .pu-win {
 /* A ring: a conic fill masked down to a 2px stroke. Its colour is currentColor,
    so a plan ring takes the pu-green/-yellow/-red class it shares with its
    value, and a stat ring the accent (red when .high). */
+@layer features {
 html[data-header-stats='compact'] .stat-ring,
 html[data-header-stats='compact'] .header-plan-usage .pu-ring {
   display: inline-block;
@@ -21758,6 +22131,7 @@ html[data-header-stats='compact'] .header-plan-usage .pu-ring {
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
 }
+} /* @layer features */
 
 @layer features {
 html[data-header-stats='compact'] .stat-ring {
@@ -21782,6 +22156,7 @@ html[data-header-stats='tiles'] .header-system-stats {
   padding: 0;
 }
 
+@layer features {
 html[data-header-stats='tiles'] .header-system-stats > .stat-item,
 html[data-header-stats='tiles'] .header-plan-usage .pu-win,
 html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .connection-tile {
@@ -21802,6 +22177,7 @@ html[data-header-stats='tiles'] .header-system-stats > .connection-indicator > .
   font-family: 'JetBrains Mono', var(--font-mono, monospace);
   white-space: nowrap;
 }
+} /* @layer features */
 
 /* The tile label and value: the stat items already carry a label and a value,
    the connection indicator gets its own pair (its text line keeps the classic
@@ -21873,6 +22249,7 @@ html[data-header-stats='tiles'] .connection-tile-value.offline {
 
 /* The bar is the third row, full tile width. The WS tile has no bar, and its
    empty third row keeps it the same height as its neighbours. */
+@layer features {
 html[data-header-stats='tiles'] .header-system-stats .stat-bar,
 html[data-header-stats='tiles'] .header-plan-usage .pu-meter {
   display: block;
@@ -21884,6 +22261,7 @@ html[data-header-stats='tiles'] .header-plan-usage .pu-meter {
   background: rgba(127, 127, 127, 0.18);
   overflow: hidden;
 }
+} /* @layer features */
 
 html[data-header-stats='tiles'] .header-plan-usage .pu-meter > i {
   display: block;
@@ -22007,10 +22385,11 @@ html[data-header-stats='tiles'] .header-plan-usage:not(:has(.pu-row)) {
    --kb-clip, set on #terminalContainer by _applyKeyboardClip (terminal-ui.js).
    The helper textarea, IME preview, link layer and both echo overlays live
    inside .xterm-screen, so they move with it, and every hit test reads rects. */
+@layer features {
 body.keyboard-visible .terminal-container .xterm-screen {
   transform: translateY(calc(-1 * var(--kb-clip, 0px)));
 }
-
+} /* @layer features */
 
 /* ============================================================
    Skin component rules (design-system phase 2)

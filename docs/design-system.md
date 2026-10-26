@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (seven tranches: 317 blocks, about 2,125 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (eight tranches: 498 blocks, about 2,380 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -153,6 +153,31 @@ edited selector names the hover rule's whole context: the first plan would have
 taken the Ralph dropdown buttons' colour away on hover because of an
 animation-lab rule. One edit was left (the phone toolbar's `.cm-btn--bar`
 colour skips `:hover`, where the desktop hover colour already wins).
+The eighth tranche takes single rules (minimum run 1): 257 rules (860
+declarations) in 181 new blocks, most of them one rule each, since what is left
+sits between rules that cannot move. Its first attempt failed the computed-style
+diff: inputs whose own rules remove the focus outline (`#cjkInput`,
+`#mobileCaseSearch`, the settings chips) showed the skin's accent ring. The
+planner samples each selector with its states stripped, and stripping
+`:focus-visible` from `:is(html:not([data-skin="og"])) :focus-visible` left
+`:is(html…)`, which matches only `<html>`, so the skin's ring "could not reach"
+an input. A compound that is only pseudo-classes now samples as `*` (negated
+states are dropped whole), and a selector that is nothing but pseudo-classes
+counts as global and is never planned. Two globals were already layered by
+the fourth tranche (`:focus-visible`, `html.dock-open`); every diff since shows no effect from them, and taking
+`:focus-visible` out made it beat every layered focus rule (79 rules followed it
+out before the run was abandoned), so they stay, and the audit reports them as a
+note and checks them like any other rule. The redo's diff caught one more:
+`#cjkInput` grew a 1px top border on focus. Its chain edit had moved the whole
+`border-top: none` shorthand off `:focus` for a focus rule that sets only
+`border-color`, losing the top border's width and style with it; a chain edit
+now moves a declaration only when the state rule overrides every longhand it
+sets. Two chain edits remain, each on the same element as its state rule:
+`.accessory-btn.confirming` skips `:active` and the Shell toolbar button skips
+`:hover`. That exhausts what the planner can move:
+the 334 candidates left each lose to an unlayered rule they currently beat, so
+moving more means moving or rewriting that competitor first (`--reasons` lists
+them).
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in

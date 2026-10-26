@@ -11,7 +11,10 @@
  *
  *  - Candidates: unlayered styles.css rules before the skin component section,
  *    with no !important (a layered !important would beat every unlayered one),
- *    no :root/html/body/* subject, not inside @supports/@keyframes/@font-face.
+ *    no :root/html/body/* subject and no subject made only of pseudo-classes
+ *    (`:focus-visible` is every element), not inside @supports/@keyframes/@font-face.
+ *    Samples read a pseudo-class-only compound as `*` (`html :focus-visible` is not
+ *    `html`), with negated states dropped whole.
  *  - "Can match the same element": both selectors (pseudo-classes stripped) are
  *    matched against a running server's DOM in several states (desktop, phone,
  *    every modal and panel open, the rail and sidebar layouts). When both match
@@ -68,7 +71,9 @@
  * (`:hover`, `:focus`, `:focus-visible`, `:active`, or the `.active` class, which
  * gets `:where(:not(.active))`) blocked only by unlayered
  * competitors naming the SAME element (a shared class or id, or a shared tag
- * only when the competitor names the state rule's whole context); --apply-chains writes them, moving just the
+ * only when the competitor names the state rule's whole context), and only when the
+ * state rule overrides every longhand of each declaration it would move (`border-top`
+ * is not covered by `border-color`); --apply-chains writes them, moving just the
  * declarations the state rule overrides into a split-off rule, then exits:
  * re-run with --write to place what they freed. Conflicts (and the audit) compare
  * longhands via overlap(): `border-left` meets `border-color`, `border-radius` never does.
@@ -139,11 +144,19 @@ function longhands(prop) {
   if (/^(background|transition|animation|grid|grid-template|overflow|text-decoration|list-style|columns|mask|text-emphasis)$/.test(p)) return [`${p}-*`, p];
   return [p];
 }
+const lhHit = (x, y) => x === y || (x.endsWith('-*') && (y.startsWith(x.slice(0, -1)) || y === x.slice(0, -2)));
 function overlap(p, q) {
   if (p === q) return true;
   const a = longhands(p), b = longhands(q);
-  const hit = (x, y) => x === y || (x.endsWith('-*') && (y.startsWith(x.slice(0, -1)) || y === x.slice(0, -2))) ;
-  return a.some((x) => b.some((y) => hit(x, y) || hit(y, x)));
+  return a.some((x) => b.some((y) => lhHit(x, y) || lhHit(y, x)));
+}
+// Does the set of properties `props` set every longhand `q` sets? A chain edit may
+// only take a declaration off the state the state rule fully overrides: moving
+// `border-top: none` off :focus for a rule that sets only border-color loses the
+// top border's width and style too.
+function covers(props, q) {
+  const have = [...props].flatMap(longhands);
+  return longhands(q).every((y) => have.some((x) => lhHit(x, y)));
 }
 
 // ---- selectors ------------------------------------------------------------------
@@ -249,8 +262,13 @@ const stylesRoot = postcss.parse(fs.readFileSync(PUB + 'styles.css', 'utf8'));
 const mobileRoot = postcss.parse(fs.readFileSync(PUB + 'mobile.css', 'utf8'));
 const S = leafRules(stylesRoot, 'styles', 0);
 const M = leafRules(mobileRoot, 'mobile', 1e6);
+// A compound that is only pseudo-classes (`html :focus-visible`) stands for `*`:
+// write the `*` before stripping the states, or the selector collapses onto its
+// ancestor (`html`) and its sample says it matches nothing but <html>.
 const strip = (s) =>
   s
+    .replace(/:where\(:not\(:[\w-]+\)\)|:not\(:[\w-]+\)/g, '') // a negated state: drop it whole
+    .replace(/(^|[\s>+~(,])(?=::?[a-zA-Z-])/g, '$1*')
     .replace(/::?(before|after|placeholder|selection|marker|backdrop|first-line|first-letter|-webkit-[\w-]+|-moz-[\w-]+)\b(\([^)]*\))?/g, '')
     .replace(/:(hover|focus-visible|focus-within|focus|active|visited|checked|disabled|enabled|empty|placeholder-shown|target|indeterminate|invalid|valid|read-only|user-invalid|autofill)\b/g, '')
     .replace(/\s+>\s*$/, '')
@@ -493,7 +511,14 @@ function tagMayBe(x, tag) {
 const skinStart = stylesRoot.toString().indexOf('Skin component rules (design-system phase 2)');
 // Global = the selector IS the root/body/everything (`html[data-x]`, `*`); a
 // `*` or `body` under a parent (`.menu > *`) is just a child selector.
-const isGlobal = (x) => x.sels.some((s) => subjectText(s) === s.text.trim() && /^(:root|html|body|\*)([.:[]|$)/.test(s.text.trim()));
+const isGlobal = (x) =>
+  x.sels.some(
+    (s) =>
+      subjectText(s) === s.text.trim() &&
+      (/^(:root|html|body|\*)([.:[]|$)/.test(s.text.trim()) ||
+        // only pseudo-classes (`:focus-visible`, `:not(.x)`): every element
+        (/^:(?!:)/.test(s.text.trim()) && !s.toks.size && !s.tag))
+  );
 // A hide utility has to beat whatever component rule its element carries, so it
 // stays unlayered.
 // Only a bare one: `#cronModal .hidden` lands on any element in its scope; a
@@ -589,7 +614,9 @@ function conflict(x, fixes) {
           // unlayered y: x beats it today (by weight) and would lose after the move.
           // y already in features: x beats it today (unlayered) and must still win inside the layer.
           if (y.layer === 'features' ? !xWinsInside : xWinsInside && !masked(x, fam(d.prop), sx, y, sy)) {
-            const st = y.layer ? null : stateFix(x, sx, y, sy);
+            let st = y.layer ? null : stateFix(x, sx, y, sy);
+            // every declaration of Y the edit would move must be one X fully overrides
+            if (st && !y.decls.every((q) => q.important || !overlap(d.prop, q.prop) || covers(x.decls.map((e) => e.prop), q.prop))) st = null;
             if (st) {
               fixes?.push({ y, sel: y.sels.indexOf(sy), state: st, prop: d.prop });
               continue;
@@ -651,6 +678,12 @@ if (args.includes('--audit') || args.includes('--fix-audit')) {
   // Every rule already in @layer features: does an unlayered rule now win over a
   // declaration it would lose to if the two were in the same cascade?
   let bad = 0;
+  // Globals are never planned now, but two were layered by the fourth tranche
+  // (:focus-visible, html.dock-open) and every
+  // css:diff since shows no effect; taking one out would make it beat every
+  // layered focus rule. They are reported, and checked for conflicts like any rule.
+  for (const x of S.filter((r) => r.layer === 'features' && isGlobal(r) && !HIDE_UTILITY(r)))
+    console.log(`NOTE ${x.file}:${x.r.source.start.line} ${x.r.selector.slice(0, 70)} is global and layered (kept)`);
   for (const x of S.filter((r) => r.layer === 'features' && HIDE_UTILITY(r))) {
     bad++;
     auditBad.add(x);
@@ -730,7 +763,7 @@ if (CHAINS) {
         // group this selector's declarations by the states they must skip
         const groups = new Map();
         for (const d of decls) {
-          const states = [...byState].filter(([, ps]) => [...ps].some((p) => overlap(p, d.prop))).map(([st]) => st).sort();
+          const states = [...byState].filter(([, ps]) => [...ps].some((p) => overlap(p, d.prop)) && covers(ps, d.prop)).map(([st]) => st).sort();
           const key = states.join(',');
           if (!groups.has(key)) groups.set(key, { states, decls: [] });
           groups.get(key).decls.push(d);
