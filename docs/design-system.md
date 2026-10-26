@@ -22,7 +22,7 @@ Every stylesheet declares the same layer order:
 | `base`       | `styles.css`                 | the universal reset (`* { box-sizing; margin: 0; padding: 0 }`)        |
 | `components` | `css/components.css`         | the kit: `.cm-*` classes only                                          |
 | `layout`     | `css/layout.css`             | the `.cm-shell` app grid (header, banners, main, tabs, panel, toolbar areas) |
-| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (six tranches: 257 blocks, about 1,990 rules) |
+| `features`   | `styles.css` (`@layer features { … } /* @layer features */` blocks) | feature rules moved out of the unlayered cascade (seven tranches: 317 blocks, about 2,125 rules) |
 
 `styles.css` and `mobile.css` are otherwise **unlayered**, so they beat every
 layer. That is on purpose: the layered files only add names and kit classes and
@@ -143,6 +143,16 @@ element; only classes chained on the subject itself are a conjunction). With
 both fixed, the audit took 12 more rules out. The tranche nets 116 rules, and
 the audit re-checked every earlier tranche under the corrected rules and found
 nothing.
+The seventh tranche drops the minimum run to 2 (134 rules, 449 declarations, 60
+blocks). Two more planner corrections went into it. A context class the other
+selector names only as its own subject is not evidence: `.tab-rail .session-tab
+> *` styles a tab's children and never a `.session-tab`, which had blocked 13
+rules. And a chain edit whose two selectors share only a tag (`.anim-lab-themes
+button:hover` against `.ralph-dropdown button`) is no longer written unless the
+edited selector names the hover rule's whole context: the first plan would have
+taken the Ralph dropdown buttons' colour away on hover because of an
+animation-lab rule. One edit was left (the phone toolbar's `.cm-btn--bar`
+colour skips `:hover`, where the desktop hover colour already wins).
 
 ⚠️ Anything unlayered that matches a kit element beats the kit. The universal
 reset used to be unlayered and zeroed every `.cm-*` padding; it now sits in

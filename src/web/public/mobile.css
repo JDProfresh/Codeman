@@ -1079,6 +1079,9 @@ html.mobile-init .file-browser-panel {
     justify-content: center;
     font-weight: 500;
     letter-spacing: 0.01em;
+  }
+
+  .cm-btn--bar:where(:not(:hover)) {
     color: #fff;
   }
 

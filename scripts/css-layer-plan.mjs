@@ -41,7 +41,9 @@
  *  - A compound subject's element carries all the classes chained on it (never the
  *    alternatives of an `:is()`), so two subjects meet only if every pair of those
  *    (non-runtime) classes can share an element;
- *    a context class matches only whole (`.session-tab` is not `.session-tabs`).
+ *    a context class matches only whole (`.session-tab` is not `.session-tabs`),
+ *    and naming it only as your own subject is no evidence when it is the other
+ *    rule's immediate parent (`.x > *` never styles an `.x`).
  *  - Two different `[type="…"]` values never meet, and a typed subject never meets
  *    a sampled input of another type when no script builds more of those inputs or
  *    rewrites their type. An attribute JS writes on known elements only (ATTR_ON,
@@ -65,7 +67,8 @@
  * --chains lists the `:where(:not(:<state>))` edits that would free a state rule
  * (`:hover`, `:focus`, `:focus-visible`, `:active`, or the `.active` class, which
  * gets `:where(:not(.active))`) blocked only by unlayered
- * competitors naming the SAME element; --apply-chains writes them, moving just the
+ * competitors naming the SAME element (a shared class or id, or a shared tag
+ * only when the competitor names the state rule's whole context); --apply-chains writes them, moving just the
  * declarations the state rule overrides into a split-off rule, then exits:
  * re-run with --write to place what they freed. Conflicts (and the audit) compare
  * longhands via overlap(): `border-left` meets `border-color`, `border-radius` never does.
@@ -202,7 +205,17 @@ function analyse(sel) {
           });
       }
       const ctxToks = new Set([...all].filter((t) => !toks.has(t)));
-      out.push({ spec: [a, b, c], toks, conj, tag, ctxToks, pseudoEl, typeVal, generic: toks.size === 0, text: s.toString().trim() });
+      const parentToks = new Set();
+      {
+        let i = s.nodes.length - 1;
+        while (i >= 0 && s.nodes[i].type !== 'combinator') i--;
+        for (i--; i >= 0 && s.nodes[i].type !== 'combinator'; i--) {
+          const n = s.nodes[i];
+          if (n.type === 'class') parentToks.add('.' + n.value);
+          if (n.type === 'id') parentToks.add('#' + n.value);
+        }
+      }
+      out.push({ spec: [a, b, c], toks, conj, tag, ctxToks, parentToks, pseudoEl, typeVal, generic: toks.size === 0, text: s.toString().trim() });
     })
   ).processSync(sel);
   return out;
@@ -400,6 +413,11 @@ function exclusiveStates(x, y) {
   }
   return false;
 }
+// Is x's naming of g's context class t evidence they meet? Not when x names t only
+// as its own subject and t is g's immediate parent: then x IS that parent and g
+// styles its children (`.session-tab > *` never styles a `.session-tab`).
+const ctxEvidence = (g, x, t) =>
+  hasTok(x.text, t) && !(x.toks.has(t) && !x.ctxToks.has(t) && g.parentToks.has(t));
 // Does selector text name token t (a whole class or id, not a prefix of a longer one)?
 const hasTok = (text, t) => new RegExp(`${t.replace(/[.#]/, '\\$&')}(?![\\w-])`).test(text);
 function reach(a, b) {
@@ -430,13 +448,13 @@ function reach(a, b) {
     // would meet every span on the page); with it, a scoped rule on a runtime class
     // can miss a generic rule inside that scope, which is why hide utilities never
     // move (HIDE_UTILITY) and the probes stay the backstop.
-    if (g.ctxToks.size) return [...g.ctxToks].some((t) => hasTok(x.text, t));
+    if (g.ctxToks.size) return [...g.ctxToks].some((t) => ctxEvidence(g, x, t));
     if (g.tag) return tagMayBe(x, g.tag);
     return true;
   }
   if (a.generic && b.generic) return true;
   const [g, x] = a.generic ? [a, b] : [b, a];
-  if (g.ctxToks.size) return [...g.ctxToks].some((t) => hasTok(x.text, t)); // see the assumption above
+  if (g.ctxToks.size) return [...g.ctxToks].some((t) => ctxEvidence(g, x, t)); // see the assumption above
   if (!g.tag) return true;
   return tagMayBe(x, g.tag);
 }
@@ -551,7 +569,11 @@ function stateFix(x, sx, y, sy) {
     return out;
   };
   const tx = toks(subjectText(sx));
-  if (![...toks(subjectText(sy))].some((t) => tx.has(t))) return null;
+  const shared = [...toks(subjectText(sy))].filter((t) => tx.has(t));
+  if (!shared.length) return null;
+  // Only a tag in common (`.a button:hover` vs `.b button`): Y must sit in X's
+  // context, i.e. name every class or id X is scoped by.
+  if (shared.every((t) => /^[a-z]/.test(t)) && ![...sx.ctxToks].every((t) => hasTok(sy.text, t))) return null;
   return m[1];
 }
 function conflict(x, fixes) {
