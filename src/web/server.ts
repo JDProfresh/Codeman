@@ -473,6 +473,8 @@ export class WebServer extends EventEmitter {
   private windowTitle: string;
   private readonly indexHtmlTemplate: string;
   private readonly allowUnauthenticatedNetwork: boolean;
+  /** `--allow-unauthenticated-tunnel`; the tunnel guard reads it through the route context (#706). */
+  private readonly allowUnauthenticatedTunnel: boolean;
   private _pasteImageGcStop: (() => void) | null = null;
   private _eventLoopMonitor: EventLoopMonitorHandle | null = null;
   /** Opt-in hooks-only listener on the docker bridge gateway (CODEMAN_DOCKER_BRIDGE_HOOKS). */
@@ -490,7 +492,8 @@ export class WebServer extends EventEmitter {
     host: string = '127.0.0.1',
     titleHostname?: string,
     allowUnauthenticatedNetwork: boolean = false,
-    basePath: string = ''
+    basePath: string = '',
+    allowUnauthenticatedTunnel: boolean = false
   ) {
     super();
     this.setMaxListeners(0);
@@ -502,6 +505,7 @@ export class WebServer extends EventEmitter {
     this.testMode = testMode;
     this.allowUnauthenticatedNetwork =
       allowUnauthenticatedNetwork || isExplicitlyEnabled(process.env.CODEMAN_ALLOW_UNAUTHENTICATED_NETWORK);
+    this.allowUnauthenticatedTunnel = allowUnauthenticatedTunnel;
     this.titleHostname = titleHostname || getHostname();
     this.windowTitle = `codeman:${this.titleHostname}`;
     this.indexHtmlTemplate = readFileSync(join(__dirname, 'public', 'index.html'), 'utf-8');
@@ -881,6 +885,7 @@ export class WebServer extends EventEmitter {
       scheduledRuns: this.scheduledRuns,
       teamWatcher: this.teamWatcher,
       tunnelManager: this.tunnelManager,
+      allowUnauthenticatedTunnel: this.allowUnauthenticatedTunnel,
       pushStore: this.pushStore,
       startScheduledRun: this.startScheduledRun.bind(this),
       stopScheduledRun: this.stopScheduledRun.bind(this),
@@ -4406,9 +4411,19 @@ export async function startWebServer(
   host: string = '127.0.0.1',
   titleHostname?: string,
   allowUnauthenticatedNetwork: boolean = false,
-  basePath: string = ''
+  basePath: string = '',
+  allowUnauthenticatedTunnel: boolean = false
 ): Promise<WebServer> {
-  const server = new WebServer(port, https, testMode, host, titleHostname, allowUnauthenticatedNetwork, basePath);
+  const server = new WebServer(
+    port,
+    https,
+    testMode,
+    host,
+    titleHostname,
+    allowUnauthenticatedNetwork,
+    basePath,
+    allowUnauthenticatedTunnel
+  );
   await server.start();
   return server;
 }
